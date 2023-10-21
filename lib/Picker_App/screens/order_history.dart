@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../src/colors.dart';
 import '../src/dimen.dart';
 import '../src/textString.dart';
@@ -15,13 +15,15 @@ class OrderHistoryScreen extends StatefulWidget {
 
 class OrderHistoryScreenState extends State<OrderHistoryScreen> {
   bool valuefirst = false;
+  TextEditingController fromController = TextEditingController();
+  TextEditingController toController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      key: _scaffoldKey,
+      // key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
         Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
@@ -35,6 +37,7 @@ class OrderHistoryScreenState extends State<OrderHistoryScreen> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: size.height * 0.05),
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,

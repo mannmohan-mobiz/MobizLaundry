@@ -21,6 +21,7 @@ class DepositScreen extends StatefulWidget {
 class DepositScreenState extends State<DepositScreen> {
   int count = 0;
   bool isChecked = false;
+  TextEditingController _cdController = TextEditingController();
 
   Color getColor(Set<MaterialState> states) {
     const Set<MaterialState> interactiveStates = <MaterialState>{
@@ -42,7 +43,6 @@ class DepositScreenState extends State<DepositScreen> {
         RepositoryProvider.of<PickerRepository>(context)
       ),
       child: Scaffold(
-        key: _scaffoldKey,
         appBar: PreferredSize(
           preferredSize:
           Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
@@ -71,31 +71,106 @@ class DepositScreenState extends State<DepositScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Container(
-                            margin: EdgeInsets.only(top: size.height * 0.03,left: size.width * 0.06),
-                            padding: EdgeInsets.all(smallTextPadding),
-                            width: size.width * 0.3,
-                            child:  ElevatedButton(
-                              onPressed: () {
-                                final authData = AuthData();
-                                BlocProvider.of<PickerBloc>(context).add(AddDepositEvent(authData.user_token.toString(),authData.user_id.toString(), '4000'));
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: pickerPrimaryColor,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
+                          BlocBuilder<PickerBloc, PickerState>(
+                            buildWhen: (previous, current) {
+                              current = PickerInitial();
+                              return true;
+                            },
+                            builder: (context, state) {
+                              if (state is DepositAddingState) {
+                                print(state.toString());
+                                return Container(
+                                  margin: EdgeInsets.only(top: size.height * 0.03,left: size.width * 0.06),
+                                  padding: EdgeInsets.all(smallTextPadding),
+                                  width: size.width * 0.3,
+                                  child:  ElevatedButton(
+                                    onPressed: (){},
+                                    // onPressed: () {
+                                    //   final authData = AuthData();
+                                    //   BlocProvider.of<PickerBloc>(context).add(AddDepositEvent(authData.user_token.toString(),authData.user_id.toString(), _cdController.text ?? '0'));
+                                    // },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.greenAccent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
 
-                                ),
-                                elevation: 15.0,
-                              ),
-                              child:  Text(
-                                'Add',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600),
-                              ),
-                            ),
+                                      ),
+                                      elevation: 15.0,
+                                    ),
+                                    child:  Text(
+                                      'Adding..',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                );
+                              }  else if (state is DepositErrorState) {
+                                print(state.toString());
+                                return Container(
+                                  margin: EdgeInsets.only(top: size.height * 0.03,left: size.width * 0.06),
+                                  padding: EdgeInsets.all(smallTextPadding),
+                                  width: size.width * 0.3,
+                                  child:  ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => DepositScreen()), (route) => false);
+                                    },
+                                    // onPressed: () {
+                                    //   final authData = AuthData();
+                                    //   BlocProvider.of<PickerBloc>(context).add(AddDepositEvent(authData.user_token.toString(),authData.user_id.toString(), _cdController.text ?? '0'));
+                                    // },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: Colors.redAccent,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+
+                                      ),
+                                      elevation: 15.0,
+                                    ),
+                                    child:  Text(
+                                      'Try Again!',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                print(state.toString());
+                                return Container(
+                                  margin: EdgeInsets.only(top: size.height * 0.03,left: size.width * 0.06),
+                                  padding: EdgeInsets.all(smallTextPadding),
+                                  width: size.width * 0.3,
+                                  child:  ElevatedButton(
+                                    onPressed: () {
+                                      if (_cdController.text.isNotEmpty) {
+                                        final authData = AuthData();
+                                        BlocProvider.of<PickerBloc>(context).add(AddDepositEvent(authData.user_token.toString(),authData.user_id.toString(), _cdController.text ?? '0'));
+                                      } else {
+
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: pickerPrimaryColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+
+                                      ),
+                                      elevation: 15.0,
+                                    ),
+                                    child:  Text(
+                                      'Add',
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
                           ),
                           Container(
                             alignment: Alignment.center,
@@ -167,6 +242,7 @@ class DepositScreenState extends State<DepositScreen> {
                           padding: EdgeInsets.all(1),
                           margin: EdgeInsets.only(top: size.height * 0.015),
                           child: TextFormField(
+                            controller: _cdController,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
                                 hintText: '0',

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
+import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
+import 'package:intl/intl.dart';
 
 import '../src/colors.dart';
 import '../src/dimen.dart';
@@ -15,320 +20,399 @@ class DepsoitHistoryScreen extends StatefulWidget {
 
 class DepsoitHistoryScreenState extends State<DepsoitHistoryScreen> {
   bool valuefirst = false;
+  TextEditingController fromController = TextEditingController();
+  TextEditingController toController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
-        child: Appbar(text:'Deposit History' ,),
+    return BlocProvider(
+      create: (context) => PickerBloc(
+        RepositoryProvider.of<PickerRepository>(context),
       ),
-      drawer: const MenuDrawer(),
-      body: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              Container(
-                margin: EdgeInsets.only(top: size.height * 0.05),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                        alignment: Alignment.centerRight,
-                        margin: EdgeInsets.only(left: size.width * 0.03,right: size.width * 0.03),
-                        width: size.width * 0.2,
-                        height: size.height * 0.04,
-                        decoration: ShapeDecoration(
-                            color: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2.0),
-                                side: BorderSide(width: 1, color: pickerPrimaryColor))),
-                        child: Container(
-                          margin: EdgeInsets.only(top: size.height * 0.015),
-                          alignment: Alignment.center,
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                                hintText: 'From Date'
-                            ),
-                          ),
-                        )
-                    ),
-                    Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.only(left: size.width * 0.03,right: size.width * 0.03),
-                        width: size.width * 0.2,
-                        height: size.height * 0.04,
-                        decoration: ShapeDecoration(
-                            color: Colors.transparent,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(2.0),
-                                side: BorderSide(width: 1, color: pickerPrimaryColor))),
-                        child: Container(
-                          margin: EdgeInsets.only(top: size.height * 0.015),
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                                hintText: 'To Date'
-                            ),
-                          ),
-                        )
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: size.height * 0.01,left: size.width * 0.03),
-                      padding: EdgeInsets.all(smallTextPadding),
-                      width: size.width * 0.26,
-                      child:  ElevatedButton(
-                        onPressed: () {
-
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: pickerPrimaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-
-                          ),
-                          elevation: 15.0,
-                        ),
-                        child:  Text(
-                          'Load',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.05,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.symmetric(horizontal: size.width * 0.02),
-                    height: size.height * 0.3,
-                    width: MediaQuery.of(context).size.width *
-                        0.9, // Increased width
-                    child: ListView.builder(
-                      itemCount: 1,
-                      padding: EdgeInsets.zero,
-                      scrollDirection: Axis.horizontal,
-                      physics: const ClampingScrollPhysics(),
-                      itemBuilder: (context, index) {
-                        return Column(
-                          children: [
-                            Container(
-                              margin: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.05),
-                              height: size.height * 0.08,
-                              width: MediaQuery.of(context).size.width /
-                                  0.8, // Increased width
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        border:
-                                        Border.all(color: Colors.deepPurple),
-                                      ),
-                                      child: Text(
-                                        " Sl No",
-                                        style: TextStyle(
-                                          color: Colors.deepPurple,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        border:
-                                        Border.all(color: Colors.deepPurple),
-                                      ),
-                                      child: Text(
-                                        "Date",
-                                        style: TextStyle(
-                                          color: Colors.deepPurple,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        border:
-                                        Border.all(color: Colors.deepPurple),
-                                      ),
-                                      child: Text(
-                                        "Amount Deposited",
-                                        style: TextStyle(
-                                          color: Colors.deepPurple,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        border:
-                                        Border.all(color: Colors.deepPurple),
-                                      ),
-                                      child: Text(
-                                        "Total Outstanding",
-                                        style: TextStyle(
-                                          color: Colors.deepPurple,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: size.height * 0.1,
-                              width: MediaQuery.of(context).size.width * 1.35,
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                scrollDirection: Axis.vertical,
-                                physics: const ClampingScrollPhysics(),
-                                itemCount: 2,
-                                itemBuilder:
-                                    (BuildContext context, int rowIndex) {
-                                  return GestureDetector(
-                                    onTap: (){
-
-                                    },
-                                    child: SizedBox(
-                                      height: size.height * 0.05,
-                                      width:
-                                      MediaQuery.of(context).size.width * 1.5,
-                                      child: ListView.builder(
-                                        itemCount: 1,
-                                        scrollDirection: Axis.vertical,
-                                        itemBuilder: (context, index) {
-                                          return Container(
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: size.width * 0.05),
-                                            height: size.height * 0.05,
-                                            width:
-                                            MediaQuery.of(context).size.width *
-                                                1.5,
-                                            // Increased width
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Container(
-                                                    width: size.width * 0.15,
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.deepPurple),
-                                                    ),
-                                                    child: Text(
-                                                      "",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    width: size.width * 0.15,
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.deepPurple),
-                                                    ),
-                                                    child: Text(
-                                                      "",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    width: size.width * 0.15,
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.deepPurple),
-                                                    ),
-                                                    child: Text(
-                                                      "",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Container(
-                                                    width: size.width * 0.15,
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                      border: Border.all(
-                                                          color: Colors.deepPurple),
-                                                    ),
-                                                    child: Text(
-                                                      "",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-
-                                              ],
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-            ],
+      child: Scaffold(
+        key: _scaffoldKey,
+        appBar: PreferredSize(
+          preferredSize:
+              Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
+          child: Appbar(
+            text: 'Deposit History',
           ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
+        drawer: const MenuDrawer(),
+        body: SingleChildScrollView(
+          child: Container(
+            color: Colors.white,
+            child: BlocBuilder<PickerBloc, PickerState>(
+              builder: (context, state) {
+                if (state is DepostiHistoryFetched) {
+                  fromController.clear();
+                  toController.clear();
+                  return Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: size.height * 0.05),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  alignment: Alignment.centerRight,
+                                  // margin: EdgeInsets.only(left: size.width * 0.03,right: size.width * 0.03),
+                                  width: size.width * 0.3,
+                                  height: size.height * 0.04,
+                                  decoration: ShapeDecoration(
+                                      color: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(2.0),
+                                          side: BorderSide(
+                                              width: 1,
+                                              color: pickerPrimaryColor))),
+                                  child: Container(
+                                    // margin: EdgeInsets.only(top: size.height * 0.015),
+                                    alignment: Alignment.center,
+                                    child: TextField(
+                                        controller:
+                                        fromController, //editing controller of this TextField
+                                        decoration: const InputDecoration(
+                                            icon: Icon(Icons
+                                                .calendar_today), //icon of text field
+                                            hintText:
+                                            "From Date" //label text of field
+                                        ),
+                                        readOnly:
+                                        true, // when true user cannot edit text
+                                        onTap: () async {
+                                          DateTime? pickedDate =
+                                          await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime
+                                                  .now(), //get today's date
+                                              firstDate: DateTime(
+                                                  2000), //DateTime.now() - not to allow to choose before today.
+                                              lastDate: DateTime(2101));
+                                          if (pickedDate != null) {
+                                            print(
+                                                pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                                            String formattedDate =
+                                            DateFormat('yyyy-MM-dd').format(
+                                                pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                            print(
+                                                formattedDate); //formatted date output using intl package =>  2022-07-04
+                                            //You can format date as per your need
+
+                                            setState(() {
+                                              fromController.text =
+                                                  formattedDate; //set foratted date to TextField value.
+                                            });
+                                          } else {
+                                            print("Date is not selected");
+                                          }
+                                        }),
+                                  )),
+                              Container(
+                                  alignment: Alignment.center,
+                                  // margin: EdgeInsets.only(left: size.width * 0.03,right: size.width * 0.03),
+                                  width: size.width * 0.3,
+                                  height: size.height * 0.04,
+                                  decoration: ShapeDecoration(
+                                      color: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(2.0),
+                                          side: BorderSide(
+                                              width: 1,
+                                              color: pickerPrimaryColor))),
+                                  child: Container(
+                                    // margin: EdgeInsets.only(top: size.height * 0.015),
+                                    child: TextField(
+                                        controller:
+                                        toController, //editing controller of this TextField
+                                        decoration: const InputDecoration(
+                                            icon: Icon(Icons
+                                                .calendar_today), //icon of text field
+                                            hintText:
+                                            "To Date" //label text of field
+                                        ),
+                                        readOnly:
+                                        true, // when true user cannot edit text
+                                        onTap: () async {
+                                          DateTime? pickedDate =
+                                          await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime
+                                                  .now(), //get today's date
+                                              firstDate: DateTime(
+                                                  2000), //DateTime.now() - not to allow to choose before today.
+                                              lastDate: DateTime(2101));
+                                          if (pickedDate != null) {
+                                            print(
+                                                pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                                            String formattedDate =
+                                            DateFormat('yyyy-MM-dd').format(
+                                                pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                            print(
+                                                formattedDate); //formatted date output using intl package =>  2022-07-04
+                                            //You can format date as per your need
+
+                                            setState(() {
+                                              toController.text =
+                                                  formattedDate; //set foratted date to TextField value.
+                                            });
+                                          } else {
+                                            print("Date is not selected");
+                                          }
+                                        }),
+                                  )),
+                              Container(
+                                margin: EdgeInsets.only(
+                                    top: size.height * 0.01,
+                                    left: size.width * 0.03),
+                                padding: EdgeInsets.all(smallTextPadding),
+                                width: size.width * 0.26,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Map<String, String> body = {
+                                      "id": authData.user_id.toString(),
+                                      "from_date": fromController.text,
+                                      "to_date": toController.text
+                                    };
+                                    print(fromController.text);
+                                    print(toController.text);
+                                    BlocProvider.of<PickerBloc>(context).add(
+                                        DepositHistoryFetchEvent(
+                                            authData.user_token.toString(),
+                                            body));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: pickerPrimaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    elevation: 15.0,
+                                  ),
+                                  child: Text(
+                                    'Load',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.05,
+                      ),
+                      DataTable(
+                        columns: [
+                          DataColumn(label: Text('Sl.No')),
+                          DataColumn(label: Text('Deposit Date')),
+                          DataColumn(label: Text('Total Amount')),
+                        ],
+                        rows: state.data.map((e) {
+                          return DataRow(
+                            cells: [
+                              DataCell(Text('0')),
+                              DataCell(Text(e.depositeDate.toString())),
+                              DataCell(Text(e.totalAmount)),
+                            ]
+                          );
+                        }).toList(),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                    ],
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.only(top: size.height * 0.05),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                  alignment: Alignment.centerRight,
+                                  // margin: EdgeInsets.only(left: size.width * 0.03,right: size.width * 0.03),
+                                  width: size.width * 0.3,
+                                  height: size.height * 0.04,
+                                  decoration: ShapeDecoration(
+                                      color: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(2.0),
+                                          side: BorderSide(
+                                              width: 1,
+                                              color: pickerPrimaryColor))),
+                                  child: Container(
+                                    // margin: EdgeInsets.only(top: size.height * 0.015),
+                                    alignment: Alignment.center,
+                                    child: TextField(
+                                        controller:
+                                        fromController, //editing controller of this TextField
+                                        decoration: const InputDecoration(
+                                            icon: Icon(Icons
+                                                .calendar_today), //icon of text field
+                                            hintText:
+                                            "From Date" //label text of field
+                                        ),
+                                        readOnly:
+                                        true, // when true user cannot edit text
+                                        onTap: () async {
+                                          DateTime? pickedDate =
+                                          await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime
+                                                  .now(), //get today's date
+                                              firstDate: DateTime(
+                                                  2000), //DateTime.now() - not to allow to choose before today.
+                                              lastDate: DateTime(2101));
+                                          if (pickedDate != null) {
+                                            print(
+                                                pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                                            String formattedDate =
+                                            DateFormat('yyyy-MM-dd').format(
+                                                pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                            print(
+                                                formattedDate); //formatted date output using intl package =>  2022-07-04
+                                            //You can format date as per your need
+
+                                            setState(() {
+                                              fromController.text =
+                                                  formattedDate; //set foratted date to TextField value.
+                                            });
+                                          } else {
+                                            print("Date is not selected");
+                                          }
+                                        }),
+                                  )),
+                              Container(
+                                  alignment: Alignment.center,
+                                  // margin: EdgeInsets.only(left: size.width * 0.03,right: size.width * 0.03),
+                                  width: size.width * 0.3,
+                                  height: size.height * 0.04,
+                                  decoration: ShapeDecoration(
+                                      color: Colors.transparent,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                          BorderRadius.circular(2.0),
+                                          side: BorderSide(
+                                              width: 1,
+                                              color: pickerPrimaryColor))),
+                                  child: Container(
+                                    // margin: EdgeInsets.only(top: size.height * 0.015),
+                                    child: TextField(
+                                        controller:
+                                        toController, //editing controller of this TextField
+                                        decoration: const InputDecoration(
+                                            icon: Icon(Icons
+                                                .calendar_today), //icon of text field
+                                            hintText:
+                                            "To Date" //label text of field
+                                        ),
+                                        readOnly:
+                                        true, // when true user cannot edit text
+                                        onTap: () async {
+                                          DateTime? pickedDate =
+                                          await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime
+                                                  .now(), //get today's date
+                                              firstDate: DateTime(
+                                                  2000), //DateTime.now() - not to allow to choose before today.
+                                              lastDate: DateTime(2101));
+                                          if (pickedDate != null) {
+                                            print(
+                                                pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                                            String formattedDate =
+                                            DateFormat('yyyy-MM-dd').format(
+                                                pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                            print(
+                                                formattedDate); //formatted date output using intl package =>  2022-07-04
+                                            //You can format date as per your need
+
+                                            setState(() {
+                                              toController.text =
+                                                  formattedDate; //set foratted date to TextField value.
+                                            });
+                                          } else {
+                                            print("Date is not selected");
+                                          }
+                                        }),
+                                  )),
+                              Container(
+                                margin: EdgeInsets.only(
+                                    top: size.height * 0.01,
+                                    left: size.width * 0.03),
+                                padding: EdgeInsets.all(smallTextPadding),
+                                width: size.width * 0.26,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    Map<String, String> body = {
+                                      "id": authData.user_id.toString(),
+                                      "from_date": fromController.text,
+                                      "to_date": toController.text
+                                    };
+                                    print(fromController.text);
+                                    print(toController.text);
+                                    BlocProvider.of<PickerBloc>(context).add(
+                                        DepositHistoryFetchEvent(
+                                            authData.user_token.toString(),
+                                            body));
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: pickerPrimaryColor,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    elevation: 15.0,
+                                  ),
+                                  child: Text(
+                                    'Load',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.05,
+                      ),
+                      Center(child: Text('Loading...'),),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                    ],
+                  );
+                }
+              } ,
+            ),
+          ),
         ),
-        child: BottomDrawer(),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
+          ),
+          child: BottomDrawer(),
+        ),
       ),
     );
   }

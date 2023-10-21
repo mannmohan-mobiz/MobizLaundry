@@ -100,3 +100,192 @@ class DepositErrorState extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************[Deposit Add]***********************/
+
+/***********************[Get Expense Head]***********************/
+class ExpenseHeadGettingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ExpenseHeadSuccessState extends PickerState {
+  final String data;
+  ExpenseHeadSuccessState(this.data);
+
+  @override
+  List<Object?> get props => [data];
+}
+
+class ExpenseHeadErrorState extends PickerState {
+  final String message;
+  ExpenseHeadErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Expense Head]***********************/
+
+/***********************[Add Expense]***********************/
+class AddingExpenseState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class AddedExpenseState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ErrorExpenseState extends PickerState {
+  final String message;
+  ErrorExpenseState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Add Expense]***********************/
+
+/***********************[Get All Expense]***********************/
+class ExpenseFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ExpenseFetchedState extends PickerState {
+  final List<Datum> expenseData;
+
+  ExpenseFetchedState(this.expenseData);
+  @override
+  List<Object?> get props => [expenseData];
+
+}
+
+class ExpenseErrorState extends PickerState {
+  final String message;
+
+  ExpenseErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get All Expense]***********************/
+
+/***********************[Outstanding Dues]***********************/
+class OutstandingFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class OutstandingFetchedState extends PickerState {
+  List<OutStand>? data = [];
+  OutstandingFetchedState(this.data);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [data];
+}
+
+class OutStandingErrorState extends PickerState {
+  final String message;
+
+  OutStandingErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Outstanding Dues]***********************/
+
+/***********************[Outstanding Dues]***********************/
+class DepositHistoryFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class DepostiHistoryFetched extends PickerState {
+  List<DepoHist> data = [];
+  DepostiHistoryFetched(this.data);
+  @override
+  List<Object?> get props => [data];
+}
+
+class DepositHistoryError extends PickerState {
+  final String message;
+
+  DepositHistoryError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Outstanding Dues]***********************/
+
+/***********************[Order History List]***********************/
+class OrderHistoryFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class OrderdHistoryFetched extends PickerState {
+     List<OrderHist> data=[];
+     TotalCount tc;
+    OrderdHistoryFetched(this.data, this.tc);
+  @override
+  List<Object?> get props => [data, tc];
+}
+
+class OrderHistoryError extends PickerState {
+  final String message;
+
+  OrderHistoryError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Order History List]***********************/
+
+/***********************[Order Details]***********************/
+class OrderDetailsFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class OrderDetailsFetched extends PickerState {
+  final Data finalData;
+
+  OrderDetailsFetched(this.finalData);
+
+  @override
+  List<Object?> get props => [finalData];
+}
+
+class OrderDetailsError extends PickerState {
+  final String message;
+
+  OrderDetailsError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Order Details]***********************/
+
+/***********************Collection List]***********************/
+class CollectionListFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class CollectionListFetchedState extends PickerState {
+  List data = [];
+  CollectionListFetchedState(this.data);
+
+  @override
+  List<Object?> get props => [data];
+}
+
+class CollectionListErrorState extends PickerState {
+  final String message;
+
+  CollectionListErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************Collection List]***********************/

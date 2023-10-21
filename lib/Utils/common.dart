@@ -1,7 +1,8 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-String baseUrl = "http://68.183.94.11:90/";
+// String baseUrl = "http://68.183.94.11:90/";
+String baseUrl = "http://bijoy.pythonanywhere.com/";
 
 class AuthData {
   static final AuthData _instance = AuthData._internal();
@@ -38,3 +39,4 @@ class AuthData {
     response = jsonDecode(resp.body)['message'];
   }
 }
+
