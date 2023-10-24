@@ -21,7 +21,7 @@ class AuthRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = AuthModel.fromJson(jsonDecode(response.body));
-        authData.setData(result.data.tokEn, result.data.userType, result.data.id);
+        authData.setData(result.data.tokEn, result.data.userType, result.data.id, result.data.username);
         return result;
       } else {
         return jsonDecode(response.body);

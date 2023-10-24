@@ -9,6 +9,7 @@ import 'package:integrate_3screens/Models/PickerModel/outstanding_model.dart';
 
 import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
+import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 
 part 'picker_event.dart';
@@ -170,6 +171,34 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch(e) {
         emit(CollectionListErrorState(e.toString()));
+      }
+    });
+    on<PickupListFetchEvent>((event, emit) async {
+      emit(PickupListFetching());
+      try {
+        await pickerRepository.getPickUps(token: event.token, id: event.id).then((value) {
+          if (value.status == true && value.message == "Pickup List!") {
+            emit(PickupListFetched(value.data));
+          } else {
+            emit(PickupListError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PickupListError(e.toString()));
+      }
+    });
+    on<PickerPunchInOutEvent>((event, emit) async {
+      emit(PickerPunchingInOutState());
+      try {
+        await pickerRepository.punchIn(token: event.token, id: event.id, task: event.task).then((value) {
+          if (value.status == true && value.message == "Successfully Logged In!") {
+            emit(PickerPunchedInOutState(value.data[0].punchInTime, value.data[0].punchOutTime == null ? "" : value.data[0].punchOutTime ));
+          } else {
+            emit(PickerPunchingErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PickerPunchingErrorState(e.toString()));
       }
     });
   }

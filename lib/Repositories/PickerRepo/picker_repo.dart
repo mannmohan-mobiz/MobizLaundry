@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:integrate_3screens/Models/PickerModel/collection_list_model.dart';
+import 'package:integrate_3screens/Models/PickerModel/punch_in_out_model.dart';
+import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 import 'package:integrate_3screens/Utils/common.dart';
 import 'package:dio/dio.dart';
 
@@ -326,6 +328,48 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerPickupListModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Punch In / Out
+  Future<PickerPunchInOutModel> punchIn({required String token, required String id, required String task}) async {
+    Dio dio = Dio();
+    String url = '';
+    if (task == "punch_in") {
+      url = 'picker/picker_punch_in_api';
+    } else if (task == "punch_out"){
+      url = 'picker/picker_punch_out_api';
+    }
+    print(url);
+    Future.delayed(Duration(seconds: 1));
+    Map<String, String> data = {
+      "userid": id
+    };
+
+    Map<String, String> out_data = {
+      "id": id
+    };
+
+    Options options = Options(
+      headers: {
+        'Authorization': 'Basic $token'
+      }
+    );
+    try {
+      var response = await dio.post(
+        baseUrl+url,
+        data: task == "punch_in" ? data : out_data,
+        options: options
+      );
+      print(response.data);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerPunchInOutModel.fromJson(response.data);
         return result;
       } else {
         return response.data;

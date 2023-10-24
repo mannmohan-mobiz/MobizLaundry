@@ -289,3 +289,55 @@ class CollectionListErrorState extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************Collection List]***********************/
+
+/***********************[Pickup List]***********************/
+class PickupListFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PickupListFetched extends PickerState {
+  List<PickupLst> fData;
+
+  PickupListFetched(this.fData);
+
+  @override
+  List<Object?> get props => [fData];
+}
+
+class PickupListError extends PickerState {
+  final String message;
+
+  PickupListError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Pickup List]***********************/
+
+
+/***********************[Picker Punch In]***********************/
+class PickerPunchingInOutState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PickerPunchedInOutState extends PickerState {
+  final String punchIn_time;
+  final String punchOut_time;
+
+  PickerPunchedInOutState(this.punchIn_time, this.punchOut_time);
+
+  @override
+  List<Object?> get props => [punchIn_time, punchOut_time];
+}
+
+class PickerPunchingErrorState extends PickerState {
+  final String message;
+
+  PickerPunchingErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Picker Punch In]***********************/

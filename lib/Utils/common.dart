@@ -16,18 +16,22 @@ class AuthData {
   String? user_token;
   String? user_type;
   String? response;
+  String? username;
   int? user_id;
+  int callCount = 0;
 
-  void setData(String token, String userType, int userId) {
+  void setData(String token, String userType, int userId, user_name) {
     user_token = token;
     user_type = userType;
     user_id = userId;
+    username = user_name;
   }
 
   void clearData() {
     user_token = null;
     user_type = null;
     user_id = null;
+    username = null;
   }
 
   void clearResponse() {
@@ -38,5 +42,13 @@ class AuthData {
     var resp = await http.get(Uri.parse(baseUrl+'accounts/logout_api'));
     response = jsonDecode(resp.body)['message'];
   }
+
+  void resetCount() {
+    if (callCount != 0) {
+      callCount = 0;
+    }
+  }
+
+
 }
 

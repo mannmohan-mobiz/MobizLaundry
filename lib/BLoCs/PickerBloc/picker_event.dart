@@ -109,3 +109,26 @@ class CollectionListFetchEvent extends PickerEvent {
   @override
   List<Object?> get props => [token, data];
 }
+
+// Pickup List
+class PickupListFetchEvent extends PickerEvent {
+  final String token;
+  final String id;
+
+  PickupListFetchEvent(this.token, this.id);
+
+  @override
+  List<Object?> get props => [token, id];
+}
+
+// Punch In
+class PickerPunchInOutEvent extends PickerEvent {
+  final String token;
+  final String task;
+  final String id;
+
+  PickerPunchInOutEvent(this.token, this.id, this.task);
+
+  @override
+  List<Object?> get props => [token, id];
+}

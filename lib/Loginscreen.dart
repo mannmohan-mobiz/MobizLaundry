@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrate_3screens/BLoCs/AuthBloc/auth_bloc.dart';
 import 'package:integrate_3screens/Owners/Dashboard/Navigation.dart';
+import 'package:integrate_3screens/Picker/picker_homepage.dart';
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 import 'Customers/Customer_Home.dart';
 import 'Owners/Dashboard/Owner_dashboard.dart';
@@ -219,19 +220,34 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           SizedBox(height: 24.0),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Submitting..',
-                              style: TextStyle(fontSize: 18.0),
+                          // ElevatedButton(
+                          //   onPressed: () {},
+                          //   child: Row(
+                          //     children: [
+                          //       Text(
+                          //         'Signing In',
+                          //         style: TextStyle(fontSize: 18.0),
+                          //       ),
+                          //       CircularProgressIndicator()
+                          //     ],
+                          //   ),
+                          //   style: ElevatedButton.styleFrom(
+                          //     primary: Colors.white,
+                          //     onPrimary: Color(0xFF2B4C6F),
+                          //     padding: EdgeInsets.symmetric(horizontal: 64.0),
+                          //     shape: RoundedRectangleBorder(
+                          //       borderRadius: BorderRadius.circular(32.0),
+                          //     ),
+                          //   ),
+                          // ),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
                             ),
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                              onPrimary: Color(0xFF2B4C6F),
-                              padding: EdgeInsets.symmetric(horizontal: 64.0),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(32.0),
-                              ),
+                            child: CircularProgressIndicator(
+                              color: Colors.greenAccent,
                             ),
                           ),
                           SizedBox(
