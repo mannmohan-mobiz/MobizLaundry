@@ -31,3 +31,47 @@ class CustomerBalanceError extends CustomerState {
   @override
   List<Object?> get props => [message];
 }
+
+class CategoryGettingState extends CustomerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class CategoryGotState extends CustomerState {
+  List<CategoryList> cList =[];
+
+  CategoryGotState(this.cList);
+  @override
+  List<Object?> get props => [cList];
+}
+
+class CategoryErrorState extends CustomerState {
+  final String message;
+
+  CategoryErrorState(this.message);
+  
+  @override
+  List<Object?> get props => [message];
+}
+
+class SubCategoryGettingState extends CustomerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class SubCategoryGotState extends CustomerState {
+  List<SubCatList> scList =[];
+
+  SubCategoryGotState(this.scList);
+  @override
+  List<Object?> get props => [scList];
+}
+
+class SubCategoryErrorState extends CustomerState {
+  final String message;
+
+  SubCategoryErrorState(this.message);
+  
+  @override
+  List<Object?> get props => [message];
+}

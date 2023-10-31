@@ -1,7 +1,9 @@
-import 'dart:async';
+
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:integrate_3screens/Models/CustomerModel/category_model.dart';
+import 'package:integrate_3screens/Models/CustomerModel/sub_category_model.dart';
 import 'package:integrate_3screens/Models/CustomerModel/wallet_outstanding_model.dart';
 
 import '../../Repositories/CustomerRepo/customer_repository.dart';
@@ -24,6 +26,34 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         });
       } catch (e) {
         emit(CustomerBalanceError(e.toString()));
+      }
+    });
+    on<GetCategoryEvent>((event, emit) async {
+      emit(CategoryGettingState());
+      try {
+        await customerRepository.getCategories(id: event.id, token: event.token).then((value) {
+          if (value.status == true && value.message == "Branch Categories List!") {
+            emit(CategoryGotState(value.data));
+          } else {
+            emit(CategoryErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(CategoryErrorState(e.toString()));
+      }
+    });
+    on<GetSubCategoryEvent>((event, emit) async {
+      emit(SubCategoryGettingState());
+      try {
+        await customerRepository.getSubCat(cat_id: event.cat_id, token: event.token).then((value) {
+          if (value.status == true && value.message == "Branch Categories List!") {
+            emit(SubCategoryGotState(value.data));
+          } else {
+            emit(SubCategoryErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(SubCategoryErrorState(e.toString()));
       }
     });
   }

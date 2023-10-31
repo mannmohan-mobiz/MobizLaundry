@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:integrate_3screens/Utils/common.dart';
 
+import '../../Models/CustomerModel/category_model.dart';
+import '../../Models/CustomerModel/sub_category_model.dart';
 import '../../Models/CustomerModel/wallet_outstanding_model.dart';
 
 class CustomerRepository {
@@ -32,7 +34,7 @@ class CustomerRepository {
       } else {
         return response.data;
       }
-    } catch (e) {nc
+    } catch (e) {
       throw Exception(e.toString());
     }
   }
@@ -53,8 +55,49 @@ class CustomerRepository {
 
     try {
       var response = await dio.post(
-        baseUrl+''
+        baseUrl+'customer/new_order_branch_categories_api',
+        data: data,
+        options: options
       );
+      print(response.data);
+      if (response.statusCode == 200) {
+        var result = CustomerCategoryModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // get sub category
+  Future<CustomersubCategoryModel> getSubCat({required String cat_id, required String token}) async {
+    Map<String, String> data = {
+      "category_id": cat_id
+    };
+
+    Options options = Options(
+      headers: {
+        'Authorization': 'Basic $token'
+      }
+    );
+
+    try {
+      var response = await dio.post(
+        baseUrl+'new_order_branch_sub_categories_api',
+        data: data,
+        options: options
+      );
+
+      if (response.statusCode == 200 ) {
+        var result = CustomersubCategoryModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch(e) {
+      throw Exception(e.toString());
     }
   }
 }

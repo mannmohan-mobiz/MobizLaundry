@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
+import 'package:integrate_3screens/Repositories/CustomerRepo/customer_repository.dart';
 
+import '../../BLoCs/CustomerBloc/customer_bloc.dart';
 import 'Transaction_History.dart';
 
 class Pricing extends StatefulWidget {
@@ -12,7 +16,10 @@ class Pricing extends StatefulWidget {
 
 class _PricingState extends State<Pricing> {
   String selectedCategory = 'Select Category';
-  List<String> categoryList = ['Select Category', 'Washing', 'Pressing', 'Folding'];
+  String selectedCategoryId = '';
+  String selectedSubCategory = 'Select Sub Category';
+  List<String> categoryList = [];
+  List<String> sub_categoryList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +45,103 @@ class _PricingState extends State<Pricing> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 20,),
-            Padding(
+            BlocProvider(
+              create: (context) => CustomerBloc(
+                RepositoryProvider.of<CustomerRepository>(context),
+              )..add(GetCategoryEvent(authData.user_token!, authData.user_id.toString())),
+              child: BlocBuilder<CustomerBloc, CustomerState>(
+              builder: (context, state) {
+                if (state is CategoryGettingState) {
+                  print(state.toString());
+                  return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                height: 40,
+                width: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.blue),
+                ),
+                child: DropdownButtonFormField(
+                  validator: (value) {
+                    if (value == 'Select Category') {
+                      return 'Select Category';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                    contentPadding: EdgeInsets.only(left: 10),
+                  ),
+                  value: selectedCategory,
+                  items: categoryList.map((category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCategory = value.toString();
+                    });
+                  
+                  },
+                ),
+              ),
+            );
+                } else if (state is CategoryGotState) {
+                  print(state.toString());
+                  if (categoryList.isEmpty) {
+                    categoryList.add('Select Category');
+                    state.cList.forEach((category) { 
+                      categoryList.add(category.categoryName);
+                    });
+                  }
+                  return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                height: 40,
+                width: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.blue),
+                ),
+                child: DropdownButtonFormField(
+                  validator: (value) {
+                    if (value == 'Select Category') {
+                      return 'Select Category';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                    contentPadding: EdgeInsets.only(left: 10),
+                  ),
+                  value: selectedCategory,
+                  items: categoryList.map((category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCategory = value.toString();
+                    });
+                    state.cList.forEach((categ) { 
+                      if (value == categ.categoryName) {
+                        setState(() {
+                          selectedCategoryId = categ.categoryId;
+                        });
+                      }
+                    });
+                  },
+                ),
+              ),
+            );
+                } else {
+                  print(state.toString());
+                  return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 height: 40,
@@ -72,8 +175,140 @@ class _PricingState extends State<Pricing> {
                   },
                 ),
               ),
+            );
+                }
+              },
+            ),
             ),
             SizedBox(height: 20),
+            BlocProvider(
+              create: (context) => CustomerBloc(
+                RepositoryProvider.of<CustomerRepository>(context),
+              )..add(GetSubCategoryEvent(authData.user_token!, selectedCategoryId)),
+              child: BlocBuilder<CustomerBloc, CustomerState>(
+              builder: (context, state) {
+                if (state is SubCategoryGettingState) {
+                  print(state.toString());
+                  return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                height: 40,
+                width: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.blue),
+                ),
+                child: DropdownButtonFormField(
+                  validator: (value) {
+                    if (value == 'Select Sub Category') {
+                      return 'Select Sub Category';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                    contentPadding: EdgeInsets.only(left: 10),
+                  ),
+                  value: selectedCategory,
+                  items: sub_categoryList.map((s_category) {
+                    return DropdownMenuItem(
+                      value: s_category,
+                      child: Text(s_category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedSubCategory = value.toString();
+                    });
+                  },
+                ),
+              ),
+            );
+                } else if (state is SubCategoryGotState) {
+                  print(state.toString());
+                  if (sub_categoryList.isEmpty) {
+                    sub_categoryList.add('Select Sub Category');
+                    state.scList.forEach((s_category) { 
+                      sub_categoryList.add(s_category.subCatName);
+                    });
+                  }
+
+                  return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                height: 40,
+                width: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.blue),
+                ),
+                child: DropdownButtonFormField(
+                  validator: (value) {
+                    if (value == 'Select Sub Category') {
+                      return 'Select Sub Category';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                    contentPadding: EdgeInsets.only(left: 10),
+                  ),
+                  value: selectedSubCategory,
+                  items: sub_categoryList.map((s_category) {
+                    return DropdownMenuItem(
+                      value: s_category,
+                      child: Text(s_category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedSubCategory = value.toString();
+                    });
+                  },
+                ),
+              ),
+            );
+                } else {
+                  print(state.toString());
+                  return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Container(
+                height: 40,
+                width: 200,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.blue),
+                ),
+                child: DropdownButtonFormField(
+                  validator: (value) {
+                    if (value == 'Select Category') {
+                      return 'Select Category';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                    contentPadding: EdgeInsets.only(left: 10),
+                  ),
+                  value: selectedCategory,
+                  items: categoryList.map((category) {
+                    return DropdownMenuItem(
+                      value: category,
+                      child: Text(category),
+                    );
+                  }).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      selectedCategory = value.toString();
+                    });
+                  },
+                ),
+              ),
+            );
+                }
+              },
+            ),
+            ),
             Padding(
               padding: const EdgeInsets.all(12),
               child: Card(

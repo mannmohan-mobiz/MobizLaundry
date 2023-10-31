@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class CustomerCategoryModel {
   bool status;
-  List<Datum> data;
+  List<CategoryList> data;
   String message;
 
   CustomerCategoryModel({
@@ -13,7 +13,7 @@ class CustomerCategoryModel {
 
   CustomerCategoryModel copyWith({
     bool? status,
-    List<Datum>? data,
+    List<CategoryList>? data,
     String? message,
   }) =>
       CustomerCategoryModel(
@@ -28,7 +28,7 @@ class CustomerCategoryModel {
 
   factory CustomerCategoryModel.fromJson(Map<String, dynamic> json) => CustomerCategoryModel(
     status: json["status"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<CategoryList>.from(json["data"].map((x) => CategoryList.fromJson(x))),
     message: json["message"],
   );
 
@@ -39,33 +39,33 @@ class CustomerCategoryModel {
   };
 }
 
-class Datum {
+class CategoryList {
   String categoryId;
   String categoryName;
   ServiceMaster serviceMaster;
 
-  Datum({
+  CategoryList({
     required this.categoryId,
     required this.categoryName,
     required this.serviceMaster,
   });
 
-  Datum copyWith({
+  CategoryList copyWith({
     String? categoryId,
     String? categoryName,
     ServiceMaster? serviceMaster,
   }) =>
-      Datum(
+      CategoryList(
         categoryId: categoryId ?? this.categoryId,
         categoryName: categoryName ?? this.categoryName,
         serviceMaster: serviceMaster ?? this.serviceMaster,
       );
 
-  factory Datum.fromRawJson(String str) => Datum.fromJson(json.decode(str));
+  factory CategoryList.fromRawJson(String str) => CategoryList.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory CategoryList.fromJson(Map<String, dynamic> json) => CategoryList(
     categoryId: json["category_id"],
     categoryName: json["category_name"],
     serviceMaster: ServiceMaster.fromJson(json["service_master"]),
