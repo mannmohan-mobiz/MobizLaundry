@@ -6,8 +6,11 @@ import 'package:integrate_3screens/Models/PickerModel/deposit_history_model.dart
 import 'package:integrate_3screens/Models/PickerModel/expense_drop_down_model.dart';
 import 'package:integrate_3screens/Models/PickerModel/order_details_model.dart';
 import 'package:integrate_3screens/Models/PickerModel/outstanding_model.dart';
+import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 
+import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
+import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
@@ -199,6 +202,62 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PickerPunchingErrorState(e.toString()));
+      }
+    });
+    on<FetchLocationPriceEvent>((event, emit) async {
+      emit(LocationPriceFetching());
+      try {
+        await pickerRepository.getLPGData(token: event.token).then((value) {
+          if (value.status == true && value.message == "Successfully Passed Data!") {
+            emit(LocationPriceFetched(value.data.locationList, value.data.priceGroupList));
+          } else {
+            emit(LocationPriceError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(LocationPriceError(e.toString()));
+      }
+    });
+    on<AddNewClientEvent>((event, emit) async {
+      emit(AddingNewclient());
+      try {
+        await pickerRepository.addNewClient(body: event.body, token: event.token).then((value) {
+          if (value.status == true && value.message == "New Customer Added Successfully!") {
+            emit(AddedNewClient(value.message));
+          } else {
+            emit(AddNewClientError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(AddNewClientError(e.toString()));
+      }
+    });
+    on<ListAllClientsEvent>((event, emit) async {
+      emit(FetchingClientList());
+      try {
+        await pickerRepository.listMyClients(token: event.token, id: event.id).then((value) {
+          if (value.status == true && value.message == "Customers List!") {
+            emit(FetchedClientList(value.data));
+          } else {
+            emit(FetchClientListError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(FetchClientListError(e.toString()));
+      }
+    });
+    on<AddNewOrderEvent>((event, emit) async {
+      emit(AddingNewOrderState());
+      try {
+        await pickerRepository.saveNewOrder(token: event.token, body: event.body).then((value) {
+          if (value.status == true && value.message ==  "Order Successfully Saved!") {
+            emit(AddedNewOrderState(value.data));
+          } else {
+            emit(AddNewOrderErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(AddNewOrderErrorState(e.toString()));
       }
     });
   }

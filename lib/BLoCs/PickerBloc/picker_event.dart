@@ -132,3 +132,45 @@ class PickerPunchInOutEvent extends PickerEvent {
   @override
   List<Object?> get props => [token, id];
 }
+
+// Location Price Group
+class FetchLocationPriceEvent extends PickerEvent {
+  final String token;
+
+  FetchLocationPriceEvent(this.token);
+  @override
+  List<Object?> get props => [token];
+}
+
+// Add Client
+class AddNewClientEvent extends PickerEvent {
+  final Map<String, String> body;
+  final String token;
+
+  AddNewClientEvent(this.body, this.token);
+
+  @override
+  List<Object?> get props => [body, token];
+}
+
+// List Client
+class ListAllClientsEvent extends PickerEvent {
+  final String id;
+  final String token;
+
+  ListAllClientsEvent(this.id, this.token);
+  @override
+  List<Object?> get props => [id, token];
+
+}
+
+// Add New Order
+class AddNewOrderEvent extends PickerEvent {
+  final Map<String, String> body;
+  final String token;
+
+  AddNewOrderEvent(this.body, this.token);
+
+  @override
+  List<Object?> get props => [body, token];
+}

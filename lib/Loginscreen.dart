@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrate_3screens/BLoCs/AuthBloc/auth_bloc.dart';
 import 'package:integrate_3screens/Owners/Dashboard/Navigation.dart';
-import 'package:integrate_3screens/Picker/picker_homepage.dart';
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 import 'Customers/Customer_Home.dart';
 import 'Owners/Dashboard/Owner_dashboard.dart';

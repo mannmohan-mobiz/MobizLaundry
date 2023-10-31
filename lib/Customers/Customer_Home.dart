@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:integrate_3screens/BLoCs/CustomerBloc/customer_bloc.dart';
 import 'package:integrate_3screens/Customers/15-19/Transaction_History.dart';
 import 'package:integrate_3screens/Customers/Complaint.dart';
 import 'package:integrate_3screens/Customers/Edit.dart';
@@ -8,6 +10,8 @@ import 'package:integrate_3screens/Customers/Password.dart';
 import 'package:integrate_3screens/Customers/Promotions.dart';
 import 'package:integrate_3screens/Customers/Services_screen.dart';
 import 'package:integrate_3screens/Customers/Share_screen.dart';
+import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
+import 'package:integrate_3screens/Repositories/CustomerRepo/customer_repository.dart';
 
 import '../Loginscreen.dart';
 import '15-19/Order_History.dart';
@@ -325,111 +329,119 @@ thickness: .5,
           child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Card(
-                elevation: 5,
-                child: Container(
-                  padding: const EdgeInsets.all(16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.shade100,
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: Column(
+          BlocProvider(
+            create: (context) => CustomerBloc(
+              RepositoryProvider.of<CustomerRepository>(context),
+            )..add(GetBalanceEvent(authData.user_token!, authData.user_id.toString())),
+            child: BlocBuilder<CustomerBloc, CustomerState>(
+              builder: (context, state) {
+                if ( state is CustomerBalanceFetching) {
+                  print(state.toString());
+                  return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Wallet Balance',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
+                      Card(
+                        elevation: 5,
+                        child: Container(
+                          padding: const EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
-                          Icon(
-                            Icons.account_balance_wallet,
-                            color: Colors.blue,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Wallet Balance',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.account_balance_wallet,
+                                    color: Colors.blue,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 16.0),
+                              Row(mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'AED 80',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  ElevatedButton(onPressed: () {},
+                                    child: Text('TOP UP',style: TextStyle(color: Colors.white),),
+                                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
+                                  ),
+                                ],
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                       SizedBox(height: 16.0),
-                      Row(mainAxisAlignment:
-                      MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'AED 80',
-                            style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          ElevatedButton(onPressed: () {},
-                            child: Text('TOP UP',style: TextStyle(color: Colors.white),),
-                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(height: 16.0),
-              Card(
-                elevation: 5,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Invoice(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.blue.shade100,
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Current Outstanding',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
+                      Card(
+                        elevation: 5,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Invoice(),
                               ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade100,
+                              borderRadius: BorderRadius.circular(8.0),
                             ),
-                            Icon(
-                              Icons.warning,
-                              color: Colors.red,
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 16.0),
-                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'AED 20',
-                              style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          /*  ElevatedButton(onPressed: () {
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Current Outstanding',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.warning,
+                                      color: Colors.red,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 16.0),
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'AED 20',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    /*  ElevatedButton(onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -440,14 +452,270 @@ thickness: .5,
                               child: Text('Pay Now',style: TextStyle(color: Colors.white),),
                               style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
                             ),*/
-                          ],
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+                      ),
+                    ],
+                  );
+                } else if (state is CustomerBalanceFetched) {
+                  print(state.toString());
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Card(
+                        elevation: 5,
+                        child: Container(
+                          padding: const EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Wallet Balance',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.account_balance_wallet,
+                                    color: Colors.blue,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 16.0),
+                              Row(mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'AED ${state.c_data.walletBalance}',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  ElevatedButton(onPressed: () {},
+                                    child: Text('TOP UP',style: TextStyle(color: Colors.white),),
+                                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+                      Card(
+                        elevation: 5,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Invoice(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade100,
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Current Outstanding',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.warning,
+                                      color: Colors.red,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 16.0),
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'AED ${state.c_data.oustanding}',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    /*  ElevatedButton(onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Invoice(),
+                                ),
+                              );
+                            },
+                              child: Text('Pay Now',style: TextStyle(color: Colors.white),),
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
+                            ),*/
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  print(state.toString());
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Card(
+                        elevation: 5,
+                        child: Container(
+                          padding: const EdgeInsets.all(16.0),
+                          decoration: BoxDecoration(
+                            color: Colors.blue.shade100,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Wallet Balance',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.account_balance_wallet,
+                                    color: Colors.blue,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 16.0),
+                              Row(mainAxisAlignment:
+                              MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'AED 80',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  ElevatedButton(onPressed: () {},
+                                    child: Text('TOP UP',style: TextStyle(color: Colors.white),),
+                                    style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16.0),
+                      Card(
+                        elevation: 5,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Invoice(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(16.0),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade100,
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Current Outstanding',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.warning,
+                                      color: Colors.red,
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(height: 16.0),
+                                Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'AED 20',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    /*  ElevatedButton(onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Invoice(),
+                                ),
+                              );
+                            },
+                              child: Text('Pay Now',style: TextStyle(color: Colors.white),),
+                              style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.blue[700])),
+                            ),*/
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
           ),
           SizedBox(height: 30),
            Padding(

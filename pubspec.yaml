@@ -47,9 +47,11 @@ dependencies:
   dio:
   syncfusion_flutter_datepicker: 19.4.56
   data_grid: ^0.1.0
+  geolocator: ^10.1.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  permission_handler: ^11.0.1
 
 dev_dependencies:
   flutter_test:
@@ -75,22 +77,23 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - Assets/Images/whatsapp-icon-logo-8CA4FB831E-seeklogo.com.png
-    - Assets/Images/27d3aad990cc42c21cf0a8b756bd9ea6.jpg
-    - Assets/Images/Laundry-Logo-Graphics-1-8-580x386.jpg
-    - Assets/Images/logo.jpg
-    - Assets/Images/bg.png
-    - Assets/Images/half_bg.png
-    - Assets/Images/icon1.png
-    - Assets/Images/icon2.png
-    - Assets/Images/icon3.png
-    - Assets/Images/icon4.png
-    - Assets/Images/icon5.png
-    - Assets/Images/icon6.png
-    - Assets/Images/icon7.png
-    - Assets/Images/icon8.png
-    - Assets/Images/logo.png
-    - Assets/Images/vector_new.png
+    - Assets/Images/
+#    - Assets/Images/whatsapp-icon-logo-8CA4FB831E-seeklogo.com.png
+#    - Assets/Images/27d3aad990cc42c21cf0a8b756bd9ea6.jpg
+#    - Assets/Images/Laundry-Logo-Graphics-1-8-580x386.jpg
+#    - Assets/Images/logo.jpg
+#    - Assets/Images/bg.png
+#    - Assets/Images/half_bg.png
+#    - Assets/Images/icon1.png
+#    - Assets/Images/icon2.png
+#    - Assets/Images/icon3.png
+#    - Assets/Images/icon4.png
+#    - Assets/Images/icon5.png
+#    - Assets/Images/icon6.png
+#    - Assets/Images/icon7.png
+#    - Assets/Images/icon8.png
+#    - Assets/Images/logo.png
+#    - Assets/Images/vector_new.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

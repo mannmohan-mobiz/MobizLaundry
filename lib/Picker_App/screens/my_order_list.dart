@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:integrate_3screens/Picker_App/screens/new_order.dart';
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
 import 'package:intl/intl.dart';
@@ -52,7 +53,7 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                         padding: EdgeInsets.all(smallTextPadding),
                         width: size.width * 0.35,
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => NewOrderScreen()), (route) => false),
                           style: ElevatedButton.styleFrom(
                             primary: pickerPrimaryColor,
                             shape: RoundedRectangleBorder(

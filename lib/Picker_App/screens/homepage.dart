@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:integrate_3screens/Owners/Pages/Add_clients.dart';
+import 'package:integrate_3screens/Picker_App/screens/add_client.dart';
+import 'package:integrate_3screens/Picker_App/screens/deposit.dart';
+import 'package:integrate_3screens/Picker_App/screens/my_client.dart';
+import 'package:integrate_3screens/Picker_App/screens/my_order_list.dart';
 import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
 import 'package:integrate_3screens/Utils/row_shimmer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -118,7 +123,7 @@ class HomePageState extends State<HomePage> {
                           "New Order",
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () {},
+                        onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyOrderScreen()), (route) => false),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: pickerPrimaryColor,
                             fixedSize: Size.fromWidth(130)),
@@ -153,7 +158,7 @@ class HomePageState extends State<HomePage> {
                           "Create Client",
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () {},
+                        onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AddClientScreen()), (route) => false),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: pickerPrimaryColor,
                             fixedSize: Size.fromWidth(130)),
@@ -193,11 +198,12 @@ class HomePageState extends State<HomePage> {
                 )..add(GetDashboardCountEvent(authData.user_token.toString(),
                     authData.user_id.toString())),
                 child: BlocBuilder<PickerBloc, PickerState>(
-                  buildWhen: (previous, current) {
-                    return authData.callCount == 1;
-                  },
+                  // buildWhen: (previous, current) {
+                  //   return authData.callCount == 1;
+                  // },
                   builder: (context, state) {
                     if (state is DashboardCountGettingState) {
+                      print(state.toString());
                       return Column(
                         children: [
                           ShimmerRow(),
@@ -207,6 +213,7 @@ class HomePageState extends State<HomePage> {
                       );
                     } else if (state is DashboardCountGotState) {
                       authData.callCount = 0;
+                      print(state.toString());
                       return Column(
                         children: [
                           Row(
@@ -472,10 +479,10 @@ class HomePageState extends State<HomePage> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  // Navigator.push(context,
-                                  //     MaterialPageRoute(builder:
-                                  //         (context) =>  DepositScreen(),
-                                  //     ));
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder:
+                                          (context) =>  DepositScreen(),
+                                      ));
                                 },
                                 child: Column(
                                   mainAxisAlignment:
@@ -867,6 +874,7 @@ class HomePageState extends State<HomePage> {
                         ],
                       );
                     } else {
+                      print(state.toString());
                       return Column(
                         children: [
                           ShimmerRow(),
@@ -882,7 +890,7 @@ class HomePageState extends State<HomePage> {
             // SizedBox(height: size.height *0.02),
             //   Clients
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyClientScreen(),), (route) => false),
               style: ElevatedButton.styleFrom(
                   backgroundColor: pickerLightGreenColor,
                   elevation: 15.0,
@@ -905,7 +913,7 @@ class HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.bold,
                     fontSize: dashboardHeaderText2),
               ),
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyOrderScreen(),), (route) => false),
             ),
             SizedBox(height: size.height * 0.05),
           ],

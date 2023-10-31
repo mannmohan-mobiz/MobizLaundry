@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:integrate_3screens/Picker_App/screens/homepage.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import '../../../../Picker_App/util/appBar.dart';
+import '../../../../Picker_App/util/bottom_navigation_bar.dart';
+import '../../../../Picker_App/util/drawer.dart';
+import '../../../../Repositories/AuthRepo/auth_repository.dart';
 import '../../chartdataclass.dart';
 
 class OrderStatistics extends StatefulWidget {
@@ -57,22 +62,21 @@ class _OrderStatisticsState extends State<OrderStatistics> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.blue,size: 30),
-        elevation: 0,
-        backgroundColor: CupertinoColors.white,
-        title: Center(child: Text("ORDER STATISTICS",style: TextStyle(color: Colors.blue,fontSize: 18,fontWeight: FontWeight.w500))),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.refresh_outlined,
-              color: Colors.blue,
-              size: 30,
-            ),
-          ),
-        ],
+      appBar: PreferredSize(
+        preferredSize:
+        Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
+        child: Appbar(
+          text: 'Welcome Back ${authData.username!.toUpperCase()}',
+        ),
       ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
+        ),
+        child: BottomDrawer(),
+      ),
+      drawer: const MenuDrawer(),
       body: SingleChildScrollView(
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,

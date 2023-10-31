@@ -1,4 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:integrate_3screens/Models/PickerModel/new_order_save.dart';
+import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
+import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
+import 'package:intl/intl.dart';
 import 'package:integrate_3screens/Picker_App/screens/stock_transfer.dart';
 
 import '../src/colors.dart';
@@ -15,21 +23,23 @@ class NewOrderScreen extends StatefulWidget {
 }
 
 class NewOrderScreenState extends State<NewOrderScreen> {
-  int count = 0;
-  int neworderradio = 0;
-  int availableoffersradio = 0;
-  int containerradio = 0;
-  bool directStaffCheckbox = false;
-  bool contactlessCheckbox = false;
-  bool isTableRowSelected = false;
-  Color color = pickerPrimaryColor;
-  bool showContainer = false;
+  String selectedCustomer = "Select Client";
+  String selectedCustomerId = "";
+  String selectedType = "Select Type";
+  TextEditingController pickup_dt_controller = TextEditingController();
+  TextEditingController pickup_tmt_controller = TextEditingController();
+  TextEditingController del_dt_controller = TextEditingController();
+  TextEditingController del_tm_controller = TextEditingController();
+  List<String> customerData = [];
+  List<String> orderType = ['Select Type','Normal', 'Express', 'Urgent'];
+  String mode_of_action = "save_order";
 
   @override
   Widget build(BuildContext context) {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      
       key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
@@ -39,546 +49,503 @@ class NewOrderScreenState extends State<NewOrderScreen> {
       drawer: const MenuDrawer(),
       body: SingleChildScrollView(
         child: Container(
-          color: Colors.white,
+          width: size.width,
+          padding: EdgeInsets.symmetric(horizontal: 16),
           child: Column(
-            children: [
-
-
-              Container(
-                alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(
-                    top: size.height * 0.01, left: size.width * 0.03),
-                child: ElevatedButton(
-
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: pickerPrimaryColor,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                    onPressed: () {},
-                    child: Text("Create New",style: TextStyle(color: Colors.white),)),
-              ),
-              SizedBox(
-                height: size.height * 0.02,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Spacer(),
-                  Text("Choose Category"),
-                  Spacer(),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.30,
-                    height: MediaQuery.of(context).size.height * 0.035,
-                    decoration: BoxDecoration(
-                        border: Border.all(color: pickerPrimaryColor)),
-                    child: Center(child: Text("Select")),
-                  ),
-                  Spacer(),
-                  Icon(Icons.keyboard_double_arrow_right),
-                  Text("Press & Fold"),
-                  Spacer(),
-                ],
-              ),
-              SizedBox(
-                height: size.height * 0.04,
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  decoration: BoxDecoration(border: Border.all()),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * .10,
-                          width: MediaQuery.of(context).size.width * .22,
-                          child: Image.network(
-                              "https://media.istockphoto.com/id/876424182/photo/classic-mens-shirts-stacked-on-white-background.jpg?s=612x612&w=0&k=20&c=oNZHUUeVply_VbGFsOMq8SRnjlT7nKHYaCxtRFF_kbc=",
-                              fit: BoxFit.fill),
-                        ),
-                      ),
-                      Text("Shirts"),
-                      Container(
-                        margin: EdgeInsets.only(right: size.width * 0.05),
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)),
-                        child: Center(child: Text("2")),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  decoration: BoxDecoration(border: Border.all()),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * .10,
-                          width: MediaQuery.of(context).size.width * .22,
-                          child: Image.network(
-                              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2tlgZdrKLNeLPlbP0zl02dReKBTrW0E7-Qub2fVC-&s",
-                              fit: BoxFit.fill),
-                        ),
-                      ),
-                      Text("Pants"),
-                      Container(
-                        margin: EdgeInsets.only(right: size.width * 0.05),
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)),
-                        child: Center(child: Text("2")),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height * 0.15,
-                  decoration: BoxDecoration(border: Border.all()),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: MediaQuery.of(context).size.height * .10,
-                          width: MediaQuery.of(context).size.width * .22,
-                          child: Image.network(
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSICdcjySxvv87gkppr_k6NlpvFob5rHlJVcEdg6IAOwg&s",
-                            fit: BoxFit.fill,
-                          ),
-                        ),
-                      ),
-                      Text("Others"),
-                      Container(
-                        margin: EdgeInsets.only(right: size.width * 0.05),
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: MediaQuery.of(context).size.height * 0.05,
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black)),
-                        child: Center(child: Text("2")),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: size.height * 0.02,
-              ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: pickerPrimaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onPressed: () {
-                  setState(() {
-                    showContainer = !showContainer;
-                  });
-                },
-                child: Text(
-                  "Add",
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              Visibility(
-                visible: showContainer,
-                child: Column(
+              children: [
+                if (mode_of_action == "save_order")
+                  Column(
                   children: [
-                    SizedBox(
-                      height: size.height * 0.02,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                              alignment: Alignment.centerRight,
+                              // margin: EdgeInsets.only(left: size.width * 0.03,right: size.width * 0.03),
+                              width: size.width * 0.3,
+                              height: size.height * 0.06,
+                              decoration: ShapeDecoration(
+                                  color: Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(15),
+                                      side: BorderSide(
+                                          width: 1.5,
+                                          color: pickerPrimaryColor))),
+                              child: Container(
+                                // margin: EdgeInsets.only(top: size.height * 0.015),
+                                alignment: Alignment.center,
+                                child: TextField(
+                                    controller:
+                                    pickup_dt_controller, //editing controller of this TextField
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        icon: Icon(Icons
+                                            .calendar_today), //icon of text field
+                                        hintText:
+                                        "Pickup Date" //label text of field
+                                    ),
+                                    readOnly:
+                                    true, // when true user cannot edit text
+                                    onTap: () async {
+                                      DateTime? pickedDate =
+                                      await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime
+                                              .now(), //get today's date
+                                          firstDate: DateTime(
+                                              2000), //DateTime.now() - not to allow to choose before today.
+                                          lastDate: DateTime(2101));
+                                      if (pickedDate != null) {
+                                        print(
+                                            pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                                        String formattedDate =
+                                        DateFormat('yyyy-MM-dd').format(
+                                            pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                        print(
+                                            formattedDate); //formatted date output using intl package =>  2022-07-04
+                                        //You can format date as per your need
+
+                                        setState(() {
+                                          pickup_dt_controller.text =
+                                              formattedDate; //set foratted date to TextField value.
+                                        });
+                                      } else {
+                                        print("Date is not selected");
+                                      }
+                                    }),
+                              )),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Container(
+                              alignment: Alignment.center,
+                              // margin: EdgeInsets.only(left: size.width * 0.03,right: size.width * 0.03),
+                              width: size.width * 0.3,
+                              height: size.height * 0.06,
+                              decoration: ShapeDecoration(
+                                  color: Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(15),
+                                      side: BorderSide(
+                                          width: 1.5,
+                                          color: pickerPrimaryColor))),
+                              child: Container(
+                                // margin: EdgeInsets.only(top: size.height * 0.015),
+                                child: TextField(
+                                    controller:
+                                    pickup_tmt_controller, //editing controller of this TextField
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        suffixIcon: Icon(Icons
+                                            .timer_outlined), //icon of text field
+                                        hintText:
+                                        "Pickup Time" //label text of field
+                                    ),
+                                    readOnly:
+                                    true, // when true user cannot edit text
+                                    onTap: () async {
+                                      final TimeOfDay? newTime = await showTimePicker(
+                                        context: context,
+                                        initialTime: TimeOfDay.now(),
+                                        initialEntryMode: TimePickerEntryMode.input,
+                                      );
+                                      String time24Hours = newTime!.hour.toString() + ':'+newTime.minute.toString();
+                                      final DateFormat parser = DateFormat.Hm();
+                                      final DateFormat formatter = DateFormat.jm();
+                                      pickup_tmt_controller.text = formatter.format(parser.parse(time24Hours));
+                                    }
+                                ),
+                              )),
+                        ),
+                      ],
                     ),
-                    Icon(Icons.keyboard_double_arrow_down),
-                    SizedBox(
-                      height: size.height * 0.02,
+                    SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Container(
+                              alignment: Alignment.centerRight,
+                              // margin: EdgeInsets.only(left: size.width * 0.03,right: size.width * 0.03),
+                              width: size.width * 0.3,
+                              height: size.height * 0.06,
+                              decoration: ShapeDecoration(
+                                  color: Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(15),
+                                      side: BorderSide(
+                                          width: 1.5,
+                                          color: pickerPrimaryColor))),
+                              child: Container(
+                                // margin: EdgeInsets.only(top: size.height * 0.015),
+                                alignment: Alignment.center,
+                                child: TextField(
+                                    controller:
+                                    del_dt_controller, //editing controller of this TextField
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        icon: Icon(Icons
+                                            .calendar_today), //icon of text field
+                                        hintText:
+                                        "Delivery Date" //label text of field
+                                    ),
+                                    readOnly:
+                                    true, // when true user cannot edit text
+                                    onTap: () async {
+                                      DateTime? pickedDate =
+                                      await showDatePicker(
+                                          context: context,
+                                          initialDate: DateTime
+                                              .now(), //get today's date
+                                          firstDate: DateTime(
+                                              2000), //DateTime.now() - not to allow to choose before today.
+                                          lastDate: DateTime(2101));
+                                      if (pickedDate != null) {
+                                        print(
+                                            pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                                        String formattedDate =
+                                        DateFormat('yyyy-MM-dd').format(
+                                            pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                        print(
+                                            formattedDate); //formatted date output using intl package =>  2022-07-04
+                                        //You can format date as per your need
+
+                                        setState(() {
+                                          del_dt_controller.text =
+                                              formattedDate; //set foratted date to TextField value.
+                                        });
+                                      } else {
+                                        print("Date is not selected");
+                                      }
+                                    }),
+                              )),
+                        ),
+                        SizedBox(width: 12),
+                        Expanded(
+                          child: Container(
+                              alignment: Alignment.center,
+                              // margin: EdgeInsets.only(left: size.width * 0.03,right: size.width * 0.03),
+                              width: size.width * 0.3,
+                              height: size.height * 0.06,
+                              decoration: ShapeDecoration(
+                                  color: Colors.transparent,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(15),
+                                      side: BorderSide(
+                                          width: 1.5,
+                                          color: pickerPrimaryColor))),
+                              child: Container(
+                                // margin: EdgeInsets.only(top: size.height * 0.015),
+                                child: TextField(
+                                    controller:
+                                    del_tm_controller, //editing controller of this TextField
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        suffixIcon: Icon(Icons
+                                            .timer_outlined), //icon of text field
+                                        hintText:
+                                        "Delivery Time" //label text of field
+                                    ),
+                                    readOnly:
+                                    true, // when true user cannot edit text
+                                    onTap: () async {
+                                      final TimeOfDay? newTime = await showTimePicker(
+                                        context: context,
+                                        initialTime: TimeOfDay.now(),
+                                        initialEntryMode: TimePickerEntryMode.input,
+                                      );
+                                      String time24Hours = newTime!.hour.toString() + ':'+newTime.minute.toString();
+                                      final DateFormat parser = DateFormat.Hm();
+                                      final DateFormat formatter = DateFormat.jm();
+                                      del_tm_controller.text = formatter.format(parser.parse(time24Hours));
+                                    }
+                                ),
+                              )),
+                        ),
+                      ],
                     ),
-                    Text(
-                      "Cart",
-                      style: TextStyle(fontSize: 30, color: Colors.deepPurple),
-                    ),
-                    SizedBox(
-                      height: size.height * 0.02,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 50, top: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.2,
-                            width: MediaQuery.of(context).size.width /
-                                1.2, // Increased width
-                            child: ListView.builder(
-                              itemCount: 1,
-                              padding: EdgeInsets.zero,
-                              scrollDirection: Axis.horizontal,
-                              physics: const ClampingScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    SizedBox(
-                                      height: 40,
-                                      width: MediaQuery.of(context).size.width /
-                                          1.2, // Increased width
-                                      child: Row(
-                                        children: [
-                                          Expanded(
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.deepPurple),
-                                              ),
-                                              child: Text(
-                                                " Sl No",
-                                                style: TextStyle(
-                                                  color: Colors.deepPurple,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.deepPurple),
-                                              ),
-                                              child: Text(
-                                                "Category",
-                                                style: TextStyle(
-                                                  color: Colors.deepPurple,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.deepPurple),
-                                              ),
-                                              child: Text(
-                                                "No of Items",
-                                                style: TextStyle(
-                                                  color: Colors.deepPurple,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.deepPurple),
-                                              ),
-                                              child: Text(
-                                                "Rate",
-                                                style: TextStyle(
-                                                  color: Colors.deepPurple,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Expanded(
-                                            child: Container(
-                                              alignment: Alignment.center,
-                                              child: Text(
-                                                "",
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                    SizedBox(height: 8),
+                    BlocProvider(
+                      create: (context) => PickerBloc(
+                        RepositoryProvider.of<PickerRepository>(context),
+                      )..add(ListAllClientsEvent(authData.user_id.toString(), authData.user_token.toString())),
+                      child: BlocBuilder<PickerBloc, PickerState>(
+                        builder: (context, state) {
+                          if (state is FetchingClientList) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
                                       ),
                                     ),
-                                    Container(
-                                      height:
-                                          MediaQuery.of(context).size.height *
-                                              0.13,
-                                      width: MediaQuery.of(context).size.width /
-                                          1.2, // Increased width
-                                      child: ListView.builder(
-                                        padding: EdgeInsets.zero,
-                                        physics: const ClampingScrollPhysics(),
-                                        itemCount: 2,
-                                        itemBuilder: (BuildContext context,
-                                            int rowIndex) {
-                                          return SizedBox(
-                                            height: 40,
-                                            width: MediaQuery.of(context)
-                                                .size
-                                                .width,
-                                            child: ListView.builder(
-                                              itemCount: 1,
-                                              scrollDirection: Axis.horizontal,
-                                              itemBuilder: (context, index) {
-                                                return Container(
-                                                  height: 40,
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      1.2,
-                                                  // Increased width
-                                                  child: Row(
-                                                    children: [
-                                                      Expanded(
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .deepPurple),
-                                                          ),
-                                                          child: Text(
-                                                            "",
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .deepPurple),
-                                                          ),
-                                                          child: Text(
-                                                            "",
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .deepPurple),
-                                                          ),
-                                                          child: Text(
-                                                            "",
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            border: Border.all(
-                                                                color: Colors
-                                                                    .deepPurple),
-                                                          ),
-                                                          child: Text(
-                                                            "",
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Expanded(
-                                                        child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Row(
-                                                            children: [
-                                                              Container(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(2),
-                                                                margin: EdgeInsets.only(
-                                                                    left: size
-                                                                            .width *
-                                                                        0.01),
-                                                                decoration:
-                                                                    new BoxDecoration(
-                                                                  color:
-                                                                      pickerPrimaryColor,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                child: Icon(
-                                                                  Icons.edit,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 20,
-                                                                ),
-                                                              ),
-                                                              Container(
-                                                                padding:
-                                                                    EdgeInsets
-                                                                        .all(2),
-                                                                margin: EdgeInsets.only(
-                                                                    left: size
-                                                                            .width *
-                                                                        0.01),
-                                                                decoration:
-                                                                    new BoxDecoration(
-                                                                  color:
-                                                                      pickerPrimaryColor,
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                ),
-                                                                child: Icon(
-                                                                  Icons.delete,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 20,
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                          );
-                                        },
+                                    items: customerData.map((customer) {
+                                      return DropdownMenuItem(
+                                        value: customer,
+                                        child: Center(child: Text(customer)),
+                                      );
+                                    }).toList(),
+                                    value: selectedCustomer,
+                                    onChanged: (value) {},
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                Expanded(
+                                  child: DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
                                       ),
                                     ),
-                                  ],
-                                );
-                              },
-                            ),
-                          ),
-                        ],
+                                    items: orderType.map((type) {
+                                      return DropdownMenuItem(
+                                        value: type,
+                                        child: Center(child: Text(type)),
+                                      );
+                                    }).toList(),
+                                    value: selectedType,
+                                    onChanged: (value) {},
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else if(state is FetchedClientList) {
+                            if (customerData.isEmpty) {
+                              customerData.add('Select Client');
+                              state.customerList.forEach((cl) {
+                                customerData.add(cl.name);
+                              });
+                            }
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                    ),
+                                    items: customerData.map((customer) {
+                                      return DropdownMenuItem(
+                                        value: customer,
+                                        child: Center(child: Text(customer)),
+                                      );
+                                    }).toList(),
+                                    value: selectedCustomer,
+                                    onChanged: (value) {
+                                      selectedCustomer = value!;
+                                      state.customerList.forEach((cList) {
+                                        if (value == cList.name) {
+                                          selectedCustomerId = cList.customerId;
+                                        }
+                                      });
+                                    },
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                Expanded(
+                                  child: DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                    ),
+                                    items: orderType.map((type) {
+                                      return DropdownMenuItem(
+                                        value: type,
+                                        child: Center(child: Text(type)),
+                                      );
+                                    }).toList(),
+                                    value: selectedType,
+                                    onChanged: (value) {
+                                      selectedType = value!;
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                    ),
+                                    items: customerData.map((customer) {
+                                      return DropdownMenuItem(
+                                        value: customer,
+                                        child: Center(child: Text(customer)),
+                                      );
+                                    }).toList(),
+                                    value: selectedCustomer,
+                                    onChanged: (value) {},
+                                  ),
+                                ),
+                                SizedBox(width: 12),
+                                Expanded(
+                                  child: DropdownButtonFormField(
+                                    decoration: InputDecoration(
+                                      border: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(15),
+                                        borderSide: BorderSide(
+                                            color: pickerPrimaryColor,
+                                            width: 1.5),
+                                      ),
+                                    ),
+                                    items: orderType.map((type) {
+                                      return DropdownMenuItem(
+                                        value: type,
+                                        child: Center(child: Text(type)),
+                                      );
+                                    }).toList(),
+                                    value: selectedType,
+                                    onChanged: (value) {},
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        },
                       ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("Mode of Delivery"),
-                        Checkbox(
-                          activeColor: Colors.lightBlue,
-                          value: directStaffCheckbox,
-                          onChanged: (value) {
-                            setState(() {
-                              directStaffCheckbox = value!;
-                            });
-                          },
-                        ),
-                        Text('Normal 5'),
-                        SizedBox(width: 10),
-                        Checkbox(
-                          activeColor: Colors.lightBlue,
-                          value: contactlessCheckbox,
-                          onChanged: (value) {
-                            setState(() {
-                              contactlessCheckbox = value!;
-                            });
-                          },
-                        ),
-                        Text('Express 10'),
-                      ],
-                    ),
-                    SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text("To be Delivered on"),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.05,
-                          width: MediaQuery.of(context).size.width * 0.3,
-
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.deepPurple)),
-                          // Add your desired content for the container here
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(" Time"),
-                        SizedBox(
-                          width: 90,
-                        ),
-                        Container(
-                          height: MediaQuery.of(context).size.height * 0.05,
-                          width: MediaQuery.of(context).size.width * 0.3,
-
-                          decoration: BoxDecoration(
-                              border: Border.all(color: Colors.deepPurple)),
-                          // Add your desired content for the container here
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 40,
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        onPressed: () {
-
-                          Navigator.push(context,
-                              MaterialPageRoute(builder:
-                                  (context) =>  StockTransferScreen(),
-                              ));
-                        },
-                        child: Text("Save"))
                   ],
                 ),
-              ),
-            ],
+                
+                ElevatedButton(
+                  onPressed: () {
+                    Map<String, String> data = {
+                      "id":authData.user_id.toString(),
+                      "customer_id":selectedCustomerId,
+                      "pickup_date":pickup_dt_controller.text,
+                      "pickup_time":pickup_tmt_controller.text,
+                      "order_type":selectedType,
+                      "Delivery_date":del_dt_controller.text,
+                      "Delivery_time":del_tm_controller.text
+                    };
+                    print(jsonEncode(data));
+                    BlocProvider.of<PickerBloc>(context).add(AddNewOrderEvent(data, authData.user_token.toString()));
+                  },
+                  child: Text("Save"),
+                )
+              ],
           ),
         ),
       ),
@@ -591,4 +558,5 @@ class NewOrderScreenState extends State<NewOrderScreen> {
       ),
     );
   }
+
 }

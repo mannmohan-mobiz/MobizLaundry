@@ -7,12 +7,16 @@ import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 import 'package:integrate_3screens/Utils/common.dart';
 import 'package:dio/dio.dart';
 
+import '../../Models/PickerModel/add_customer_model.dart';
+import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/deposit_history_model.dart';
 import '../../Models/PickerModel/deposit_model.dart';
 import '../../Models/PickerModel/expense_add_model.dart';
 import '../../Models/PickerModel/expense_drop_down_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
+import '../../Models/PickerModel/location_price_model.dart';
+import '../../Models/PickerModel/new_order_save.dart';
 import '../../Models/PickerModel/order_details_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/outstanding_model.dart';
@@ -370,6 +374,125 @@ class PickerRepository {
       print(response.data);
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerPunchInOutModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Location Price Group GET
+  Future<LocationPriceGroupModel> getLPGData({required String token}) async {
+    Dio dio = Dio();
+    Options options = Options(
+      headers: {
+        'Authorization': 'Basic $token'
+      }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.get(
+        baseUrl+'picker/picker_add_customer_api',
+        options: options
+      );
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = LocationPriceGroupModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Add Customer
+  Future<AddCustomerModel> addNewClient({required Map<String, String> body, required String token}) async {
+    Dio dio = Dio();
+    Map<String, String> data = body;
+    Options options = Options(
+      headers: {
+        'Authorization': 'Basic $token'
+      }
+    );
+
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/picker_add_customer_api',
+        data: data,
+        options: options
+      );
+      print("============================");
+      print(response.data);
+      print("============================");
+      if (response.statusCode ==200 || response.statusCode == 201) {
+        var result = AddCustomerModel.fromJson(response.data);
+        authData.setResponse(jsonDecode(response.data)['message']);
+        return result;
+      } else {
+        authData.setResponse(jsonDecode(response.data)['message']);
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // List Customer
+  Future<PickerCustomerListModel> listMyClients({required String token, required String id}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      'id': id
+    };
+    Options options = Options(
+      headers: {
+        'Authorization': 'Basic $token'
+      }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/customer_list_api',
+        data: data,
+        options: options
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerCustomerListModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Save New Order
+  Future<PickerNewOrderSaveModel> saveNewOrder({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+      headers: {
+        'Authorization': 'Basic $token'
+      }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/picker_add_new_order_api',
+        data: body,
+        options: options,
+      );
+
+      print("***************************");
+      print(response.data);
+      print("***************************");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerNewOrderSaveModel.fromJson(response.data);
         return result;
       } else {
         return response.data;

@@ -341,3 +341,104 @@ class PickerPunchingErrorState extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************[Picker Punch In]***********************/
+
+/***********************[Location Price Group]***********************/
+class LocationPriceFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class LocationPriceFetched extends PickerState {
+  final List<LocationList> loc_data;
+  final List<PriceGroupList> prc_data;
+
+  LocationPriceFetched(this.loc_data, this.prc_data);
+
+  @override
+  List<Object?> get props => [loc_data, prc_data];
+}
+
+class LocationPriceError extends PickerState {
+  final String message;
+
+  LocationPriceError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Location Price Group]***********************/
+
+/***********************[Add New Client]***********************/
+class AddingNewclient extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class AddedNewClient extends PickerState {
+  final String message;
+
+  AddedNewClient(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class AddNewClientError extends PickerState {
+  final String message;
+
+  AddNewClientError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Add New Client]***********************/
+
+/***********************[List my Client]***********************/
+class FetchingClientList extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class FetchedClientList extends PickerState {
+  List<CustomerListData> customerList = [];
+
+  FetchedClientList(this.customerList);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => throw UnimplementedError();
+}
+
+class FetchClientListError extends PickerState {
+  final String message;
+
+  FetchClientListError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[List my Client]***********************/
+
+/***********************[Add New Order]***********************/
+class AddingNewOrderState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class AddedNewOrderState extends PickerState {
+  var data;
+  AddedNewOrderState(this.data);
+
+  @override
+  List<Object?> get props => [data];
+}
+
+class AddNewOrderErrorState extends PickerState {
+  final String message;
+
+  AddNewOrderErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Add New Order]***********************/

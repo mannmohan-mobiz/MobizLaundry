@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrate_3screens/BLoCs/AuthBloc/auth_bloc.dart';
+import 'package:integrate_3screens/BLoCs/CustomerBloc/customer_bloc.dart';
 import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
+import 'package:integrate_3screens/Repositories/CustomerRepo/customer_repository.dart';
 import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
 
 import 'Loginscreen.dart';
@@ -25,16 +27,19 @@ import 'Picker_App/screens/ready_dispatch.dart';
 void main() {
   final authRepository = AuthRepository();
   final pickerRepository = PickerRepository();
+  final customerRepository = CustomerRepository();
   runApp(
     MultiRepositoryProvider(
       providers: [
         RepositoryProvider<AuthRepository>(create: (context) =>authRepository),
         RepositoryProvider<PickerRepository>(create: (context) =>pickerRepository),
+        RepositoryProvider<CustomerRepository>(create: (context) =>customerRepository),
       ],
       child: MultiBlocProvider(
         providers: [
           BlocProvider<AuthBloc>(create: (context) => AuthBloc(authRepository)),
           BlocProvider<PickerBloc>(create: (context) => PickerBloc(pickerRepository)),
+          BlocProvider<CustomerBloc>(create: (context) => CustomerBloc(customerRepository)),
         ],
         child: const MyApp(),
       ),
