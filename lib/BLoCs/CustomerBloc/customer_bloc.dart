@@ -46,7 +46,7 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
       emit(SubCategoryGettingState());
       try {
         await customerRepository.getSubCat(cat_id: event.cat_id, token: event.token).then((value) {
-          if (value.status == true && value.message == "Branch Categories List!") {
+          if (value.status == true && value.message == "Branch Sub Categories List!") {
             emit(SubCategoryGotState(value.data));
           } else {
             emit(SubCategoryErrorState(value.message));
