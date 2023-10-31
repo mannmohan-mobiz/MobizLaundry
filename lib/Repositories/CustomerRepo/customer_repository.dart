@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:integrate_3screens/Utils/common.dart';
 
 import '../../Models/CustomerModel/category_model.dart';
+import '../../Models/CustomerModel/item_model.dart';
 import '../../Models/CustomerModel/sub_category_model.dart';
 import '../../Models/CustomerModel/wallet_outstanding_model.dart';
 
@@ -96,6 +97,36 @@ class CustomerRepository {
         return response.data;
       }
     } catch(e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // get items
+  Future<CustomerItemModel> getItems ({required String token, required Map<String, String> body}) async {
+    print(body);
+    Options options = Options(
+      headers: {
+        'Authorization': 'Basic $token'
+      }
+    );
+
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'customer/new_order_item_details_api',
+        data: body,
+        options: options,
+      );
+
+      print('REP : ${response.data}');
+
+      if (response.statusCode == 200) {
+        var result = CustomerItemModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
       throw Exception(e.toString());
     }
   }

@@ -6,6 +6,7 @@ import 'package:integrate_3screens/Models/CustomerModel/category_model.dart';
 import 'package:integrate_3screens/Models/CustomerModel/sub_category_model.dart';
 import 'package:integrate_3screens/Models/CustomerModel/wallet_outstanding_model.dart';
 
+import '../../Models/CustomerModel/item_model.dart';
 import '../../Repositories/CustomerRepo/customer_repository.dart';
 
 part 'customer_event.dart';
@@ -54,6 +55,20 @@ class CustomerBloc extends Bloc<CustomerEvent, CustomerState> {
         });
       } catch (e) {
         emit(SubCategoryErrorState(e.toString()));
+      }
+    });
+    on<GetItemEvent>((event, emit) async {
+      emit(ItemGettingState());
+      try {
+        await customerRepository.getItems(token: event.token, body: event.body).then((value) {
+          if (value.status == true && value.message == "Branch Sub Categories List!") {
+            emit(ItemGotState(value.data));
+          } else {
+            emit(ItemErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(ItemErrorState(e.toString()));
       }
     });
   }

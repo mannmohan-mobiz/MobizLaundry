@@ -34,3 +34,13 @@ class GetSubCategoryEvent extends CustomerEvent {
   @override
   List<Object> get props => [token, cat_id]  ;
 }
+
+class GetItemEvent extends CustomerEvent {
+  final String token;
+  final Map<String, String> body;
+
+  GetItemEvent(this.token, this.body);
+
+  @override
+  List<Object?> get props => [token, body];
+}

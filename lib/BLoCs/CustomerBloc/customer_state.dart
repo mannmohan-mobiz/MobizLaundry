@@ -75,3 +75,25 @@ class SubCategoryErrorState extends CustomerState {
   @override
   List<Object?> get props => [message];
 }
+
+class ItemGettingState extends CustomerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ItemGotState extends CustomerState {
+  List<List<ItemList>> itemData = [];
+  ItemGotState(this.itemData);
+  @override
+  List<Object?> get props => [itemData];
+}
+
+class ItemErrorState extends CustomerState {
+  final String message;
+
+  ItemErrorState(this.message);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [message];
+}
