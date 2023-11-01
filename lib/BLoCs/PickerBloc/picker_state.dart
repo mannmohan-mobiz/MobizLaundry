@@ -426,11 +426,11 @@ class AddingNewOrderState extends PickerState {
 }
 
 class AddedNewOrderState extends PickerState {
- OrderData data;
-  AddedNewOrderState(this.data);
+ final String ord_id;
+  AddedNewOrderState(this.ord_id);
 
   @override
-  List<Object?> get props => [data];
+  List<Object?> get props => [ord_id];
 }
 
 class AddNewOrderErrorState extends PickerState {
@@ -442,3 +442,28 @@ class AddNewOrderErrorState extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************[Add New Order]***********************/
+
+/***********************[Get Category]***********************/
+class PckCategoryGettingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckCategoryGotState extends PickerState {
+  List<PCatList> cList = [];
+
+  PckCategoryGotState(this.cList);
+  
+  @override
+  List<Object?> get props => [cList];
+}
+
+class PckCategoryErrorState extends PickerState {
+  final String message;
+
+  PckCategoryErrorState(this.message);
+  
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Category]***********************/

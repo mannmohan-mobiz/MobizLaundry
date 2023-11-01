@@ -174,3 +174,14 @@ class AddNewOrderEvent extends PickerEvent {
   @override
   List<Object?> get props => [body, token];
 }
+
+// Get Category
+class GetPickCategoryEvent extends PickerEvent{
+  final String token;
+  final String id;
+
+  GetPickCategoryEvent(this.token, this.id);
+  
+  @override
+  List<Object?> get props => [token, id];
+}

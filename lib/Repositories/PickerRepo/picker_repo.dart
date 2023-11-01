@@ -20,6 +20,7 @@ import '../../Models/PickerModel/new_order_save.dart';
 import '../../Models/PickerModel/order_details_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/outstanding_model.dart';
+import '../../Models/PickerModel/picker_category_model.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
 
 class PickerRepository {
@@ -493,6 +494,38 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerNewOrderSaveModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Get Categories
+  Future<PickerCategoryModel> getCategory({required String token, required String id}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      'id':id
+    };
+    Options options = Options(
+      headers: {
+        'Authorization': 'Basic $token'
+      }
+    );
+    
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/new_order_branch_categories_api',
+        data: data,
+        options: options
+      );
+
+      print("RES: ${response.data}");
+      if(response.statusCode == 200) {
+        var result = PickerCategoryModel.fromJson(response.data);
         return result;
       } else {
         return response.data;

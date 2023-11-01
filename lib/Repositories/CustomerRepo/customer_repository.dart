@@ -60,6 +60,7 @@ class CustomerRepository {
         data: data,
         options: options
       );
+      print(response.data);
       if (response.statusCode == 200) {
         var result = CustomerCategoryModel.fromJson(response.data);
         return result;

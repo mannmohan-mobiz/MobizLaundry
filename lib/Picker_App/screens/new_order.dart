@@ -2,10 +2,13 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:integrate_3screens/BLoCs/CustomerBloc/customer_bloc.dart';
 import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
 import 'package:integrate_3screens/Models/PickerModel/new_order_save.dart';
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
+import 'package:integrate_3screens/Repositories/CustomerRepo/customer_repository.dart';
 import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
+import 'package:integrate_3screens/Utils/common.dart';
 import 'package:intl/intl.dart';
 import 'package:integrate_3screens/Picker_App/screens/stock_transfer.dart';
 
@@ -31,8 +34,8 @@ class NewOrderScreenState extends State<NewOrderScreen> {
   TextEditingController del_dt_controller = TextEditingController();
   TextEditingController del_tm_controller = TextEditingController();
   List<String> customerData = [];
-  List<OrderData> new_orders = [];
-  List<String> orderType = ['Select Type','Normal', 'Express', 'Urgent'];
+  String new_order_id = "";
+  List<String> orderType = ['Select Type', 'Normal', 'Express', 'Urgent'];
   String mode_of_action = "save_order";
 
   @override
@@ -40,27 +43,29 @@ class NewOrderScreenState extends State<NewOrderScreen> {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      
       key: _scaffoldKey,
       appBar: PreferredSize(
         preferredSize:
             Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
-        child: Appbar(text: 'New Order',),
+        child: Appbar(
+          text: 'New Order',
+        ),
       ),
       drawer: const MenuDrawer(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Map<String, String> data = {
-            "id":authData.user_id.toString(),
-            "customer_id":selectedCustomerId,
-            "pickup_date":pickup_dt_controller.text,
-            "pickup_time":pickup_tmt_controller.text,
-            "order_type":selectedType,
-            "Delivery_date":del_dt_controller.text,
-            "Delivery_time":del_tm_controller.text
+            "id": authData.user_id.toString(),
+            "customer_id": selectedCustomerId,
+            "pickup_date": pickup_dt_controller.text,
+            "pickup_time": pickup_tmt_controller.text,
+            "order_type": selectedType,
+            "Delivery_date": del_dt_controller.text,
+            "Delivery_time": del_tm_controller.text
           };
           print(jsonEncode(data));
-          BlocProvider.of<PickerBloc>(context).add(AddNewOrderEvent(data, authData.user_token.toString()));
+          BlocProvider.of<PickerBloc>(context)
+              .add(AddNewOrderEvent(data, authData.user_token.toString()));
         },
         child: Text("Save"),
       ),
@@ -69,9 +74,9 @@ class NewOrderScreenState extends State<NewOrderScreen> {
           width: size.width,
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Column(
-              children: [
-                if (mode_of_action == "save_order")
-                  Column(
+            children: [
+              if (mode_of_action == "save_order")
+                Column(
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -85,8 +90,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                               decoration: ShapeDecoration(
                                   color: Colors.transparent,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(15),
                                       side: BorderSide(
                                           width: 1.5,
                                           color: pickerPrimaryColor))),
@@ -95,31 +99,31 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                 alignment: Alignment.center,
                                 child: TextField(
                                     controller:
-                                    pickup_dt_controller, //editing controller of this TextField
+                                        pickup_dt_controller, //editing controller of this TextField
                                     decoration: const InputDecoration(
                                         border: InputBorder.none,
                                         icon: Icon(Icons
                                             .calendar_today), //icon of text field
                                         hintText:
-                                        "Pickup Date" //label text of field
-                                    ),
+                                            "Pickup Date" //label text of field
+                                        ),
                                     readOnly:
-                                    true, // when true user cannot edit text
+                                        true, // when true user cannot edit text
                                     onTap: () async {
                                       DateTime? pickedDate =
-                                      await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime
-                                              .now(), //get today's date
-                                          firstDate: DateTime(
-                                              2000), //DateTime.now() - not to allow to choose before today.
-                                          lastDate: DateTime(2101));
+                                          await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime
+                                                  .now(), //get today's date
+                                              firstDate: DateTime(
+                                                  2000), //DateTime.now() - not to allow to choose before today.
+                                              lastDate: DateTime(2101));
                                       if (pickedDate != null) {
                                         print(
                                             pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
                                         String formattedDate =
-                                        DateFormat('yyyy-MM-dd').format(
-                                            pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                            DateFormat('yyyy-MM-dd').format(
+                                                pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
                                         print(
                                             formattedDate); //formatted date output using intl package =>  2022-07-04
                                         //You can format date as per your need
@@ -144,8 +148,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                               decoration: ShapeDecoration(
                                   color: Colors.transparent,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(15),
                                       side: BorderSide(
                                           width: 1.5,
                                           color: pickerPrimaryColor))),
@@ -153,30 +156,39 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                 // margin: EdgeInsets.only(top: size.height * 0.015),
                                 child: TextField(
                                     controller:
-                                    pickup_tmt_controller, //editing controller of this TextField
+                                        pickup_tmt_controller, //editing controller of this TextField
                                     decoration: const InputDecoration(
                                         border: InputBorder.none,
                                         suffixIcon: Icon(Icons
                                             .timer_outlined), //icon of text field
                                         hintText:
-                                        "Pickup Time" //label text of field
-                                    ),
+                                            "Pickup Time" //label text of field
+                                        ),
                                     readOnly:
-                                    true, // when true user cannot edit text
+                                        true, // when true user cannot edit text
                                     onTap: () async {
-                                      final TimeOfDay? newTime = await showTimePicker(
+                                      final TimeOfDay? newTime =
+                                          await showTimePicker(
                                         context: context,
                                         initialTime: TimeOfDay.now(),
-                                        initialEntryMode: TimePickerEntryMode.input,
+                                        initialEntryMode:
+                                            TimePickerEntryMode.input,
                                       );
-                                      String time24Hours = newTime!.hour.toString() + ':'+newTime.minute.toString();
-                                      final DateFormat inputFormat = DateFormat.Hm(); // Input format for 24-hour time
-                                      final DateFormat outputFormat = DateFormat.Hms();
-                                      final DateTime dateTime = inputFormat.parse(time24Hours);
-                                      final String formattedTime = outputFormat.format(dateTime);
-                                      pickup_tmt_controller.text = formattedTime;
-                                    }
-                                ),
+                                      String time24Hours =
+                                          newTime!.hour.toString() +
+                                              ':' +
+                                              newTime.minute.toString();
+                                      final DateFormat inputFormat = DateFormat
+                                          .Hm(); // Input format for 24-hour time
+                                      final DateFormat outputFormat =
+                                          DateFormat.Hms();
+                                      final DateTime dateTime =
+                                          inputFormat.parse(time24Hours);
+                                      final String formattedTime =
+                                          outputFormat.format(dateTime);
+                                      pickup_tmt_controller.text =
+                                          formattedTime;
+                                    }),
                               )),
                         ),
                       ],
@@ -194,8 +206,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                               decoration: ShapeDecoration(
                                   color: Colors.transparent,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(15),
                                       side: BorderSide(
                                           width: 1.5,
                                           color: pickerPrimaryColor))),
@@ -204,31 +215,31 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                 alignment: Alignment.center,
                                 child: TextField(
                                     controller:
-                                    del_dt_controller, //editing controller of this TextField
+                                        del_dt_controller, //editing controller of this TextField
                                     decoration: const InputDecoration(
                                         border: InputBorder.none,
                                         icon: Icon(Icons
                                             .calendar_today), //icon of text field
                                         hintText:
-                                        "Delivery Date" //label text of field
-                                    ),
+                                            "Delivery Date" //label text of field
+                                        ),
                                     readOnly:
-                                    true, // when true user cannot edit text
+                                        true, // when true user cannot edit text
                                     onTap: () async {
                                       DateTime? pickedDate =
-                                      await showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime
-                                              .now(), //get today's date
-                                          firstDate: DateTime(
-                                              2000), //DateTime.now() - not to allow to choose before today.
-                                          lastDate: DateTime(2101));
+                                          await showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime
+                                                  .now(), //get today's date
+                                              firstDate: DateTime(
+                                                  2000), //DateTime.now() - not to allow to choose before today.
+                                              lastDate: DateTime(2101));
                                       if (pickedDate != null) {
                                         print(
                                             pickedDate); //get the picked date in the format => 2022-07-04 00:00:00.000
                                         String formattedDate =
-                                        DateFormat('yyyy-MM-dd').format(
-                                            pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                                            DateFormat('yyyy-MM-dd').format(
+                                                pickedDate); // format date in required form here we use yyyy-MM-dd that means time is removed
                                         print(
                                             formattedDate); //formatted date output using intl package =>  2022-07-04
                                         //You can format date as per your need
@@ -253,8 +264,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                               decoration: ShapeDecoration(
                                   color: Colors.transparent,
                                   shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                      BorderRadius.circular(15),
+                                      borderRadius: BorderRadius.circular(15),
                                       side: BorderSide(
                                           width: 1.5,
                                           color: pickerPrimaryColor))),
@@ -262,30 +272,38 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                 // margin: EdgeInsets.only(top: size.height * 0.015),
                                 child: TextField(
                                     controller:
-                                    del_tm_controller, //editing controller of this TextField
+                                        del_tm_controller, //editing controller of this TextField
                                     decoration: const InputDecoration(
                                         border: InputBorder.none,
                                         suffixIcon: Icon(Icons
                                             .timer_outlined), //icon of text field
                                         hintText:
-                                        "Delivery Time" //label text of field
-                                    ),
+                                            "Delivery Time" //label text of field
+                                        ),
                                     readOnly:
-                                    true, // when true user cannot edit text
+                                        true, // when true user cannot edit text
                                     onTap: () async {
-                                      final TimeOfDay? newTime = await showTimePicker(
+                                      final TimeOfDay? newTime =
+                                          await showTimePicker(
                                         context: context,
                                         initialTime: TimeOfDay.now(),
-                                        initialEntryMode: TimePickerEntryMode.input,
+                                        initialEntryMode:
+                                            TimePickerEntryMode.input,
                                       );
-                                      String time24Hours = newTime!.hour.toString() + ':'+newTime.minute.toString();
-                                      final DateFormat inputFormat = DateFormat.Hm(); // Input format for 24-hour time
-                                      final DateFormat outputFormat = DateFormat.Hms();
-                                      final DateTime dateTime = inputFormat.parse(time24Hours);
-                                      final String formattedTime = outputFormat.format(dateTime);
+                                      String time24Hours =
+                                          newTime!.hour.toString() +
+                                              ':' +
+                                              newTime.minute.toString();
+                                      final DateFormat inputFormat = DateFormat
+                                          .Hm(); // Input format for 24-hour time
+                                      final DateFormat outputFormat =
+                                          DateFormat.Hms();
+                                      final DateTime dateTime =
+                                          inputFormat.parse(time24Hours);
+                                      final String formattedTime =
+                                          outputFormat.format(dateTime);
                                       del_tm_controller.text = formattedTime;
-                                    }
-                                ),
+                                    }),
                               )),
                         ),
                       ],
@@ -294,7 +312,8 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                     BlocProvider(
                       create: (context) => PickerBloc(
                         RepositoryProvider.of<PickerRepository>(context),
-                      )..add(ListAllClientsEvent(authData.user_id.toString(), authData.user_token.toString())),
+                      )..add(ListAllClientsEvent(authData.user_id.toString(),
+                          authData.user_token.toString())),
                       child: BlocBuilder<PickerBloc, PickerState>(
                         builder: (context, state) {
                           if (state is FetchingClientList) {
@@ -305,22 +324,19 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   child: DropdownButtonFormField(
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
@@ -341,22 +357,19 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   child: DropdownButtonFormField(
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
@@ -374,7 +387,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                 ),
                               ],
                             );
-                          } else if(state is FetchedClientList) {
+                          } else if (state is FetchedClientList) {
                             if (customerData.isEmpty) {
                               customerData.add('Select Client');
                               state.customerList.forEach((cl) {
@@ -388,22 +401,19 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   child: DropdownButtonFormField(
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
@@ -431,22 +441,19 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   child: DropdownButtonFormField(
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
@@ -474,22 +481,19 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   child: DropdownButtonFormField(
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
@@ -510,22 +514,19 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   child: DropdownButtonFormField(
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
-                                        borderRadius:
-                                        BorderRadius.circular(15),
+                                        borderRadius: BorderRadius.circular(15),
                                         borderSide: BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
@@ -549,54 +550,106 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                     ),
                   ],
                 ),
-                BlocListener<PickerBloc, PickerState>(
-                    listener: (context, state) {
-                      if (state is AddedNewOrderState) {
-                        new_orders.add(state.data);
-                        if (new_orders.isNotEmpty)
-                          SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: DataTable(
-                                  columns: [
-                                    DataColumn(label: Text('Sl.No')),
-                                    DataColumn(label: Text('Client Name')),
-                                    DataColumn(label: Text('Order Id')),
-                                    DataColumn(label: Text('Order Type')),
-                                    DataColumn(label: Text('Pickup Date')),
-                                    DataColumn(label: Text('Pickup Time')),
-                                    DataColumn(label: Text('Delivery Date')),
-                                    DataColumn(label: Text('Delivery Time')),
-                                    DataColumn(label: Text('Action')),
-                                  ],
-                                  rows: List<DataRow>.generate(
-                                    new_orders.length,
-                                    (index) {
-                                      return DataRow(
-                                        cells: [
-                                          DataCell(Center(child: Text('${index + 1}')));
-                                          DataCell(Center(child: Text(new_orders[index].)));
-                                          DataCell(Center(child: Text('${index + 1}')));
-                                          DataCell(Center(child: Text('${index + 1}')));
-                                          DataCell(Center(child: Text('${index + 1}')));
-                                          DataCell(Center(child: Text('${index + 1}')));
-                                          DataCell(Center(child: Text('${index + 1}')));
-                                          DataCell(Center(child: Text('${index + 1}')));
-                                        ]
-                                      );
-                                    },
-                                  ),
-                              ),
-                            ),
-                          );
-                      }
-                    },
-                  child: Container(),
-                )
-                
-
-              ],
+              BlocListener<PickerBloc, PickerState>(
+                listener: (context, state) {
+                  if (state is AddedNewOrderState) {
+                    setState(() {
+                      new_order_id = state.ord_id;
+                    });
+                  }
+                },
+                child: Column(
+                  children: [
+                    SizedBox(height: 12),
+                    if (new_order_id.isNotEmpty)
+                      BlocProvider(
+                        create: (context) => PickerBloc(
+                          RepositoryProvider.of<PickerRepository>(context),
+                        )..add(GetPickCategoryEvent(
+                            authData.user_token!, authData.user_id.toString())),
+                        child: BlocBuilder<PickerBloc, PickerState>(
+                          builder: (context, state) {
+                            if (state is PckCategoryGettingState) {
+                              return Center(
+                                child: Text('Loading'),
+                              );
+                            } else if (state is PckCategoryGotState) {
+                              return Expanded(
+                                child: ListView.builder(
+                                  itemCount: state.cList.length,
+                                  itemBuilder: (context, index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.all(12),
+                                      child: Card(
+                                        elevation: 10,
+                                        child: Container(
+                                          width:
+                                              MediaQuery.of(context).size.width,
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[200],
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(20),
+                                            child: Column(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    Container(
+                                                        height: 80,
+                                                        width: 80,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color:
+                                                              Colors.blue[100],
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(30),
+                                                        ),
+                                                        child: Image.network(
+                                                         baseUrl+state.cList[index].serviceMaster.categoryImage,
+                                                          fit: BoxFit.fill,
+                                                        )),
+                                                    SizedBox(width: 20),
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          state.cList[index].categoryName,
+                                                          style: TextStyle(
+                                                            fontSize: 22,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(height: 20),
+                                                // Add more pricing items here
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            } else {
+                              return Center(child: Text("No data!"));
+                            }
+                          },
+                        ),
+                      )
+                  ],
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -609,5 +662,4 @@ class NewOrderScreenState extends State<NewOrderScreen> {
       ),
     );
   }
-
 }

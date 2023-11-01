@@ -2,11 +2,13 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:integrate_3screens/BLoCs/CustomerBloc/customer_bloc.dart';
 import 'package:integrate_3screens/Models/PickerModel/deposit_history_model.dart';
 import 'package:integrate_3screens/Models/PickerModel/expense_drop_down_model.dart';
 import 'package:integrate_3screens/Models/PickerModel/new_order_save.dart';
 import 'package:integrate_3screens/Models/PickerModel/order_details_model.dart';
 import 'package:integrate_3screens/Models/PickerModel/outstanding_model.dart';
+import 'package:integrate_3screens/Models/PickerModel/picker_category_model.dart';
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 
 import '../../Models/PickerModel/customer_list_model.dart';
@@ -252,7 +254,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
       try {
         await pickerRepository.saveNewOrder(token: event.token, body: event.body).then((value) {
           if (value.status == true && value.message ==  "Order Successfully Saved!") {
-            emit(AddedNewOrderState(value.data));
+            emit(AddedNewOrderState(value.data.orderId));
           } else {
             emit(AddNewOrderErrorState(value.message));
           }
