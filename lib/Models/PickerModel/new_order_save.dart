@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class PickerNewOrderSaveModel {
   bool status;
-  Data data;
+  OrderData data;
   String message;
 
   PickerNewOrderSaveModel({
@@ -13,7 +13,7 @@ class PickerNewOrderSaveModel {
 
   PickerNewOrderSaveModel copyWith({
     bool? status,
-    Data? data,
+    OrderData? data,
     String? message,
   }) =>
       PickerNewOrderSaveModel(
@@ -28,7 +28,7 @@ class PickerNewOrderSaveModel {
 
   factory PickerNewOrderSaveModel.fromJson(Map<String, dynamic> json) => PickerNewOrderSaveModel(
     status: json["status"],
-    data: Data.fromJson(json["data"]),
+    data: OrderData.fromJson(json["data"]),
     message: json["message"],
   );
 
@@ -39,7 +39,7 @@ class PickerNewOrderSaveModel {
   };
 }
 
-class Data {
+class OrderData {
   String orderId;
   String createdBy;
   DateTime createdDate;
@@ -65,7 +65,7 @@ class Data {
   String customer;
   dynamic invoice;
 
-  Data({
+  OrderData({
     required this.orderId,
     required this.createdBy,
     required this.createdDate,
@@ -92,7 +92,7 @@ class Data {
     required this.invoice,
   });
 
-  Data copyWith({
+  OrderData copyWith({
     String? orderId,
     String? createdBy,
     DateTime? createdDate,
@@ -118,7 +118,7 @@ class Data {
     String? customer,
     dynamic invoice,
   }) =>
-      Data(
+      OrderData(
         orderId: orderId ?? this.orderId,
         createdBy: createdBy ?? this.createdBy,
         createdDate: createdDate ?? this.createdDate,
@@ -145,11 +145,11 @@ class Data {
         invoice: invoice ?? this.invoice,
       );
 
-  factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
+  factory OrderData.fromRawJson(String str) => OrderData.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory OrderData.fromJson(Map<String, dynamic> json) => OrderData(
     orderId: json["order_id"],
     createdBy: json["created_by"],
     createdDate: DateTime.parse(json["created_date"]),

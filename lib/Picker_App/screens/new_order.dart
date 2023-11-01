@@ -31,6 +31,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
   TextEditingController del_dt_controller = TextEditingController();
   TextEditingController del_tm_controller = TextEditingController();
   List<String> customerData = [];
+  List<OrderData> new_orders = [];
   List<String> orderType = ['Select Type','Normal', 'Express', 'Urgent'];
   String mode_of_action = "save_order";
 
@@ -47,6 +48,22 @@ class NewOrderScreenState extends State<NewOrderScreen> {
         child: Appbar(text: 'New Order',),
       ),
       drawer: const MenuDrawer(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Map<String, String> data = {
+            "id":authData.user_id.toString(),
+            "customer_id":selectedCustomerId,
+            "pickup_date":pickup_dt_controller.text,
+            "pickup_time":pickup_tmt_controller.text,
+            "order_type":selectedType,
+            "Delivery_date":del_dt_controller.text,
+            "Delivery_time":del_tm_controller.text
+          };
+          print(jsonEncode(data));
+          BlocProvider.of<PickerBloc>(context).add(AddNewOrderEvent(data, authData.user_token.toString()));
+        },
+        child: Text("Save"),
+      ),
       body: SingleChildScrollView(
         child: Container(
           width: size.width,
@@ -153,9 +170,11 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                         initialEntryMode: TimePickerEntryMode.input,
                                       );
                                       String time24Hours = newTime!.hour.toString() + ':'+newTime.minute.toString();
-                                      final DateFormat parser = DateFormat.Hm();
-                                      final DateFormat formatter = DateFormat.jm();
-                                      pickup_tmt_controller.text = formatter.format(parser.parse(time24Hours));
+                                      final DateFormat inputFormat = DateFormat.Hm(); // Input format for 24-hour time
+                                      final DateFormat outputFormat = DateFormat.Hms();
+                                      final DateTime dateTime = inputFormat.parse(time24Hours);
+                                      final String formattedTime = outputFormat.format(dateTime);
+                                      pickup_tmt_controller.text = formattedTime;
                                     }
                                 ),
                               )),
@@ -260,9 +279,11 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                         initialEntryMode: TimePickerEntryMode.input,
                                       );
                                       String time24Hours = newTime!.hour.toString() + ':'+newTime.minute.toString();
-                                      final DateFormat parser = DateFormat.Hm();
-                                      final DateFormat formatter = DateFormat.jm();
-                                      del_tm_controller.text = formatter.format(parser.parse(time24Hours));
+                                      final DateFormat inputFormat = DateFormat.Hm(); // Input format for 24-hour time
+                                      final DateFormat outputFormat = DateFormat.Hms();
+                                      final DateTime dateTime = inputFormat.parse(time24Hours);
+                                      final String formattedTime = outputFormat.format(dateTime);
+                                      del_tm_controller.text = formattedTime;
                                     }
                                 ),
                               )),
@@ -528,23 +549,53 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                     ),
                   ],
                 ),
-                
-                ElevatedButton(
-                  onPressed: () {
-                    Map<String, String> data = {
-                      "id":authData.user_id.toString(),
-                      "customer_id":selectedCustomerId,
-                      "pickup_date":pickup_dt_controller.text,
-                      "pickup_time":pickup_tmt_controller.text,
-                      "order_type":selectedType,
-                      "Delivery_date":del_dt_controller.text,
-                      "Delivery_time":del_tm_controller.text
-                    };
-                    print(jsonEncode(data));
-                    BlocProvider.of<PickerBloc>(context).add(AddNewOrderEvent(data, authData.user_token.toString()));
-                  },
-                  child: Text("Save"),
+                BlocListener<PickerBloc, PickerState>(
+                    listener: (context, state) {
+                      if (state is AddedNewOrderState) {
+                        new_orders.add(state.data);
+                        if (new_orders.isNotEmpty)
+                          SingleChildScrollView(
+                            scrollDirection: Axis.vertical,
+                            child: SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: DataTable(
+                                  columns: [
+                                    DataColumn(label: Text('Sl.No')),
+                                    DataColumn(label: Text('Client Name')),
+                                    DataColumn(label: Text('Order Id')),
+                                    DataColumn(label: Text('Order Type')),
+                                    DataColumn(label: Text('Pickup Date')),
+                                    DataColumn(label: Text('Pickup Time')),
+                                    DataColumn(label: Text('Delivery Date')),
+                                    DataColumn(label: Text('Delivery Time')),
+                                    DataColumn(label: Text('Action')),
+                                  ],
+                                  rows: List<DataRow>.generate(
+                                    new_orders.length,
+                                    (index) {
+                                      return DataRow(
+                                        cells: [
+                                          DataCell(Center(child: Text('${index + 1}')));
+                                          DataCell(Center(child: Text(new_orders[index].)));
+                                          DataCell(Center(child: Text('${index + 1}')));
+                                          DataCell(Center(child: Text('${index + 1}')));
+                                          DataCell(Center(child: Text('${index + 1}')));
+                                          DataCell(Center(child: Text('${index + 1}')));
+                                          DataCell(Center(child: Text('${index + 1}')));
+                                          DataCell(Center(child: Text('${index + 1}')));
+                                        ]
+                                      );
+                                    },
+                                  ),
+                              ),
+                            ),
+                          );
+                      }
+                    },
+                  child: Container(),
                 )
+                
+
               ],
           ),
         ),

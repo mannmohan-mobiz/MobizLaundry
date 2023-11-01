@@ -39,7 +39,7 @@ void main() {
         providers: [
           BlocProvider<AuthBloc>(create: (context) => AuthBloc(authRepository)),
           BlocProvider<PickerBloc>(create: (context) => PickerBloc(pickerRepository)),
-          BlocProvider<CustomerBloc>(create: (context) => CustomerBloc(customerRepository)),
+          BlocProvider<CustomerBloc>(create: (context) => CustomerBloc(customerRepository:)),
         ],
         child: const MyApp(),
       ),

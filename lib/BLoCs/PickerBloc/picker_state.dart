@@ -426,7 +426,7 @@ class AddingNewOrderState extends PickerState {
 }
 
 class AddedNewOrderState extends PickerState {
-  var data;
+ OrderData data;
   AddedNewOrderState(this.data);
 
   @override
