@@ -176,12 +176,12 @@ class AddNewOrderEvent extends PickerEvent {
 }
 
 // Get Category
-class GetPickCategoryEvent extends PickerEvent{
+class PckCategoryFetchEvent extends PickerEvent {
   final String token;
   final String id;
 
-  GetPickCategoryEvent(this.token, this.id);
-  
+  PckCategoryFetchEvent(this.token, this.id);
+
   @override
   List<Object?> get props => [token, id];
 }

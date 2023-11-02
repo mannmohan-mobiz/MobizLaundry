@@ -245,7 +245,7 @@ class HomePageState extends State<HomePage> {
                                             },
                                             height: size.height * 0.035,
                                             child: Text(
-                                              state.pickupPendingCount.toString(),
+                                              '0',
                                               style: TextStyle(
                                                   fontSize: circleText,
                                                   fontWeight: circleTextWeight),
@@ -296,7 +296,7 @@ class HomePageState extends State<HomePage> {
                                             },
                                             height: size.height * 0.035,
                                             child: Text(
-                                              state.confirmedCount.toString(),
+                                              state.dashData.confirmedOrderCount.toString(),
                                               style: TextStyle(
                                                   fontSize: circleText,
                                                   fontWeight: circleTextWeight),
@@ -346,7 +346,7 @@ class HomePageState extends State<HomePage> {
                                             },
                                             height: size.height * 0.035,
                                             child: Text(
-                                              state.readyForDispatchCount.toString(),
+                                              state.dashData.readyForDispatchCount.toString(),
                                               style: TextStyle(
                                                   fontSize: circleText,
                                                   fontWeight: circleTextWeight),
@@ -396,7 +396,7 @@ class HomePageState extends State<HomePage> {
                                             },
                                             height: size.height * 0.035,
                                             child: Text(
-                                              state.deliveredCount.toString(),
+                                              state.dashData.deliveredCount.toString(),
                                               style: TextStyle(
                                                   fontSize: circleText,
                                                   fontWeight: circleTextWeight),
@@ -503,7 +503,7 @@ class HomePageState extends State<HomePage> {
                                             },
                                             height: size.height * 0.035,
                                             child: Text(
-                                              state.depositeAmount.toString(),
+                                              state.dashData.depositAmount.toString(),
                                               style: TextStyle(
                                                   fontSize: circleText,
                                                   fontWeight: circleTextWeight),
@@ -603,7 +603,7 @@ class HomePageState extends State<HomePage> {
                                             },
                                             height: size.height * 0.035,
                                             child: Text(
-                                              state.notProcessedCount.toString(),
+                                              state.dashData.notProcessedCount.toString(),
                                               style: TextStyle(
                                                   fontSize: circleText,
                                                   fontWeight: circleTextWeight),
@@ -704,7 +704,7 @@ class HomePageState extends State<HomePage> {
                                         shape: BoxShape.circle,
                                       ),
                                       child: Text(
-                                        state.orderViaDirectCount.toString(),
+                                        '0',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(color: Colors.white),
                                       ),
@@ -734,7 +734,7 @@ class HomePageState extends State<HomePage> {
                                         shape: BoxShape.circle,
                                       ),
                                       child: Text(
-                                        state.orderViaAppCount.toString(),
+                                        '0',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(color: Colors.white),
                                       ),
@@ -765,7 +765,7 @@ class HomePageState extends State<HomePage> {
                                         shape: BoxShape.circle,
                                       ),
                                       child: Text(
-                                        state.orderViaStaffCount.toString(),
+                                        state.dashData.orderViaStaffCount.toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(color: Colors.white),
                                       ),

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrate_3screens/BLoCs/CustomerBloc/customer_bloc.dart';
 import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
 import 'package:integrate_3screens/Models/PickerModel/new_order_save.dart';
+import 'package:integrate_3screens/Picker_App/screens/new_order_2.dart';
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 import 'package:integrate_3screens/Repositories/CustomerRepo/customer_repository.dart';
 import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
@@ -52,6 +53,13 @@ class NewOrderScreenState extends State<NewOrderScreen> {
         ),
       ),
       drawer: const MenuDrawer(),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
+        ),
+        child: BottomDrawer(),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Map<String, String> data = {
@@ -66,6 +74,9 @@ class NewOrderScreenState extends State<NewOrderScreen> {
           print(jsonEncode(data));
           BlocProvider.of<PickerBloc>(context)
               .add(AddNewOrderEvent(data, authData.user_token.toString()));
+          setState(() {
+            mode_of_action = "get_items";
+          });
         },
         child: Text("Save"),
       ),
@@ -75,7 +86,6 @@ class NewOrderScreenState extends State<NewOrderScreen> {
           padding: EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              if (mode_of_action == "save_order")
                 Column(
                   children: [
                     Row(
@@ -550,116 +560,20 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                     ),
                   ],
                 ),
-              BlocListener<PickerBloc, PickerState>(
-                listener: (context, state) {
-                  if (state is AddedNewOrderState) {
-                    setState(() {
-                      new_order_id = state.ord_id;
-                    });
-                  }
-                },
-                child: Column(
-                  children: [
-                    SizedBox(height: 12),
-                    if (new_order_id.isNotEmpty)
-                      BlocProvider(
-                        create: (context) => PickerBloc(
-                          RepositoryProvider.of<PickerRepository>(context),
-                        )..add(GetPickCategoryEvent(
-                            authData.user_token!, authData.user_id.toString())),
-                        child: BlocBuilder<PickerBloc, PickerState>(
-                          builder: (context, state) {
-                            if (state is PckCategoryGettingState) {
-                              return Center(
-                                child: Text('Loading'),
-                              );
-                            } else if (state is PckCategoryGotState) {
-                              return Expanded(
-                                child: ListView.builder(
-                                  itemCount: state.cList.length,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.all(12),
-                                      child: Card(
-                                        elevation: 10,
-                                        child: Container(
-                                          width:
-                                              MediaQuery.of(context).size.width,
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey[200],
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(20),
-                                            child: Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Container(
-                                                        height: 80,
-                                                        width: 80,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color:
-                                                              Colors.blue[100],
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(30),
-                                                        ),
-                                                        child: Image.network(
-                                                         baseUrl+state.cList[index].serviceMaster.categoryImage,
-                                                          fit: BoxFit.fill,
-                                                        )),
-                                                    SizedBox(width: 20),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          state.cList[index].categoryName,
-                                                          style: TextStyle(
-                                                            fontSize: 22,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 20),
-                                                // Add more pricing items here
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
-                            } else {
-                              return Center(child: Text("No data!"));
-                            }
-                          },
-                        ),
-                      )
-                  ],
-                ),
-              )
+                BlocListener<PickerBloc, PickerState>(
+                  listener: (context, state) {
+                    if (state is AddedNewOrderState) {
+                      authData.setOrdCstmrId(state.ordData.orderId, state.ordData.customer);
+                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => NewOrderScreen2(),), (route) => false);
+                    }
+                  },
+                  child: Center(child: Text("Add an Order"),),
+                )
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
-        ),
-        child: BottomDrawer(),
-      ),
+
     );
   }
 }

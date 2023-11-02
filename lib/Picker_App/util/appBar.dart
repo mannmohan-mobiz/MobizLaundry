@@ -10,7 +10,8 @@ import 'custom_shape.dart';
 
 class Appbar extends StatelessWidget{
   final String text;
-  Appbar({ Key? key,required this.text}) : super(key: key);
+  Function? pressed;
+  Appbar({ Key? key,required this.text, this.pressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

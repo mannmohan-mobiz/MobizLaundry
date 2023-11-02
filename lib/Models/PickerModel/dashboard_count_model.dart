@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class DashboardCountModel {
   bool stats;
-  Data data;
+  DashboardData data;
   String message;
 
   DashboardCountModel({
@@ -13,7 +13,7 @@ class DashboardCountModel {
 
   DashboardCountModel copyWith({
     bool? stats,
-    Data? data,
+    DashboardData? data,
     String? message,
   }) =>
       DashboardCountModel(
@@ -28,7 +28,7 @@ class DashboardCountModel {
 
   factory DashboardCountModel.fromJson(Map<String, dynamic> json) => DashboardCountModel(
     stats: json["stats"],
-    data: Data.fromJson(json["data"]),
+    data: DashboardData.fromJson(json["data"]),
     message: json["message"],
   );
 
@@ -39,77 +39,71 @@ class DashboardCountModel {
   };
 }
 
-class Data {
-  int pickupPendingCount;
-  int confirmedCount;
+class DashboardData {
+  int newOrderCount;
+  int confirmedOrderCount;
   int readyForDispatchCount;
   int deliveredCount;
   int notProcessedCount;
-  String depositeAmount;
-  int orderViaAppCount;
   int orderViaStaffCount;
-  int orderViaDirectCount;
+  int undeliveredCount;
+  int depositAmount;
 
-  Data({
-    required this.pickupPendingCount,
-    required this.confirmedCount,
+  DashboardData({
+    required this.newOrderCount,
+    required this.confirmedOrderCount,
     required this.readyForDispatchCount,
     required this.deliveredCount,
     required this.notProcessedCount,
-    required this.depositeAmount,
-    required this.orderViaAppCount,
     required this.orderViaStaffCount,
-    required this.orderViaDirectCount,
+    required this.undeliveredCount,
+    required this.depositAmount,
   });
 
-  Data copyWith({
-    int? pickupPendingCount,
-    int? confirmedCount,
+  DashboardData copyWith({
+    int? newOrderCount,
+    int? confirmedOrderCount,
     int? readyForDispatchCount,
     int? deliveredCount,
     int? notProcessedCount,
-    String? depositeAmount,
-    int? orderViaAppCount,
     int? orderViaStaffCount,
-    int? orderViaDirectCount,
+    int? undeliveredCount,
+    int? depositAmount,
   }) =>
-      Data(
-        pickupPendingCount: pickupPendingCount ?? this.pickupPendingCount,
-        confirmedCount: confirmedCount ?? this.confirmedCount,
+      DashboardData(
+        newOrderCount: newOrderCount ?? this.newOrderCount,
+        confirmedOrderCount: confirmedOrderCount ?? this.confirmedOrderCount,
         readyForDispatchCount: readyForDispatchCount ?? this.readyForDispatchCount,
         deliveredCount: deliveredCount ?? this.deliveredCount,
         notProcessedCount: notProcessedCount ?? this.notProcessedCount,
-        depositeAmount: depositeAmount ?? this.depositeAmount,
-        orderViaAppCount: orderViaAppCount ?? this.orderViaAppCount,
         orderViaStaffCount: orderViaStaffCount ?? this.orderViaStaffCount,
-        orderViaDirectCount: orderViaDirectCount ?? this.orderViaDirectCount,
+        undeliveredCount: undeliveredCount ?? this.undeliveredCount,
+        depositAmount: depositAmount ?? this.depositAmount,
       );
 
-  factory Data.fromRawJson(String str) => Data.fromJson(json.decode(str));
+  factory DashboardData.fromRawJson(String str) => DashboardData.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
-    pickupPendingCount: json["pickup_pending_count"],
-    confirmedCount: json["confirmed_count"],
+  factory DashboardData.fromJson(Map<String, dynamic> json) => DashboardData(
+    newOrderCount: json["new_order_count"],
+    confirmedOrderCount: json["confirmed_order_count"],
     readyForDispatchCount: json["ready_for_dispatch_count"],
     deliveredCount: json["delivered_count"],
     notProcessedCount: json["not_processed_count"],
-    depositeAmount: json["deposite_amount"].toString(),
-    orderViaAppCount: json["order_via_app_count"],
     orderViaStaffCount: json["order_via_staff_count"],
-    orderViaDirectCount: json["order_via_direct_count"],
+    undeliveredCount: json["undelivered_count"],
+    depositAmount: json["deposit_amount"],
   );
 
   Map<String, dynamic> toJson() => {
-    "pickup_pending_count": pickupPendingCount,
-    "confirmed_count": confirmedCount,
+    "new_order_count": newOrderCount,
+    "confirmed_order_count": confirmedOrderCount,
     "ready_for_dispatch_count": readyForDispatchCount,
     "delivered_count": deliveredCount,
     "not_processed_count": notProcessedCount,
-    "deposite_amount": depositeAmount,
-    "order_via_app_count": orderViaAppCount,
     "order_via_staff_count": orderViaStaffCount,
-    "order_via_direct_count": orderViaDirectCount,
+    "undelivered_count": undeliveredCount,
+    "deposit_amount": depositAmount,
   };
 }

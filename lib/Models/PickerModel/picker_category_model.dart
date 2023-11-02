@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class PickerCategoryModel {
     bool status;
-    List<PCatList> data;
+    List<PckCategList> data;
     String message;
 
     PickerCategoryModel({
@@ -13,9 +13,9 @@ class PickerCategoryModel {
 
     PickerCategoryModel copyWith({
         bool? status,
-        List<PCatList>? data,
+        List<PckCategList>? data,
         String? message,
-    }) => 
+    }) =>
         PickerCategoryModel(
             status: status ?? this.status,
             data: data ?? this.data,
@@ -28,7 +28,7 @@ class PickerCategoryModel {
 
     factory PickerCategoryModel.fromJson(Map<String, dynamic> json) => PickerCategoryModel(
         status: json["status"],
-        data: List<PCatList>.from(json["data"].map((x) => PCatList.fromJson(x))),
+        data: List<PckCategList>.from(json["data"].map((x) => PckCategList.fromJson(x))),
         message: json["message"],
     );
 
@@ -39,33 +39,33 @@ class PickerCategoryModel {
     };
 }
 
-class PCatList {
+class PckCategList {
     String categoryId;
     String categoryName;
     ServiceMaster serviceMaster;
 
-    PCatList({
+    PckCategList({
         required this.categoryId,
         required this.categoryName,
         required this.serviceMaster,
     });
 
-    PCatList copyWith({
+    PckCategList copyWith({
         String? categoryId,
         String? categoryName,
         ServiceMaster? serviceMaster,
-    }) => 
-        PCatList(
+    }) =>
+        PckCategList(
             categoryId: categoryId ?? this.categoryId,
             categoryName: categoryName ?? this.categoryName,
             serviceMaster: serviceMaster ?? this.serviceMaster,
         );
 
-    factory PCatList.fromRawJson(String str) => PCatList.fromJson(json.decode(str));
+    factory PckCategList.fromRawJson(String str) => PckCategList.fromJson(json.decode(str));
 
     String toRawJson() => json.encode(toJson());
 
-    factory PCatList.fromJson(Map<String, dynamic> json) => PCatList(
+    factory PckCategList.fromJson(Map<String, dynamic> json) => PckCategList(
         categoryId: json["category_id"],
         categoryName: json["category_name"],
         serviceMaster: ServiceMaster.fromJson(json["service_master"]),
@@ -79,20 +79,16 @@ class PCatList {
 }
 
 class ServiceMaster {
-    String serviceMasterId;
     String categoryImage;
 
     ServiceMaster({
-        required this.serviceMasterId,
         required this.categoryImage,
     });
 
     ServiceMaster copyWith({
-        String? serviceMasterId,
         String? categoryImage,
-    }) => 
+    }) =>
         ServiceMaster(
-            serviceMasterId: serviceMasterId ?? this.serviceMasterId,
             categoryImage: categoryImage ?? this.categoryImage,
         );
 
@@ -101,12 +97,10 @@ class ServiceMaster {
     String toRawJson() => json.encode(toJson());
 
     factory ServiceMaster.fromJson(Map<String, dynamic> json) => ServiceMaster(
-        serviceMasterId: json["service_master_id"],
         categoryImage: json["category_image"],
     );
 
     Map<String, dynamic> toJson() => {
-        "service_master_id": serviceMasterId,
         "category_image": categoryImage,
     };
 }

@@ -12,6 +12,7 @@ import 'package:integrate_3screens/Models/PickerModel/picker_category_model.dart
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 
 import '../../Models/PickerModel/customer_list_model.dart';
+import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
@@ -30,15 +31,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         await pickerRepository.getDashboardData(token: event.token, id: event.userid).then((value) {
           if (value.stats == true && value.message == "Picker Dashboard Details!") {
             emit(DashboardCountGotState(
-                value.data.pickupPendingCount,
-                value.data.confirmedCount,
-                value.data.readyForDispatchCount,
-                value.data.deliveredCount,
-                value.data.notProcessedCount,
-                value.data.depositeAmount,
-                value.data.orderViaAppCount,
-                value.data.orderViaStaffCount,
-                value.data.orderViaDirectCount,
+                value.data
             ));
           } else {
             emit(DashboardCountErrorState(value.message));
@@ -254,13 +247,30 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
       try {
         await pickerRepository.saveNewOrder(token: event.token, body: event.body).then((value) {
           if (value.status == true && value.message ==  "Order Successfully Saved!") {
-            emit(AddedNewOrderState(value.data.orderId));
+            emit(AddedNewOrderState(value.data));
           } else {
             emit(AddNewOrderErrorState(value.message));
           }
         });
       } catch (e) {
         emit(AddNewOrderErrorState(e.toString()));
+      }
+    });
+    on<PckCategoryFetchEvent>((event, emit) async {
+      emit(PckCategoryFetchingState());
+      try {
+        await pickerRepository.getPickerCategs(id: event.id, token: event.token).then((value) {
+          print("*************[VALUE]*******************");
+          print(value.data.toList());
+          print("*************[VALUE]*******************");
+          if (value.status == true && value.message == "Branch Categories List!") {
+            emit(PckCategoryFetchedState(value.data));
+          } else {
+            emit(PckCategoryErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PckCategoryErrorState(e.toString()));
       }
     });
   }

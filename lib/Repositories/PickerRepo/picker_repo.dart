@@ -21,6 +21,8 @@ import '../../Models/PickerModel/order_details_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/outstanding_model.dart';
 import '../../Models/PickerModel/picker_category_model.dart';
+import '../../Models/PickerModel/picker_item_price_model.dart';
+import '../../Models/PickerModel/picker_sub_category_model.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
 
 class PickerRepository {
@@ -504,17 +506,17 @@ class PickerRepository {
   }
 
   // Get Categories
-  Future<PickerCategoryModel> getCategory({required String token, required String id}) async {
+  Future<PickerCategoryModel> getPickerCategs({required String id, required String token}) async {
     Dio dio = Dio();
     Map<String, String> data = {
-      'id':id
+      "id" : id
     };
     Options options = Options(
       headers: {
-        'Authorization': 'Basic $token'
+        'Authorization' : 'Basic ${token}'
       }
     );
-    
+
     Future.delayed(Duration(seconds: 1));
     try {
       var response = await dio.post(
@@ -523,8 +525,11 @@ class PickerRepository {
         options: options
       );
 
-      print("RES: ${response.data}");
-      if(response.statusCode == 200) {
+      print("*******************[RESP]*************************");
+      print(response.data);
+      print("*******************[RESP]*************************");
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerCategoryModel.fromJson(response.data);
         return result;
       } else {
@@ -534,4 +539,67 @@ class PickerRepository {
       throw Exception(e.toString());
     }
   }
+
+  //Get Sub Categ
+  Future<PickerSubCategoryModel> getPickerSubCategs({required String categ_id, required String token}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "category_id" : categ_id
+    };
+
+    Options options = Options(
+      headers: {
+        'Authorization' : 'Basic $token'
+      }
+    );
+
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/new_order_branch_sub_categories_api',
+        options: options,
+        data: data
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerSubCategoryModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //Get Item
+  Future<PickerItemsPriceModel> getItemsPrice({required Map<String, String> body, required String token }) async {
+    Dio dio = Dio();
+    print(body);
+    Options options = Options(
+      headers: {
+        'Authorization' : 'Basic $token'
+      }
+    );
+
+    Future.delayed(Duration(seconds: 1));
+
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/new_order_item_details_api',
+        data: body,
+        options: options
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerItemsPriceModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }
+

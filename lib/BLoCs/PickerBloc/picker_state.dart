@@ -16,41 +16,10 @@ class DashboardCountGettingState extends PickerState {
 }
 
 class DashboardCountGotState extends PickerState {
-  final int pickupPendingCount;
-  final int confirmedCount;
-  final int readyForDispatchCount;
-  final int deliveredCount;
-  final int notProcessedCount;
-  final String depositeAmount;
-  final int orderViaAppCount;
-  final int orderViaStaffCount;
-  final int orderViaDirectCount;
-
-  DashboardCountGotState(
-    this.pickupPendingCount,
-    this.confirmedCount,
-    this.readyForDispatchCount,
-    this.deliveredCount,
-    this.notProcessedCount,
-    this.depositeAmount,
-    this.orderViaAppCount,
-    this.orderViaStaffCount,
-    this.orderViaDirectCount,
-  );
-
+  DashboardData dashData;
+  DashboardCountGotState(this.dashData);
   @override
-  // TODO: implement props
-  List<Object?> get props => [
-    pickupPendingCount,
-    confirmedCount,
-    readyForDispatchCount,
-    deliveredCount,
-    notProcessedCount,
-    depositeAmount,
-    orderViaAppCount,
-    orderViaStaffCount,
-    orderViaDirectCount,
-  ];
+  List<Object?> get props => [dashData];
 }
 
 class DashboardCountErrorState extends PickerState {
@@ -426,11 +395,11 @@ class AddingNewOrderState extends PickerState {
 }
 
 class AddedNewOrderState extends PickerState {
- final String ord_id;
-  AddedNewOrderState(this.ord_id);
+ final OrderData ordData;
+  AddedNewOrderState(this.ordData);
 
   @override
-  List<Object?> get props => [ord_id];
+  List<Object?> get props => [ordData];
 }
 
 class AddNewOrderErrorState extends PickerState {
@@ -444,25 +413,25 @@ class AddNewOrderErrorState extends PickerState {
 /***********************[Add New Order]***********************/
 
 /***********************[Get Category]***********************/
-class PckCategoryGettingState extends PickerState {
+class PckCategoryFetchingState extends PickerState {
   @override
   List<Object?> get props => [];
 }
 
-class PckCategoryGotState extends PickerState {
-  List<PCatList> cList = [];
+class PckCategoryFetchedState extends PickerState {
+  List<PckCategList> categList = [];
 
-  PckCategoryGotState(this.cList);
-  
+  PckCategoryFetchedState(this.categList);
+
   @override
-  List<Object?> get props => [cList];
+  List<Object?> get props => [categList];
 }
 
 class PckCategoryErrorState extends PickerState {
   final String message;
 
   PckCategoryErrorState(this.message);
-  
+
   @override
   List<Object?> get props => [message];
 }
