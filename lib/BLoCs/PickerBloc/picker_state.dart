@@ -318,13 +318,13 @@ class LocationPriceFetching extends PickerState {
 }
 
 class LocationPriceFetched extends PickerState {
-  final List<LocationList> loc_data;
-  final List<PriceGroupList> prc_data;
+  List<PriceGroupList> pgList = [];
+  CustomerTypeList ctList;
 
-  LocationPriceFetched(this.loc_data, this.prc_data);
+  LocationPriceFetched(this.pgList, this.ctList);
 
   @override
-  List<Object?> get props => [loc_data, prc_data];
+  List<Object?> get props => [pgList, ctList];
 }
 
 class LocationPriceError extends PickerState {
@@ -436,3 +436,78 @@ class PckCategoryErrorState extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************[Get Category]***********************/
+
+/***********************[Get Sub Category]***********************/
+class PckSubCategoryFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckSubCategoryFetchedState extends PickerState {
+  List<PckSubCategList> subCategList = [];
+
+  PckSubCategoryFetchedState(this.subCategList);
+
+  @override
+  List<Object?> get props => [subCategList];
+}
+
+class PckSubCategoryErrorState extends PickerState {
+  final String message;
+
+  PckSubCategoryErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Sub Category]***********************/
+
+/***********************[Get Item List]***********************/
+class PckItemFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckItemFetchedState extends PickerState {
+  List<List<PckItemPriceList>> pckItemList = [];
+
+  PckItemFetchedState(this.pckItemList);
+
+  @override
+  List<Object?> get props => [pckItemList];
+}
+
+class PckItemErrorState extends PickerState {
+  final String message;
+
+  PckItemErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Item List]***********************/
+
+/***********************[Add to Cart]***********************/
+class PckAddingtoCartState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckAddedtoCartState extends PickerState {
+  List<AddCartList> adCrtList = [];
+
+  PckAddedtoCartState(this.adCrtList);
+
+  @override
+  List<Object?> get props => [adCrtList];
+}
+
+class PckAddtoCartError extends PickerState {
+  final String message;
+
+  PckAddtoCartError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Add to Cart]***********************/

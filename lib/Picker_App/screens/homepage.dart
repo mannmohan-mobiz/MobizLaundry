@@ -112,7 +112,7 @@ class HomePageState extends State<HomePage> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               child: Column(
                 children: [
                   Row(
@@ -158,7 +158,7 @@ class HomePageState extends State<HomePage> {
                           "Create Client",
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AddClientScreen()), (route) => false),
+                        onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => AddClientScreen(fromHome: true)), (route) => false),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: pickerPrimaryColor,
                             fixedSize: Size.fromWidth(130)),
@@ -245,7 +245,7 @@ class HomePageState extends State<HomePage> {
                                             },
                                             height: size.height * 0.035,
                                             child: Text(
-                                              '0',
+                                              state.dashData.pickupPendingCount.toString(),
                                               style: TextStyle(
                                                   fontSize: circleText,
                                                   fontWeight: circleTextWeight),
@@ -296,7 +296,7 @@ class HomePageState extends State<HomePage> {
                                             },
                                             height: size.height * 0.035,
                                             child: Text(
-                                              state.dashData.confirmedOrderCount.toString(),
+                                              "0",
                                               style: TextStyle(
                                                   fontSize: circleText,
                                                   fontWeight: circleTextWeight),
@@ -892,7 +892,7 @@ class HomePageState extends State<HomePage> {
             ElevatedButton(
               onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyClientScreen(),), (route) => false),
               style: ElevatedButton.styleFrom(
-                  backgroundColor: pickerLightGreenColor,
+                  backgroundColor: pickerPrimaryColor,
                   elevation: 15.0,
                   fixedSize: Size.fromWidth(size.width * 0.75)),
               child: Text(

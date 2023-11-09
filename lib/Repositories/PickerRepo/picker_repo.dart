@@ -8,6 +8,7 @@ import 'package:integrate_3screens/Utils/common.dart';
 import 'package:dio/dio.dart';
 
 import '../../Models/PickerModel/add_customer_model.dart';
+import '../../Models/PickerModel/add_to_cart_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/deposit_history_model.dart';
@@ -400,6 +401,7 @@ class PickerRepository {
         baseUrl+'picker/picker_add_customer_api',
         options: options
       );
+      print(response);
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = LocationPriceGroupModel.fromJson(response.data);
         return result;
@@ -462,7 +464,9 @@ class PickerRepository {
         data: data,
         options: options
       );
-
+    print("**************************");
+    print(response.data);
+    print("**************************");
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerCustomerListModel.fromJson(response.data);
         return result;
@@ -593,6 +597,35 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerItemsPriceModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Add to Cart
+  Future<PickerAddtoCartModel> addToCart({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Future.delayed(Duration(seconds: 1));
+    print(body);
+    Options options = Options(
+      headers:  {
+        'Authorization' : 'Basic $token'
+      }
+    );
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/picker_add_cart_api',
+        data: body,
+        options: options
+      );
+
+      print('ADD to CRT : $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerAddtoCartModel.fromJson(response.data);
         return result;
       } else {
         return response.data;

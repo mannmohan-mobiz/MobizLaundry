@@ -58,7 +58,7 @@ class MyClientScreenState extends State<MyClientScreen> {
                     child: ElevatedButton(
                       onPressed: () => Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
-                            builder: (context) => AddClientScreen(),
+                            builder: (context) => AddClientScreen(fromHome: false),
                           ),
                           (route) => false),
                       style: ElevatedButton.styleFrom(

@@ -35,6 +35,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
   TextEditingController del_dt_controller = TextEditingController();
   TextEditingController del_tm_controller = TextEditingController();
   List<String> customerData = [];
+  List<OrderData> orderData = [];
   String new_order_id = "";
   List<String> orderType = ['Select Type', 'Normal', 'Express', 'Urgent'];
   String mode_of_action = "save_order";
@@ -560,14 +561,49 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                     ),
                   ],
                 ),
-                BlocListener<PickerBloc, PickerState>(
-                  listener: (context, state) {
-                    if (state is AddedNewOrderState) {
-                      authData.setOrdCstmrId(state.ordData.orderId, state.ordData.customer);
-                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => NewOrderScreen2(),), (route) => false);
-                    }
-                  },
-                  child: Center(child: Text("Add an Order"),),
+                BlocBuilder<PickerBloc, PickerState>(
+                    builder: (context, state) {
+                      if (state is AddedNewOrderState) {
+                        orderData.add(state.ordData);
+                        return SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: DataTable(
+                              border: TableBorder.all(
+                                color: pickerPrimaryColor,
+                              ),
+                              showCheckboxColumn: false,
+                              columns: [
+                                DataColumn(label: Center(child: Text("Sl.No"))),
+                                DataColumn(label: Center(child: Text("Order Id"))),
+                                DataColumn(label: Center(child: Text("Order No"))),
+                                DataColumn(label: Center(child: Text("Customer Id"))),
+                              ],
+                              rows: List<DataRow>.generate(
+                                orderData.length,
+                                    (index) {
+                                  return DataRow(
+                                    onSelectChanged: (value) {
+                                      authData.setOrdCstmrId(orderData[index].orderId, orderData[index].customer);
+                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => NewOrderScreen2(cstId: orderData[index].customer),), (route) => false);
+                                    },
+                                      cells: [
+                                        DataCell(Center(child: Text('${(index + 1)}'))),
+                                        DataCell(Center(child: Text(orderData[index].orderId))),
+                                        DataCell(Center(child: Text(orderData[index].orderNumber))),
+                                        DataCell(Center(child: Text(orderData[index].customer))),
+                                      ]
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Center(child: Text("Error"),);
+                      }
+                    },
                 )
             ],
           ),

@@ -40,8 +40,8 @@ class DashboardCountModel {
 }
 
 class DashboardData {
-  int newOrderCount;
-  int confirmedOrderCount;
+  int pickupPendingCount;
+  int confirmedCount;
   int readyForDispatchCount;
   int deliveredCount;
   int notProcessedCount;
@@ -50,8 +50,8 @@ class DashboardData {
   int depositAmount;
 
   DashboardData({
-    required this.newOrderCount,
-    required this.confirmedOrderCount,
+    required this.pickupPendingCount,
+    required this.confirmedCount,
     required this.readyForDispatchCount,
     required this.deliveredCount,
     required this.notProcessedCount,
@@ -61,8 +61,8 @@ class DashboardData {
   });
 
   DashboardData copyWith({
-    int? newOrderCount,
-    int? confirmedOrderCount,
+    int? pickupPendingCount,
+    int? confirmedCount,
     int? readyForDispatchCount,
     int? deliveredCount,
     int? notProcessedCount,
@@ -71,8 +71,8 @@ class DashboardData {
     int? depositAmount,
   }) =>
       DashboardData(
-        newOrderCount: newOrderCount ?? this.newOrderCount,
-        confirmedOrderCount: confirmedOrderCount ?? this.confirmedOrderCount,
+        pickupPendingCount: pickupPendingCount ?? this.pickupPendingCount,
+        confirmedCount: confirmedCount ?? this.confirmedCount,
         readyForDispatchCount: readyForDispatchCount ?? this.readyForDispatchCount,
         deliveredCount: deliveredCount ?? this.deliveredCount,
         notProcessedCount: notProcessedCount ?? this.notProcessedCount,
@@ -86,8 +86,8 @@ class DashboardData {
   String toRawJson() => json.encode(toJson());
 
   factory DashboardData.fromJson(Map<String, dynamic> json) => DashboardData(
-    newOrderCount: json["new_order_count"],
-    confirmedOrderCount: json["confirmed_order_count"],
+    pickupPendingCount: json["pickup_pending_count"],
+    confirmedCount: json["confirmed_count"],
     readyForDispatchCount: json["ready_for_dispatch_count"],
     deliveredCount: json["delivered_count"],
     notProcessedCount: json["not_processed_count"],
@@ -97,8 +97,8 @@ class DashboardData {
   );
 
   Map<String, dynamic> toJson() => {
-    "new_order_count": newOrderCount,
-    "confirmed_order_count": confirmedOrderCount,
+    "pickup_pending_count": pickupPendingCount,
+    "confirmed_count": confirmedCount,
     "ready_for_dispatch_count": readyForDispatchCount,
     "delivered_count": deliveredCount,
     "not_processed_count": notProcessedCount,

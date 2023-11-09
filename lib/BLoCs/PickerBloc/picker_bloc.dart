@@ -3,12 +3,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:integrate_3screens/BLoCs/CustomerBloc/customer_bloc.dart';
+import 'package:integrate_3screens/Models/PickerModel/add_to_cart_model.dart';
 import 'package:integrate_3screens/Models/PickerModel/deposit_history_model.dart';
 import 'package:integrate_3screens/Models/PickerModel/expense_drop_down_model.dart';
 import 'package:integrate_3screens/Models/PickerModel/new_order_save.dart';
 import 'package:integrate_3screens/Models/PickerModel/order_details_model.dart';
 import 'package:integrate_3screens/Models/PickerModel/outstanding_model.dart';
 import 'package:integrate_3screens/Models/PickerModel/picker_category_model.dart';
+import 'package:integrate_3screens/Models/PickerModel/picker_sub_category_model.dart';
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 
 import '../../Models/PickerModel/customer_list_model.dart';
@@ -16,6 +18,7 @@ import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
+import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 
@@ -205,7 +208,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
       try {
         await pickerRepository.getLPGData(token: event.token).then((value) {
           if (value.status == true && value.message == "Successfully Passed Data!") {
-            emit(LocationPriceFetched(value.data.locationList, value.data.priceGroupList));
+            emit(LocationPriceFetched(value.data.priceGroupList, value.data.customerTypeList));
           } else {
             emit(LocationPriceError(value.message));
           }
@@ -271,6 +274,55 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PckCategoryErrorState(e.toString()));
+      }
+    });
+    on<PckSubCategoryFetchEvent>((event, emit) async {
+      emit(PckSubCategoryFetchingState());
+      try {
+        await pickerRepository.getPickerSubCategs(categ_id: event.categId, token: event.token).then((value) {
+          if (value.status == true) {
+            emit(PckSubCategoryFetchedState(value.data));
+          } else {
+            emit(PckSubCategoryErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PckSubCategoryErrorState(e.toString()));
+      }
+    });
+    on<PckItemFetchEvent>((event, emit) async {
+      emit(PckItemFetchingState());
+      try {
+        await pickerRepository.getItemsPrice(
+            body: {
+              "sub_cat_id": event.subCategId,
+              "category_id": event.categId,
+              "customer_id":event.custId
+            },
+          token: event.token
+        ).then((value) {
+          if (value.status == true) {
+            emit(PckItemFetchedState(value.data));
+          } else {
+            emit(PckItemErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PckItemErrorState(e.toString()));
+      }
+    });
+    on<PckAddtoCartEvent>((event, emit) async {
+      emit(PckAddingtoCartState());
+      try {
+        await pickerRepository.addToCart(token: event.token, body: event.body).then((value) {
+          if (value.status == true) {
+            emit(PckAddedtoCartState(value.data));
+          } else {
+            emit(PckAddtoCartError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PckAddtoCartError(e.toString()));
       }
     });
   }
