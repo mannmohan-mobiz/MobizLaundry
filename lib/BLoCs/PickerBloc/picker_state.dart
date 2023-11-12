@@ -375,7 +375,7 @@ class FetchedClientList extends PickerState {
 
   @override
   // TODO: implement props
-  List<Object?> get props => throw UnimplementedError();
+  List<Object?> get props => [customerList];
 }
 
 class FetchClientListError extends PickerState {
@@ -395,7 +395,7 @@ class AddingNewOrderState extends PickerState {
 }
 
 class AddedNewOrderState extends PickerState {
- final OrderData ordData;
+ final NewOrderData ordData;
   AddedNewOrderState(this.ordData);
 
   @override
@@ -419,7 +419,7 @@ class PckCategoryFetchingState extends PickerState {
 }
 
 class PckCategoryFetchedState extends PickerState {
-  List<PckCategList> categList = [];
+  List<PickerCategList> categList = [];
 
   PckCategoryFetchedState(this.categList);
 
@@ -444,7 +444,7 @@ class PckSubCategoryFetchingState extends PickerState {
 }
 
 class PckSubCategoryFetchedState extends PickerState {
-  List<PckSubCategList> subCategList = [];
+  List<PickerSubCategList> subCategList = [];
 
   PckSubCategoryFetchedState(this.subCategList);
 

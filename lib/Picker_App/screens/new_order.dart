@@ -35,7 +35,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
   TextEditingController del_dt_controller = TextEditingController();
   TextEditingController del_tm_controller = TextEditingController();
   List<String> customerData = [];
-  List<OrderData> orderData = [];
+  List<NewOrderData> orderData = [];
   String new_order_id = "";
   List<String> orderType = ['Select Type', 'Normal', 'Express', 'Urgent'];
   String mode_of_action = "save_order";
@@ -564,6 +564,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                 BlocBuilder<PickerBloc, PickerState>(
                     builder: (context, state) {
                       if (state is AddedNewOrderState) {
+                        print(state.toString());
                         orderData.add(state.ordData);
                         return SingleChildScrollView(
                           scrollDirection: Axis.vertical,
@@ -586,7 +587,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   return DataRow(
                                     onSelectChanged: (value) {
                                       authData.setOrdCstmrId(orderData[index].orderId, orderData[index].customer);
-                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => NewOrderScreen2(cstId: orderData[index].customer),), (route) => false);
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewOrderScreen2(cstId: orderData[index].customer),));
                                     },
                                       cells: [
                                         DataCell(Center(child: Text('${(index + 1)}'))),
@@ -601,6 +602,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                           ),
                         );
                       } else {
+                        print(state.toString());
                         return Center(child: Text("Error"),);
                       }
                     },

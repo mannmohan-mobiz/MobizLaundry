@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class PickerCategoryModel {
     bool status;
-    List<PckCategList> data;
+    List<PickerCategList> data;
     String message;
 
     PickerCategoryModel({
@@ -13,7 +13,7 @@ class PickerCategoryModel {
 
     PickerCategoryModel copyWith({
         bool? status,
-        List<PckCategList>? data,
+        List<PickerCategList>? data,
         String? message,
     }) =>
         PickerCategoryModel(
@@ -28,7 +28,7 @@ class PickerCategoryModel {
 
     factory PickerCategoryModel.fromJson(Map<String, dynamic> json) => PickerCategoryModel(
         status: json["status"],
-        data: List<PckCategList>.from(json["data"].map((x) => PckCategList.fromJson(x))),
+        data: List<PickerCategList>.from(json["data"].map((x) => PickerCategList.fromJson(x))),
         message: json["message"],
     );
 
@@ -39,56 +39,54 @@ class PickerCategoryModel {
     };
 }
 
-class PckCategList {
+class PickerCategList {
     String categoryId;
-    String categoryName;
     ServiceMaster serviceMaster;
 
-    PckCategList({
+    PickerCategList({
         required this.categoryId,
-        required this.categoryName,
         required this.serviceMaster,
     });
 
-    PckCategList copyWith({
+    PickerCategList copyWith({
         String? categoryId,
-        String? categoryName,
         ServiceMaster? serviceMaster,
     }) =>
-        PckCategList(
+        PickerCategList(
             categoryId: categoryId ?? this.categoryId,
-            categoryName: categoryName ?? this.categoryName,
             serviceMaster: serviceMaster ?? this.serviceMaster,
         );
 
-    factory PckCategList.fromRawJson(String str) => PckCategList.fromJson(json.decode(str));
+    factory PickerCategList.fromRawJson(String str) => PickerCategList.fromJson(json.decode(str));
 
     String toRawJson() => json.encode(toJson());
 
-    factory PckCategList.fromJson(Map<String, dynamic> json) => PckCategList(
+    factory PickerCategList.fromJson(Map<String, dynamic> json) => PickerCategList(
         categoryId: json["category_id"],
-        categoryName: json["category_name"],
         serviceMaster: ServiceMaster.fromJson(json["service_master"]),
     );
 
     Map<String, dynamic> toJson() => {
         "category_id": categoryId,
-        "category_name": categoryName,
         "service_master": serviceMaster.toJson(),
     };
 }
 
 class ServiceMaster {
+    String categoryName;
     String categoryImage;
 
     ServiceMaster({
+        required this.categoryName,
         required this.categoryImage,
     });
 
     ServiceMaster copyWith({
+        String? categoryName,
         String? categoryImage,
     }) =>
         ServiceMaster(
+            categoryName: categoryName ?? this.categoryName,
             categoryImage: categoryImage ?? this.categoryImage,
         );
 
@@ -97,10 +95,12 @@ class ServiceMaster {
     String toRawJson() => json.encode(toJson());
 
     factory ServiceMaster.fromJson(Map<String, dynamic> json) => ServiceMaster(
+        categoryName: json["category_name"],
         categoryImage: json["category_image"],
     );
 
     Map<String, dynamic> toJson() => {
+        "category_name": categoryName,
         "category_image": categoryImage,
     };
 }

@@ -44,15 +44,17 @@ class _NewOrderScreen2State extends State<NewOrderScreen2> {
         child: BlocBuilder<PickerBloc, PickerState>(
           builder: (context, state) {
             if (state is PckCategoryFetchingState) {
+              print(state.toString());
               return Center(child: Text('Loading'),);
             } else if (state is PckCategoryFetchedState) {
+              print(state.toString());
               return ListView.builder(
                 itemCount: state.categList.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
                       authData.setCatId(state.categList[index].categoryId);
-                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => NewOrderScreen2_1(categId: state.categList[index].categoryId),), (route) => false);
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewOrderScreen2_1(categId: state.categList[index].categoryId),));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12),
@@ -88,7 +90,7 @@ class _NewOrderScreen2State extends State<NewOrderScreen2> {
                                       CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          state.categList[index].categoryName,
+                                          state.categList[index].serviceMaster.categoryName,
                                           style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,
@@ -109,6 +111,7 @@ class _NewOrderScreen2State extends State<NewOrderScreen2> {
                 },
               );
             } else {
+              print(state.toString());
               return Center(child: Text("Error Fetching Data"),);
             }
           },

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class PickerNewOrderSaveModel {
   bool status;
-  OrderData data;
+  NewOrderData data;
   String message;
 
   PickerNewOrderSaveModel({
@@ -13,7 +13,7 @@ class PickerNewOrderSaveModel {
 
   PickerNewOrderSaveModel copyWith({
     bool? status,
-    OrderData? data,
+    NewOrderData? data,
     String? message,
   }) =>
       PickerNewOrderSaveModel(
@@ -28,7 +28,7 @@ class PickerNewOrderSaveModel {
 
   factory PickerNewOrderSaveModel.fromJson(Map<String, dynamic> json) => PickerNewOrderSaveModel(
     status: json["status"],
-    data: OrderData.fromJson(json["data"]),
+    data: NewOrderData.fromJson(json["data"]),
     message: json["message"],
   );
 
@@ -39,7 +39,7 @@ class PickerNewOrderSaveModel {
   };
 }
 
-class OrderData {
+class NewOrderData {
   String orderId;
   String createdBy;
   DateTime createdDate;
@@ -48,12 +48,11 @@ class OrderData {
   String pickupTime;
   String pickupMode;
   bool confirmPickup;
-  String orderType;
   String status;
-  dynamic totalAmount;
+  String orderType;
+  String totalAmount;
   String orderVia;
   DateTime orderDate;
-  bool advance;
   DateTime deliveryDate;
   String deliveryTime;
   bool paidStatus;
@@ -65,7 +64,7 @@ class OrderData {
   String customer;
   dynamic invoice;
 
-  OrderData({
+  NewOrderData({
     required this.orderId,
     required this.createdBy,
     required this.createdDate,
@@ -74,12 +73,11 @@ class OrderData {
     required this.pickupTime,
     required this.pickupMode,
     required this.confirmPickup,
-    required this.orderType,
     required this.status,
+    required this.orderType,
     required this.totalAmount,
     required this.orderVia,
     required this.orderDate,
-    required this.advance,
     required this.deliveryDate,
     required this.deliveryTime,
     required this.paidStatus,
@@ -92,7 +90,7 @@ class OrderData {
     required this.invoice,
   });
 
-  OrderData copyWith({
+  NewOrderData copyWith({
     String? orderId,
     String? createdBy,
     DateTime? createdDate,
@@ -101,12 +99,11 @@ class OrderData {
     String? pickupTime,
     String? pickupMode,
     bool? confirmPickup,
-    String? orderType,
     String? status,
-    dynamic totalAmount,
+    String? orderType,
+    String? totalAmount,
     String? orderVia,
     DateTime? orderDate,
-    bool? advance,
     DateTime? deliveryDate,
     String? deliveryTime,
     bool? paidStatus,
@@ -118,7 +115,7 @@ class OrderData {
     String? customer,
     dynamic invoice,
   }) =>
-      OrderData(
+      NewOrderData(
         orderId: orderId ?? this.orderId,
         createdBy: createdBy ?? this.createdBy,
         createdDate: createdDate ?? this.createdDate,
@@ -127,12 +124,11 @@ class OrderData {
         pickupTime: pickupTime ?? this.pickupTime,
         pickupMode: pickupMode ?? this.pickupMode,
         confirmPickup: confirmPickup ?? this.confirmPickup,
-        orderType: orderType ?? this.orderType,
         status: status ?? this.status,
+        orderType: orderType ?? this.orderType,
         totalAmount: totalAmount ?? this.totalAmount,
         orderVia: orderVia ?? this.orderVia,
         orderDate: orderDate ?? this.orderDate,
-        advance: advance ?? this.advance,
         deliveryDate: deliveryDate ?? this.deliveryDate,
         deliveryTime: deliveryTime ?? this.deliveryTime,
         paidStatus: paidStatus ?? this.paidStatus,
@@ -145,11 +141,11 @@ class OrderData {
         invoice: invoice ?? this.invoice,
       );
 
-  factory OrderData.fromRawJson(String str) => OrderData.fromJson(json.decode(str));
+  factory NewOrderData.fromRawJson(String str) => NewOrderData.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory OrderData.fromJson(Map<String, dynamic> json) => OrderData(
+  factory NewOrderData.fromJson(Map<String, dynamic> json) => NewOrderData(
     orderId: json["order_id"],
     createdBy: json["created_by"],
     createdDate: DateTime.parse(json["created_date"]),
@@ -158,12 +154,11 @@ class OrderData {
     pickupTime: json["pickup_time"],
     pickupMode: json["Pickup_mode"],
     confirmPickup: json["confirm_pickup"],
-    orderType: json["order_type"],
     status: json["status"],
+    orderType: json["order_type"],
     totalAmount: json["total_amount"],
     orderVia: json["order_via"],
     orderDate: DateTime.parse(json["order_date"]),
-    advance: json["advance"],
     deliveryDate: DateTime.parse(json["Delivery_date"]),
     deliveryTime: json["Delivery_time"],
     paidStatus: json["paid_status"],
@@ -185,12 +180,11 @@ class OrderData {
     "pickup_time": pickupTime,
     "Pickup_mode": pickupMode,
     "confirm_pickup": confirmPickup,
-    "order_type": orderType,
     "status": status,
+    "order_type": orderType,
     "total_amount": totalAmount,
     "order_via": orderVia,
     "order_date": "${orderDate.year.toString().padLeft(4, '0')}-${orderDate.month.toString().padLeft(2, '0')}-${orderDate.day.toString().padLeft(2, '0')}",
-    "advance": advance,
     "Delivery_date": "${deliveryDate.year.toString().padLeft(4, '0')}-${deliveryDate.month.toString().padLeft(2, '0')}-${deliveryDate.day.toString().padLeft(2, '0')}",
     "Delivery_time": deliveryTime,
     "paid_status": paidStatus,

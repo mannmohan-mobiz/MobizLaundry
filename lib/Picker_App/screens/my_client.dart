@@ -116,9 +116,12 @@ class MyClientScreenState extends State<MyClientScreen> {
              BlocBuilder<PickerBloc, PickerState>(
                builder: (context, state) {
                  if (state is FetchingClientList) {
+                   print(state.toString());
                    return Center(child: CircularProgressIndicator());
                  } else if (state is FetchedClientList) {
-                   return  Expanded(
+                   print(state.toString());
+                   return  SizedBox(
+                     height: MediaQuery.of(context).size.height / 2,
                      child: ListView.builder(
                        itemCount: state.customerList.length,
                        itemBuilder: (BuildContext context, int index) {
@@ -302,6 +305,7 @@ class MyClientScreenState extends State<MyClientScreen> {
                      ),
                    );
                  } else {
+                   print(state.toString());
                    return Center(child: Text("No Client Data"));
                  }
                },

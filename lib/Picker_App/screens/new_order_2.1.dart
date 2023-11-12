@@ -88,7 +88,7 @@ class _NewOrderScreen2_1State extends State<NewOrderScreen2_1> {
                                       CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          state.subCategList[index].subCatName,
+                                          state.subCategList[index].subServiceMaster.subCatName,
                                           style: TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,

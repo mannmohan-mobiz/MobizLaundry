@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class PickerSubCategoryModel {
   bool status;
-  List<PckSubCategList> data;
+  List<PickerSubCategList> data;
   String message;
 
   PickerSubCategoryModel({
@@ -13,7 +13,7 @@ class PickerSubCategoryModel {
 
   PickerSubCategoryModel copyWith({
     bool? status,
-    List<PckSubCategList>? data,
+    List<PickerSubCategList>? data,
     String? message,
   }) =>
       PickerSubCategoryModel(
@@ -28,7 +28,7 @@ class PickerSubCategoryModel {
 
   factory PickerSubCategoryModel.fromJson(Map<String, dynamic> json) => PickerSubCategoryModel(
     status: json["status"],
-    data: List<PckSubCategList>.from(json["data"].map((x) => PckSubCategList.fromJson(x))),
+    data: List<PickerSubCategList>.from(json["data"].map((x) => PickerSubCategList.fromJson(x))),
     message: json["message"],
   );
 
@@ -39,46 +39,40 @@ class PickerSubCategoryModel {
   };
 }
 
-class PckSubCategList {
+class PickerSubCategList {
   String subCatId;
-  String subCatName;
   SubServiceMaster subServiceMaster;
   BranchMainService branchMainService;
 
-  PckSubCategList({
+  PickerSubCategList({
     required this.subCatId,
-    required this.subCatName,
     required this.subServiceMaster,
     required this.branchMainService,
   });
 
-  PckSubCategList copyWith({
+  PickerSubCategList copyWith({
     String? subCatId,
-    String? subCatName,
     SubServiceMaster? subServiceMaster,
     BranchMainService? branchMainService,
   }) =>
-      PckSubCategList(
+      PickerSubCategList(
         subCatId: subCatId ?? this.subCatId,
-        subCatName: subCatName ?? this.subCatName,
         subServiceMaster: subServiceMaster ?? this.subServiceMaster,
         branchMainService: branchMainService ?? this.branchMainService,
       );
 
-  factory PckSubCategList.fromRawJson(String str) => PckSubCategList.fromJson(json.decode(str));
+  factory PickerSubCategList.fromRawJson(String str) => PickerSubCategList.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory PckSubCategList.fromJson(Map<String, dynamic> json) => PckSubCategList(
+  factory PickerSubCategList.fromJson(Map<String, dynamic> json) => PickerSubCategList(
     subCatId: json["sub_cat_id"],
-    subCatName: json["sub_cat_name"],
     subServiceMaster: SubServiceMaster.fromJson(json["sub_service_master"]),
     branchMainService: BranchMainService.fromJson(json["branch_main_service"]),
   );
 
   Map<String, dynamic> toJson() => {
     "sub_cat_id": subCatId,
-    "sub_cat_name": subCatName,
     "sub_service_master": subServiceMaster.toJson(),
     "branch_main_service": branchMainService.toJson(),
   };
@@ -86,23 +80,19 @@ class PckSubCategList {
 
 class BranchMainService {
   String categoryId;
-  String categoryName;
   ServiceMaster serviceMaster;
 
   BranchMainService({
     required this.categoryId,
-    required this.categoryName,
     required this.serviceMaster,
   });
 
   BranchMainService copyWith({
     String? categoryId,
-    String? categoryName,
     ServiceMaster? serviceMaster,
   }) =>
       BranchMainService(
         categoryId: categoryId ?? this.categoryId,
-        categoryName: categoryName ?? this.categoryName,
         serviceMaster: serviceMaster ?? this.serviceMaster,
       );
 
@@ -112,28 +102,30 @@ class BranchMainService {
 
   factory BranchMainService.fromJson(Map<String, dynamic> json) => BranchMainService(
     categoryId: json["category_id"],
-    categoryName: json["category_name"],
     serviceMaster: ServiceMaster.fromJson(json["service_master"]),
   );
 
   Map<String, dynamic> toJson() => {
     "category_id": categoryId,
-    "category_name": categoryName,
     "service_master": serviceMaster.toJson(),
   };
 }
 
 class ServiceMaster {
+  String categoryName;
   String categoryImage;
 
   ServiceMaster({
+    required this.categoryName,
     required this.categoryImage,
   });
 
   ServiceMaster copyWith({
+    String? categoryName,
     String? categoryImage,
   }) =>
       ServiceMaster(
+        categoryName: categoryName ?? this.categoryName,
         categoryImage: categoryImage ?? this.categoryImage,
       );
 
@@ -142,25 +134,31 @@ class ServiceMaster {
   String toRawJson() => json.encode(toJson());
 
   factory ServiceMaster.fromJson(Map<String, dynamic> json) => ServiceMaster(
+    categoryName: json["category_name"],
     categoryImage: json["category_image"],
   );
 
   Map<String, dynamic> toJson() => {
+    "category_name": categoryName,
     "category_image": categoryImage,
   };
 }
 
 class SubServiceMaster {
+  String subCatName;
   String subCatImage;
 
   SubServiceMaster({
+    required this.subCatName,
     required this.subCatImage,
   });
 
   SubServiceMaster copyWith({
+    String? subCatName,
     String? subCatImage,
   }) =>
       SubServiceMaster(
+        subCatName: subCatName ?? this.subCatName,
         subCatImage: subCatImage ?? this.subCatImage,
       );
 
@@ -169,10 +167,12 @@ class SubServiceMaster {
   String toRawJson() => json.encode(toJson());
 
   factory SubServiceMaster.fromJson(Map<String, dynamic> json) => SubServiceMaster(
+    subCatName: json["sub_cat_name"],
     subCatImage: json["sub_cat_image"],
   );
 
   Map<String, dynamic> toJson() => {
+    "sub_cat_name": subCatName,
     "sub_cat_image": subCatImage,
   };
 }

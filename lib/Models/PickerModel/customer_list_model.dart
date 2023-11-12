@@ -49,18 +49,17 @@ class CustomerListData {
   String buildingNo;
   String roomNo;
   String mobile;
-  String altMobile;
-  String whatsApp;
-  String creditLimit;
-  String creditDays;
-  String creditInvoices;
-  String gpse;
-  String gpsn;
+  String? altMobile;
+  String? whatsApp;
+  dynamic creditLimit;
+  dynamic creditDays;
+  dynamic creditInvoices;
+  dynamic gpse;
+  dynamic gpsn;
   String status;
-  String? staff;
+  String staff;
   String location;
   String pricegroup;
-  String branch;
 
   CustomerListData({
     required this.customerId,
@@ -83,7 +82,6 @@ class CustomerListData {
     required this.staff,
     required this.location,
     required this.pricegroup,
-    required this.branch,
   });
 
   CustomerListData copyWith({
@@ -98,16 +96,15 @@ class CustomerListData {
     String? mobile,
     String? altMobile,
     String? whatsApp,
-    String? creditLimit,
-    String? creditDays,
-    String? creditInvoices,
-    String? gpse,
-    String? gpsn,
+    dynamic creditLimit,
+    dynamic creditDays,
+    dynamic creditInvoices,
+    dynamic gpse,
+    dynamic gpsn,
     String? status,
     String? staff,
     String? location,
     String? pricegroup,
-    String? branch,
   }) =>
       CustomerListData(
         customerId: customerId ?? this.customerId,
@@ -130,7 +127,6 @@ class CustomerListData {
         staff: staff ?? this.staff,
         location: location ?? this.location,
         pricegroup: pricegroup ?? this.pricegroup,
-        branch: branch ?? this.branch,
       );
 
   factory CustomerListData.fromRawJson(String str) => CustomerListData.fromJson(json.decode(str));
@@ -143,22 +139,21 @@ class CustomerListData {
     createdBy: json["created_by"],
     createdDate: DateTime.parse(json["created_date"]),
     name: json["name"],
-    customerType: json["customer_type"],
-    buildingNo: json["building_no"],
-    roomNo: json["room_no"],
-    mobile: json["mobile"],
-    altMobile: json["alt_mobile"],
-    whatsApp: json["whats_app"],
-    creditLimit: json["credit_limit"],
-    creditDays: json["credit_days"],
-    creditInvoices: json["credit_invoices"],
-    gpse: json["GPSE"],
-    gpsn: json["GPSN"],
+    customerType: json["customer_type"] ?? "",
+    buildingNo: json["building_no"] ?? "",
+    roomNo: json["room_no"] ?? "",
+    mobile: json["mobile"] ?? "",
+    altMobile: json["alt_mobile"] ?? "",
+    whatsApp: json["whats_app"] ?? "",
+    creditLimit: json["credit_limit"] ?? "",
+    creditDays: json["credit_days"] ?? "",
+    creditInvoices: json["credit_invoices"] ?? "",
+    gpse: json["GPSE"] ?? "",
+    gpsn: json["GPSN"] ?? "",
     status: json["status"],
     staff: json["staff"],
     location: json["Location"],
     pricegroup: json["Pricegroup"],
-    branch: json["branch"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -182,7 +177,6 @@ class CustomerListData {
     "staff": staff,
     "Location": location,
     "Pricegroup": pricegroup,
-    "branch": branch,
   };
 }
 
