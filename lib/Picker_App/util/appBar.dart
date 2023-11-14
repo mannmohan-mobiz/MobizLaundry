@@ -37,7 +37,7 @@ class Appbar extends StatelessWidget{
       automaticallyImplyLeading: false,
       elevation: 0,
       centerTitle: true,
-      title: Image(image: AssetImage('Assets/Images/golden.jpg')),
+      title: Image.asset('Assets/Images/golden.jpg'),
       actions: [
         IconButton(onPressed: () {}, icon: Icon(Icons.refresh,color: Colors.white,)),
         PopupMenuButton<String>(
