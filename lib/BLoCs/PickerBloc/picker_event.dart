@@ -121,6 +121,18 @@ class PickupListFetchEvent extends PickerEvent {
   List<Object?> get props => [token, id];
 }
 
+// Confirm New Order
+class PickerConfirmOrderEvent extends PickerEvent {
+  final Map<String, String> body;
+  final String token;
+
+  PickerConfirmOrderEvent(this.body, this.token);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [body, token];
+}
+
 // Punch In
 class PickerPunchInOutEvent extends PickerEvent {
   final String token;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:integrate_3screens/Owners/Dashboard/Navigation.dart';
 import 'package:integrate_3screens/Owners/Pages/Add_clients.dart';
 import 'package:integrate_3screens/Picker_App/screens/add_client.dart';
 import 'package:integrate_3screens/Picker_App/screens/deposit.dart';
@@ -221,10 +222,7 @@ class HomePageState extends State<HomePage> {
                             children: [
                               GestureDetector(
                                 onTap: () {
-                                  // Navigator.push(context,
-                                  //     MaterialPageRoute(builder:
-                                  //         (context) =>  MyCollectionScreen(),
-                                  //     ));
+                                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyOrderScreen()), (route) => false);
                                 },
                                 child: Column(
                                   mainAxisAlignment:
@@ -677,198 +675,6 @@ class HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: size.width * 0.05,
-                                    top: size.height * 0.05,
-                                    bottom: size.height * 0.01),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'Assets/Images/icon3.png',
-                                      height: 30,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.only(
-                                          left: size.width * 0.01),
-                                      width: 40.0,
-                                      height: 40.0,
-                                      decoration: new BoxDecoration(
-                                        color: pickerPrimaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        '0',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: size.width * 0.05,
-                                    top: size.height * 0.05,
-                                    bottom: size.height * 0.01),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'Assets/Images/icon4.png',
-                                      height: 30,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.only(
-                                          left: size.width * 0.01),
-                                      width: 40.0,
-                                      height: 40.0,
-                                      decoration: new BoxDecoration(
-                                        color: pickerPrimaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        '0',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: size.width * 0.05,
-                                    top: size.height * 0.05,
-                                    bottom: size.height * 0.01),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'Assets/Images/icon5.png',
-                                      height: 30,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.only(
-                                          right: size.width * 0.05,
-                                          left: size.width * 0.01),
-                                      width: 40.0,
-                                      height: 40.0,
-                                      decoration: new BoxDecoration(
-                                        color: pickerPrimaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        state.dashData.orderViaStaffCount.toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: size.width * 0.05,
-                                    top: size.height * 0.02,
-                                    bottom: size.height * 0.05),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'Assets/Images/icon6.png',
-                                      height: 30,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.only(
-                                          left: size.width * 0.01),
-                                      width: 40.0,
-                                      height: 40.0,
-                                      decoration: new BoxDecoration(
-                                        color: pickerPrimaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        '8',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: size.width * 0.05,
-                                    top: size.height * 0.02,
-                                    bottom: size.height * 0.05),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'Assets/Images/icon7.png',
-                                      height: 30,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.only(
-                                          left: size.width * 0.01),
-                                      width: 40.0,
-                                      height: 40.0,
-                                      decoration: new BoxDecoration(
-                                        color: pickerPrimaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        '5',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(
-                                    left: size.width * 0.05,
-                                    right: size.width * 0.05,
-                                    top: size.height * 0.02,
-                                    bottom: size.height * 0.05),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'Assets/Images/icon8.png',
-                                      height: 30,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.center,
-                                      margin: EdgeInsets.only(
-                                          left: size.width * 0.01),
-                                      width: 40.0,
-                                      height: 40.0,
-                                      decoration: new BoxDecoration(
-                                        color: pickerPrimaryColor,
-                                        shape: BoxShape.circle,
-                                      ),
-                                      child: Text(
-                                        '4',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              )
                             ],
                           ),
                         ],

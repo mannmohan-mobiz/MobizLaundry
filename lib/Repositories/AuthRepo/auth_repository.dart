@@ -20,8 +20,12 @@ class AuthRepository {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
         var result = AuthModel.fromJson(jsonDecode(response.body));
         authData.setData(result.data.tokEn, result.data.userType, result.data.id, result.data.username);
+        prefs.setString('userId', result.data.id.toString());
+        prefs.setString('userToken', result.data.tokEn.toString());
+        prefs.setString('userType', result.data.userType.toString());
         return result;
       } else {
         return jsonDecode(response.body);

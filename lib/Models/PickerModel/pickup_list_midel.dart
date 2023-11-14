@@ -2,7 +2,7 @@ import 'dart:convert';
 
 class PickerPickupListModel {
   bool status;
-  List<PickupLst> data;
+  List<PckPickupList> data;
   String message;
 
   PickerPickupListModel({
@@ -13,7 +13,7 @@ class PickerPickupListModel {
 
   PickerPickupListModel copyWith({
     bool? status,
-    List<PickupLst>? data,
+    List<PckPickupList>? data,
     String? message,
   }) =>
       PickerPickupListModel(
@@ -28,7 +28,7 @@ class PickerPickupListModel {
 
   factory PickerPickupListModel.fromJson(Map<String, dynamic> json) => PickerPickupListModel(
     status: json["status"],
-    data: List<PickupLst>.from(json["data"].map((x) => PickupLst.fromJson(x))),
+    data: List<PckPickupList>.from(json["data"].map((x) => PckPickupList.fromJson(x))),
     message: json["message"],
   );
 
@@ -39,7 +39,8 @@ class PickerPickupListModel {
   };
 }
 
-class PickupLst {
+class PckPickupList {
+  String orderId;
   String orderNumber;
   DateTime pickupDate;
   String pickupTime;
@@ -47,7 +48,8 @@ class PickupLst {
   DateTime orderDate;
   Customer customer;
 
-  PickupLst({
+  PckPickupList({
+    required this.orderId,
     required this.orderNumber,
     required this.pickupDate,
     required this.pickupTime,
@@ -56,7 +58,8 @@ class PickupLst {
     required this.customer,
   });
 
-  PickupLst copyWith({
+  PckPickupList copyWith({
+    String? orderId,
     String? orderNumber,
     DateTime? pickupDate,
     String? pickupTime,
@@ -64,7 +67,8 @@ class PickupLst {
     DateTime? orderDate,
     Customer? customer,
   }) =>
-      PickupLst(
+      PckPickupList(
+        orderId: orderId ?? this.orderId,
         orderNumber: orderNumber ?? this.orderNumber,
         pickupDate: pickupDate ?? this.pickupDate,
         pickupTime: pickupTime ?? this.pickupTime,
@@ -73,11 +77,12 @@ class PickupLst {
         customer: customer ?? this.customer,
       );
 
-  factory PickupLst.fromRawJson(String str) => PickupLst.fromJson(json.decode(str));
+  factory PckPickupList.fromRawJson(String str) => PckPickupList.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory PickupLst.fromJson(Map<String, dynamic> json) => PickupLst(
+  factory PckPickupList.fromJson(Map<String, dynamic> json) => PckPickupList(
+    orderId: json["order_id"],
     orderNumber: json["order_number"],
     pickupDate: DateTime.parse(json["pickup_date"]),
     pickupTime: json["pickup_time"],
@@ -87,6 +92,7 @@ class PickupLst {
   );
 
   Map<String, dynamic> toJson() => {
+    "order_id": orderId,
     "order_number": orderNumber,
     "pickup_date": "${pickupDate.year.toString().padLeft(4, '0')}-${pickupDate.month.toString().padLeft(2, '0')}-${pickupDate.day.toString().padLeft(2, '0')}",
     "pickup_time": pickupTime,
@@ -98,7 +104,7 @@ class PickupLst {
 
 class Customer {
   String customerId;
-  User? user;
+  User user;
   String createdBy;
   DateTime createdDate;
   String name;
@@ -106,18 +112,17 @@ class Customer {
   String buildingNo;
   String roomNo;
   String mobile;
-  String altMobile;
+  dynamic altMobile;
   String whatsApp;
-  String creditLimit;
-  String creditDays;
-  String creditInvoices;
-  String gpse;
-  String gpsn;
+  dynamic creditLimit;
+  dynamic creditDays;
+  dynamic creditInvoices;
+  dynamic gpse;
+  dynamic gpsn;
   String status;
-  dynamic staff;
+  String staff;
   String location;
   String pricegroup;
-  String branch;
 
   Customer({
     required this.customerId,
@@ -140,7 +145,6 @@ class Customer {
     required this.staff,
     required this.location,
     required this.pricegroup,
-    required this.branch,
   });
 
   Customer copyWith({
@@ -153,18 +157,17 @@ class Customer {
     String? buildingNo,
     String? roomNo,
     String? mobile,
-    String? altMobile,
+    dynamic altMobile,
     String? whatsApp,
-    String? creditLimit,
-    String? creditDays,
-    String? creditInvoices,
-    String? gpse,
-    String? gpsn,
+    dynamic creditLimit,
+    dynamic creditDays,
+    dynamic creditInvoices,
+    dynamic gpse,
+    dynamic gpsn,
     String? status,
-    dynamic staff,
+    String? staff,
     String? location,
     String? pricegroup,
-    String? branch,
   }) =>
       Customer(
         customerId: customerId ?? this.customerId,
@@ -187,7 +190,6 @@ class Customer {
         staff: staff ?? this.staff,
         location: location ?? this.location,
         pricegroup: pricegroup ?? this.pricegroup,
-        branch: branch ?? this.branch,
       );
 
   factory Customer.fromRawJson(String str) => Customer.fromJson(json.decode(str));
@@ -196,7 +198,7 @@ class Customer {
 
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
     customerId: json["customer_id"],
-    user: json["user"] == null ? null : User.fromJson(json["user"]),
+    user: User.fromJson(json["user"]),
     createdBy: json["created_by"],
     createdDate: DateTime.parse(json["created_date"]),
     name: json["name"],
@@ -215,12 +217,11 @@ class Customer {
     staff: json["staff"],
     location: json["Location"],
     pricegroup: json["Pricegroup"],
-    branch: json["branch"],
   );
 
   Map<String, dynamic> toJson() => {
     "customer_id": customerId,
-    "user": user?.toJson(),
+    "user": user.toJson(),
     "created_by": createdBy,
     "created_date": createdDate.toIso8601String(),
     "name": name,
@@ -239,7 +240,6 @@ class Customer {
     "staff": staff,
     "Location": location,
     "Pricegroup": pricegroup,
-    "branch": branch,
   };
 }
 

@@ -5,9 +5,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrate_3screens/BLoCs/AuthBloc/auth_bloc.dart';
 import 'package:integrate_3screens/BLoCs/CustomerBloc/customer_bloc.dart';
 import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:integrate_3screens/Customers/Customer_Home.dart';
+import 'package:integrate_3screens/Owners/Dashboard/Navigation.dart';
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 import 'package:integrate_3screens/Repositories/CustomerRepo/customer_repository.dart';
 import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
+import 'package:integrate_3screens/Service_Staff/Service_staff_dashboard_75.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Loginscreen.dart';
 import 'Owners/Dashboard/pages2/21-06/Order_Statistics_120.dart';
@@ -23,28 +27,29 @@ import 'Picker_App/screens/order_report.dart';
 import 'Picker_App/screens/outstanding_due.dart';
 import 'Picker_App/screens/ready_dispatch.dart';
 
-
-void main() {
+void main()  {
   final authRepository = AuthRepository();
   final pickerRepository = PickerRepository();
   final customerRepository = CustomerRepository();
-  runApp(
-    MultiRepositoryProvider(
+  runApp(MultiRepositoryProvider(
+    providers: [
+      RepositoryProvider<AuthRepository>(create: (context) => authRepository),
+      RepositoryProvider<PickerRepository>(
+          create: (context) => pickerRepository),
+      RepositoryProvider<CustomerRepository>(
+          create: (context) => customerRepository),
+    ],
+    child: MultiBlocProvider(
       providers: [
-        RepositoryProvider<AuthRepository>(create: (context) =>authRepository),
-        RepositoryProvider<PickerRepository>(create: (context) =>pickerRepository),
-        RepositoryProvider<CustomerRepository>(create: (context) =>customerRepository),
+        BlocProvider<AuthBloc>(create: (context) => AuthBloc(authRepository)),
+        BlocProvider<PickerBloc>(
+            create: (context) => PickerBloc(pickerRepository)),
+        BlocProvider<CustomerBloc>(
+            create: (context) => CustomerBloc(customerRepository)),
       ],
-      child: MultiBlocProvider(
-        providers: [
-          BlocProvider<AuthBloc>(create: (context) => AuthBloc(authRepository)),
-          BlocProvider<PickerBloc>(create: (context) => PickerBloc(pickerRepository)),
-          BlocProvider<CustomerBloc>(create: (context) => CustomerBloc(customerRepository)),
-        ],
-        child: const MyApp(),
-      ),
-    )
-  );
+      child: const MyApp(),
+    ),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -53,15 +58,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    print(authData.user_type);
+    print(authData.user_id);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         useMaterial3: true,
-
-        colorScheme: ColorScheme.fromSeed(primary: Colors.black, seedColor: Colors.white),
+        colorScheme: ColorScheme.fromSeed(
+            primary: Colors.black, seedColor: Colors.white),
       ),
-      home:  LoginPage(),
+      home: LoginPage(),
       routes: {
         'Home': (context) => const HomePage(),
         'Attendance': (context) => AttendanceScreen(),
@@ -106,4 +113,3 @@ class SplashScreenState extends State<MyHomePage> {
         color: Colors.purple, child: Image.asset('Assets/Images/logo.png'));
   }
 }
-

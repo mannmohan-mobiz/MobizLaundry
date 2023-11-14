@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:integrate_3screens/Picker_App/screens/homepage.dart';
 import 'package:integrate_3screens/Picker_App/screens/new_order.dart';
 import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
 import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
@@ -135,25 +136,59 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                               DataColumn(label: Center(child: Text("Location"))),
                               DataColumn(label: Center(child: Text("Build.No"))),
                               DataColumn(
-                                  label: Center(child: Text("Pickup Date"))),
-                              DataColumn(
                                   label: Center(child: Text("Pickup Time"))),
+                              DataColumn(
+                                  label: Center(child: Text("Action", textAlign: TextAlign.center,))),
                             ],
                             rows: List<DataRow>.generate(
                               state.fData.length,
-                              (index) {
+                                  (index) {
                                 final tData = state.fData[index];
                                 return DataRow(
-                                  cells: [
-                                    DataCell(Center(child: Text((index+1).toString()))),
-                                    DataCell(Center(child: Text(tData.orderNumber))),
-                                    DataCell(Center(child: Text(tData.customer.name))),
-                                    DataCell(Center(child: Text(tData.customer.whatsApp))),
-                                    DataCell(Center(child: Text(tData.customer.location))),
-                                    DataCell(Center(child: Text(tData.customer.buildingNo))),
-                                    DataCell(Center(child: Text(DateFormat('yyyy-MM-dd').format(tData.pickupDate).toString()))),
-                                    DataCell(Center(child: Text(tData.pickupTime))),
-                                  ]
+                                    color: MaterialStateColor.resolveWith((states) {
+                                      if (state.fData[index].orderType == "Urgent")  {
+                                        return Colors.deepOrange;//make tha magic!
+                                      } else if (state.fData[index].orderType == "Express") {
+                                        return Colors.amber;
+                                      } else {
+                                        return Colors.transparent;
+                                      }
+                                    }),
+                                    cells: [
+                                      DataCell(Center(child: Text((index+1).toString()))),
+                                      DataCell(Center(child: Text(tData.orderNumber))),
+                                      DataCell(Center(child: Text(tData.customer.name))),
+                                      DataCell(Center(child: Text(tData.customer.whatsApp))),
+                                      DataCell(Center(child: Text(tData.customer.location))),
+                                      DataCell(Center(child: Text(tData.customer.buildingNo))),
+                                      DataCell(Center(child: Text(tData.pickupTime))),
+                                      DataCell(Center(child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            backgroundColor: pickerPrimaryColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.circular(8),
+                                            )
+                                        ),
+                                        onPressed: (){
+                                          Map<String, String> body = {
+                                            "id":authData.user_id.toString(),
+                                            "order_id":tData.orderId,
+                                            "pickup_date":DateFormat('yyyy-MM-dd').format(tData.pickupDate).toString(),
+                                            "pickup_time":tData.pickupTime
+                                          };
+                                          BlocProvider.of<PickerBloc>(context).add(PickerConfirmOrderEvent(body, authData.user_token.toString()));
+                                          Future.delayed(
+                                            Duration(seconds: 2),
+                                            () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomePage(),), (route) => false),
+                                          );
+                                        },
+                                        child: Text(
+                                          "Confirm Order",
+                                          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                                        ),
+                                      ))),
+
+                                    ]
                                 );
                               },
                             ),

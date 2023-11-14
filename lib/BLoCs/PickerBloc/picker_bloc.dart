@@ -19,6 +19,7 @@ import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
+import '../../Models/PickerModel/picker_order_confirm.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 
@@ -187,6 +188,20 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PickupListError(e.toString()));
+      }
+    });
+    on<PickerConfirmOrderEvent>((event, emit) async {
+      emit(OrderConfirmingState());
+      try {
+        await pickerRepository.confirmOrder(body: event.body, token: event.token).then((value) {
+          if (value.status == true && value.message == "Order Confirmed Successfully!"){
+            emit(OrderConfirmedState(value.data));
+          } else {
+            emit(OrderConfirmerrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(OrderConfirmerrorState(e.toString()));
       }
     });
     on<PickerPunchInOutEvent>((event, emit) async {

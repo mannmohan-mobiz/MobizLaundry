@@ -266,7 +266,7 @@ class PickupListFetching extends PickerState {
 }
 
 class PickupListFetched extends PickerState {
-  List<PickupLst> fData;
+  List<PckPickupList> fData;
 
   PickupListFetched(this.fData);
 
@@ -283,6 +283,35 @@ class PickupListError extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************[Pickup List]***********************/
+
+
+/***********************[Order Confirm]***********************/
+class OrderConfirmingState extends PickerState {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
+
+class OrderConfirmedState extends PickerState {
+  final List<PckOrderCnfrmList> cnfrmList;
+
+  OrderConfirmedState(this.cnfrmList);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [cnfrmList];
+}
+
+class OrderConfirmerrorState extends PickerState {
+  final String message;
+
+  OrderConfirmerrorState(this.message);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [message];
+}
+/***********************[Order Confirm]***********************/
 
 
 /***********************[Picker Punch In]***********************/
