@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:integrate_3screens/Picker_App/screens/picking_confirmation.dart';
+import 'package:golden_falcon/Picker_App/screens/picking_confirmation.dart';
 
 import '../src/colors.dart';
 import '../src/dimen.dart';

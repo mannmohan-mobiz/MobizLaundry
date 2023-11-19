@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:integrate_3screens/Picker_App/screens/stock_transfer.dart';
+import 'package:golden_falcon/Picker_App/screens/stock_transfer.dart';
 
 import '../Picker_App/src/colors.dart';
 import '../Picker_App/util/appBar.dart';

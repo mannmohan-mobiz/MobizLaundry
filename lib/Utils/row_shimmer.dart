@@ -14,7 +14,7 @@ class ShimmerRow extends StatelessWidget {
           child: Container(
             width: 80.0, // Adjust the size as needed
             height: 80.0, // Adjust the size as needed
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Colors.white,
               shape: BoxShape.circle,
             ), // The color of the child

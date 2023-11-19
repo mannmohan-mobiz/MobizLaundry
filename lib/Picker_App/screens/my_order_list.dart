@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
-import 'package:integrate_3screens/Picker_App/screens/homepage.dart';
-import 'package:integrate_3screens/Picker_App/screens/new_order.dart';
-import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
-import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
+import 'package:golden_falcon/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:golden_falcon/Picker_App/screens/homepage.dart';
+import 'package:golden_falcon/Picker_App/screens/new_order.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
 import 'package:intl/intl.dart';
 import '../src/colors.dart';
 import '../src/dimen.dart';

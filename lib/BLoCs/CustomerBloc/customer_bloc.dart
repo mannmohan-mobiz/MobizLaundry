@@ -2,9 +2,9 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:integrate_3screens/Models/CustomerModel/category_model.dart';
-import 'package:integrate_3screens/Models/CustomerModel/sub_category_model.dart';
-import 'package:integrate_3screens/Models/CustomerModel/wallet_outstanding_model.dart';
+import 'package:golden_falcon/Models/CustomerModel/category_model.dart';
+import 'package:golden_falcon/Models/CustomerModel/sub_category_model.dart';
+import 'package:golden_falcon/Models/CustomerModel/wallet_outstanding_model.dart';
 
 import '../../Models/CustomerModel/item_model.dart';
 import '../../Repositories/CustomerRepo/customer_repository.dart';

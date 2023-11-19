@@ -2,15 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrate_3screens/BLoCs/AuthBloc/auth_bloc.dart';
-import 'package:integrate_3screens/BLoCs/CustomerBloc/customer_bloc.dart';
-import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
-import 'package:integrate_3screens/Customers/Customer_Home.dart';
-import 'package:integrate_3screens/Owners/Dashboard/Navigation.dart';
-import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
-import 'package:integrate_3screens/Repositories/CustomerRepo/customer_repository.dart';
-import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
-import 'package:integrate_3screens/Service_Staff/Service_staff_dashboard_75.dart';
+import 'package:golden_falcon/BLoCs/AuthBloc/auth_bloc.dart';
+import 'package:golden_falcon/BLoCs/CustomerBloc/customer_bloc.dart';
+import 'package:golden_falcon/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:golden_falcon/BLoCs/ServiceBloc/service_bloc.dart';
+import 'package:golden_falcon/Customers/Customer_Home.dart';
+import 'package:golden_falcon/Owners/Dashboard/Navigation.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/Repositories/CustomerRepo/customer_repository.dart';
+import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
+import 'package:golden_falcon/Repositories/ServiceRepository/service_repository.dart';
+import 'package:golden_falcon/Service_Staff/Service_staff_dashboard_75.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Loginscreen.dart';
@@ -31,6 +33,7 @@ void main()  {
   final authRepository = AuthRepository();
   final pickerRepository = PickerRepository();
   final customerRepository = CustomerRepository();
+  final serviceRepository = ServiceRepository();
   runApp(MultiRepositoryProvider(
     providers: [
       RepositoryProvider<AuthRepository>(create: (context) => authRepository),
@@ -38,6 +41,8 @@ void main()  {
           create: (context) => pickerRepository),
       RepositoryProvider<CustomerRepository>(
           create: (context) => customerRepository),
+      RepositoryProvider<ServiceRepository>(
+          create: (context) => serviceRepository),
     ],
     child: MultiBlocProvider(
       providers: [
@@ -46,6 +51,8 @@ void main()  {
             create: (context) => PickerBloc(pickerRepository)),
         BlocProvider<CustomerBloc>(
             create: (context) => CustomerBloc(customerRepository)),
+        BlocProvider<ServiceBloc>(
+            create: (context) => ServiceBloc(serviceRepository)),
       ],
       child: const MyApp(),
     ),

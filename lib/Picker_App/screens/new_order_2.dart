@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrate_3screens/Picker_App/screens/new_order_2.1.dart';
+import 'package:golden_falcon/Picker_App/screens/new_order_2.1.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
@@ -48,7 +48,8 @@ class _NewOrderScreen2State extends State<NewOrderScreen2> {
               return Center(child: Text('Loading'),);
             } else if (state is PckCategoryFetchedState) {
               print(state.toString());
-              return ListView.builder(
+              if (state.categList.length > 0)
+                return ListView.builder(
                 itemCount: state.categList.length,
                 itemBuilder: (context, index) {
                   return InkWell(
@@ -110,6 +111,8 @@ class _NewOrderScreen2State extends State<NewOrderScreen2> {
                   );
                 },
               );
+              else
+                return Center(child: Text("No Data"),);
             } else {
               print(state.toString());
               return Center(child: Text("Error Fetching Data"),);

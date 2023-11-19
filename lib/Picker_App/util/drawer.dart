@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:integrate_3screens/Loginscreen.dart';
-import 'package:integrate_3screens/Utils/common.dart';
+import 'package:golden_falcon/Loginscreen.dart';
+import 'package:golden_falcon/Utils/common.dart';
 
 import '../src/colors.dart';
 

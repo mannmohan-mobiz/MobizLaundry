@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrate_3screens/Picker_App/src/colors.dart';
-import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
-import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
+import 'package:golden_falcon/Picker_App/src/colors.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Models/PickerModel/add_to_cart_model.dart';

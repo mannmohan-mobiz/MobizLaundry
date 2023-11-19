@@ -2,16 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrate_3screens/BLoCs/CustomerBloc/customer_bloc.dart';
-import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
-import 'package:integrate_3screens/Models/PickerModel/new_order_save.dart';
-import 'package:integrate_3screens/Picker_App/screens/new_order_2.dart';
-import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
-import 'package:integrate_3screens/Repositories/CustomerRepo/customer_repository.dart';
-import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
-import 'package:integrate_3screens/Utils/common.dart';
+import 'package:golden_falcon/BLoCs/CustomerBloc/customer_bloc.dart';
+import 'package:golden_falcon/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:golden_falcon/Models/PickerModel/new_order_save.dart';
+import 'package:golden_falcon/Picker_App/screens/new_order_2.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/Repositories/CustomerRepo/customer_repository.dart';
+import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
+import 'package:golden_falcon/Utils/common.dart';
 import 'package:intl/intl.dart';
-import 'package:integrate_3screens/Picker_App/screens/stock_transfer.dart';
+import 'package:golden_falcon/Picker_App/screens/stock_transfer.dart';
 
 import '../src/colors.dart';
 import '../src/dimen.dart';

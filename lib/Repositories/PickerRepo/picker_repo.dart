@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:integrate_3screens/Models/PickerModel/collection_list_model.dart';
-import 'package:integrate_3screens/Models/PickerModel/punch_in_out_model.dart';
-import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
-import 'package:integrate_3screens/Utils/common.dart';
+import 'package:golden_falcon/Models/PickerModel/collection_list_model.dart';
+import 'package:golden_falcon/Models/PickerModel/punch_in_out_model.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/Utils/common.dart';
 import 'package:dio/dio.dart';
 
 import '../../Models/PickerModel/add_customer_model.dart';
@@ -638,7 +638,6 @@ class PickerRepository {
   Future<PickerAddtoCartModel> addToCart({required String token, required Map<String, String> body}) async {
     Dio dio = Dio();
     Future.delayed(Duration(seconds: 1));
-    print(body);
     Options options = Options(
       headers:  {
         'Authorization' : 'Basic $token'

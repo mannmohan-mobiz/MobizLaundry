@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
-import 'package:integrate_3screens/Owners/Dashboard/Navigation.dart';
-import 'package:integrate_3screens/Owners/Pages/Add_clients.dart';
-import 'package:integrate_3screens/Picker_App/screens/add_client.dart';
-import 'package:integrate_3screens/Picker_App/screens/deposit.dart';
-import 'package:integrate_3screens/Picker_App/screens/my_client.dart';
-import 'package:integrate_3screens/Picker_App/screens/my_order_list.dart';
-import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
-import 'package:integrate_3screens/Utils/row_shimmer.dart';
+import 'package:golden_falcon/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:golden_falcon/Owners/Dashboard/Navigation.dart';
+import 'package:golden_falcon/Owners/Pages/Add_clients.dart';
+import 'package:golden_falcon/Picker_App/screens/add_client.dart';
+import 'package:golden_falcon/Picker_App/screens/deposit.dart';
+import 'package:golden_falcon/Picker_App/screens/my_client.dart';
+import 'package:golden_falcon/Picker_App/screens/my_order_list.dart';
+import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
+import 'package:golden_falcon/Utils/row_shimmer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
 import '../src/colors.dart';
@@ -294,7 +294,7 @@ class HomePageState extends State<HomePage> {
                                             },
                                             height: size.height * 0.035,
                                             child: Text(
-                                              "0",
+                                              state.dashData.confirmedCount.toString(),
                                               style: TextStyle(
                                                   fontSize: circleText,
                                                   fontWeight: circleTextWeight),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
-import 'package:integrate_3screens/Picker_App/screens/add_to_cart.dart';
-import 'package:integrate_3screens/Picker_App/src/colors.dart';
-import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
-import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
+import 'package:golden_falcon/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:golden_falcon/Picker_App/screens/add_to_cart.dart';
+import 'package:golden_falcon/Picker_App/src/colors.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
 
 import '../../Utils/common.dart';
 import '../util/appBar.dart';
@@ -23,12 +23,11 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize:
-        Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
-        child: Appbar(
-          text: 'New Order Form - 2',
-        ),
+      appBar: AppBar(
+        backgroundColor: pickerPrimaryColor,
+        leading: BackButton(color: Colors.white, onPressed: () => Navigator.pop(context),),
+        title: Text("New Order Form - 2", style: TextStyle(color: Colors.white),),
+        centerTitle: true,
       ),
       drawer: const MenuDrawer(),
       bottomNavigationBar: Container(
@@ -50,9 +49,11 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
             } else if (state is PckItemFetchedState) {
               print(state.toString());
               print(state.pckItemList.length);
-              return ListView.builder(
+              if (state.pckItemList.length > 0)
+                return ListView.builder(
                 itemCount: state.pckItemList.length,
                 itemBuilder: (context, index) {
+                  final lstData = state.pckItemList[index];
                   return InkWell(
                     onTap: () {
                       // authData.setSubCatId(state.pckItemList[index][index].priceListId);
@@ -142,7 +143,8 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
                                           BorderRadius.circular(30),
                                         ),
                                         child: Image.network(
-                                          baseUrl+state.pckItemList[index][index].itemServices.item.itemImage,
+                                          // baseUrl+state.pckItemList[index][index].itemServices.item.itemImage,
+                                          baseUrl+lstData[index].itemServices.item.itemImage,
                                           fit: BoxFit.fill,
                                         )),
                                     SizedBox(width: 20),
@@ -178,6 +180,8 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
                   );
                 },
               );
+              else
+                return Center(child: Text("No List Data"));
             } else {
               print(state.toString());
               return Center(child: Text("No Data"));

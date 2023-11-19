@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:integrate_3screens/Service_Staff/ServiceReciept_Screen.dart';
+import 'package:golden_falcon/Service_Staff/ServiceReciept_Screen.dart';
 
 class PaymentDetails extends StatefulWidget {
   const PaymentDetails({Key? key}) : super(key: key);

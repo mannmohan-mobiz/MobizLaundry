@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
-import 'package:integrate_3screens/Picker_App/screens/new_order_2_2.dart';
-import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
-import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
+import 'package:golden_falcon/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:golden_falcon/Picker_App/screens/new_order_2_2.dart';
+import 'package:golden_falcon/Picker_App/src/colors.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
 
 import '../../Utils/common.dart';
 import '../util/appBar.dart';
@@ -22,12 +23,14 @@ class _NewOrderScreen2_1State extends State<NewOrderScreen2_1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-        preferredSize:
-        Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
-        child: Appbar(
-          text: 'New Order Form - 2',
+      appBar: AppBar(
+        backgroundColor: pickerPrimaryColor,
+        leading: BackButton(
+          color: Colors.white,
+          onPressed: () => Navigator.pop(context),
         ),
+        title: Text("New Order Form - 2", style: TextStyle(color: Colors.white),),
+        centerTitle: true,
       ),
       drawer: const MenuDrawer(),
       bottomNavigationBar: Container(
@@ -46,13 +49,14 @@ class _NewOrderScreen2_1State extends State<NewOrderScreen2_1> {
             if (state is PckSubCategoryFetchingState) {
               return Center(child: Text('Loading..'),);
             } else if (state is PckSubCategoryFetchedState) {
-              return ListView.builder(
+              if (state.subCategList.length > 0)
+                return ListView.builder(
                 itemCount: state.subCategList.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
                       authData.setSubCatId(state.subCategList[index].subCatId);
-                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => NewOrderScreen_2_2(),), (route) => false);
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewOrderScreen_2_2(),));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12),
@@ -108,6 +112,8 @@ class _NewOrderScreen2_1State extends State<NewOrderScreen2_1> {
                   );
                 },
               );
+              else
+                return Center(child: Text("No Data!"),);
             } else {
               return Center(child: Text("Error loading Data"),);
             }

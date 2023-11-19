@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
-import 'package:integrate_3screens/Repositories/CustomerRepo/customer_repository.dart';
-import 'package:integrate_3screens/Utils/common.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/Repositories/CustomerRepo/customer_repository.dart';
+import 'package:golden_falcon/Utils/common.dart';
 
 import '../../BLoCs/CustomerBloc/customer_bloc.dart';
 import 'Transaction_History.dart';

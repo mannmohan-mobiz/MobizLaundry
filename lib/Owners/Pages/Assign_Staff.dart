@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:integrate_3screens/Owners/Pages/AssignStaff.dart';
+import 'package:golden_falcon/Owners/Pages/AssignStaff.dart';
 
 class Assign extends StatefulWidget {
   const Assign({Key? key}) : super(key: key);

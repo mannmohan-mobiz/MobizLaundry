@@ -2,16 +2,16 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:integrate_3screens/BLoCs/CustomerBloc/customer_bloc.dart';
-import 'package:integrate_3screens/Models/PickerModel/add_to_cart_model.dart';
-import 'package:integrate_3screens/Models/PickerModel/deposit_history_model.dart';
-import 'package:integrate_3screens/Models/PickerModel/expense_drop_down_model.dart';
-import 'package:integrate_3screens/Models/PickerModel/new_order_save.dart';
-import 'package:integrate_3screens/Models/PickerModel/order_details_model.dart';
-import 'package:integrate_3screens/Models/PickerModel/outstanding_model.dart';
-import 'package:integrate_3screens/Models/PickerModel/picker_category_model.dart';
-import 'package:integrate_3screens/Models/PickerModel/picker_sub_category_model.dart';
-import 'package:integrate_3screens/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/BLoCs/CustomerBloc/customer_bloc.dart';
+import 'package:golden_falcon/Models/PickerModel/add_to_cart_model.dart';
+import 'package:golden_falcon/Models/PickerModel/deposit_history_model.dart';
+import 'package:golden_falcon/Models/PickerModel/expense_drop_down_model.dart';
+import 'package:golden_falcon/Models/PickerModel/new_order_save.dart';
+import 'package:golden_falcon/Models/PickerModel/order_details_model.dart';
+import 'package:golden_falcon/Models/PickerModel/outstanding_model.dart';
+import 'package:golden_falcon/Models/PickerModel/picker_category_model.dart';
+import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
 
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';

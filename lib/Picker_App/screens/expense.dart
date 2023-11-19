@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:integrate_3screens/BLoCs/PickerBloc/picker_bloc.dart';
-import 'package:integrate_3screens/Repositories/PickerRepo/picker_repo.dart';
-import 'package:integrate_3screens/Utils/common.dart';
+import 'package:golden_falcon/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
+import 'package:golden_falcon/Utils/common.dart';
 
 import '../src/colors.dart';
 import '../src/dimen.dart';

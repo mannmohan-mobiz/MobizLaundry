@@ -1,4 +1,4 @@
-package com.example.integrate_3screens
+package com.example.golden_falcon
 
 import io.flutter.embedding.android.FlutterActivity
 

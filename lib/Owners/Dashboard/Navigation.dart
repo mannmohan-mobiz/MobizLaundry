@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:integrate_3screens/Owners/Pages/Complaint.dart';
-import 'package:integrate_3screens/Owners/Pages/Track_staff.dart';
+import 'package:golden_falcon/Owners/Pages/Complaint.dart';
+import 'package:golden_falcon/Owners/Pages/Track_staff.dart';
 import 'Owner_dashboard.dart';
 
 class Navigation extends StatefulWidget {
