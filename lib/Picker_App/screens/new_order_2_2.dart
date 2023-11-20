@@ -31,11 +31,11 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
       ),
       drawer: const MenuDrawer(),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
         ),
-        child: BottomDrawer(),
+        child: const BottomDrawer(),
       ),
       body: BlocProvider(
         create: (context) => PickerBloc(
@@ -45,11 +45,11 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
           builder: (context, state) {
             if (state is PckItemFetchingState) {
               print(state.toString());
-              return Center(child: Text("Loading..."),);
+              return const Center(child: Text("Loading..."),);
             } else if (state is PckItemFetchedState) {
               print(state.toString());
-              print(state.pckItemList.length);
-              if (state.pckItemList.length > 0)
+              print('##### LENGTH${state.pckItemList.length}');
+              if (state.pckItemList.length > 0) {
                 return ListView.builder(
                 itemCount: state.pckItemList.length,
                 itemBuilder: (context, index) {
@@ -144,24 +144,26 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
                                         ),
                                         child: Image.network(
                                           // baseUrl+state.pckItemList[index][index].itemServices.item.itemImage,
+                                         // baseUrl+lstData[index].itemServices.item.itemImage,
                                           baseUrl+lstData[index].itemServices.item.itemImage,
+
                                           fit: BoxFit.fill,
                                         )),
-                                    SizedBox(width: 20),
+                                    const SizedBox(width: 20),
                                     Column(
                                       crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           state.pckItemList[index][index].itemServices.item.itemName,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,
                                           ),
                                         ),
                                         Text(
                                           state.pckItemList[index][index].amount,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -170,7 +172,7 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                               ],
                             ),
                           ),
@@ -180,7 +182,7 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
                   );
                 },
               );
-              else
+              } else
                 return Center(child: Text("No List Data"));
             } else {
               print(state.toString());

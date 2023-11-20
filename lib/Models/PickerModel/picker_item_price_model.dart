@@ -39,6 +39,11 @@ class PickerItemsPriceModel {
   };
 }
 
+
+/// price_list_id : "204f52f9-2028-4c97-877f-796fc6fc225a"
+/// amount : "2"
+/// item_services : {"item_ser_id":"7b122c67-a82a-4fec-9b19-439d7dfec0de","item":{"item_id":"a4b6880c-faa4-4dda-9e28-b3b690e8df95","item_name":"Shirts","item_image":"/media/shirts.jpeg"}}
+
 class PckItemPriceList {
   String priceListId;
   String amount;
@@ -49,21 +54,6 @@ class PckItemPriceList {
     required this.amount,
     required this.itemServices,
   });
-
-  PckItemPriceList copyWith({
-    String? priceListId,
-    String? amount,
-    ItemServices? itemServices,
-  }) =>
-      PckItemPriceList(
-        priceListId: priceListId ?? this.priceListId,
-        amount: amount ?? this.amount,
-        itemServices: itemServices ?? this.itemServices,
-      );
-
-  factory PckItemPriceList.fromRawJson(String str) => PckItemPriceList.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory PckItemPriceList.fromJson(Map<String, dynamic> json) => PckItemPriceList(
     priceListId: json["price_list_id"],
@@ -78,6 +68,8 @@ class PckItemPriceList {
   };
 }
 
+/// item_ser_id : "7b122c67-a82a-4fec-9b19-439d7dfec0de"
+/// item : {"item_id":"a4b6880c-faa4-4dda-9e28-b3b690e8df95","item_name":"Shirts","item_image":"/media/shirts.jpeg"}
 class ItemServices {
   String itemSerId;
   Item item;
@@ -86,19 +78,6 @@ class ItemServices {
     required this.itemSerId,
     required this.item,
   });
-
-  ItemServices copyWith({
-    String? itemSerId,
-    Item? item,
-  }) =>
-      ItemServices(
-        itemSerId: itemSerId ?? this.itemSerId,
-        item: item ?? this.item,
-      );
-
-  factory ItemServices.fromRawJson(String str) => ItemServices.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory ItemServices.fromJson(Map<String, dynamic> json) => ItemServices(
     itemSerId: json["item_ser_id"],
@@ -111,6 +90,10 @@ class ItemServices {
   };
 }
 
+/// item_id : "a4b6880c-faa4-4dda-9e28-b3b690e8df95"
+/// item_name : "Shirts"
+/// item_image : "/media/shirts.jpeg"
+
 class Item {
   String itemId;
   String itemName;
@@ -121,21 +104,6 @@ class Item {
     required this.itemName,
     required this.itemImage,
   });
-
-  Item copyWith({
-    String? itemId,
-    String? itemName,
-    String? itemImage,
-  }) =>
-      Item(
-        itemId: itemId ?? this.itemId,
-        itemName: itemName ?? this.itemName,
-        itemImage: itemImage ?? this.itemImage,
-      );
-
-  factory Item.fromRawJson(String str) => Item.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
     itemId: json["item_id"],

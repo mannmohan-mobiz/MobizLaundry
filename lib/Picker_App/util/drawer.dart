@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:golden_falcon/Loginscreen.dart';
 import 'package:golden_falcon/Utils/common.dart';
 
+import '../screens/profile_page.dart';
 import '../src/colors.dart';
 
 class MenuDrawer extends StatelessWidget {
@@ -50,10 +51,30 @@ class MenuDrawer extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.2,
                   alignment: Alignment.center,
                   width: MediaQuery.of(context).size.width * 1,
-                  child: const Text(
-                    'Welcome',
-                    style: TextStyle(color: Colors.white),
-                    textAlign: TextAlign.center,
+                  child:  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InkWell(
+                        child: Container(
+                          width: 60,
+                          height: 60,
+                          decoration: const BoxDecoration(
+                          color: Colors.cyan,
+                            shape: BoxShape.circle
+                        ),
+                         // child: Image.asset(''),
+                        ),
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfilePage(),));
+                        },
+                      ),
+                      const Text(
+                        'Welcome',
+                        style: TextStyle(color: Colors.white),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
                   ),
                 ),
                 listItem(context, 'Home', Icons.home_outlined),
