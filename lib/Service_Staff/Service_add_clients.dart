@@ -1,5 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/Repositories/ServiceRepository/service_repository.dart';
+
+import '../BLoCs/ServiceBloc/service_bloc.dart';
+import '../Picker_App/src/colors.dart';
+import 'Service_staff_dashboard_75.dart';
 
 class ServiceAddClients extends StatefulWidget {
   const ServiceAddClients({Key? key}) : super(key: key);
@@ -23,17 +31,48 @@ class _ServiceAddClientsState extends State<ServiceAddClients> {
     }
     return Colors.blue;
   }
-  String Type = 'Select';
-  List<String> CustomerType = ['Select','Home','Co-orperate',];
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController buildController = TextEditingController();
+  TextEditingController roomController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController whatsappController = TextEditingController();
+  TextEditingController altController = TextEditingController();
+  TextEditingController latController = TextEditingController();
+  TextEditingController longController = TextEditingController();
+  TextEditingController credLmtController = TextEditingController();
+  TextEditingController credDaysController = TextEditingController();
+  TextEditingController credInvController = TextEditingController();
+
+  bool isVisible = false;
+
+  List<String> customerType = [
+    'Home',
+    'Corporate',
+  ];
+
+  String cType = '';
+  String pgId = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.deepPurple,size: 30),
+          iconTheme: IconThemeData(color: Colors.deepPurple, size: 30),
+          leading: BackButton(
+            onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StaffServiceDashboard(),), (route) => false),
+          ),
           elevation: 0,
           backgroundColor: CupertinoColors.white,
-          title: Center(child: Text("ADD CLIENTS",style: TextStyle(color: Colors.deepPurple,fontSize: 18,fontWeight: FontWeight.w500))),
+          title: Center(
+              child: Text("ADD CLIENTS",
+                  style: TextStyle(
+                      color: Colors.deepPurple,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500))),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 20),
@@ -45,574 +84,687 @@ class _ServiceAddClientsState extends State<ServiceAddClients> {
             ),
           ],
         ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(mainAxisAlignment: MainAxisAlignment.center,
+        body: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: SingleChildScrollView(
+            child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text('Branch'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15,bottom: 15),
-                  child: Container(
-                    width: MediaQuery.of(context).size.width*0.4,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.blue)),
-                    child: DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(bottom: 10),
-                        prefix: SizedBox(
-                          width: 10,
-                        ),
-                        hintText: 'Select',
-                      ), items: [
-                      DropdownMenuItem(child: Text('select'))
-                    ],
-                      onChanged: (value) {  },
-                    ),
+                const Center(
+                  child: Text(
+                    "Customer Details",
+                    style: TextStyle(
+                        color: pickerPrimaryColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-              ],
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(border: Border.all(color: Colors.blue),
-                borderRadius: BorderRadius.circular(20)),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide.none,
-                    ),
-                    contentPadding: EdgeInsets.only(),
-                    hintText: 'Name' ,
-                    prefixIcon: Icon(Icons.star,color: Colors.red,size: 15,)
+                const SizedBox(height: 5),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: pickerPrimaryColor, width: .5),
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.blue)),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                      contentPadding: EdgeInsets.only(top: 10),
-                      hintText: 'House No./Flat No.' ,
-                      prefixIcon: Icon(Icons.star,color: Colors.red,size: 15,)
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
-              child: Container(
-                height: 50,
-                decoration: BoxDecoration(border: Border.all(color: Colors.blue),
-                borderRadius: BorderRadius.circular(20)),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                    border: InputBorder.none,
-                      hintText: 'Address' ,
-                      prefixIcon: Icon(Icons.star,color: Colors.red,size: 15,)
-                  ),
-                ),
-              ),
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.star,color: Colors.red,size: 15,),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text('Area'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15,bottom: 15,right: 25),
-                  child: Container(
-                    width: 100,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.blue)),
-                    child: DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(bottom: 10),
-                        prefix: SizedBox(
-                          width: 10,
-                        ),
-                        hintText: 'Select',
-                      ), items: [
-                      DropdownMenuItem(child: Text('select'))
-                    ],
-                      onChanged: (value) {  },
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text('Locality'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15,bottom: 15),
-                  child: Container(
-                    width: 100,
-                    height: 30,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(15),
-                        border: Border.all(color: Colors.blue)),
-                    child: DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.only(bottom: 10),
-                        prefix: SizedBox(
-                          width: 10,
-                        ),
-                        hintText: 'Select',
-                      ), items: [
-                      DropdownMenuItem(child: Text('select'))
-                    ],
-                      onChanged: (value) {  },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Icon(Icons.star,color: Colors.red,size: 15,),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 15),
-                  child: Text('Mobile No.'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40,bottom: 10,right: 15),
-                  child: Container(
-                    height: 40,
-                      width: 200,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.blue)),
-                      child: TextFormField(
-                        decoration: InputDecoration(border: OutlineInputBorder(borderSide: BorderSide.none)),
-                      )),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 15),
-              child: Row(mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      radius: 12,
-                      child: Image.asset('Assets/Images/whatsapp-icon-logo-8CA4FB831E-seeklogo.com.png'),
-                    ),
-                  ),
-                  Container(
-                      height: 40,
-                      width: 200,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.blue)),
-                      child: TextFormField(
-                        decoration: InputDecoration(border: OutlineInputBorder(borderSide: BorderSide.none)),
-                      )),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(right: 15),
-              child: Row(mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Checkbox(
-                  checkColor: Colors.white,
-                  fillColor: MaterialStateProperty.resolveWith(getColor),
-                  value: isChecked,
-                  onChanged: (bool? value) {
-                  setState(() {
-                  isChecked = value!;
-                  });
-                  },
-                  ),
-                  Text('Same or Above')
-                ],
-              ),
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: Text('Alternate No.'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40,bottom: 10,right: 15),
-                  child: Container(
-                      height: 40,
-                      width: 200,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.blue)),
-                      child: TextFormField(
-                        decoration: InputDecoration(border: OutlineInputBorder(borderSide: BorderSide.none)),
-                      )),
-                )
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: Text('Email Id'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40,bottom: 10,right: 15),
-                  child: Container(
-                      height: 40,
-                      width: 200,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.blue)),
-                      child: TextFormField(
-                        decoration: InputDecoration(border: OutlineInputBorder(borderSide: BorderSide.none)),
-                      )),
-                )
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 40),
-                child: Text('Profession'),
-              ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 55,bottom: 10,right: 15),
-                  child:Container(
-                    width: 200,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.blue)),
-                    child: DropdownButtonFormField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide.none),
-                          contentPadding: EdgeInsets.only(bottom: 10),
-                          prefix: SizedBox(
-                            width: 10,
-                          ),
-                          hintText: 'Select',
-                          hintStyle: TextStyle(fontWeight: FontWeight.normal)
-                      ), items: [
-                      DropdownMenuItem(child: Text('select'))
-                    ],
-                      onChanged: (value) {  },
-                    ),
-                  ),
-                )
-            ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Icon(Icons.star,color: Colors.red,size: 15,),
-                ),
-                Text('Customer Type'),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30,bottom: 10,right: 15),
-                  child:Container(
-                    width: 200,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.blue)),
-                    child: DropdownButtonFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(borderSide: BorderSide.none),
-                          contentPadding: EdgeInsets.only(bottom: 10),
-                        prefix: SizedBox(
-                          width: 10,
-                        ),
-                        hintStyle: TextStyle(fontWeight: FontWeight.normal)
-                      ), value: Type,
-                          items: CustomerType.map((e) => DropdownMenuItem(value: e,child: Text(e),)).toList(),
-                          onChanged: (v) {
-                            setState(() {
-                              Type = v!;
-                            });
-                          }
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Icon(Icons.star,color: Colors.red,size: 15,),
-                ),
-                Text('Price Level'),
-                Padding(
-                  padding: const EdgeInsets.only(left: 55,bottom: 10,right: 15),
-                  child:Container(
-                    width: 200,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.blue)),
-                    child: DropdownButtonFormField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide.none),
-                          contentPadding: EdgeInsets.only(bottom: 10),
-                          prefix: SizedBox(
-                            width: 10,
-                          ),
-                          hintText: 'Select',
-                          hintStyle: TextStyle(fontWeight: FontWeight.normal)
-                      ), items: [
-                      DropdownMenuItem(child: Text('select'))
-                    ],
-                      onChanged: (value) {  },
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Icon(Icons.star,color: Colors.red,size: 15,),
-                ),
-                Text('Staff'),
-                Padding(
-                  padding: const EdgeInsets.only(left: 90,bottom: 10,right: 15),
-                  child:Container(
-                    width: 200,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.blue)),
-                    child: DropdownButtonFormField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide.none),
-                          contentPadding: EdgeInsets.only(bottom: 10),
-                          prefix: SizedBox(
-                            width: 10,
-                          ),
-                          hintText: 'Select',
-                          hintStyle: TextStyle(fontWeight: FontWeight.normal)
-                      ), items: [
-                      DropdownMenuItem(child: Text('select'))
-                    ],
-                      onChanged: (value) {  },
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: Text('GPS'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 103,bottom: 10),
-                  child: Container(
-                      height: 40,
-                      width: 94,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.blue)),
-                      child: Row(
+                  child: Column(
+                    children: [
+                      Row(
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text('Fetch'),
-                          ),
-                          IconButton(onPressed: () {
-
-                          }, icon: Icon(CupertinoIcons.location_solid,color: Colors.green,))
+                          Expanded(
+                              child: TextField(
+                            controller: nameController,
+                            decoration: InputDecoration(
+                              hintText: "Name",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                          SizedBox(width: 5),
+                          Expanded(
+                              child: TextField(
+                            controller: userNameController,
+                            decoration: InputDecoration(
+                              hintText: "Username",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
                         ],
-                      )),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: TextField(
+                            controller: emailController,
+                            decoration: InputDecoration(
+                              hintText: "Email",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                          SizedBox(width: 5),
+                          Expanded(
+                              child: TextField(
+                            controller: passwordController,
+                            obscureText: isVisible ? false : true,
+                            decoration: InputDecoration(
+                              suffixIcon: IconButton(onPressed: (){
+                                if (isVisible) {
+                                  setState(() {
+                                    isVisible = false;
+                                  });
+                                } else {
+                                  setState(() {
+                                    isVisible = true;
+                                  });
+                                }
+                              }, icon: Icon(
+                                isVisible ? Icons.visibility_off : Icons.visibility,
+                                color: pickerPrimaryColor,
+                              ),
+                              ),
+                              hintText: "Password",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: TextField(
+                            controller: buildController,
+                            decoration: InputDecoration(
+                              hintText: "Building.No",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                          SizedBox(width: 5),
+                          Expanded(
+                              child: TextField(
+                            controller: roomController,
+                            decoration: InputDecoration(
+                              hintText: "Room No",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: TextField(
+                            controller: mobileController,
+                            decoration: InputDecoration(
+                              hintText: "Mobile",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                          SizedBox(width: 5),
+                          Expanded(
+                              child: TextField(
+                            controller: whatsappController,
+                            decoration: InputDecoration(
+                              hintText: "WhatsApp",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                          SizedBox(width: 5),
+                          Expanded(
+                              child: TextField(
+                            controller: altController,
+                            decoration: InputDecoration(
+                              hintText: "Alt.Mobile",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: TextField(
+                            controller: latController,
+                            decoration: InputDecoration(
+                              hintText: "GPSE",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                          const SizedBox(width: 5),
+                          Expanded(
+                              child: TextField(
+                            controller: longController,
+                            decoration: InputDecoration(
+                              hintText: "GPSN",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                          const SizedBox(width: 5),
+                          IconButton(
+                            icon: const Icon(Icons.my_location,
+                                color: pickerPrimaryColor),
+                            onPressed: () {
+                              getLocation();
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10,right: 15),
-                  child: Container(
-                      height: 40,
-                      width: 100,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.blue)),
-                      child: TextFormField(
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.only(),
-                            border: InputBorder.none),
-                      )),
+                const SizedBox(height: 5),
+                const Center(
+                  child: Text(
+                    "Account Details",
+                    style: TextStyle(
+                        color: pickerPrimaryColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
+                const SizedBox(height: 5),
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: pickerPrimaryColor, width: .5),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: [
+                      BlocProvider(
+                        create: (context) => ServiceBloc(
+                          RepositoryProvider.of<ServiceRepository>(context),
+                        )..add(ServiceLocPrcFetchingEvent(authData.user_token.toString())),
+                        child: BlocBuilder<ServiceBloc, ServiceState>(
+                          builder: (context, state) {
+                            if (state is ServiceLocPrcFetchingState) {
+                              print(state.toString());
+                              return CircularProgressIndicator();
+                            } else if (state is ServiceLocPrcFetchedState) {
+                              print(state.toString());
+                              return Row(
+                                children: [
+                                  Flexible(
+                                      child: RadioListTile(
+                                        value: customerType[0],
+                                        groupValue: cType,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            cType = value.toString();
+                                          });
+                                          state.lpData.priceGroupList.forEach((element) {
+                                            if (cType == element.name) {
+                                              setState(() {
+                                                pgId = '';
+                                                pgId = element.priceGroupId;
+                                              });
+                                            }
+                                          });
+                                          print('C-Type : $cType & PgId: $pgId');
+                                        },
+                                        title: Text("Home"),
+                                      )),
+                                  Flexible(
+                                      child: RadioListTile(
+                                        value: customerType[1],
+                                        groupValue: cType,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            cType = value.toString();
+                                          });
+                                          state.lpData.priceGroupList.forEach((element) {
+                                            if (cType == element.name) {
+                                              setState(() {
+                                                pgId = '';
+                                                pgId = element.priceGroupId;
+                                              });
+                                            }
+                                          });
+                                          print('C-Type : $cType & PgId: $pgId');
+                                        },
+                                        title: Text("Corporate"),
+                                      )),
+                                ],
+                              );
+                            } else {
+                              print(state.toString());
+                              return Text('Error');
+                            }
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: TextField(
+                            controller: credLmtController,
+                            decoration: InputDecoration(
+                              hintText: "Credit Limit",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                          SizedBox(width: 5),
+                          Expanded(
+                              child: TextField(
+                            controller: credDaysController,
+                            decoration: InputDecoration(
+                              hintText: "Credit Days",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                          SizedBox(width: 5),
+                          Expanded(
+                              child: TextField(
+                            controller: credInvController,
+                            decoration: InputDecoration(
+                              hintText: "Credit Invoice",
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: pickerPrimaryColor,
+                                ),
+                              ),
+                            ),
+                          )),
+                        ],
+                      ),
+                      const SizedBox(height: 5),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: pickerPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                    ),
+                    onPressed: (){
+                      if (
+                        userNameController.text.isNotEmpty &&
+                      nameController.text.isNotEmpty &&
+                      emailController.text.isNotEmpty &&
+                      passwordController.text.isNotEmpty &&
+                      mobileController.text.isNotEmpty &&
+                      cType.isNotEmpty && pgId.isNotEmpty
+                      ) {
+                        Map<String, String> body = {
+                          "id":authData.user_id.toString(),
+                          "username":userNameController.text,
+                          "name":nameController.text,
+                          "email":emailController.text,
+                          "password":passwordController.text,
+                          "customer_type":cType,
+                          "building_no":buildController.text ?? "",
+                          "room_no":roomController.text ?? "",
+                          "mobile":mobileController.text ,
+                          "alt_mobile":altController.text ?? "",
+                          "whats_app":whatsappController.text ?? "",
+                          "credit_limit":credLmtController.text ?? "",
+                          "credit_days":credDaysController.text ?? "",
+                          "credit_invoices":credInvController.text ?? "",
+                          "GPSE":latController.text,
+                          "GPSN":longController.text,
+                          "price_group_id":pgId
+                        };
+                        print(body);
+                        BlocProvider.of<ServiceBloc>(context).add(ServiceAddnewClientEvent(authData.user_token.toString(), body));
+                        Future.delayed(
+                            Duration(seconds: 1),
+                                () =>
+                                Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => StaffServiceDashboard(),), (route) => false)
+                        );
+                      } else {
+                        showDialog(context: context, builder: (context) {
+                          return AlertDialog(
+                            title: Text("Enter Sufficient Data"),
+                            actions: [
+                              ElevatedButton(onPressed: () => Navigator.pop(context), child: Text("OK"))
+                            ],
+                          );
+                        },);
+                      }
 
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: Text('Picking Day'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 50,bottom: 10,right: 15),
-                  child:Container(
-                    width: 200,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.blue)),
-                    child: DropdownButtonFormField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide.none),
-                          contentPadding: EdgeInsets.only(bottom: 10),
-                          prefix: SizedBox(
-                            width: 10,
-                          ),
-                          hintText: 'Select',
-                          hintStyle: TextStyle(fontWeight: FontWeight.normal)
-                      ), items: [
-                      DropdownMenuItem(child: Text('select'))
-                    ],
-                      onChanged: (value) {  },
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: Text('Picking Time'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 50,bottom: 10,right: 15),
-                  child:Container(
-                    width: 200,
-                    height: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.blue)),
-                    child: DropdownButtonFormField(
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(borderSide: BorderSide.none),
-                          contentPadding: EdgeInsets.only(bottom: 10),
-                          prefix: SizedBox(
-                            width: 10,
-                          ),
-                          hintText: 'Select',
-                          hintStyle: TextStyle(fontWeight: FontWeight.normal)
-                      ), items: [
-                      DropdownMenuItem(child: Text('select'))
-                    ],
-                      onChanged: (value) {  },
-                    ),
-                  ),
-                )
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: Text('Credit Date'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40,bottom: 10,right: 15),
-                  child: Container(
-                      height: 40,
-                      width: 200,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.blue)),
-                      child:Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text("12/08/2023"),
-                      ) ),
-                )
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: Text('Credit Limit'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40,bottom: 10,right: 15),
-                  child: Container(
-                      height: 40,
-                      width: 200,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.blue)),
-                      child: TextFormField(
-                        decoration: InputDecoration(border: OutlineInputBorder(borderSide: BorderSide.none)),
-                      )),
-                )
-              ],
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40),
-                  child: SizedBox(
-                    width: 120,
-                      child: Text('No. Of Max Unpaid Invoices')),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 10,bottom: 10,right: 15),
-                  child: Container(
-                      height: 40,
-                      width: 200,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: Colors.blue)),
-                      child: TextFormField(
-                        decoration: InputDecoration(border: OutlineInputBorder(borderSide: BorderSide.none)),
-                      )),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: SizedBox(
-                width: 100,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.deepPurple),
-                    onPressed: () {
                     },
-                    child: Text('Save',style: TextStyle(color: Colors.white),)),
-              ),
+                    child: Text(
+                      "Add Data",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
             ),
-    ]
-      ),
-      )
-    );
+          ),
+        ));
   }
+  void getLocation() async {
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low);
+    setState(() {
+      latController.text = position.latitude.toString();
+      longController.text = position.longitude.toString();
+    });
+  }
+
 }
