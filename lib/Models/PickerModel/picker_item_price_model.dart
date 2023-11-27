@@ -1,8 +1,16 @@
+// To parse this JSON data, do
+//
+//     final pickerItemsPriceModel = pickerItemsPriceModelFromJson(jsonString);
+
 import 'dart:convert';
+
+PickerItemsPriceModel pickerItemsPriceModelFromJson(String str) => PickerItemsPriceModel.fromJson(json.decode(str));
+
+String pickerItemsPriceModelToJson(PickerItemsPriceModel data) => json.encode(data.toJson());
 
 class PickerItemsPriceModel {
   bool status;
-  List<List<PckItemPriceList>> data;
+  List<PckItemPriceList> data;
   String message;
 
   PickerItemsPriceModel({
@@ -11,30 +19,15 @@ class PickerItemsPriceModel {
     required this.message,
   });
 
-  PickerItemsPriceModel copyWith({
-    bool? status,
-    List<List<PckItemPriceList>>? data,
-    String? message,
-  }) =>
-      PickerItemsPriceModel(
-        status: status ?? this.status,
-        data: data ?? this.data,
-        message: message ?? this.message,
-      );
-
-  factory PickerItemsPriceModel.fromRawJson(String str) => PickerItemsPriceModel.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory PickerItemsPriceModel.fromJson(Map<String, dynamic> json) => PickerItemsPriceModel(
     status: json["status"],
-    data: List<List<PckItemPriceList>>.from(json["data"].map((x) => List<PckItemPriceList>.from(x.map((x) => PckItemPriceList.fromJson(x))))),
+    data: List<PckItemPriceList>.from(json["data"].map((x) => PckItemPriceList.fromJson(x))),
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": List<dynamic>.from(data.map((x) => List<dynamic>.from(x.map((x) => x.toJson())))),
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
     "message": message,
   };
 }
@@ -49,21 +42,6 @@ class PckItemPriceList {
     required this.amount,
     required this.itemServices,
   });
-
-  PckItemPriceList copyWith({
-    String? priceListId,
-    String? amount,
-    ItemServices? itemServices,
-  }) =>
-      PckItemPriceList(
-        priceListId: priceListId ?? this.priceListId,
-        amount: amount ?? this.amount,
-        itemServices: itemServices ?? this.itemServices,
-      );
-
-  factory PckItemPriceList.fromRawJson(String str) => PckItemPriceList.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory PckItemPriceList.fromJson(Map<String, dynamic> json) => PckItemPriceList(
     priceListId: json["price_list_id"],
@@ -87,19 +65,6 @@ class ItemServices {
     required this.item,
   });
 
-  ItemServices copyWith({
-    String? itemSerId,
-    Item? item,
-  }) =>
-      ItemServices(
-        itemSerId: itemSerId ?? this.itemSerId,
-        item: item ?? this.item,
-      );
-
-  factory ItemServices.fromRawJson(String str) => ItemServices.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory ItemServices.fromJson(Map<String, dynamic> json) => ItemServices(
     itemSerId: json["item_ser_id"],
     item: Item.fromJson(json["item"]),
@@ -121,21 +86,6 @@ class Item {
     required this.itemName,
     required this.itemImage,
   });
-
-  Item copyWith({
-    String? itemId,
-    String? itemName,
-    String? itemImage,
-  }) =>
-      Item(
-        itemId: itemId ?? this.itemId,
-        itemName: itemName ?? this.itemName,
-        itemImage: itemImage ?? this.itemImage,
-      );
-
-  factory Item.fromRawJson(String str) => Item.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
     itemId: json["item_id"],

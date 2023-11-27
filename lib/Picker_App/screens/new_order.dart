@@ -102,7 +102,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   color: Colors.transparent,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                           width: 1.5,
                                           color: pickerPrimaryColor))),
                               child: Container(
@@ -149,7 +149,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                     }),
                               )),
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: Container(
                               alignment: Alignment.center,
@@ -160,7 +160,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   color: Colors.transparent,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                           width: 1.5,
                                           color: pickerPrimaryColor))),
                               child: Container(
@@ -204,7 +204,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -218,7 +218,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   color: Colors.transparent,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                           width: 1.5,
                                           color: pickerPrimaryColor))),
                               child: Container(
@@ -265,7 +265,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                     }),
                               )),
                         ),
-                        SizedBox(width: 12),
+                        const SizedBox(width: 12),
                         Expanded(
                           child: Container(
                               alignment: Alignment.center,
@@ -276,7 +276,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                   color: Colors.transparent,
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(15),
-                                      side: BorderSide(
+                                      side: const BorderSide(
                                           width: 1.5,
                                           color: pickerPrimaryColor))),
                               child: Container(
@@ -336,19 +336,19 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
@@ -363,25 +363,25 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                     onChanged: (value) {},
                                   ),
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Expanded(
                                   child: DropdownButtonFormField(
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
@@ -413,19 +413,19 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
@@ -447,25 +447,25 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                     },
                                   ),
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Expanded(
                                   child: DropdownButtonFormField(
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
@@ -493,19 +493,19 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
@@ -526,19 +526,19 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       focusedBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
                                       enabledBorder: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(15),
-                                        borderSide: BorderSide(
+                                        borderSide: const BorderSide(
                                             color: pickerPrimaryColor,
                                             width: 1.5),
                                       ),
@@ -561,6 +561,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                     ),
                   ],
                 ),
+                SizedBox(height: 25,),
                 BlocBuilder<PickerBloc, PickerState>(
                     builder: (context, state) {
                       if (state is AddedNewOrderState) {
@@ -575,7 +576,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                 color: pickerPrimaryColor,
                               ),
                               showCheckboxColumn: false,
-                              columns: [
+                              columns: const [
                                 DataColumn(label: Center(child: Text("Sl.No"))),
                                 DataColumn(label: Center(child: Text("Order Id"))),
                                 DataColumn(label: Center(child: Text("Order No"))),
@@ -603,7 +604,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                         );
                       } else {
                         print(state.toString());
-                        return Center(child: Text("Error"),);
+                        return const Center(child: Text("Error"),);
                       }
                     },
                 )

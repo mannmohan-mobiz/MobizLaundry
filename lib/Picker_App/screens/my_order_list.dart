@@ -62,7 +62,7 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                             ),
                             elevation: 15.0,
                           ),
-                          child: Text(
+                          child: const Text(
                             'Create New',
                             style: TextStyle(
                                 color: Colors.white,
@@ -81,7 +81,7 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                               color: Colors.transparent,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(2.0),
-                                  side: BorderSide(
+                                  side: const BorderSide(
                                       width: 2, color: pickerPrimaryColor))),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,15 +90,15 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                               Container(
                                 margin:
                                     EdgeInsets.only(left: size.width * 0.02),
-                                child: Text(
+                                child: const Text(
                                   'Search....',
                                 ),
                               ),
                               Container(
-                                  decoration: BoxDecoration(
+                                  decoration: const BoxDecoration(
                                       color: pickerLightGreyColor),
                                   child: IconButton(
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.search,
                                       color: pickerPrimaryColor,
                                       size: 22,
@@ -117,16 +117,16 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                 BlocBuilder<PickerBloc, PickerState>(
                   builder: (context, state) {
                     if (state is PickupListFetching) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (state is PickupListFetched) {
                       return SingleChildScrollView(
                         scrollDirection: Axis.vertical,
-                        padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: DataTable(
                             border: TableBorder.all(color: pickerPrimaryColor),
-                            columns: [
+                            columns: const [
                               DataColumn(label: Center(child: Text("Sl.No"))),
                               DataColumn(label: Center(child: Text("Ord.No"))),
                               DataColumn(
@@ -182,7 +182,7 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                                             () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomePage(),), (route) => false),
                                           );
                                         },
-                                        child: Text(
+                                        child: const Text(
                                           "Confirm Order",
                                           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                                         ),
@@ -196,7 +196,7 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                         ),
                       );
                     } else {
-                      return Center(child: Text('No Data'));
+                      return const Center(child: Text('No Data'));
                     }
                   },
                 ),
@@ -421,7 +421,7 @@ class MyOrderScreenState extends State<MyOrderScreen> {
           ),
         ),
         bottomNavigationBar: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
           ),

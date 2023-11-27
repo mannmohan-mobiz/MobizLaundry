@@ -624,6 +624,7 @@ class PickerRepository {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        print('######RESPONSE${response}');
         var result = PickerItemsPriceModel.fromJson(response.data);
         return result;
       } else {

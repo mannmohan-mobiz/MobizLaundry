@@ -64,7 +64,7 @@ class NavigationScreenState extends State<NavigationScreen> {
                         Container(
                           margin: EdgeInsets.only(
                               right: size.width * 0.03),
-                          width: size.width * 0.23,
+                          width: size.width * 0.26,
                           height: size.height * 0.05,
                           padding: EdgeInsets.all(5),
                           /* decoration: BoxDecoration(
@@ -81,7 +81,7 @@ class NavigationScreenState extends State<NavigationScreen> {
                               ),
                               elevation: 15.0,
                             ),
-                            child: Row(
+                            child: const Row(
                               children: [
                                 Icon(
                                   Icons.call,
@@ -152,7 +152,7 @@ class NavigationScreenState extends State<NavigationScreen> {
               ),
               Container(
                 height: size.height * 2.8,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   color: pickerGreyColor
                 ),
                 child: GoogleMap(
@@ -165,7 +165,7 @@ class NavigationScreenState extends State<NavigationScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
         ),

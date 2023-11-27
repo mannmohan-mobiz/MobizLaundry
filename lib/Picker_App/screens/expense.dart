@@ -152,6 +152,9 @@ class ExpenseScreenState extends State<ExpenseScreen> {
                         return Text("Fetching...");
                       } else if  (state is ExpenseFetchedState) {
                           return DataTable(
+                            border: TableBorder.all(
+                              color: pickerPrimaryColor,
+                            ),
                             columns: [
                               DataColumn(label: Text('Sl. No')),
                               DataColumn(label: Text('Expense Head')),

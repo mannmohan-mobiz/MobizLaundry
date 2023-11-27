@@ -498,7 +498,7 @@ class PckItemFetchingState extends PickerState {
 }
 
 class PckItemFetchedState extends PickerState {
-  List<List<PckItemPriceList>> pckItemList = [];
+  List<PckItemPriceList> pckItemList = [];
 
   PckItemFetchedState(this.pckItemList);
 

@@ -26,7 +26,7 @@ class _NewOrderScreen2State extends State<NewOrderScreen2> {
         preferredSize:
         Size.fromHeight(MediaQuery.of(context).size.height * 0.20),
         child: Appbar(
-          text: 'New Order Form - 2',
+          text: 'Choose Category',
         ),
       ),
       drawer: const MenuDrawer(),

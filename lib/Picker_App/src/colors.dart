@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 
 const Color pickerPrimaryColor = Color(0xff37117e);
+const Color pickerButtonColor = Color(0xffCEDCDF);
+const Color barrierColor = Color(0xff2e6c6436);
 const Color pickerRedColor = Color(0xffcf442e);
 const Color pickerBgColor = Color(0xffefefef);
 const Color pickerLightGreenColor = Color(0xff35bd44);

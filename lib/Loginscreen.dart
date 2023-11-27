@@ -166,7 +166,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Welcome",
+                          const Text("Welcome",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -259,7 +259,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   );
                 } else {
-                  print(state.toString());
+                  print('##### ${state.toString()}');
                   return Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(

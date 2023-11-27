@@ -69,6 +69,7 @@ class Data {
 
   String toRawJson() => json.encode(toJson());
 
+
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     id: json["id"],
     username: json["username"],
@@ -82,4 +83,5 @@ class Data {
     "user_type": userType,
     "tok_en": tokEn,
   };
+
 }
