@@ -43,7 +43,7 @@ class Appbar extends StatelessWidget{
         child: Image.network('http://68.183.94.11:772/static/images/golden.jpeg', fit: BoxFit.scaleDown,),
       ),
       actions: [
-        IconButton(onPressed: () {}, icon: Icon(Icons.refresh,color: Colors.white,)),
+        IconButton(onPressed: () {}, icon: const Icon(Icons.refresh,color: Colors.white,)),
         PopupMenuButton<String>(
           color: Colors.white,
           onSelected: handleClick,
@@ -61,7 +61,7 @@ class Appbar extends StatelessWidget{
         onPressed: () {
           Scaffold.of(context).openDrawer();
         },
-        icon: Icon(
+        icon: const Icon(
           Icons.menu,
           color: Colors.white,
           size: 30,

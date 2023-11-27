@@ -1,8 +1,16 @@
+// To parse this JSON data, do
+//
+//     final pickerItemsPriceModel = pickerItemsPriceModelFromJson(jsonString);
+
 import 'dart:convert';
+
+PickerItemsPriceModel pickerItemsPriceModelFromJson(String str) => PickerItemsPriceModel.fromJson(json.decode(str));
+
+String pickerItemsPriceModelToJson(PickerItemsPriceModel data) => json.encode(data.toJson());
 
 class PickerItemsPriceModel {
   bool status;
-  List<List<PckItemPriceList>> data;
+  List<PckItemPriceList> data;
   String message;
 
   PickerItemsPriceModel({
@@ -11,38 +19,18 @@ class PickerItemsPriceModel {
     required this.message,
   });
 
-  PickerItemsPriceModel copyWith({
-    bool? status,
-    List<List<PckItemPriceList>>? data,
-    String? message,
-  }) =>
-      PickerItemsPriceModel(
-        status: status ?? this.status,
-        data: data ?? this.data,
-        message: message ?? this.message,
-      );
-
-  factory PickerItemsPriceModel.fromRawJson(String str) => PickerItemsPriceModel.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory PickerItemsPriceModel.fromJson(Map<String, dynamic> json) => PickerItemsPriceModel(
     status: json["status"],
-    data: List<List<PckItemPriceList>>.from(json["data"].map((x) => List<PckItemPriceList>.from(x.map((x) => PckItemPriceList.fromJson(x))))),
+    data: List<PckItemPriceList>.from(json["data"].map((x) => PckItemPriceList.fromJson(x))),
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": List<dynamic>.from(data.map((x) => List<dynamic>.from(x.map((x) => x.toJson())))),
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
     "message": message,
   };
 }
-
-
-/// price_list_id : "204f52f9-2028-4c97-877f-796fc6fc225a"
-/// amount : "2"
-/// item_services : {"item_ser_id":"7b122c67-a82a-4fec-9b19-439d7dfec0de","item":{"item_id":"a4b6880c-faa4-4dda-9e28-b3b690e8df95","item_name":"Shirts","item_image":"/media/shirts.jpeg"}}
 
 class PckItemPriceList {
   String priceListId;
@@ -68,8 +56,6 @@ class PckItemPriceList {
   };
 }
 
-/// item_ser_id : "7b122c67-a82a-4fec-9b19-439d7dfec0de"
-/// item : {"item_id":"a4b6880c-faa4-4dda-9e28-b3b690e8df95","item_name":"Shirts","item_image":"/media/shirts.jpeg"}
 class ItemServices {
   String itemSerId;
   Item item;
@@ -89,10 +75,6 @@ class ItemServices {
     "item": item.toJson(),
   };
 }
-
-/// item_id : "a4b6880c-faa4-4dda-9e28-b3b690e8df95"
-/// item_name : "Shirts"
-/// item_image : "/media/shirts.jpeg"
 
 class Item {
   String itemId;

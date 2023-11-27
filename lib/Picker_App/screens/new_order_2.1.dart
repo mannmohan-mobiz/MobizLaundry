@@ -29,16 +29,16 @@ class _NewOrderScreen2_1State extends State<NewOrderScreen2_1> {
           color: Colors.white,
           onPressed: () => Navigator.pop(context),
         ),
-        title: Text("New Order Form - 2", style: TextStyle(color: Colors.white),),
+        title: const Text("Choose Subcategory", style: TextStyle(color: Colors.white),),
         centerTitle: true,
       ),
       drawer: const MenuDrawer(),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
         ),
-        child: BottomDrawer(),
+        child: const BottomDrawer(),
       ),
       body: BlocProvider(
         create: (context) => PickerBloc(
@@ -47,16 +47,16 @@ class _NewOrderScreen2_1State extends State<NewOrderScreen2_1> {
         child: BlocBuilder<PickerBloc, PickerState>(
           builder: (context, state) {
             if (state is PckSubCategoryFetchingState) {
-              return Center(child: Text('Loading..'),);
+              return const Center(child: Text('Loading..'),);
             } else if (state is PckSubCategoryFetchedState) {
-              if (state.subCategList.length > 0)
+              if (state.subCategList.length > 0) {
                 return ListView.builder(
                 itemCount: state.subCategList.length,
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: () {
                       authData.setSubCatId(state.subCategList[index].subCatId);
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => NewOrderScreen_2_2(),));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const NewOrderScreen_2_2(),));
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12),
@@ -86,14 +86,14 @@ class _NewOrderScreen2_1State extends State<NewOrderScreen2_1> {
                                           baseUrl+state.subCategList[index].subServiceMaster.subCatImage,
                                           fit: BoxFit.fill,
                                         )),
-                                    SizedBox(width: 20),
+                                    const SizedBox(width: 20),
                                     Column(
                                       crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           state.subCategList[index].subServiceMaster.subCatName,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 22,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -102,7 +102,7 @@ class _NewOrderScreen2_1State extends State<NewOrderScreen2_1> {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 20),
+                                const SizedBox(height: 20),
                               ],
                             ),
                           ),
@@ -112,10 +112,11 @@ class _NewOrderScreen2_1State extends State<NewOrderScreen2_1> {
                   );
                 },
               );
-              else
-                return Center(child: Text("No Data!"),);
+              } else {
+                return const Center(child: Text("No Data!"),);
+              }
             } else {
-              return Center(child: Text("Error loading Data"),);
+              return const Center(child: Text("Error loading Data"),);
             }
           },
         ),

@@ -212,6 +212,9 @@ class DepsoitHistoryScreenState extends State<DepsoitHistoryScreen> {
                         height: size.height * 0.05,
                       ),
                       DataTable(
+                        border: TableBorder.all(
+                          color: pickerPrimaryColor,
+                        ),
                         columns: [
                           DataColumn(label: Text('Sl.No')),
                           DataColumn(label: Text('Deposit Date')),

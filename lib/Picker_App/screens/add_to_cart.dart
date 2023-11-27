@@ -75,6 +75,12 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                   ElevatedButton(
                     child: Text("Add to Cart", style: TextStyle(color: Colors.white),),
                     onPressed: () {
+                      print('###1#${widget.data[0]['price_list_id']}');
+                      print('###2#${widget.data[0]['item_ser_id']}');
+                      print('###3#${widget.data[0]['quantity']}');
+                      print('###4#${widget.data[0]['amount']}');
+                      print('###5#${widget.data[0]['order_id']}');
+
                       Map<String, String> data = {
                         "price_list_id": widget.data[0]['price_list_id'],
                         "item_ser_id": widget.data[0]['item_ser_id'],
@@ -85,7 +91,7 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                       // BlocProvider.of<PickerBloc>(context).add(PckAddtoCartEvent(data, authData.user_token.toString()));
                       pickerRepository.addToCart(token: authData.user_token.toString(), body: data).then((value) {
                         if (value.status == true) {
-                          print(value);
+                          print('#######ssss$value');
                           cartData.add(value.data as AddCartList);
                         }
                       });
@@ -98,7 +104,7 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                 ]
               )
             ),
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
             BlocListener<PickerBloc, PickerState>(
               listener: (context, state) {
                 if (state is PckAddedtoCartState) {
