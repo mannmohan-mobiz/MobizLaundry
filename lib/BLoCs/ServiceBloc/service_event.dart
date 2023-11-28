@@ -72,6 +72,89 @@ class ServiceInProcessOrderDetailsEvent extends ServiceEvent {
 
 }
 
+// Completed Order List
+class ServiceCompletedOrderListEvent extends ServiceEvent {
+  final String token;
+  final String id;
+
+  ServiceCompletedOrderListEvent(this.token, this.id);
+
+  @override
+  List<Object?> get props => [token, id];
+}
+
+// Ready for Deliver List
+class ServiceReadyToDeliverOrderListEvent extends ServiceEvent {
+  final String token;
+  final String id;
+
+  ServiceReadyToDeliverOrderListEvent(this.token, this.id);
+
+  @override
+  List<Object?> get props => [token, id];
+}
+
+// Undelivered Order List
+class ServiceUndeliveredOrderListEvent extends ServiceEvent {
+  final String token;
+  final String id;
+
+  ServiceUndeliveredOrderListEvent(this.token, this.id);
+
+  @override
+  List<Object?> get props => [token, id];
+}
+
+// LocPrc Fetching
+class ServiceLocPrcFetchingEvent extends ServiceEvent {
+  final String token;
+
+  ServiceLocPrcFetchingEvent(this.token);
+
+  @override
+  List<Object?> get props => [token];
+}
+
+// Add new client
+class ServiceAddnewClientEvent extends ServiceEvent {
+  final String token;
+  final Map<String , String> body;
+
+  ServiceAddnewClientEvent(this.token, this.body);
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [token, body];
+}
+
+// Client List
+class ServiceClientListFetchEvent extends ServiceEvent {
+  final String token;
+  final String userId;
+
+  ServiceClientListFetchEvent(this.token, this.userId);
+
+  @override
+  List<Object?> get props => [token, userId];
+}
+
+// Client Details
+class ServiceClientDetailsEvent extends ServiceEvent {
+  final String token;
+  final Map<String, String> body;
+
+  ServiceClientDetailsEvent(this.token, this.body);
+
+  @override
+  List<Object?> get props => [token, body];
+}
+
+// MainOrder
+class ServiceMainOrderAddEvent extends ServiceEvent {
+  final String token;
+  final Map<String, String> body;
+}
+
 // Complaint List Fetching
 // class ComplaintListFetchEvent extends ServiceEvent{
 //   final String token;

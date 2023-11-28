@@ -11,8 +11,12 @@ import 'package:golden_falcon/Service_Staff/ServiceNewOrder_Screen.dart';
 import 'package:golden_falcon/Service_Staff/ServiceNotifications.dart';
 import 'package:golden_falcon/Service_Staff/ServicePending_screen.dart';
 import 'package:golden_falcon/Service_Staff/ServiceUndelivered_Screen.dart';
+import 'package:golden_falcon/Service_Staff/Service_Client_List.dart';
+import 'package:golden_falcon/Utils/common.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Loginscreen.dart';
 import '../Repositories/AuthRepo/auth_repository.dart';
+import '../main.dart';
 import 'Dispatched_items.dart';
 import 'Language84.dart';
 import 'Order_status.dart';
@@ -166,6 +170,23 @@ class _StaffServiceDashboardState extends State<StaffServiceDashboard> {
     });
   }
 
+  String userId = '';
+  String userToken = '';
+  String userType = '';
+
+  getData() async {
+    userId = await getUserId();
+    userToken = await getUserToken();
+    userType = await getUserType();
+  }
+
+  @override
+  void initState() {
+    getData();
+    print(userId);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -173,10 +194,14 @@ class _StaffServiceDashboardState extends State<StaffServiceDashboard> {
       child: BlocProvider(
         create: (context) => ServiceBloc(
           RepositoryProvider.of<ServiceRepository>(context),
-        )..add(ServiceDashboardCountEvent(authData.user_token.toString(), authData.user_id.toString())),
+        )..add(ServiceDashboardCountEvent(
+            authData.user_token.toString().isNotEmpty ? authData.user_token.toString() : userToken,
+            authData.user_id.toString().isNotEmpty ? authData.user_id.toString() : userId
+        )),
         child: BlocBuilder<ServiceBloc, ServiceState>(
-            builder: (context, state) {
+            builder: (context, state)  {
               if (state is ServiceDashboardCountFetchingState) {
+                print(state.toString());
                 return Scaffold(
                   appBar: AppBar(
                     iconTheme: IconThemeData(color: Colors.deepPurple, size: 30),
@@ -283,7 +308,8 @@ class _StaffServiceDashboardState extends State<StaffServiceDashboard> {
                   ),
                   body: Center(child: CircularProgressIndicator(),),
                 );
-              } else if (state is ServiceDashboardCountFetchedState) {
+              } else if (state is ServiceDashboardCountFetchedState)  {
+                print(state.toString());
                 return Scaffold(
                   appBar: AppBar(
                     iconTheme: IconThemeData(color: Colors.deepPurple, size: 30),
@@ -654,6 +680,19 @@ class _StaffServiceDashboardState extends State<StaffServiceDashboard> {
                             ],
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 30),
+                          child: ElevatedButton(
+                              onPressed: () => Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => MyClients(),), (route) => false),
+                              child: Text(
+                                  "My Clients",
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.deepPurple
+                            ),
+                          ),
+                        )
 
                         //  Padding(
                         //   padding: const EdgeInsets.only(top:30,bottom: 10),
@@ -1125,6 +1164,7 @@ class _StaffServiceDashboardState extends State<StaffServiceDashboard> {
                   ),
                 );
               } else if (state is ServiceDashboardCountErrorState) {
+                print(state.toString());
                 return Scaffold(
                   appBar: AppBar(
                     iconTheme: IconThemeData(color: Colors.deepPurple, size: 30),
@@ -1232,6 +1272,7 @@ class _StaffServiceDashboardState extends State<StaffServiceDashboard> {
                   body: Center(child: Text(state.message),),
                 );
               } else {
+                print(state.toString());
                 return Container();
               }
             },

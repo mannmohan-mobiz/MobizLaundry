@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 // String baseUrl = "http://68.183.94.11:90/";
 // String baseUrl = "http://bijoy.pythonanywhere.com/";
 String baseUrl = "http://68.183.94.11:772/";
@@ -73,5 +74,41 @@ class AuthData {
   }
 
 
+
 }
 
+storeUserData(id, token, type) async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setString("userId", id);
+  prefs.setString("userToken", token);
+  prefs.setString("userType", type);
+}
+
+getUserId() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String stringValue = prefs.getString('userId')!;
+  return stringValue;
+}
+
+getUserType() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String stringValue = prefs.getString('userType')!;
+  return stringValue;
+}
+
+getUserToken() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Return String
+  String stringValue = prefs.getString('userToken')!;
+  return stringValue;
+}
+
+removeValues() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  //Remove String
+  prefs.remove("userId");
+  prefs.remove("userToken");
+  prefs.remove("userType");
+}

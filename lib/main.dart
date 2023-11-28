@@ -13,6 +13,7 @@ import 'package:golden_falcon/Repositories/CustomerRepo/customer_repository.dart
 import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
 import 'package:golden_falcon/Repositories/ServiceRepository/service_repository.dart';
 import 'package:golden_falcon/Service_Staff/Service_staff_dashboard_75.dart';
+import 'package:golden_falcon/Utils/common.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'Loginscreen.dart';
@@ -29,7 +30,7 @@ import 'Picker_App/screens/order_report.dart';
 import 'Picker_App/screens/outstanding_due.dart';
 import 'Picker_App/screens/ready_dispatch.dart';
 
-void main()  {
+void main() {
   final authRepository = AuthRepository();
   final pickerRepository = PickerRepository();
   final customerRepository = CustomerRepository();
@@ -59,9 +60,14 @@ void main()  {
   ));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
