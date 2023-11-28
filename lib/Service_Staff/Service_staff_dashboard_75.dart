@@ -264,21 +264,6 @@ class _StaffServiceDashboardState extends State<StaffServiceDashboard> {
                         ),
                         ListTile(
                           leading: Icon(
-                            Icons.shopping_cart,
-                            color: Colors.deepPurple,
-                            size: 20,
-                          ),
-                          title: Text('My Cart',
-                              style: TextStyle(color: Colors.deepPurple, fontSize: 15)),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => MyCartScreen()),
-                            );
-                          },
-                        ),
-                        ListTile(
-                          leading: Icon(
                             Icons.language,
                             color: Colors.deepPurple,
                             size: 20,
@@ -385,6 +370,22 @@ class _StaffServiceDashboardState extends State<StaffServiceDashboard> {
                             );
                           },
                         ),
+                        ListTile(
+                          leading: Icon(
+                            Icons.shopping_cart,
+                            color: Colors.deepPurple,
+                            size: 20,
+                          ),
+                          title: Text('My Cart',
+                              style: TextStyle(color: Colors.deepPurple, fontSize: 15)),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => MyCartScreen()),
+                            );
+                          },
+                        ),
+
                         ListTile(
                           leading: Icon(
                             Icons.language,
