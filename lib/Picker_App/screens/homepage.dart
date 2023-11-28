@@ -19,6 +19,7 @@ import '../util/bottom_navigation_bar.dart';
 import '../util/drawer.dart';
 import '../model/chart_data.dart';
 import '../util/open_painter.dart';
+import 'home_page_new.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -84,11 +85,11 @@ class HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
         ),
-        child: BottomDrawer(),
+        child: const BottomDrawer(),
       ),
       drawer: const MenuDrawer(),
       body: SingleChildScrollView(
@@ -96,12 +97,12 @@ class HomePageState extends State<HomePage> {
           children: [
             Container(
               padding: EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   border: Border.symmetric(
                       horizontal: BorderSide(
                         color: pickerPrimaryColor,
                       ))),
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Field Staff Dashboard',
                   style: TextStyle(
@@ -124,7 +125,7 @@ class HomePageState extends State<HomePage> {
                           "New Order",
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyOrderScreen()), (route) => false),
+                        onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomePageNew()), (route) => false),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: pickerPrimaryColor,
                             fixedSize: Size.fromWidth(130)),
@@ -205,7 +206,7 @@ class HomePageState extends State<HomePage> {
                   builder: (context, state) {
                     if (state is DashboardCountGettingState) {
                       print(state.toString());
-                      return Column(
+                      return const Column(
                         children: [
                           ShimmerRow(),
                           ShimmerRow(),
