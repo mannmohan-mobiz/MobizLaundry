@@ -69,22 +69,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
-  String userId = '';
-  String userToken = '';
-  String userType = '';
-
-  getDetailsIfPresent() async {
-    userId = await getUserId();
-    userToken = await getUserToken();
-    userType = await getUserType();
-  }
-
-  @override
-  void initState() {
-    getDetailsIfPresent();
-    print('$userId $userToken, $userType');
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     print(authData.user_type);
@@ -97,11 +81,7 @@ class _MyAppState extends State<MyApp> {
         colorScheme: ColorScheme.fromSeed(
             primary: Colors.black, seedColor: Colors.white),
       ),
-      home: userId.isEmpty ? LoginPage() :
-      userType == "Customer" ? CustomerHomeScreen() :
-      userType == "Staff" ? StaffServiceDashboard() :
-      userType == "Picker" ? HomePage() :
-      Navigation(),
+      home: LoginPage(),
       routes: {
         'Home': (context) => const HomePage(),
         'Attendance': (context) => AttendanceScreen(),

@@ -20,6 +20,7 @@ import '../../Models/ServiceModel/ServiceAddCustomer/ServiceClientListModel.dart
 import '../../Models/ServiceModel/ServiceAddCustomer/ServiceNewClientModel.dart';
 import '../../Models/ServiceModel/ServiceDispatchedOrder/serviceDispatchedOrderListModel.dart';
 import '../../Models/ServiceModel/ServiceInProcessOrder/serviceInProcessOrderDetailsModel.dart';
+import '../../Models/ServiceModel/ServiceNewOrder/newOrderData.dart';
 
 class ServiceRepository {
   Dio dio = Dio();
@@ -465,6 +466,31 @@ class ServiceRepository {
       print(response.data);
       if (response.statusCode == 200 ) {
         var result = ServiceClientDetailsModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Create Main Order
+  Future<ServiceMainOrderDataModel> addMainOrder({required String token, required Map<String, String> body}) async {
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        '${baseUrl}service/add_new_order_api',
+        data: body,
+        options: Options(
+          headers: {
+            'Authorization': 'Basic $token'
+          }
+        )
+      );
+
+      if (response.statusCode == 200) {
+        var result = ServiceMainOrderDataModel.fromJson(response.data);
         return result;
       } else {
         return response.data;

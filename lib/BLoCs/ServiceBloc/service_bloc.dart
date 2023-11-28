@@ -15,6 +15,7 @@ import '../../Models/ServiceModel/ServiceAddCustomer/ServiceClientDetailsModel.d
 import '../../Models/ServiceModel/ServiceAddCustomer/ServiceClientListModel.dart';
 import '../../Models/ServiceModel/ServiceCompletedOrder/serviceCompletedOrderListModel.dart';
 import '../../Models/ServiceModel/ServiceInProcessOrder/serviceInProcessOrderListModel.dart';
+import '../../Models/ServiceModel/ServiceNewOrder/newOrderData.dart';
 import '../../Models/ServiceModel/ServiceReadytoDeliverModel/serviceReadytoDeliverListModel.dart';
 import '../../Models/ServiceModel/ServiceUnedeliveredModel/serviceOrderUndeliveredListModel.dart';
 

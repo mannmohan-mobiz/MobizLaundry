@@ -316,3 +316,27 @@ class ServiceClientDetailsError extends ServiceState {
   @override
   List<Object?> get props => [message];
 }
+
+
+class ServiceAddingNewOrderState extends ServiceState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ServiceAddedNewOrderState extends ServiceState {
+  final MainOrderData orderData;
+
+  ServiceAddedNewOrderState(this.orderData);
+
+  @override
+  List<Object?> get props => [orderData];
+}
+
+class ServiceAddOrderError extends ServiceState {
+  final String message;
+
+  ServiceAddOrderError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}

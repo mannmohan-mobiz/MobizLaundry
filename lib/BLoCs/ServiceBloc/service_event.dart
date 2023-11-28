@@ -149,6 +149,12 @@ class ServiceClientDetailsEvent extends ServiceEvent {
   List<Object?> get props => [token, body];
 }
 
+// MainOrder
+class ServiceMainOrderAddEvent extends ServiceEvent {
+  final String token;
+  final Map<String, String> body;
+}
+
 // Complaint List Fetching
 // class ComplaintListFetchEvent extends ServiceEvent{
 //   final String token;
