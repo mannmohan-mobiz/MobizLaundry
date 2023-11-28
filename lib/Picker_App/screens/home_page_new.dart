@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 
 import '../src/colors.dart';
 import '../util/bottom_navigation_new.dart';
+import '../util/common_methods.dart';
+import '../util/drawer.dart';
+import '../util/drawer.dart';
+import '../util/side_bar_page.dart';
 
 class HomePageNew extends StatefulWidget {
   const HomePageNew({super.key});
@@ -12,6 +16,7 @@ class HomePageNew extends StatefulWidget {
 }
 
 class _HomePageNewState extends State<HomePageNew> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     List<String> labelText = [
@@ -28,7 +33,9 @@ class _HomePageNewState extends State<HomePageNew> {
     List<String> labelButtonText2 = ['Create Client', 'My Clients','Undelivered'];
 
     return   Scaffold(
-     backgroundColor:pickerBackgroundColor,
+      key: _scaffoldKey,
+      backgroundColor:pickerBackgroundColor,
+      drawer:  const SideMenuPage(),
       appBar: AppBar(
         backgroundColor: pickerWhiteColor,
         toolbarHeight: 150.0,
@@ -38,7 +45,7 @@ class _HomePageNewState extends State<HomePageNew> {
         ),
         leading: IconButton(
           onPressed: () {
-            //Scaffold.of(context).openDrawer();
+            _scaffoldKey.currentState?.openDrawer();
           },
           icon: const Icon(
             Icons.menu,
