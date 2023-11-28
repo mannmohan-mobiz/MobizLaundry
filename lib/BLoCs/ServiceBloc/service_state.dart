@@ -61,7 +61,6 @@ class ServicePendingOrderListErrorState extends ServiceState {
   List<Object?> get props => [message];
 }
 
-
 class ServiceDispatchedOrderListFetchingState extends ServiceState {
   @override
   // TODO: implement props
@@ -229,13 +228,12 @@ class ServiceUndeliveredOrderListErrorState extends ServiceState {
   List<Object?> get props => [message];
 }
 
-
 class ServiceLocPrcFetchingState extends ServiceState {
   @override
   List<Object?> get props => [];
 }
 
-class ServiceLocPrcFetchedState extends ServiceState{
+class ServiceLocPrcFetchedState extends ServiceState {
   final LocPrcData lpData;
 
   ServiceLocPrcFetchedState(this.lpData);
@@ -317,7 +315,6 @@ class ServiceClientDetailsError extends ServiceState {
   List<Object?> get props => [message];
 }
 
-
 class ServiceAddingNewOrderState extends ServiceState {
   @override
   List<Object?> get props => [];
@@ -337,6 +334,29 @@ class ServiceAddOrderError extends ServiceState {
 
   ServiceAddOrderError(this.message);
 
+  @override
+  List<Object?> get props => [message];
+}
+
+class ServiceCategoryFetchingState extends ServiceState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ServiceCategoryFetchedState extends ServiceState {
+  final List<CategoryData> categdata;
+
+  ServiceCategoryFetchedState(this.categdata);
+  
+  @override
+  List<Object?> get props => [categdata];
+}
+
+class ServiceCategoryFetchingErrorState extends ServiceState {
+  final String message;
+
+  ServiceCategoryFetchingErrorState(this.message);
+  
   @override
   List<Object?> get props => [message];
 }

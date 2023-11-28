@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:golden_falcon/BLoCs/PickerBloc/picker_bloc.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceAddCustomer/locationProceListModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceDashboard/serviceDashboardCountModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceDispatchedOrder/serviceDispatchedOrderDetail.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceDispatchedOrder/serviceDispatchedOrderListModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceInProcessOrder/serviceInProcessOrderDetailsModel.dart';
+import 'package:golden_falcon/Models/ServiceModel/ServiceNewOrder/categoryModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServicePendingOrder/servicePendingOrderListModel.dart';
 import 'package:golden_falcon/Repositories/ServiceRepository/service_repository.dart';
 
@@ -206,6 +206,34 @@ class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
         });
       } catch (e) {
         emit(ServiceClientDetailsError(e.toString()));
+      }
+    });
+    on<ServiceMainOrderAddEvent>((event, emit) async {
+      emit(ServiceAddingNewOrderState());
+      try {
+        await serviceRepository.addMainOrder(token: event.token, body: event.body).then((value) {
+            if (value.status == true && value.message == "Order Successfully Saved!") {
+              emit(ServiceAddedNewOrderState(value.data));
+            } else {
+              emit(ServiceAddOrderError(value.message));
+            }
+        });
+      } catch (e) {
+        emit(ServiceAddOrderError(e.toString()));
+      }
+    });
+    on<ServiceCategoryFetchingEvent>((event, emit) async {
+      emit(ServiceCategoryFetchingState());
+      try {
+        await serviceRepository.getServiceCategory(token: event.token, id: event.id).then((value) {
+          if (value.status == true && value.message == "Branch Categories List!") {
+            emit(ServiceCategoryFetchedState(value.data));
+          } else {
+            emit(ServiceCategoryFetchingErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(ServiceCategoryFetchingErrorState(e.toString()));
       }
     });
   }

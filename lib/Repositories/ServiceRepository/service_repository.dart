@@ -5,6 +5,7 @@ import 'package:golden_falcon/Models/ServiceModel/ServiceCompletedOrder/serviceC
 import 'package:golden_falcon/Models/ServiceModel/ServiceDashboard/serviceDashboardCountModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceDispatchedOrder/serviceDispatchedOrderDetail.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceInProcessOrder/serviceInProcessOrderListModel.dart';
+import 'package:golden_falcon/Models/ServiceModel/ServiceNewOrder/categoryModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServicePendingOrder/servicePendingOrderDetailsModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServicePendingOrder/servicePendingOrderListModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceReadytoDeliverModel/serviceReadytoDeliverDetailsModel.dart';
@@ -491,6 +492,33 @@ class ServiceRepository {
 
       if (response.statusCode == 200) {
         var result = ServiceMainOrderDataModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Category List
+  Future<ServiceCatgoryModel> getServiceCategory({required String token, required String id}) async {
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        '${baseUrl}service/new_order_branch_categories_api',
+        data: {
+          "id": id
+        },
+        options: Options(
+          headers: {
+            'Authorization' : 'Basic $token'
+          }
+        )
+      );
+
+      if (response.statusCode == 200) {
+        var result = ServiceCatgoryModel.fromJson(response.data);
         return result;
       } else {
         return response.data;

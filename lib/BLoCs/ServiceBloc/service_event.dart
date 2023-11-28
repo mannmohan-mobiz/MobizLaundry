@@ -153,6 +153,23 @@ class ServiceClientDetailsEvent extends ServiceEvent {
 class ServiceMainOrderAddEvent extends ServiceEvent {
   final String token;
   final Map<String, String> body;
+
+  ServiceMainOrderAddEvent(this.token, this.body);
+  
+  @override
+  // TODO: implement props
+  List<Object?> get props => [token, body];
+}
+
+// Category List
+class ServiceCategoryFetchingEvent extends ServiceEvent {
+  final String token;
+  final String id;
+
+  ServiceCategoryFetchingEvent(this.token, this.id);
+  
+  @override
+  List<Object?> get props => [token, id];
 }
 
 // Complaint List Fetching

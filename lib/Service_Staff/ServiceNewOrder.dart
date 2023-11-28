@@ -232,11 +232,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/BLoCs/CustomerBloc/customer_bloc.dart';
 import 'package:golden_falcon/BLoCs/PickerBloc/picker_bloc.dart';
+import 'package:golden_falcon/BLoCs/ServiceBloc/service_bloc.dart';
 import 'package:golden_falcon/Models/PickerModel/new_order_save.dart';
+import 'package:golden_falcon/Models/ServiceModel/ServiceNewOrder/newOrderData.dart';
 import 'package:golden_falcon/Picker_App/screens/new_order_2.dart';
 import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
 import 'package:golden_falcon/Repositories/CustomerRepo/customer_repository.dart';
 import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
+import 'package:golden_falcon/Repositories/ServiceRepository/service_repository.dart';
+import 'package:golden_falcon/Service_Staff/choose_categ_subCateg.dart';
 import 'package:golden_falcon/Utils/common.dart';
 import 'package:intl/intl.dart';
 import 'package:golden_falcon/Picker_App/screens/stock_transfer.dart';
@@ -255,7 +259,7 @@ class ServiceNewOrderState extends State<ServiceNewOrder> {
   TextEditingController del_dt_controller = TextEditingController();
   TextEditingController del_tm_controller = TextEditingController();
   List<String> customerData = [];
-  List<NewOrderData> orderData = [];
+  List<MainOrderData> orderData = [];
   String new_order_id = "";
   List<String> orderType = ['Select Type', 'Normal', 'Express', 'Urgent'];
   String mode_of_action = "save_order";
@@ -298,8 +302,8 @@ class ServiceNewOrderState extends State<ServiceNewOrder> {
             "Delivery_time": del_tm_controller.text
           };
           print(jsonEncode(data));
-          BlocProvider.of<PickerBloc>(context)
-              .add(AddNewOrderEvent(data, authData.user_token.toString()));
+          BlocProvider.of<ServiceBloc>(context)
+              .add(ServiceMainOrderAddEvent(authData.user_token.toString(), data));
           setState(() {
             mode_of_action = "get_items";
           });
@@ -546,13 +550,13 @@ class ServiceNewOrderState extends State<ServiceNewOrder> {
                   ),
                   SizedBox(height: 8),
                   BlocProvider(
-                    create: (context) => PickerBloc(
-                      RepositoryProvider.of<PickerRepository>(context),
-                    )..add(ListAllClientsEvent(authData.user_id.toString(),
-                        authData.user_token.toString())),
-                    child: BlocBuilder<PickerBloc, PickerState>(
+                    create: (context) => ServiceBloc(
+                      RepositoryProvider.of<ServiceRepository>(context),
+                    )..add(ServiceClientListFetchEvent(authData.user_token.toString(), authData.user_id.toString())),
+                    child: BlocBuilder<ServiceBloc, ServiceState>(
                       builder: (context, state) {
-                        if (state is FetchingClientList) {
+                        if (state is ServiceClientListFetchingState) {
+                          print("${state.toString()}");
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -623,10 +627,12 @@ class ServiceNewOrderState extends State<ServiceNewOrder> {
                               ),
                             ],
                           );
-                        } else if (state is FetchedClientList) {
+                        } else if (state is ServiceClientListFetchedState) {
+                          print(state.toString());
                           if (customerData.isEmpty) {
                             customerData.add('Select Client');
-                            state.customerList.forEach((cl) {
+                            
+                            state.clientData.forEach((cl) {
                               customerData.add(cl.name);
                             });
                           }
@@ -664,7 +670,7 @@ class ServiceNewOrderState extends State<ServiceNewOrder> {
                                   value: selectedCustomer,
                                   onChanged: (value) {
                                     selectedCustomer = value!;
-                                    state.customerList.forEach((cList) {
+                                    state.clientData.forEach((cList) {
                                       if (value == cList.name) {
                                         selectedCustomerId = cList.customerId;
                                       }
@@ -710,6 +716,7 @@ class ServiceNewOrderState extends State<ServiceNewOrder> {
                             ],
                           );
                         } else {
+                          print(state.toString());
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -787,11 +794,20 @@ class ServiceNewOrderState extends State<ServiceNewOrder> {
                 ],
               ),
               SizedBox(height: 25,),
-              BlocBuilder<PickerBloc, PickerState>(
+              BlocBuilder<ServiceBloc, ServiceState>(
                 builder: (context, state) {
-                  if (state is AddedNewOrderState) {
+                  if (state is ServiceAddedNewOrderState) {
                     print(state.toString());
-                    orderData.add(state.ordData);
+                    // orderData.add(state.orderData);
+                    if (orderData.isEmpty) {
+                      orderData.add(state.orderData);
+                    } else if (orderData.isNotEmpty) {
+                      for (var i = 0; i < orderData.length; i++) {
+                        if (state.orderData.customer != orderData[i].customer) {
+                          orderData.add(state.orderData);
+                        }
+                      }
+                    }
                     return SingleChildScrollView(
                       scrollDirection: Axis.vertical,
                       child: SingleChildScrollView(
@@ -814,6 +830,7 @@ class ServiceNewOrderState extends State<ServiceNewOrder> {
                                   onSelectChanged: (value) {
                                     authData.setOrdCstmrId(orderData[index].orderId, orderData[index].customer);
                                     // Navigator.of(context).push(MaterialPageRoute(builder: (context) => ServiceNewOrder2(cstId: orderData[index].customer),));
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => CategorySubCategoryScreen(),));
                                   },
                                   cells: [
                                     DataCell(Center(child: Text('${(index + 1)}'))),
