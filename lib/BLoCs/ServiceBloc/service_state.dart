@@ -360,3 +360,73 @@ class ServiceCategoryFetchingErrorState extends ServiceState {
   @override
   List<Object?> get props => [message];
 }
+
+class ServiceSubCategoryFetchingState extends ServiceState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ServiceSubCategoryFetchedState extends ServiceState {
+  final List<SubCategoryData> subCategData;
+
+  ServiceSubCategoryFetchedState(this.subCategData);
+
+  @override
+  List<Object?> get props => [subCategData];
+}
+
+class ServiceSubCategoryErrorState extends ServiceState {
+  final String message;
+
+  ServiceSubCategoryErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class ServiceItemFetchingState extends ServiceState {
+  @override
+  List<Object?> get props => [];
+
+}
+
+class ServiceItemFetchedState extends ServiceState {
+  final List<ItemPriceData> itemData;
+
+  ServiceItemFetchedState(this.itemData);
+
+  @override
+  List<Object?> get props => [itemData];
+}
+
+class ServiceItemErrorState extends ServiceState {
+  final String message;
+
+  ServiceItemErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+class ServiceItemAddingToCartState extends ServiceState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ServiceItemAddedToCartState extends ServiceState {
+  final List<AddToCartData> cartData;
+
+  ServiceItemAddedToCartState(this.cartData);
+
+  @override
+  List<Object?> get props => [cartData];
+}
+
+class ServiceItemAddToCartErrorState extends ServiceState {
+  final String message;
+
+  ServiceItemAddToCartErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}

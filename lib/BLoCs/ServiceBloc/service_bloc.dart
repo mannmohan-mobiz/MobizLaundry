@@ -15,7 +15,10 @@ import '../../Models/ServiceModel/ServiceAddCustomer/ServiceClientDetailsModel.d
 import '../../Models/ServiceModel/ServiceAddCustomer/ServiceClientListModel.dart';
 import '../../Models/ServiceModel/ServiceCompletedOrder/serviceCompletedOrderListModel.dart';
 import '../../Models/ServiceModel/ServiceInProcessOrder/serviceInProcessOrderListModel.dart';
+import '../../Models/ServiceModel/ServiceNewOrder/addToCartModel.dart';
+import '../../Models/ServiceModel/ServiceNewOrder/itemPriceModel.dart';
 import '../../Models/ServiceModel/ServiceNewOrder/newOrderData.dart';
+import '../../Models/ServiceModel/ServiceNewOrder/subCategoryModel.dart';
 import '../../Models/ServiceModel/ServiceReadytoDeliverModel/serviceReadytoDeliverListModel.dart';
 import '../../Models/ServiceModel/ServiceUnedeliveredModel/serviceOrderUndeliveredListModel.dart';
 
@@ -234,6 +237,48 @@ class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
         });
       } catch (e) {
         emit(ServiceCategoryFetchingErrorState(e.toString()));
+      }
+    });
+    on<ServiceSubCategoryFetchingEvent>((event, emit) async {
+      emit(ServiceSubCategoryFetchingState());
+      try {
+        await serviceRepository.getSubCategory(token: event.token, body: event.body).then((value) {
+          if (value.status == true && value.message == "Branch Sub Categories List!") {
+            emit(ServiceSubCategoryFetchedState(value.data));
+          } else {
+            emit(ServiceSubCategoryErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(ServiceSubCategoryErrorState(e.toString()));
+      }
+    });
+    on<ServiceItemFetchingEvent>((event, emit) async {
+      emit(ServiceItemFetchingState());
+      try {
+        await serviceRepository.getItems(token: event.token, body: event.body).then((value) {
+          if (value.status == true && value.message == "Branch Sub Categories List!") {
+            emit(ServiceItemFetchedState(value.data));
+          } else {
+            emit(ServiceItemErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(ServiceItemErrorState(e.toString()));
+      }
+    });
+    on<ServiceAddToCartEvent>((event, emit) async {
+      emit(ServiceItemAddingToCartState());
+      try {
+        await serviceRepository.addToCart(token: event.token, body: event.body).then((value) {
+          if (value.status == true && value.message == "Cart Added Successfully!") {
+            emit(ServiceItemAddedToCartState(value.data));
+          } else {
+            emit(ServiceItemAddToCartErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(ServiceItemAddToCartErrorState(e.toString()));
       }
     });
   }

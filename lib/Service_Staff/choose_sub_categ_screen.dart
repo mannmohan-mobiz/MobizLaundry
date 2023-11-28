@@ -4,20 +4,19 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/BLoCs/ServiceBloc/service_bloc.dart';
 import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
 import 'package:golden_falcon/Repositories/ServiceRepository/service_repository.dart';
-import 'package:golden_falcon/Service_Staff/choose_sub_categ_screen.dart';
-import 'package:golden_falcon/Utils/common.dart';
+import 'package:golden_falcon/Service_Staff/choose_categ_subCateg.dart';
+import 'package:golden_falcon/Service_Staff/choose_item.dart';
 
-class CategorySubCategoryScreen extends StatefulWidget {
-  const CategorySubCategoryScreen({super.key});
+import '../Utils/common.dart';
+
+class ChooseSubCategoryScreen extends StatefulWidget {
+  const ChooseSubCategoryScreen({super.key});
 
   @override
-  State<CategorySubCategoryScreen> createState() =>
-      _CategorySubCategoryScreenState();
+  State<ChooseSubCategoryScreen> createState() => _ChooseSubCategoryScreenState();
 }
 
-class _CategorySubCategoryScreenState extends State<CategorySubCategoryScreen> {
-  bool isCategChoose = false;
-  Map<String, String> body = {};
+class _ChooseSubCategoryScreenState extends State<ChooseSubCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,6 +24,9 @@ class _CategorySubCategoryScreenState extends State<CategorySubCategoryScreen> {
         iconTheme: IconThemeData(color: Colors.deepPurple, size: 30),
         elevation: 0,
         backgroundColor: CupertinoColors.white,
+        leading: BackButton(
+          onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => CategorySubCategoryScreen(),), (route) => false),
+        ),
         title: Center(
             child: Text("Add to Cart",
                 style: TextStyle(
@@ -47,20 +49,16 @@ class _CategorySubCategoryScreenState extends State<CategorySubCategoryScreen> {
               BlocProvider(
                 create: (context) => ServiceBloc(
                   RepositoryProvider.of<ServiceRepository>(context),
-                )..add(ServiceCategoryFetchingEvent(
-                    authData.user_token.toString(),
-                    authData.user_id.toString())),
+                )..add(ServiceSubCategoryFetchingEvent(authData.user_token.toString(),
+                    {'id' : authData.user_id.toString(), 'category_id' : authData.pck_cat_id})),
                 child: BlocBuilder<ServiceBloc, ServiceState>(
-                  // buildWhen: (previous, current) => !(current is ServiceCategoryFetchedState),
                   builder: (context, state) {
-                    if (state is ServiceCategoryFetchingState) {
-                      print(state.toString());
-                      return CircularProgressIndicator();
-                    } else if (state is ServiceCategoryFetchedState) {
-                      print(state.toString());
-                      return Column(
+                    if (state is ServiceSubCategoryFetchingState) {
+                      return Center(child: CircularProgressIndicator(),);
+                    } else if (state is ServiceSubCategoryFetchedState) {
+                      return state.subCategData.isNotEmpty ? Column(
                         children: [
-                          Text("Choose Category"),
+                          Text("Choose Sub Category"),
                           Card(
                             child: Container(
                               height: MediaQuery.of(context).size.height * .8,
@@ -70,7 +68,7 @@ class _CategorySubCategoryScreenState extends State<CategorySubCategoryScreen> {
 
                               ),
                               child: ListView.builder(
-                                itemCount: state.categdata.length,
+                                itemCount: state.subCategData.length,
                                 itemBuilder: (context, index) {
                                   return InkWell(
                                     onTap: (){
@@ -83,15 +81,15 @@ class _CategorySubCategoryScreenState extends State<CategorySubCategoryScreen> {
                                       //     isCategChoose = true;
                                       //   });
                                       // }
-                                      authData.setCatId(state.categdata[index].categoryId);
-                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ChooseSubCategoryScreen(),), (route) => false);
+                                      authData.setSubCatId(state.subCategData[index].subCatId);
+                                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => ChooseItemScreen(),), (route) => false);
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(10.0),
                                       margin: EdgeInsets.only(bottom: 10.0),
                                       decoration: BoxDecoration(
                                         border:
-                                            Border.all(color: Colors.deepPurple),
+                                        Border.all(color: Colors.deepPurple),
                                         borderRadius: BorderRadius.circular(8.0),
                                       ),
                                       child: Row(
@@ -100,14 +98,14 @@ class _CategorySubCategoryScreenState extends State<CategorySubCategoryScreen> {
                                             height: 80,
                                             width: 80,
                                             child: Image.network(
-                                              '$baseUrl${state.categdata[index].serviceMaster.categoryImage}',
+                                              '$baseUrl${state.subCategData[index].subServiceMaster.subCatImage}',
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                           SizedBox(width: 8.0),
                                           Center(
                                             child: Text(
-                                              '${state.categdata[index].serviceMaster.categoryName}',
+                                              '${state.subCategData[index].subServiceMaster.subCatName}',
                                               style: TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w600,
@@ -123,16 +121,13 @@ class _CategorySubCategoryScreenState extends State<CategorySubCategoryScreen> {
                             ),
                           ),
                         ],
-                      );
+                      ) : Center(child: Text("No item listed!"),);
                     } else {
-                      print('ELSE ${state.toString()}');
-                      return Center(
-                        child: Text("Something went wrong!"),
-                      );
+                      return Center(child: Text("Something went wrong!"),);
                     }
                   },
                 ),
-              ),
+              )
             ],
           ),
         ),

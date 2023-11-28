@@ -172,6 +172,39 @@ class ServiceCategoryFetchingEvent extends ServiceEvent {
   List<Object?> get props => [token, id];
 }
 
+// Sub Cateory List
+class ServiceSubCategoryFetchingEvent extends ServiceEvent {
+  final String token;
+  final Map<String, String> body;
+
+  ServiceSubCategoryFetchingEvent(this.token, this.body);
+
+  @override
+  List<Object?> get props => [token, body];
+}
+
+// itemList
+class ServiceItemFetchingEvent extends ServiceEvent {
+  final String token;
+  final Map<String, String> body;
+
+  ServiceItemFetchingEvent(this.token, this.body);
+
+  @override
+  List<Object?> get props => [token, body];
+}
+
+// add to cart
+class ServiceAddToCartEvent extends ServiceEvent {
+  final String token;
+  final Map<String, String> body;
+
+  ServiceAddToCartEvent(this.token, this.body);
+
+  @override
+  List<Object?> get props => [token, body];
+}
+
 // Complaint List Fetching
 // class ComplaintListFetchEvent extends ServiceEvent{
 //   final String token;

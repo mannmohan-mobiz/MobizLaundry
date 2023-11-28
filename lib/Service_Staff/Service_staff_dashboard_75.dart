@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/BLoCs/ServiceBloc/service_bloc.dart';
 import 'package:golden_falcon/Repositories/ServiceRepository/service_repository.dart';
+import 'package:golden_falcon/Service_Staff/CartScreen.dart';
 import 'package:golden_falcon/Service_Staff/Completed_Screen.dart';
 import 'package:golden_falcon/Service_Staff/InProcessed_Screen.dart';
 import 'package:golden_falcon/Service_Staff/ServiceComplaint.dart';
@@ -237,7 +238,7 @@ class _StaffServiceDashboardState extends State<StaffServiceDashboard> {
                             color: Colors.deepPurple,
                             size: 20,
                           ),
-                          title: Text(' Service Login',
+                          title: Text(' Servicee Login',
                               style: TextStyle(color: Colors.deepPurple, fontSize: 15)),
                           onTap: () {
                             Navigator.push(
@@ -258,6 +259,21 @@ class _StaffServiceDashboardState extends State<StaffServiceDashboard> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => Dispatcheditems()),
+                            );
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(
+                            Icons.shopping_cart,
+                            color: Colors.deepPurple,
+                            size: 20,
+                          ),
+                          title: Text('My Cart',
+                              style: TextStyle(color: Colors.deepPurple, fontSize: 15)),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => MyCartScreen()),
                             );
                           },
                         ),

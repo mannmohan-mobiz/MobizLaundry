@@ -5,7 +5,10 @@ import 'package:golden_falcon/Models/ServiceModel/ServiceCompletedOrder/serviceC
 import 'package:golden_falcon/Models/ServiceModel/ServiceDashboard/serviceDashboardCountModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceDispatchedOrder/serviceDispatchedOrderDetail.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceInProcessOrder/serviceInProcessOrderListModel.dart';
+import 'package:golden_falcon/Models/ServiceModel/ServiceNewOrder/addToCartModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceNewOrder/categoryModel.dart';
+import 'package:golden_falcon/Models/ServiceModel/ServiceNewOrder/itemPriceModel.dart';
+import 'package:golden_falcon/Models/ServiceModel/ServiceNewOrder/subCategoryModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServicePendingOrder/servicePendingOrderDetailsModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServicePendingOrder/servicePendingOrderListModel.dart';
 import 'package:golden_falcon/Models/ServiceModel/ServiceReadytoDeliverModel/serviceReadytoDeliverDetailsModel.dart';
@@ -519,6 +522,83 @@ class ServiceRepository {
 
       if (response.statusCode == 200) {
         var result = ServiceCatgoryModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Sub Category List
+  Future<ServiceSubCategoryModel> getSubCategory({required String token, required Map<String , String> body}) async {
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        '${baseUrl}service/new_order_branch_sub_categories_api',
+        data: body,
+        options: Options(
+          headers: {
+            'Authorization' : 'Basic $token'
+          }
+        )
+      );
+
+      if (response.statusCode == 200) {
+        var result = ServiceSubCategoryModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Item Price List
+  Future<ServiceItemPriceModel> getItems({required String token, required Map<String, String> body}) async {
+    Future.delayed(Duration(seconds: 1));
+
+    try {
+      var response = await dio.post(
+        '${baseUrl}service/new_order_item_details_api',
+        data: body,
+        options: Options(
+          headers: {
+            'Authorization' : 'Basic $token'
+          }
+        )
+      );
+
+      if (response.statusCode == 200) {
+        var result = ServiceItemPriceModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //  Add to Cart
+  Future<ServiceAddtoCartModel> addToCart({required String token, required Map<String, String> body}) async {
+    Future.delayed(Duration(seconds: 1));
+
+    try {
+      var response = await dio.post(
+        '${baseUrl}service/add_cart_api',
+        data: body,
+        options: Options(
+          headers: {
+            'Authorization': 'Basic $token'
+          }
+        )
+      );
+
+      if (response.statusCode == 200) {
+        var result = ServiceAddtoCartModel.fromJson(response.data);
         return result;
       } else {
         return response.data;
