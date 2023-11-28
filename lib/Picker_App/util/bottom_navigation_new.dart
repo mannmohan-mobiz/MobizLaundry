@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:golden_falcon/Picker_App/src/colors.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../screens/home_page_new.dart';
+import '../screens/homepage.dart';
 
 class BottomNavigation extends StatefulWidget {
 
@@ -45,16 +47,22 @@ class _BottomNavigationState extends State<BottomNavigation> {
          BottomNavigationBarItem(
            icon: Image.asset('Assets/Images/home.png'),
           label: 'Home',
-       activeIcon: Container(
-          decoration: const BoxDecoration(
-          color: pickerGoldColor,
-          shape: BoxShape.circle
-          ),
-          child: Padding(
-          padding: const EdgeInsets.all(8),
-          child:Image.asset('Assets/Images/unfill_home.png'),
-          )
-          ),
+       activeIcon: InkWell(
+         onTap:  ()=> Navigator.push(context,
+             MaterialPageRoute(builder:
+                 (context) =>  const HomePageNew(),
+             )),
+         child: Container(
+            decoration: const BoxDecoration(
+            color: pickerGoldColor,
+            shape: BoxShape.circle
+            ),
+            child: Padding(
+            padding: const EdgeInsets.all(8),
+            child:Image.asset('Assets/Images/unfill_home.png'),
+            )
+            ),
+       ),
         ),
               BottomNavigationBarItem(
           icon: Image.asset('Assets/Images/contact_us.png'),

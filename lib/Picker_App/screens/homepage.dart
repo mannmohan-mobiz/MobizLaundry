@@ -19,7 +19,6 @@ import '../util/bottom_navigation_bar.dart';
 import '../util/drawer.dart';
 import '../model/chart_data.dart';
 import '../util/open_painter.dart';
-import 'home_page_new.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -125,7 +124,7 @@ class HomePageState extends State<HomePage> {
                           "New Order",
                           style: TextStyle(color: Colors.white),
                         ),
-                        onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomePageNew()), (route) => false),
+                        onPressed: () => Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => MyOrderScreen()), (route) => false),
                         style: ElevatedButton.styleFrom(
                             backgroundColor: pickerPrimaryColor,
                             fixedSize: Size.fromWidth(130)),
