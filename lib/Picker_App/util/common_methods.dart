@@ -16,3 +16,11 @@ showCustomBottomSheet(BuildContext context, Widget content, {Color bgColor = Col
         return content;
       });
 }
+
+open(BuildContext context, Widget target) => Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => target,
+    ));
+
+close(BuildContext context, {dynamic result}) => Navigator.pop(context, result);
