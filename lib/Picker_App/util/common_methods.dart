@@ -22,3 +22,5 @@ open(BuildContext context, Widget target) => Navigator.push(
     MaterialPageRoute(
       builder: (context) => target,
     ));
+
+close(BuildContext context, {dynamic result}) => Navigator.pop(context, result);
