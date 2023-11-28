@@ -1,7 +1,8 @@
 part of 'picker_bloc.dart';
 
 abstract class PickerState extends Equatable {
-  const PickerState();
+  int navIndex = 0;
+   PickerState({this.navIndex = 0});
 }
 
 class PickerInitial extends PickerState {

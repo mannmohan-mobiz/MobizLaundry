@@ -520,7 +520,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                                     onChanged: (value) {},
                                   ),
                                 ),
-                                SizedBox(width: 12),
+                                const SizedBox(width: 12),
                                 Expanded(
                                   child: DropdownButtonFormField(
                                     decoration: InputDecoration(
@@ -561,7 +561,7 @@ class NewOrderScreenState extends State<NewOrderScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: 25,),
+                const SizedBox(height: 25,),
                 BlocBuilder<PickerBloc, PickerState>(
                     builder: (context, state) {
                       if (state is AddedNewOrderState) {

@@ -84,11 +84,11 @@ class HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
         ),
-        child: BottomDrawer(),
+        child: const BottomDrawer(),
       ),
       drawer: const MenuDrawer(),
       body: SingleChildScrollView(
@@ -96,12 +96,12 @@ class HomePageState extends State<HomePage> {
           children: [
             Container(
               padding: EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   border: Border.symmetric(
                       horizontal: BorderSide(
                         color: pickerPrimaryColor,
                       ))),
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Field Staff Dashboard',
                   style: TextStyle(
@@ -205,7 +205,7 @@ class HomePageState extends State<HomePage> {
                   builder: (context, state) {
                     if (state is DashboardCountGettingState) {
                       print(state.toString());
-                      return Column(
+                      return const Column(
                         children: [
                           ShimmerRow(),
                           ShimmerRow(),
