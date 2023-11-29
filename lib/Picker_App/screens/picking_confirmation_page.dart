@@ -13,7 +13,8 @@ class PickingConfirmationPage extends StatefulWidget {
 
 class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
   List<String> typeList = ['Normal','Express','Urgent'];
-  List<Color> colorList = [pickerWhiteColor,pickerYellowTypeColor,pickerOrangeTypeColor];
+  List<Color> colorList = [pickerGreyTypeColor,pickerYellowTypeColor,pickerOrangeTypeColor];
+  List<Color> colorListSub = [pickerOrangeTypeColor,pickerYellowTypeColor,pickerGreyTypeColor];
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -81,39 +82,57 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
               ],
             ),
             const Text('Pending for Confirmation',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.bold,fontSize: 18),),
-             Container(
-                padding: const EdgeInsets.all(20),
-                margin: const EdgeInsets.symmetric(vertical: 18),
-                decoration: BoxDecoration(color: pickerOrangeTypeColor,
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: pickerWhiteColor)),
-                child:   Center(
-                    child: Column(
+             ListView.builder(
+               shrinkWrap: true,
+                 itemCount: 3,
+                 physics: const BouncingScrollPhysics(),
+                 scrollDirection: Axis.vertical,
+                 itemBuilder: (itemBuilder, index) =>
+                 Container(
+                    margin: const EdgeInsets.symmetric(vertical: 18),
+                    decoration: BoxDecoration(
+                        color: pickerWhiteColor,
+                        borderRadius:  BorderRadius.circular(12),
+                        border: Border.all(color: pickerWhiteColor),
+                      boxShadow: const [BoxShadow(color: Colors.grey,blurRadius: 7,offset: Offset(0,4))]
+                    ),
+                    child:   ListView(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
                       children: [
-                        const RowItem( label: 'Customer name:',value: 'Jason Roy',),
-                        const RowItem(label: 'Building Name/No:',value: '',),
-                        const RowItem(label: 'Floor No:',value: '',),
-                        const RowItem(label: 'Floor No/House No:',value: '',),
-                        const RowItem(label: 'Mobile No:',value: '',),
-                        const RowItem(label: 'Pickup time:',value: '7am to 9am',),
-                        const Divider(
-                          color: pickerWhiteColor,
-                          thickness: 1,
-                        ),
                         Container(
-                          color: pickerWhiteColor,
-                                child:Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    const Text( 'saveLater', style: TextStyle(fontSize: 10, color: pickerBlackColor,  fontWeight: FontWeight.w500)),
-                                    Container(width: 2, height: 20, color: pickerBlackColor),
-                                    const Text( 'saveLater', style: TextStyle(fontSize: 10, color: pickerBlackColor,  fontWeight: FontWeight.w500)),
-                                  ],
-                                ),
+                          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
+                          decoration:  BoxDecoration(
+                              color: colorListSub[index],
+                              borderRadius: const BorderRadius.only( topLeft: Radius.circular(12.0),
+                                topRight: Radius.circular(12.0),),
+                             ),
+                          child: const Column(
+                            children: [
+                              RowItem( label: 'Customer name:',value: 'Jason Roy',),
+                              RowItem(label: 'Building Name/No:',value: '',),
+                              RowItem(label: 'Floor No:',value: '',),
+                              RowItem(label: 'Room No/House No:',value: '',),
+                              RowItem(label: 'Mobile No:',value: '',),
+                              RowItem(label: 'Pickup time:',value: '7am to 9am',isShow: true,),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 50,
+                          child:Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              const Text( 'Confirm', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                              Container(width: 2, height: 20, color: pickerVerticalDividerColor),
+                              const Text( 'Call', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                            ],
+                          ),
                         )
                       ],
-                    )),
-              ),
+                    ),
+                  ),
+             ),
           ],
         ),
       ),
@@ -124,18 +143,18 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
 class RowItem extends StatelessWidget {
   final String label;
   final String value;
-  const RowItem({super.key,required this.value,required this.label});
+  final bool isShow;
+  const RowItem({super.key,required this.value,required this.label,this.isShow = false});
 
   @override
   Widget build(BuildContext context) {
     return  Padding(
-      padding: const EdgeInsets.symmetric(vertical: 12.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             label,
-            // fontWeight: FontWeight.bold,
             textAlign: TextAlign.start,
           ),
           Flexible(
@@ -143,10 +162,19 @@ class RowItem extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
                 child: Text(
                   value,
-                  // fontWeight: FontWeight.bold,
                   textAlign: TextAlign.start,
                 ),
               )),
+          isShow ?  const Spacer() :const SizedBox() ,
+          isShow ? Container(
+            decoration: BoxDecoration(
+              color: pickerWhiteColor,
+              borderRadius: BorderRadius.circular(4)
+            ),
+            height: 40,
+            width: 40,
+            child: Image.asset('Assets/Images/nav_icon.png'),
+          ) : const SizedBox()
         ],
       ),
     );
