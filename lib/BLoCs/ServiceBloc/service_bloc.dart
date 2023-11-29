@@ -21,6 +21,7 @@ import '../../Models/ServiceModel/ServiceNewOrder/newOrderData.dart';
 import '../../Models/ServiceModel/ServiceNewOrder/subCategoryModel.dart';
 import '../../Models/ServiceModel/ServiceReadytoDeliverModel/serviceReadytoDeliverListModel.dart';
 import '../../Models/ServiceModel/ServiceUnedeliveredModel/serviceOrderUndeliveredListModel.dart';
+import '../../Models/ServiceModel/complaint_list_model.dart';
 
 part 'service_event.dart';
 part 'service_state.dart';
@@ -279,6 +280,20 @@ class ServiceBloc extends Bloc<ServiceEvent, ServiceState> {
         });
       } catch (e) {
         emit(ServiceItemAddToCartErrorState(e.toString()));
+      }
+    });
+    on<ComplaintListFetchEvent>((event, emit) async {
+      emit(ServiceComplaintListFetchingState());
+      try {
+        await serviceRepository.getComplaintList(id: event.id, token: event.token).then((value) {
+          if (value.status == true && value.message == "Complaints List!") {
+            emit(ServiceComplaintListFetchedState(value.data));
+          } else {
+            emit(ServiceComplaintListErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(ServiceComplaintListErrorState(e.toString()));
       }
     });
   }

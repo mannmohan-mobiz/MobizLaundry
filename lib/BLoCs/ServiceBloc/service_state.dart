@@ -430,3 +430,24 @@ class ServiceItemAddToCartErrorState extends ServiceState {
   @override
   List<Object?> get props => [message];
 }
+
+class ServiceComplaintListFetchingState extends ServiceState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ServiceComplaintListFetchedState extends ServiceState {
+  final List<ComplaintListData> complantData;
+
+  ServiceComplaintListFetchedState(this.complantData);
+  @override
+  List<Object?> get props => [complantData];
+}
+
+class ServiceComplaintListErrorState extends ServiceState {
+  final String message;
+
+  ServiceComplaintListErrorState(this.message);
+  @override
+  List<Object?> get props => [message];
+}

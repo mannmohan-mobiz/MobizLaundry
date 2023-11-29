@@ -206,12 +206,12 @@ class ServiceAddToCartEvent extends ServiceEvent {
 }
 
 // Complaint List Fetching
-// class ComplaintListFetchEvent extends ServiceEvent{
-//   final String token;
-//   final String id;
-//
-//   ComplaintListFetchEvent(this.token, this.id);
-//
-//   @override
-//   List<Object?> get props => [token, id];
-// }
+class ComplaintListFetchEvent extends ServiceEvent{
+  final String token;
+  final String id;
+
+  ComplaintListFetchEvent(this.token, this.id);
+
+  @override
+  List<Object?> get props => [token, id];
+}

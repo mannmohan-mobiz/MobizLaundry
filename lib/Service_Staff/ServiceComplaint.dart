@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_falcon/BLoCs/ServiceBloc/service_bloc.dart';
+import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
+import 'package:golden_falcon/Repositories/ServiceRepository/service_repository.dart';
 
 class ServiceComplaint extends StatefulWidget {
   const ServiceComplaint({Key? key}) : super(key: key);
@@ -44,267 +48,55 @@ class _ServiceComplaintState extends State<ServiceComplaint> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 20,bottom: 10),
-              child: ElevatedButton(
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepPurple)),
-                onPressed: () {
-                },
-                child: Text('NEW',style: TextStyle(color: Colors.white),),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(15),
-              child: Card(
-                surfaceTintColor: Colors.white,
-                elevation: 2,
-                child: Column(children: [
-                        SizedBox(
-                            height: 40,
-                            width: MediaQuery.of(context).size.width,
-                            child: Row(children: [
-                              Expanded(
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Date",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ))),
-                              Expanded(
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Com. No",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ))),
-                              Expanded(
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Type",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ))),
-                              Expanded(
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Status",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ))),
-                              Expanded(
-                                  child: Container(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        "Remark",
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold),
-                                      ))),
-                            ])),
-                        Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Container(
-                            color: Colors.deepPurple,
-                            height: 0.5,
-                            width: MediaQuery.of(context).size.width,
-                          ),
+      body: BlocProvider(
+        create: (context) => ServiceBloc(RepositoryProvider.of<ServiceRepository>(context))..add(ComplaintListFetchEvent(authData.user_token.toString(), authData.user_id.toString())),
+        child: BlocBuilder<ServiceBloc, ServiceState>(
+          builder: (context, state) {
+            if (state is ServiceComplaintListFetchingState) {
+              return Center(child: CircularProgressIndicator(),);
+            } else if (state is ServiceComplaintListFetchedState) {
+              return state.complantData.isNotEmpty ?
+              Padding(
+                padding: EdgeInsets.all(20.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: DataTable(
+                        columns: [
+                          DataColumn(label: Center(child: Text("Sl.No"),)),
+                          DataColumn(label: Center(child: Text("Order.No"),)),
+                          DataColumn(label: Center(child: Text("Order Type"),)),
+                          DataColumn(label: Center(child: Text("Staff Name"),)),
+                          DataColumn(label: Center(child: Text("Customer Name"),)),
+                          DataColumn(label: Center(child: Text("Status"),)),
+                          DataColumn(label: Center(child: Text("Remarks"),)),
+                        ],
+                        rows: List<DataRow>.generate(
+                          state.complantData.length,
+                          (index) {
+                            return DataRow(
+                              cells: [
+                                DataCell(Center(child: Text('${index + 1}'),)),
+                                DataCell(Center(child: Text('${state.complantData[index].order.orderNumber}'),)),
+                                DataCell(Center(child: Text('${state.complantData[index].order.orderType}'),)),
+                                DataCell(Center(child: Text('${state.complantData[index].order.staff.name}'),)),
+                                DataCell(Center(child: Text('${state.complantData[index].order.customer.name}'),)),
+                                DataCell(Center(child: Text('${state.complantData[index].status}'),)),
+                                DataCell(Center(child: Text('${state.complantData[index].remarks}'),)),
+                              ]
+                            );
+                          },
                         ),
-                        SizedBox(
-                          height: size.height*0.6,
-                          width: MediaQuery.of(context).size.width,
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                              padding: EdgeInsets.zero,
-                              itemCount: 20,
-                              itemBuilder: (BuildContext context, int rowIndex) {
-                                return SizedBox(
-                                    height: 40,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        toggleButtonVisibility();
-                                        selectRow(rowIndex);
-                                      },
-                                      child: Container(
-                                                height: 40,
-                                                width: MediaQuery.of(context).size.width,
-                                                color: selectedRowIndex == rowIndex ? Colors.grey : null,
-                                                child: Row(children: [
-                                                  Expanded(
-                                                      child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            "1-2-2023",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black),
-                                                          ))),
-                                                  Expanded(
-                                                      child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            "102",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black),
-                                                          ))),
-                                                  Expanded(
-                                                      child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            "Damaged",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black),
-                                                          ))),
-                                                  Expanded(
-                                                      child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            "Pending",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black),
-                                                          ))),
-                                                  Expanded(
-                                                      child: Container(
-                                                          alignment:
-                                                              Alignment.center,
-                                                          child: Text(
-                                                            "",
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .black),
-                                                          ))),
-                                                ]))
-                                    ));
-                              }),
-                        )
-                      ])
-              ),
-            ),
-            if(isVisible)
-            SizedBox(
-              child: Column(
-                children: [
-                  Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: Icon(CupertinoIcons.chevron_down,color: Colors.deepPurple[900],),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: Icon(CupertinoIcons.chevron_down,color: Colors.deepPurple),
-                        )
-                      ]
-                  ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Column(crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20,bottom: 15),
-                        child: Text('Complaint No : 102',style: TextStyle(fontSize: 16),),
-                      ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20,bottom: 15),
-                    child: Text('Complaint Date : 1-2-2023',style: TextStyle(fontSize: 16)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20,bottom: 15),
-                    child: Text('Order No : 50',style: TextStyle(fontSize: 16)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20,bottom: 15),
-                    child: Text('Complaint Type : Damaged',style: TextStyle(fontSize: 16)),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20,bottom: 30),
-                    child: Text('Status : Resolved/Pending',style: TextStyle(fontSize: 16)),
-                  ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 20,bottom: 10),
-                  child: Text('Reply from Company',style: TextStyle(fontSize: 16)),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20,right: 20),
-              child: Container(
-                height: 100,
-                width: MediaQuery.of(context).size.width,
-                decoration: BoxDecoration(border: Border.all(color: Colors.deepPurple),
-                borderRadius: BorderRadius.circular(10)),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text('We recieved Your Complaint, It will be Resolved Soon'),
-                ),
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: Text(
-                  'My Remark',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: Colors.blue[900]),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepPurple[700])),
-                      onPressed: () {},
-                      child: Text('REPLY',style: TextStyle(color: Colors.white),),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: ElevatedButton(
-                      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.deepPurple[700])),
-                      onPressed: () {},
-                      child: Text('BACK',style: TextStyle(color: Colors.white),),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-                ],
-              ),
-            ),
-          ],
+                ),
+              ) :
+              Center(child: Text('No complaints listed!'),);
+            } else {
+              return Center(child: Text("Something went wrong!"),);
+            }
+          },
         ),
       ),
     );
