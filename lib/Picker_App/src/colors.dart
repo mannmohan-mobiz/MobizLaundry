@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 const Color pickerPrimaryColor = Color(0xff37117e);
 const Color pickerButtonColor = Color(0xffCEDCDF);
 const Color pickerWhiteColor = Color(0xffFFFFFF);
-const Color pickerGoldColor = Color(0xffBBAA52);
+const Color pickerGoldColor = Color(0xffA38E23);
 const Color pickerBackgroundColor = Color(0xffECECEC);
 const Color pickerGreenCallColor = Color(0xff68BC4A);
 const Color pickerGreyTypeColor = Color.fromRGBO(242, 242, 242, 0.81);

@@ -29,7 +29,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: pickerWhiteColor,
-        toolbarHeight: 150.0,
+        toolbarHeight: 100.0,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(bottomLeft: Radius.circular(22),bottomRight: Radius.circular(22)),
           side: BorderSide(color: pickerGoldColor),
