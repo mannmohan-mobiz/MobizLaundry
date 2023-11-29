@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -5,19 +7,23 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
 
-class PickingConfirmationPage extends StatefulWidget {
-  const PickingConfirmationPage({super.key});
+class ConfirmedOrdersPage extends StatefulWidget {
+  const ConfirmedOrdersPage({super.key});
 
   @override
-  State<PickingConfirmationPage> createState() => _PickingConfirmationPageState();
+  State<ConfirmedOrdersPage> createState() => _ConfirmedOrdersPageState();
 }
 
-class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
+class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
   List<String> typeList = ['Normal','Express','Urgent'];
   List<Color> colorList = [pickerGreyTypeColor,pickerYellowTypeColor,pickerOrangeTypeColor];
   List<Color> colorListSub = [pickerOrangeTypeColor,pickerYellowTypeColor,pickerGreyTypeColor];
+  Random random = Random();
+
+
   @override
   Widget build(BuildContext context) {
+    //colorListSubData = colorListSub[Random().nextInt(colorListSub.length)];
     return  Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(
@@ -29,12 +35,12 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
           side: BorderSide(color: pickerGoldColor),
         ),
         leading: IconButton(
-          onPressed: () {
-            close(context);
-          },
-          icon: Image.asset('Assets/Images/back_arrow.png')
+            onPressed: () {
+              close(context);
+            },
+            icon: Image.asset('Assets/Images/back_arrow.png')
         ),
-        title: const Text('Pending Confirmation',style: TextStyle(color: pickerGoldColor,fontWeight: FontWeight.bold,fontSize: 20),),
+        title: const Text('Confirmed Orders',style: TextStyle(color: pickerGoldColor,fontWeight: FontWeight.bold,fontSize: 20),),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
@@ -59,43 +65,43 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (itemBuilder, index) =>
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: SizedBox(
-                            height: 40,
-                            width: 40,
-                            child: Container(
-                              decoration:  BoxDecoration(
-                                color: colorList[index],
-                                border: Border.all(color: pickerGoldColor),
-                                borderRadius: BorderRadius.circular(12),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                              child: SizedBox(
+                                height: 40,
+                                width: 40,
+                                child: Container(
+                                  decoration:  BoxDecoration(
+                                    color: colorList[index],
+                                    border: Border.all(color: pickerGoldColor),
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            Text(typeList[index],style: const TextStyle(color: pickerBlackColor,fontWeight: FontWeight.bold,fontSize: 10),),
+                          ],
                         ),
-                         Text(typeList[index],style: const TextStyle(color: pickerBlackColor,fontWeight: FontWeight.bold,fontSize: 10),),
-                      ],
-                    ),
                   ),
                 )
               ],
             ),
-            const Text('Pending for Confirmation',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.bold,fontSize: 18),),
-             ListView.builder(
-               shrinkWrap: true,
-                 itemCount: 3,
-                 physics: const BouncingScrollPhysics(),
-                 scrollDirection: Axis.vertical,
-                 itemBuilder: (itemBuilder, index) =>
-                 Container(
+            const Text('Confirmed Orders',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.bold,fontSize: 18),),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: 3,
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemBuilder: (itemBuilder, index) =>
+                  Container(
                     margin: const EdgeInsets.symmetric(vertical: 18),
                     decoration: BoxDecoration(
                         color: pickerWhiteColor,
                         borderRadius:  BorderRadius.circular(12),
                         border: Border.all(color: pickerWhiteColor),
-                      boxShadow: const [BoxShadow(color: Colors.grey,blurRadius: 7,offset: Offset(0,4))]
+                        boxShadow: const [BoxShadow(color: Colors.grey,blurRadius: 7,offset: Offset(0,4))]
                     ),
                     child:   ListView(
                       shrinkWrap: true,
@@ -104,11 +110,11 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
                           decoration:  BoxDecoration(
-                              color: colorListSub[index],
-                              borderRadius: const BorderRadius.only( topLeft: Radius.circular(12.0),
-                                topRight: Radius.circular(12.0),),
-                             ),
-                          child: const Column(
+                            color: colorListSub[index],
+                            borderRadius: const BorderRadius.only( topLeft: Radius.circular(12.0),
+                              topRight: Radius.circular(12.0),),
+                          ),
+                          child:  const Column(
                             children: [
                               RowItem( label: 'Customer name:',value: 'Jason Roy',),
                               RowItem(label: 'Building Name/No:',value: '',),
@@ -124,22 +130,31 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                           child:Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const Text( 'Confirm', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                              const Text( 'Collect Items', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
                               Container(width: 2, height: 20, color: pickerVerticalDividerColor),
-                              const Text( 'Call', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                              const Text( 'Door Lock', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
                             ],
                           ),
-                        )
+                        ),
+                         Padding(
+                           padding: const EdgeInsets.symmetric(horizontal: 2.0,vertical: 2),
+                           child: Container(
+                            height: 50,
+                            decoration:  BoxDecoration(color: pickerLightGreenColor,
+                              borderRadius:  BorderRadius.circular(12),
+                            ),
+                            child:
+                                const Center(child: Text( 'Call', style: TextStyle(fontSize: 14, color: pickerWhiteColor,  fontWeight: FontWeight.w600))),
+
+                        ),
+                         ),
                       ],
                     ),
                   ),
-             ),
+            ),
           ],
         ),
       ),
     );
   }
 }
-
-
-
