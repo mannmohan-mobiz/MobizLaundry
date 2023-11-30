@@ -124,7 +124,12 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                           child:Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const Text( 'Confirm', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                               InkWell(
+                                  child: const Text( 'Confirm', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                              onTap: () {
+                                showConfirmDialog();
+                              },
+                              ),
                               Container(width: 2, height: 20, color: pickerVerticalDividerColor),
                               const Text( 'Call', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
                             ],
@@ -137,6 +142,64 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
           ],
         ),
       ),
+    );
+  }
+
+  showConfirmDialog(){
+    return showDialog(
+        context: context,
+        builder: (mContext) =>  AlertDialog(
+          backgroundColor: pickerWhiteColor,
+          content: Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+           width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.all(12),
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+           Image.asset('Assets/Images/confirm_image.png'),
+                const Text(
+                  'Do you really want to confirm this order ?',
+                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ElevatedButton(onPressed: (){
+                          close(context);
+                        },
+                          style: ElevatedButton.styleFrom(
+                            side: const BorderSide(color: pickerGoldColor, width: 2.0),
+                          ),
+                            child: const Text(
+                              'No',
+                              style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                            ),),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ElevatedButton(onPressed: (){},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: pickerGoldColor,
+                          ),
+                          child: const Text(
+                            'Yes',
+                            style: TextStyle(color: pickerWhiteColor,fontSize: 16,fontWeight: FontWeight.w600),
+                          ),),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        )
     );
   }
 }

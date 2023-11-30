@@ -130,9 +130,19 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                           child:Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              const Text( 'Collect Items', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                              InkWell(
+                                  child: const Text( 'Collect Items', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                              onTap: (){
+                                showCollectItemDialog();
+                              },
+                              ),
                               Container(width: 2, height: 20, color: pickerVerticalDividerColor),
-                              const Text( 'Door Lock', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                              InkWell(
+                                  child: const Text( 'Door Lock', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                              onTap: (){
+                                showDoorLockDialog();
+                              },
+                              ),
                             ],
                           ),
                         ),
@@ -155,6 +165,122 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
           ],
         ),
       ),
+    );
+  }
+
+  showDoorLockDialog(){
+    return showDialog(
+        context: context,
+        builder: (mContext) =>  AlertDialog(
+          backgroundColor: pickerWhiteColor,
+          content: Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.all(12),
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset('Assets/Images/door_lock_image.png'),
+                const Text(
+                  'Mark it as Door Lock ?',
+                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ElevatedButton(onPressed: (){
+                          close(context);
+                        },
+                          style: ElevatedButton.styleFrom(
+                            side: const BorderSide(color: pickerGoldColor, width: 2.0),
+                          ),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                          ),),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ElevatedButton(onPressed: (){},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: pickerGoldColor,
+                          ),
+                          child: const Text(
+                            'Yes',
+                            style: TextStyle(color: pickerWhiteColor,fontSize: 16,fontWeight: FontWeight.w600),
+                          ),),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        )
+    );
+  }
+
+  showCollectItemDialog(){
+    return showDialog(
+        context: context,
+        builder: (mContext) =>  AlertDialog(
+          backgroundColor: pickerWhiteColor,
+          content: Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.all(12),
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset('Assets/Images/collect_items_image.png'),
+                const Text(
+                  'Do you really want to collect items from jason ?',
+                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ElevatedButton(onPressed: (){
+                          close(context);
+                        },
+                          style: ElevatedButton.styleFrom(
+                            side: const BorderSide(color: pickerGoldColor, width: 2.0),
+                          ),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                          ),),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ElevatedButton(onPressed: (){},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: pickerGoldColor,
+                          ),
+                          child: const Text(
+                            'Collect',
+                            style: TextStyle(color: pickerWhiteColor,fontSize: 16,fontWeight: FontWeight.w600),
+                          ),),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        )
     );
   }
 }

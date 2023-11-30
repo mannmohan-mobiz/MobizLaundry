@@ -120,9 +120,14 @@ class _ReadyForDespatchPageState extends State<ReadyForDespatchPage> {
                             ],
                           ),
                         ),
-                        const SizedBox(
+                         SizedBox(
                           height: 50,
-                     child: Center(child: Text( 'In Transit', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600))),
+                     child: Center(child: InkWell(
+                         child: const Text('In Transit', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                     onTap: (){
+                       showInTransitDialog();
+                     },
+                     )),
                         ),
                       ],
                     ),
@@ -131,6 +136,63 @@ class _ReadyForDespatchPageState extends State<ReadyForDespatchPage> {
           ],
         ),
       ),
+    );
+  }
+  showInTransitDialog(){
+    return showDialog(
+        context: context,
+        builder: (mContext) =>  AlertDialog(
+          backgroundColor: pickerWhiteColor,
+          content: Container(
+            height: MediaQuery.of(context).size.height * 0.3,
+            width: MediaQuery.of(context).size.width,
+            padding: const EdgeInsets.all(8),
+            margin: const EdgeInsets.all(12),
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset('Assets/Images/intransit_image.png'),
+                const Text(
+                  'Do you really want mark status as "in transit" ?',
+                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ElevatedButton(onPressed: (){
+                          close(context);
+                        },
+                          style: ElevatedButton.styleFrom(
+                            side: const BorderSide(color: pickerGoldColor, width: 2.0),
+                          ),
+                          child: const Text(
+                            'No',
+                            style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                          ),),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: ElevatedButton(onPressed: (){},
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: pickerGoldColor,
+                          ),
+                          child: const Text(
+                            'Yes',
+                            style: TextStyle(color: pickerWhiteColor,fontSize: 16,fontWeight: FontWeight.w600),
+                          ),),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        )
     );
   }
 }
