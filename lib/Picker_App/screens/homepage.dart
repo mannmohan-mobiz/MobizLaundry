@@ -95,7 +95,7 @@ class HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               decoration: const BoxDecoration(
                   border: Border.symmetric(
                       horizontal: BorderSide(

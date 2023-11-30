@@ -16,7 +16,7 @@ class SideMenuPage extends StatelessWidget {
   }
 
   Widget divider() {
-    return Divider(
+    return const Divider(
       indent: 20,
       endIndent: 20,
       height: 0.2,
@@ -64,20 +64,7 @@ class SideMenuPage extends StatelessWidget {
                     children: [
                       InkWell(
                         child: Image.asset(
-                      'Assets/Images/profile.png'),
-                        // child: Container(
-                        //   width: 60,
-                        //   height: 60,
-                        //   decoration: const BoxDecoration(
-                        //       color: Colors.cyan,
-                        //       shape: BoxShape.circle
-                        //   ),
-                        //   // child: Image.asset(''),
-                        // ),
-                        onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfilePage(),));
-                        },
-                      ),
+                      'Assets/Images/profile.png'),),
                       const Text(
                         'Hey User!\nWelcome...',
                         style: TextStyle(color: pickerGoldColor,fontSize: 20,fontWeight: FontWeight.bold),
@@ -86,12 +73,12 @@ class SideMenuPage extends StatelessWidget {
                     ],
                   ),
                 ),
-                ListTile(
-                  leading: Image.asset('Assets/Images/edit_profile_icon.png'), //Image.asset('assets/images/home.png'),
-                  title: const Text('Edit profile'),
-                  onTap: () {},
-                ),
-                divider(),
+                // ListTile(
+                //   leading: Image.asset('Assets/Images/edit_profile_icon.png'), //Image.asset('assets/images/home.png'),
+                //   title: const Text('Edit profile'),
+                //   onTap: () {},
+                // ),
+                // divider(),
                 ListTile(
                   leading: Image.asset('Assets/Images/lang_icon.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Language'),
@@ -116,12 +103,12 @@ class SideMenuPage extends StatelessWidget {
                   onTap: () {},
                 ),
                 divider(),
-                ListTile(
-                  leading: Image.asset('Assets/Images/change_pass_icon.png'), //Image.asset('assets/images/home.png'),
-                  title: const Text('Change password'),
-                  onTap: () {},
-                ),
-                divider(),
+                // ListTile(
+                //   leading: Image.asset('Assets/Images/change_pass_icon.png'), //Image.asset('assets/images/home.png'),
+                //   title: const Text('Change password'),
+                //   onTap: () {},
+                // ),
+                // divider(),
                 ListTile(
                   leading: Image.asset('Assets/Images/change_address_icon.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Change Address'),
@@ -134,12 +121,12 @@ class SideMenuPage extends StatelessWidget {
                   onTap: () {},
                 ),
                 divider(),
-                ListTile(
-                  leading: Image.asset('Assets/Images/feedbacks_icon.png'), //Image.asset('assets/images/home.png'),
-                  title: const Text('Feedbacks'),
-                  onTap: () {},
-                ),
-                divider(),
+                // ListTile(
+                //   leading: Image.asset('Assets/Images/feedbacks_icon.png'), //Image.asset('assets/images/home.png'),
+                //   title: const Text('Feedbacks'),
+                //   onTap: () {},
+                // ),
+                // divider(),
                 ListTile(
                   leading: Image.asset('Assets/Images/branches_icon.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Our Branches'),
@@ -151,12 +138,12 @@ class SideMenuPage extends StatelessWidget {
                   title: const Text('Share App'),
                   onTap: () {},
                 ),
-                divider(),
-                ListTile(
-                  leading: Image.asset('Assets/Images/terms_icon.png'), //Image.asset('assets/images/home.png'),
-                  title: const Text('Terms & conditions'),
-                  onTap: () {},
-                ),
+                // divider(),
+                // ListTile(
+                //   leading: Image.asset('Assets/Images/terms_icon.png'), //Image.asset('assets/images/home.png'),
+                //   title: const Text('Terms & conditions'),
+                //   onTap: () {},
+                // ),
                 divider(),
                 ListTile(
                   leading: Image.asset('Assets/Images/logout_icon.png'), //Image.asset('assets/images/home.png'),

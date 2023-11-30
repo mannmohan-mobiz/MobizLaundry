@@ -23,6 +23,7 @@ import 'Picker_App/screens/category_wise_order_report.dart';
 import 'Picker_App/screens/deposit.dart';
 import 'Picker_App/screens/deposit_history.dart';
 import 'Picker_App/screens/expense.dart';
+import 'Picker_App/screens/home_page_new.dart';
 import 'Picker_App/screens/homepage.dart';
 import 'Picker_App/screens/item_wise_order_report.dart';
 import 'Picker_App/screens/my_collections.dart';
@@ -83,7 +84,8 @@ class _MyAppState extends State<MyApp> {
       ),
       home: LoginPage(),
       routes: {
-        'Home': (context) => const HomePage(),
+        //'Home': (context) => const HomePage(),
+        'Home': (context) => const HomePageNew(),
         'Attendance': (context) => AttendanceScreen(),
         'Dispatch Home': (context) => DispatchReadyScreen(),
         'OutStanding Dues': (context) => OutStandinDueScreen(),

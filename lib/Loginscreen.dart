@@ -6,6 +6,7 @@ import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Customers/Customer_Home.dart';
 import 'Owners/Dashboard/Owner_dashboard.dart';
+import 'Picker_App/screens/home_page_new.dart';
 import 'Picker_App/screens/homepage.dart';
 import 'Service_Staff/Service_staff_dashboard_75.dart';
 import 'main.dart';
@@ -134,7 +135,8 @@ class _LoginPageState extends State<LoginPage> {
                   case "Picker":
                     Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) =>  HomePage()),
+                      //MaterialPageRoute(builder: (context) =>  HomePage()),
+                      MaterialPageRoute(builder: (context) =>  const HomePageNew()),
                     );
                     break;
 
