@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/Picker_App/screens/picking_confirmation_page.dart';
 import 'package:golden_falcon/Picker_App/screens/ready_for_despatch_page.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
+import '../../Utils/row_shimmer.dart';
 import '../src/colors.dart';
 import '../util/bottom_navigation_new.dart';
 import '../util/common_methods.dart';
@@ -23,16 +28,6 @@ class _HomePageNewState extends State<HomePageNew> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
-    List<String> labelText = [
-      'Picking\nConfirmation',
-      'Confirmed',
-      'Ready for\nDispatch',
-      'Outstanding',
-      'Delivered',
-      'Deposit',
-      'Pending for\nprocess',
-      'Urgent\nDelivery'
-    ];
     List<String> labelButtonText1 = ['New Order', 'Delivery', 'Collection','Create Client', 'My Clients','Undelivered'];
    // List<String> labelButtonText2 = ['Create Client', 'My Clients','Undelivered'];
 
@@ -90,50 +85,97 @@ class _HomePageNewState extends State<HomePageNew> {
               ),
             ),
             const SizedBox(height: 10,),
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  childAspectRatio: 1 / 1.35,
-                  mainAxisSpacing: 50,
-                  crossAxisSpacing: 30
-              ),
-              itemCount: labelText.length,
-              itemBuilder: (context, index) =>
+            BlocProvider(
+          create: (context) => PickerBloc( RepositoryProvider.of<PickerRepository>(context),)
+                ..add(GetDashboardCountEvent(authData.user_token.toString(),
+            authData.user_id.toString())),
+            child: BlocBuilder<PickerBloc, PickerState>(
+            builder: (context, state) {
+       if (state is DashboardCountGotState) {
+         List<Map<String, dynamic>> labelText = [
+           {
+             'label': 'Picking\nConfirmation',
+             'value': state.dashData.pickupPendingCount
+           },
+           {
+             'label': 'Confirmed',
+             'value': state.dashData.confirmedCount
+           },
+           {
+             'label': 'Ready for\nDispatch',
+             'value': state.dashData.readyForDispatchCount
+           },
+           {
+             'label': 'Outstanding',
+             'value': state.dashData.confirmedCount
+           },
+           {
+             'label': 'Delivered',
+             'value': state.dashData.deliveredCount
+           },
+           {
+             'label': 'Deposit',
+             'value': state.dashData.depositAmount
+           },
+           {
+             'label': 'Pending for\nprocess',
+             'value': state.dashData.notProcessedCount
+           },
+           {
+             'label': 'Top Up\nRequest',
+             'value': state.dashData.confirmedCount
+           },
+         ];
+        return GridView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 4,
+            childAspectRatio: 1 / 1.35,
+            mainAxisSpacing: 50,
+            crossAxisSpacing: 30
+        ),
+        itemCount: labelText.length,
+        itemBuilder: (context, index) =>
             InkWell(
-              onTap: ()=> onMenuClicked(index,context),
+              onTap: () => onMenuClicked(index, context),
               child: Container(
-                  decoration: BoxDecoration(
-                      color: pickerWhiteColor,
+                decoration: BoxDecoration(
+                    color: pickerWhiteColor,
                     borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color:pickerGoldColor )
-                  ),
-                  child:  Column(
-                    children: [
-                      const Text(
-                        '20',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: pickerGoldColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const Divider(thickness: 2,color: pickerGoldColor,),
-                      Flexible(
-                        child: Text(
-                          labelText[index],
-                          style: const TextStyle(
-                            fontSize: 10,
-                            color: pickerBlackColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    border: Border.all(color: pickerGoldColor)
                 ),
+                child: Column(
+                  children: [
+                     Text(
+                      '${labelText[index]['value']}',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        color: pickerGoldColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Divider(thickness: 2, color: pickerGoldColor,),
+                    Flexible(
+                      child: Text(
+                        '${labelText[index]['label']}',
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: pickerBlackColor,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-            ),
+      );
+    } else {
+         return const Text('Unexpected state encountered');
+       }
+  },
+),
+),
             const SizedBox(height: 25,),
             GridView.builder(
                 physics: const NeverScrollableScrollPhysics(),
@@ -146,7 +188,6 @@ class _HomePageNewState extends State<HomePageNew> {
                 ),
                 itemCount: labelButtonText1.length,
                 itemBuilder: (context, index) =>
-
                      Center(
                        child: ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -154,7 +195,7 @@ class _HomePageNewState extends State<HomePageNew> {
                 fixedSize: const Size(150, 50),
               side: const BorderSide(color: pickerWhiteColor, width: 2.0),
             ),
-          onPressed: () {  },
+          onPressed: () => onButtonClicked(index, context),
             child:  Padding(
               padding: const EdgeInsets.only(top: 2.0,bottom: 2,right: 0),
               child: Text(
@@ -251,9 +292,16 @@ class _HomePageNewState extends State<HomePageNew> {
       case 2:
         open(context, const ReadyForDespatchPage());
         break;
-      case 4:
+    }
+  }
+
+
+  onButtonClicked(int index,BuildContext context,){
+    switch (index){
+      case 1:
         open(context, const DeliveryPage());
         break;
+
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
+import 'deliver_to_customers.dart';
 
 class DeliveryPage extends StatefulWidget {
   const DeliveryPage({super.key});
@@ -127,7 +128,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                               InkWell(
                                 child: const Text( 'Deliver', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
                                 onTap: () {
-                                  //showConfirmDialog();
+                                  open(context, const DeliverToCustomers());
                                 },
                               ),
                               Container(width: 2, height: 20, color: pickerVerticalDividerColor),
