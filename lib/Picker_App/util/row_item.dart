@@ -6,7 +6,9 @@ class RowItem extends StatelessWidget {
   final String label;
   final String value;
   final bool isShow;
-  const RowItem({super.key,required this.value,required this.label,this.isShow = false});
+  final bool isShowButton;
+  final Color color;
+  const RowItem({super.key,required this.value,required this.label,this.isShow = false,this.isShowButton = false,this.color = pickerBackgroundColor});
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,19 @@ class RowItem extends StatelessWidget {
           Flexible(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: Text(
+                child: isShowButton ? Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: color
+                  ),
+                  child: Padding(
+                    padding:  const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Text(
+                      value,
+                      textAlign: TextAlign.start,
+                    ),
+                  )
+                )  : Text(
                   value,
                   textAlign: TextAlign.start,
                 ),

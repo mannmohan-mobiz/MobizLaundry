@@ -48,7 +48,7 @@ class DashboardData {
   int orderViaStaffCount;
   int undeliveredCount;
   int depositAmount;
-  int outstandingCount;
+  //int outstandingCount;
 
   DashboardData({
     required this.pickupPendingCount,
@@ -59,7 +59,7 @@ class DashboardData {
     required this.orderViaStaffCount,
     required this.undeliveredCount,
     required this.depositAmount,
-    required this.outstandingCount,
+    //required this.outstandingCount,
   });
 
   DashboardData copyWith({
@@ -71,7 +71,7 @@ class DashboardData {
     int? orderViaStaffCount,
     int? undeliveredCount,
     int? depositAmount,
-    int? outstandingCount,
+    //int? outstandingCount,
   }) =>
       DashboardData(
         pickupPendingCount: pickupPendingCount ?? this.pickupPendingCount,
@@ -82,7 +82,7 @@ class DashboardData {
         orderViaStaffCount: orderViaStaffCount ?? this.orderViaStaffCount,
         undeliveredCount: undeliveredCount ?? this.undeliveredCount,
         depositAmount: depositAmount ?? this.depositAmount,
-        outstandingCount: outstandingCount ?? this.outstandingCount,
+        //outstandingCount: outstandingCount ?? this.outstandingCount,
 
       );
 
@@ -99,7 +99,7 @@ class DashboardData {
     orderViaStaffCount: json["order_via_staff_count"],
     undeliveredCount: json["undelivered_count"],
     depositAmount: json["deposit_amount"],
-    outstandingCount: json["outstanding_count"],
+   // outstandingCount: json["outstanding_count"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -111,6 +111,6 @@ class DashboardData {
     "order_via_staff_count": orderViaStaffCount,
     "undelivered_count": undeliveredCount,
     "deposit_amount": depositAmount,
-    "outstanding_count": outstandingCount,
+    //"outstanding_count": outstandingCount,
   };
 }
