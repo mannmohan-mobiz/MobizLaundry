@@ -18,6 +18,7 @@ import '../util/side_bar_page.dart';
 import 'confirmed_orders_page.dart';
 import 'delivery_page.dart';
 import 'my_clients_page.dart';
+import 'notification_page.dart';
 
 class HomePageNew extends StatefulWidget {
   const HomePageNew({super.key});
@@ -66,6 +67,12 @@ class _HomePageNewState extends State<HomePageNew> {
         ),
         title: Image.asset('Assets/Images/golden_logo.png'),
         actions: [
+          InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationPage()));
+            },
+              child: Image.asset('Assets/Images/notification_icon.png')),
+          const SizedBox(width: 12),
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: Image.asset('Assets/Images/refresh.png'),

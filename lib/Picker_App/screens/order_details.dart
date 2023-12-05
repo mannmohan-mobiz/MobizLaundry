@@ -85,7 +85,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         border:
                                             Border.all(color: Colors.deepPurple),
                                       ),
-                                      child: Text(
+                                      child: const Text(
                                         " Sl No",
                                         style: TextStyle(
                                           color: Colors.deepPurple,
@@ -101,7 +101,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         border:
                                             Border.all(color: Colors.deepPurple),
                                       ),
-                                      child: Text(
+                                      child: const Text(
                                         "Inv No",
                                         style: TextStyle(
                                           color: Colors.deepPurple,
@@ -117,7 +117,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         border:
                                             Border.all(color: Colors.deepPurple),
                                       ),
-                                      child: Text(
+                                      child: const Text(
                                         "Inv Date",
                                         style: TextStyle(
                                           color: Colors.deepPurple,
@@ -133,7 +133,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         border:
                                             Border.all(color: Colors.deepPurple),
                                       ),
-                                      child: Text(
+                                      child: const Text(
                                         "Bal amt",
                                         style: TextStyle(
                                           color: Colors.deepPurple,
@@ -149,7 +149,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         border:
                                             Border.all(color: Colors.deepPurple),
                                       ),
-                                      child: Text(
+                                      child: const Text(
                                         "Received amt",
                                         style: TextStyle(
                                           color: Colors.deepPurple,
@@ -197,7 +197,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                     border: Border.all(
                                                         color: Colors.deepPurple),
                                                   ),
-                                                  child: Text(
+                                                  child: const Text(
                                                     "",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -213,7 +213,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                     border: Border.all(
                                                         color: Colors.deepPurple),
                                                   ),
-                                                  child: Text(
+                                                  child: const Text(
                                                     "",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -229,7 +229,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                     border: Border.all(
                                                         color: Colors.deepPurple),
                                                   ),
-                                                  child: Text(
+                                                  child: const Text(
                                                     "",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -245,7 +245,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                     border: Border.all(
                                                         color: Colors.deepPurple),
                                                   ),
-                                                  child: Text(
+                                                  child: const Text(
                                                     "",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -261,7 +261,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                                     border: Border.all(
                                                         color: Colors.deepPurple),
                                                   ),
-                                                  child: Text(
+                                                  child: const Text(
                                                     "",
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -292,7 +292,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         border:
                                             Border.all(color: Colors.deepPurple),
                                       ),
-                                      child: Text(
+                                      child: const Text(
                                         " Total",
                                         style: TextStyle(
                                           color: Colors.deepPurple,
@@ -309,7 +309,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                                         border:
                                             Border.all(color: Colors.deepPurple),
                                       ),
-                                      child: Text(
+                                      child: const Text(
                                         "100",
                                         style: TextStyle(
                                           color: Colors.deepPurple,
@@ -338,7 +338,7 @@ class OrderDetailsScreenState extends State<OrderDetailsScreen> {
                   children: [
                     SizedBox(
                         width: size.width * 0.2,
-                        child: Text(
+                        child: const Text(
                           'Mode of Payment :',
                           style: TextStyle(fontSize: 13),
                         )),

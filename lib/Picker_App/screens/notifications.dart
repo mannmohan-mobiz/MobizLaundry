@@ -29,7 +29,7 @@ class NotificationScreenState extends State<NotificationScreen> {
         child: Column(
           children: [
 
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Date : ', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -41,7 +41,7 @@ class NotificationScreenState extends State<NotificationScreen> {
               child: Container(
                 height: 1,
                 width: 150,
-                decoration: BoxDecoration(color: pickerPrimaryColor),
+                decoration: const BoxDecoration(color: pickerPrimaryColor),
               ),
             ),
             SizedBox(
@@ -49,7 +49,7 @@ class NotificationScreenState extends State<NotificationScreen> {
               child: ListView.builder(
                 itemCount: 4,
                 itemBuilder: (context, index) {
-                  return ListTile(
+                  return const ListTile(
                     leading: Text('6.40 Pm :'),
                     title: Text('Order No : 74 Completed Ready for despatch'),
                   );
@@ -63,7 +63,7 @@ class NotificationScreenState extends State<NotificationScreen> {
         ),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
               image: AssetImage('Assets/Images/bg.png'), fit: BoxFit.fill),
         ),
