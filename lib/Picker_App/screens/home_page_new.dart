@@ -133,7 +133,7 @@ class _HomePageNewState extends State<HomePageNew> {
                       },
                       {
                         'label': 'Outstanding',
-                        'value': state.dashData.confirmedCount
+                        'value': state.dashData.outstandingAmount
                       },
                       {
                         'label': 'Delivered',
@@ -149,7 +149,7 @@ class _HomePageNewState extends State<HomePageNew> {
                       },
                       {
                         'label': 'Top Up\nRequest',
-                        'value': state.dashData.confirmedCount
+                        'value': state.dashData.topUpRequestCount
                       },
                     ];
                     return GridView.builder(

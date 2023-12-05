@@ -48,7 +48,8 @@ class DashboardData {
   int orderViaStaffCount;
   int undeliveredCount;
   int depositAmount;
-  //int outstandingCount;
+  int outstandingAmount;
+  int topUpRequestCount;
 
   DashboardData({
     required this.pickupPendingCount,
@@ -59,7 +60,8 @@ class DashboardData {
     required this.orderViaStaffCount,
     required this.undeliveredCount,
     required this.depositAmount,
-    //required this.outstandingCount,
+    required this.outstandingAmount,
+    required this.topUpRequestCount,
   });
 
   DashboardData copyWith({
@@ -71,7 +73,8 @@ class DashboardData {
     int? orderViaStaffCount,
     int? undeliveredCount,
     int? depositAmount,
-    //int? outstandingCount,
+    int? outstandingAmount,
+    int? topUpRequestCount,
   }) =>
       DashboardData(
         pickupPendingCount: pickupPendingCount ?? this.pickupPendingCount,
@@ -82,7 +85,8 @@ class DashboardData {
         orderViaStaffCount: orderViaStaffCount ?? this.orderViaStaffCount,
         undeliveredCount: undeliveredCount ?? this.undeliveredCount,
         depositAmount: depositAmount ?? this.depositAmount,
-        //outstandingCount: outstandingCount ?? this.outstandingCount,
+        outstandingAmount: outstandingAmount ?? this.outstandingAmount,
+        topUpRequestCount: topUpRequestCount ?? this.topUpRequestCount,
 
       );
 
@@ -99,7 +103,8 @@ class DashboardData {
     orderViaStaffCount: json["order_via_staff_count"],
     undeliveredCount: json["undelivered_count"],
     depositAmount: json["deposit_amount"],
-   // outstandingCount: json["outstanding_count"],
+    outstandingAmount: json["outstanding_amount"],
+    topUpRequestCount: json["topup_request_count"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -111,6 +116,7 @@ class DashboardData {
     "order_via_staff_count": orderViaStaffCount,
     "undelivered_count": undeliveredCount,
     "deposit_amount": depositAmount,
-    //"outstanding_count": outstandingCount,
+    "outstanding_amount": outstandingAmount,
+    "topup_request_count": topUpRequestCount,
   };
 }
