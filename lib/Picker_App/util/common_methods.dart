@@ -26,40 +26,13 @@ open(BuildContext context, Widget target) => Navigator.push(
 
 close(BuildContext context, {dynamic result}) => Navigator.pop(context, result);
 
-// openDialer(String phoneNumber) async {
-//   final callUrl = Uri.parse("tel: +971 $phoneNumber");
-//   if (await canLaunchUrl(callUrl)) {
-//     await launchUrl(callUrl);
-//   } else {
-//     throw 'Could not open the dialler.';
-//   }
-// }
-
 
 openDialer(String? mobile) async {
   final url = "tel: +971 $mobile";
   print('#############$url');
-  if (await canLaunchUrl(Uri.parse(url))) {
+  if (await launchUrl(Uri.parse(url))) {
     await launchUrl(Uri.parse(url));
   } else {
     throw 'Could not launch $url';
   }
 }
-
-
-
-
-// Future<void> openDialer(String? mobile) async {
-//   final cleanedMobile = mobile?.replaceAll(' ', ''); // Remove any spaces
-//   final url = "tel:+971$cleanedMobile";
-//
-//   try {
-//     if (await canLaunch(url)) {
-//       await launch(url);
-//     } else {
-//       throw 'Could not launch $url';
-//     }
-//   } catch (e) {
-//     print('Error: $e');
-//   }
-// }

@@ -313,8 +313,8 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                       color: pickerVerticalDividerColor),
                                   InkWell(
                                     onTap: (){
-                                      openDialer('987654321');
-                                      //openDialer(tData[index].customer.mobile);
+                                      //openDialer('987654321');
+                                      openDialer(tData[index].customer.mobile);
                                     } ,
                                     child: const Text('Call',
                                         style: TextStyle(
