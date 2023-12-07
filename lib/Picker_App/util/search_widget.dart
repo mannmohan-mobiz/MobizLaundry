@@ -5,7 +5,9 @@ import 'package:golden_falcon/Picker_App/src/colors.dart';
 class SearchWidget extends StatelessWidget {
   final Function(String)? onChanged;
   final TextEditingController searchCtrl;
+  final String hintText;
   const SearchWidget({super.key,this.onChanged,
+    this.hintText = 'Search',
     required this.searchCtrl,});
 
   @override
@@ -30,7 +32,7 @@ class SearchWidget extends StatelessWidget {
         controller: searchCtrl,
         onChanged: onChanged,
         decoration:  InputDecoration(
-          hintText: 'Search',
+          hintText: hintText,
           hintStyle: const TextStyle(color: pickerHintTextColor, fontSize: 14),
           suffixIcon: Image.asset('Assets/Images/search.png'),
           border: InputBorder.none,

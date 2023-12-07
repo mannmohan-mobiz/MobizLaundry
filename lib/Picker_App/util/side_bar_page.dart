@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:golden_falcon/Loginscreen.dart';
 import 'package:golden_falcon/Utils/common.dart';
 
+import '../screens/order_history_page.dart';
 import '../screens/profile_page.dart';
 import '../src/colors.dart';
 
@@ -88,7 +89,9 @@ class SideMenuPage extends StatelessWidget {
                 ListTile(
                   leading: Image.asset('Assets/Images/order_report_icon.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Order Report'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderHistoryPage()));
+                  },
                 ),
                 divider(),
                 ListTile(
