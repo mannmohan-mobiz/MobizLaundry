@@ -88,7 +88,7 @@ class _NotificationPageState extends State<NotificationPage> {
             child:  Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset('Assets/Images/confirm_image.png'),
+                Image.asset('Assets/Images/not_confirm.png'),
                 const Text(
                   'Do you really want to delete this Notification ?',
                   style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),

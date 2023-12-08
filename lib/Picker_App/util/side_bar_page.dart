@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:golden_falcon/Loginscreen.dart';
 import 'package:golden_falcon/Utils/common.dart';
 
+import '../screens/expense_page.dart';
 import '../screens/order_history_page.dart';
 import '../screens/profile_page.dart';
 import '../src/colors.dart';
@@ -124,16 +125,21 @@ class SideMenuPage extends StatelessWidget {
                   onTap: () {},
                 ),
                 divider(),
-                // ListTile(
-                //   leading: Image.asset('Assets/Images/feedbacks_icon.png'), //Image.asset('assets/images/home.png'),
-                //   title: const Text('Feedbacks'),
-                //   onTap: () {},
-                // ),
-                // divider(),
+                ListTile(
+                  leading: Image.asset('Assets/Images/expense.png'), //Image.asset('assets/images/home.png'),
+                  title: const Text('Expenses'),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const ExpensePage()));
+                  },
+                ),
+                divider(),
                 ListTile(
                   leading: Image.asset('Assets/Images/branches_icon.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Our Branches'),
-                  onTap: () {},
+                  onTap: () {
+
+
+                  },
                 ),
                 divider(),
                 ListTile(

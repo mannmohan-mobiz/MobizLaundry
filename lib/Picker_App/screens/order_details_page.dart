@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
+import '../util/table_row.dart';
 
 class OrderDetailsPage extends StatefulWidget {
   const OrderDetailsPage({super.key});
@@ -13,6 +14,10 @@ class OrderDetailsPage extends StatefulWidget {
 }
 
 class _OrderDetailsPageState extends State<OrderDetailsPage> {
+
+  List<String> title = ['Press & Fold', 'Press & Hang'];
+  List<String> titleData = ['Shirts', 'Pants'];
+  List<String> titleDataValue = ['2', '2'];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,30 +48,49 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
           child: Container(
             decoration: BoxDecoration(color: pickerWhiteColor,borderRadius: BorderRadius.circular(12)),
-            child: Padding(
+            child:  Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
-              child: ListView(
-                children:  const [
-                  Text('Item Name/Category',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w600,fontSize: 13),),
-                   Row(
-                     children: [
-                       Text('Order No:',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w600,fontSize: 13),),
-                       Text('568978',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w600,fontSize: 13),),
-                     ],
-                   ),
-                  Row(
-                    children: [
-                      Text('Date:',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w600,fontSize: 13),),
-                      Text('17.10.2023',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w600,fontSize: 13),),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Text('Status:',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w600,fontSize: 13),),
-                      Text('In Transit',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w600,fontSize: 13),),
-                    ],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children:   [
+                  const Text('Item Name/Category',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w600,fontSize: 14),),
+                  const SizedBox(height: 10,),
+                  const TableWidget(text: 'Order No',value: '568978',colorValue: pickerGoldColor),
+                  const TableWidget(text: 'Date',value: '17.10.2023',colorValue: pickerGoldColor,),
+                  const TableWidget(text: 'Status',value: 'In Transit',colorValue: pickerGoldColor,),
+                  const Divider(color: pickerDividerColor,thickness: 1,),
+                  const SizedBox(height: 10,),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 2,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (itemBuilder, index) =>
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: ListView(
+                          shrinkWrap: true,
+                      children:  [
+                         Text(title[index],style: const TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w600,fontSize: 14),),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0,vertical: 10),
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: 2,
+                              physics: const BouncingScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (itemBuilder, index) =>
+                               TableWidget(text: titleData[index],value: titleDataValue[index],colorValue: pickerGoldColor),
+                          ),
+                        ),
+                        const Divider(color: pickerDividerColor,thickness: 1,),
+                               ]
+                      ),
+                    )
+
                   )
-                ],
+                ]
+
               ),
             ),
           ),

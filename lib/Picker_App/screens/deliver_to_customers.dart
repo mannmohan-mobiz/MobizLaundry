@@ -5,6 +5,7 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/custom_radio.dart';
 import '../util/customer_divider.dart';
+import '../util/table_row.dart';
 
 class DeliverToCustomers extends StatefulWidget {
   const DeliverToCustomers({super.key});
@@ -79,11 +80,20 @@ class _DeliverToCustomersState extends State<DeliverToCustomers> {
                   ),
                   SizedBox(height: 3,),
                   MySeparator(color: pickerDividerColor,height: 2),
-                  PriceValue(label: 'INV.No',value:  '56897ING',),
-                  PriceValue(label: 'INV.Date',value:  '18.2.2023',),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: TableWidget(text: 'INV.No',value:  '56897ING',),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal:20.0),
+                    child: TableWidget(text: 'INV.Date',value:  '18.2.2023',),
+                  ),
                   MySeparator(color: pickerDividerColor,height: 2),
                   SizedBox(height: 5,),
-                  PriceValue(label: 'Total Amount',value:  '50 AED',),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal:20.0),
+                    child: TableWidget(text: 'Total Amount',value:  '50 AED',),
+                  ),
                   SizedBox(height: 5,),
                   MySeparator(color: pickerDividerColor,height: 2),
                   SizedBox(height: 3,),
@@ -156,12 +166,24 @@ class _DeliverToCustomersState extends State<DeliverToCustomers> {
               decoration: BoxDecoration(color: pickerWhiteColor, borderRadius: BorderRadius.circular(12)),
               child:   Column(
                 children: [
-                  const PriceValue(label: 'Wallet Balance',value:  'AED 100',),
-                  const PriceValue(label: 'Previous Balance',value:  'AED 40',),
-                  const PriceValue(label: 'Today Amount',value:  'AED 90',),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: TableWidget(text: 'Wallet Balance',value:  'AED 100',),
+                  ),
+                  const Padding(
+                    padding:EdgeInsets.symmetric(horizontal: 20.0),
+                    child: TableWidget(text: 'Previous Balance',value:  'AED 40',),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: TableWidget(text: 'Today Amount',value:  'AED 90',),
+                  ),
                   const MySeparator(color: pickerDividerColor,height: 2),
                   const SizedBox(height: 5,),
-                  const PriceValue(label: 'Total Amount',value:  'AED***',),
+                  const Padding(
+                    padding:EdgeInsets.symmetric(horizontal: 20.0),
+                    child: TableWidget(text: 'Total Amount',value:  'AED***',),
+                  ),
                   const SizedBox(height: 5,),
                   const MySeparator(color: pickerDividerColor,height: 2),
                   const SizedBox(height: 3,),
@@ -225,45 +247,6 @@ class _DeliverToCustomersState extends State<DeliverToCustomers> {
         ),
       ),
 
-    );
-  }
-}
-
-
-class PriceValue extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const PriceValue({super.key,this.label = '',this.value = ''});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Row(
-        //crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: pickerBlackColor,
-              fontSize: 10,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-          Text(
-            value,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: pickerBlackColor,
-              fontSize: 13,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
