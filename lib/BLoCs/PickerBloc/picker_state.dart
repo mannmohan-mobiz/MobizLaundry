@@ -314,6 +314,34 @@ class OrderConfirmerrorState extends PickerState {
 }
 /***********************[Order Confirm]***********************/
 
+/***********************[pickup Confirmed List]***********************/
+
+class PickupConfirmedListFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PickupConfirmedListFetched extends PickerState {
+  List<pickerConfirmedList> dataList;
+
+  PickupConfirmedListFetched(this.dataList);
+
+  @override
+  List<Object?> get props => [dataList];
+}
+
+
+class PickupConfirmedListError extends PickerState {
+  final String message;
+
+  PickupConfirmedListError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+/***********************[pickup Confirmed List]***********************/
+
 
 /***********************[Picker Punch In]***********************/
 class PickerPunchingInOutState extends PickerState {

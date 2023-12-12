@@ -18,6 +18,7 @@ import '../util/side_bar_page.dart';
 import 'confirmed_orders_page.dart';
 import 'delivery_page.dart';
 import 'my_clients_page.dart';
+import 'new_order_search_page.dart';
 import 'notification_page.dart';
 
 class HomePageNew extends StatefulWidget {
@@ -342,6 +343,9 @@ class _HomePageNewState extends State<HomePageNew> {
 
   onButtonClicked(int index, BuildContext context) {
     switch (index) {
+      case 0:
+        open(context, const NewOrderSearchPage());
+        break;
       case 1:
         open(context, const DeliveryPage());
         break;

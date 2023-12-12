@@ -14,6 +14,7 @@ import 'package:golden_falcon/Models/PickerModel/picker_category_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart';
 import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
 
+import '../../Models/PickerModel/confirmed_list_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
@@ -205,6 +206,25 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         emit(OrderConfirmerrorState(e.toString()));
       }
     });
+
+    on<PickupConfirmedListFetchEvent>((event, emit) async {
+      debugPrint('###DDEERR###');
+      emit(PickupConfirmedListFetching());
+      try {
+        await pickerRepository.getPickUpConfirmedList(token: event.token, id: event.id).then((value) {
+          debugPrint('33W33${value.status}');
+          debugPrint('${value.message}');
+          if (value.status == true && value.message == "Confirmed Orders List!") {
+            emit(PickupConfirmedListFetched(value.data));
+          } else {
+            emit(PickupConfirmedListError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PickupConfirmedListError(e.toString()));
+      }
+    });
+
     on<PickerPunchInOutEvent>((event, emit) async {
       emit(PickerPunchingInOutState());
       try {
