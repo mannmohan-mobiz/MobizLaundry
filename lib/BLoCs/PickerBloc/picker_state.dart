@@ -343,6 +343,34 @@ class PickupConfirmedListError extends PickerState {
 /***********************[pickup Confirmed List]***********************/
 
 
+/***********************[search customer List]***********************/
+
+class PickupSearchCustomerListFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PickupSearchCustomerListFetched extends PickerState {
+  List<CustomerData> searchList;
+
+  PickupSearchCustomerListFetched(this.searchList);
+
+  @override
+  List<Object?> get props => [searchList];
+}
+
+class PickupSearchCustomerListError extends PickerState {
+  final String message;
+
+  PickupSearchCustomerListError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+
+/***********************[search customer List]***********************/
+
 /***********************[Picker Punch In]***********************/
 class PickerPunchingInOutState extends PickerState {
   @override

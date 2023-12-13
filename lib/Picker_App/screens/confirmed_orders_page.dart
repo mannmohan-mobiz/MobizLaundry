@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_falcon/Models/PickerModel/confirmed_list_model.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
@@ -136,17 +137,17 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                     final tData = state.dataList;
                     print('DATA${tData}');
                     print('LENGTH${tData.length}');
-
-
                     return ListView.builder(
-
                       shrinkWrap: true,
                       itemCount: tData.length,
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       itemBuilder: (itemBuilder, index)  {
                         print('33333 NAME###${tData[0].customer.name}');
-                       return  Container(
+                        print('33333 ORDER TYPE ###${state.dataList[index].orderType}');
+                        print('ssssss ORDER TYPE ###${state.dataList[index].orderType == "URGENT"}');
+
+                        return  Container(
                           margin: const EdgeInsets.symmetric(vertical: 18),
                           decoration: BoxDecoration(
                               color: pickerWhiteColor,
@@ -166,20 +167,20 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 12, vertical: 8),
                                 decoration: BoxDecoration(
-                                  color: MaterialStateColor.resolveWith((
-                                      states) {
-                                    if (state.dataList[index].orderType ==
-                                        "Urgent") {
+                                  color: MaterialStateColor.resolveWith((states) {
+                                    if (state.dataList[index].orderType == OrderType.URGENT) {
+                                      print(5555);
                                       return pickerOrangeTypeColor;
                                     } else
-                                    if (state.dataList[index].orderType ==
-                                        "Express") {
+                                    if (state.dataList[index].orderType == OrderType.EXPRESS) {
+                                      print(6666);
                                       return pickerYellowTypeColor;
                                     } else
-                                    if (state.dataList[index].orderType ==
-                                        "Normal") {
+                                    if (state.dataList[index].orderType == OrderType.NORMAL) {
+                                      print(7777);
                                       return pickerGreyTypeColor;
                                     } else {
+                                      print(8888);
                                       return Colors.transparent;
                                     }
                                   }),
@@ -212,7 +213,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                     ),
                                     RowItem(
                                       label: 'Pickup time:',
-                                      value: tData[index].customer.mobile,
+                                      value: tData[index].pickupTime,
                                       isShow: true,
                                     ),
                                   ],

@@ -6,8 +6,10 @@ class SearchWidget extends StatelessWidget {
   final Function(String)? onChanged;
   final TextEditingController searchCtrl;
   final String hintText;
+  final void Function()? onTap;
   const SearchWidget({super.key,this.onChanged,
     this.hintText = 'Search',
+     this.onTap,
     required this.searchCtrl,});
 
   @override
@@ -28,18 +30,25 @@ class SearchWidget extends StatelessWidget {
           ),
         ],
       ),
-      child: TextField(
-        controller: searchCtrl,
-        onChanged: onChanged,
-        decoration:  InputDecoration(
-          hintText: hintText,
-          hintStyle: const TextStyle(color: pickerHintTextColor, fontSize: 14),
-          suffixIcon: Image.asset('Assets/Images/search.png'),
-          border: InputBorder.none,
-        ),
+      child: Stack(
+        alignment: Alignment.centerRight,
+        children: [
+          TextField(
+            controller: searchCtrl,
+            onChanged: onChanged,
+            decoration:  InputDecoration(
+              hintText: hintText,
+              hintStyle: const TextStyle(color: pickerHintTextColor, fontSize: 14),
+              // suffixIcon: Image.asset('Assets/Images/search.png'),
+              border: InputBorder.none,
+            ),
+          ),
+          InkWell(
+            onTap: onTap,
+            child: Image.asset('Assets/Images/search.png')
+          )
+        ],
       ),
-
-
     );
   }
 }

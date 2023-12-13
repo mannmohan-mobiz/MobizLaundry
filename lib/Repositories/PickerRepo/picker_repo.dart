@@ -27,6 +27,7 @@ import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
 import '../../Models/PickerModel/picker_sub_category_model.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
+import '../../Models/PickerModel/search.dart';
 
 class PickerRepository {
   // Dashboard counts
@@ -335,6 +336,7 @@ class PickerRepository {
         data: data,
         options: options
       );
+      print('######PICKUP LIST$response');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerPickupListModel.fromJson(response.data);
@@ -405,6 +407,40 @@ class PickerRepository {
       throw Exception('fctctr##'+e.toString());
     }
   }
+
+  // Customer Search
+
+  Future<Search> getSearchCustomerList({required String token, required String key}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "key":key
+    };
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/search_customer',
+          data: data,
+          options: options
+      );
+      print('#########ssssdd##${response.data}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = Search.fromJson(response.data);
+        print('#########ssssdd##${result.toString()}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('fctctr##'+e.toString());
+    }
+  }
+
 
   // Punch In / Out
   Future<PickerPunchInOutModel> punchIn({required String token, required String id, required String task}) async {
@@ -693,6 +729,36 @@ class PickerRepository {
       }
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  // Order Details
+  Future<Search> getSearchResults({required String searchKey, required String token}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Map<String, String> data = {
+      "key": searchKey
+    };
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl + 'picker/search_customer',
+          data: data,
+          options: options
+      );
+      print(response.data);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = Search.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('oooo' + e.toString());
     }
   }
 }

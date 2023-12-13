@@ -23,6 +23,7 @@ import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
+import '../../Models/PickerModel/search.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 
 part 'picker_event.dart';
@@ -218,6 +219,25 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
             emit(PickupConfirmedListFetched(value.data));
           } else {
             emit(PickupConfirmedListError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PickupConfirmedListError(e.toString()));
+      }
+    });
+
+
+    on<PickupSearchCustomerListFetchEvent>((event, emit) async {
+      debugPrint('###DDEERRsss###');
+      emit(PickupSearchCustomerListFetching());
+      try {
+        await pickerRepository.getSearchCustomerList(token: event.token, key: event.key).then((value) {
+          debugPrint('33W33sss${value.status}');
+          debugPrint('${value.message}');
+          if (value.status == true && value.message == "Data fetched successfully!") {
+            emit(PickupSearchCustomerListFetched(value.data));
+          } else {
+            emit(PickupSearchCustomerListError(value.message));
           }
         });
       } catch (e) {

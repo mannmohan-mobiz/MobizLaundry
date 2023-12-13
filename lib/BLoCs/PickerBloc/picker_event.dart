@@ -144,6 +144,17 @@ class PickupConfirmedListFetchEvent extends PickerEvent {
   List<Object?> get props => [token, id];
 }
 
+// Pickup Search Customer List
+class PickupSearchCustomerListFetchEvent extends PickerEvent {
+  final String token;
+  final String key;
+
+  const PickupSearchCustomerListFetchEvent(this.token, this.key);
+
+  @override
+  List<Object?> get props => [token, key];
+}
+
 // Punch In
 class PickerPunchInOutEvent extends PickerEvent {
   final String token;
