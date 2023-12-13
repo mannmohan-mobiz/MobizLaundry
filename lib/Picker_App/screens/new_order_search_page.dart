@@ -106,8 +106,7 @@ class _NewOrderSearchPageState extends State<NewOrderSearchPage> {
                     ),
                     child: Column(
                       children: [
-                        RowItem(
-                          label: 'Customer name:', value: customerData[index].name),
+                        RowItem(label: 'Customer name:', value: customerData[index].name),
                         RowItem(label: 'Customer type:', value: customerData[index].customerType),
                         RowItem(label: 'Building Name/No:', value: customerData[index].buildingNo),
                         RowItem(label: 'Floor No:', value: customerData[index].roomNo ?? ''),
