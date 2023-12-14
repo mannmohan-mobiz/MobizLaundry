@@ -121,7 +121,8 @@ class _NewOrderSearchPageState extends State<NewOrderSearchPage> {
                                 color: pickerGoldColor, width: 2.0),
                           ),
                           onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectDeliveryMode()));
+                            print('#######CUSTOMER ID${customerData[index].customerId}');
+                            Navigator.push(context, MaterialPageRoute(builder: (context) =>  SelectDeliveryMode(customerID: customerData[index].customerId)));
                           },
                           child: const Text('CREATE NEW ORDER',
                             style: TextStyle(color: pickerBlackColor,

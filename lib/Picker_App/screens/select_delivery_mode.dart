@@ -5,13 +5,19 @@ import 'package:golden_falcon/Picker_App/src/colors.dart';
 import '../util/common_methods.dart';
 
 class SelectDeliveryMode extends StatefulWidget {
-  const SelectDeliveryMode({super.key});
+
+  final String customerID;
+  const SelectDeliveryMode({super.key, this.customerID = ''});
 
   @override
+
   State<SelectDeliveryMode> createState() => _SelectDeliveryModeState();
+
 }
 
 class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
+  int selectedIndex = -1;
+
 
 
   List<String> selectModeList = ['Normal (Delivery with in 42 hrs)',
@@ -21,8 +27,13 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
   List<String> modeSurchargeData = ['',
   '50% surcharge will apply',
     '100% surcharge will apply'];
+
+
+
   @override
   Widget build(BuildContext context) {
+    print('#######${widget.customerID}');
+
     return  Scaffold(
         backgroundColor:  pickerBackgroundColor,
       appBar: AppBar(
@@ -40,7 +51,8 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
               close(context);
             },
             icon: Image.asset('Assets/Images/back_arrow.png')),
-        title: const Text(
+        title:  const Text(
+           // widget.customerID,
           'Delivery Modes',
           style: TextStyle(
               color: pickerGoldColor,
@@ -67,46 +79,61 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
                     shrinkWrap: true,
                     itemCount: selectModeList.length,
                     itemBuilder: (BuildContext context, int index) {
+                      print('#######1111#${selectedIndex == index}');
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: Container(
-                          //height: 59,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(34),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Flexible(
-                                    child: Column(
-                                      crossAxisAlignment : CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          selectModeList[index],
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(fontSize: 13, color: pickerTextColor, fontWeight: FontWeight.w600),
-                                        ),
-                                        modeSurchargeData[index] == '' ? const SizedBox() : Text(
-                                          modeSurchargeData[index],
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(fontSize: 13, color: pickerGoldColor, fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  const CircleAvatar(
-                                    backgroundColor: pickerGoldColor,
-                                    child: Icon(Icons.check_rounded, color: Colors.white),
-                                  )
-                                ],
+                        child: InkWell(
+                          onTap: (){
+                            setState(() {
+                              selectedIndex = index;
+
+                            });
+                          },
+                          child: Container(
+                            //height: 59,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(34),
                               ),
-                            )
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment : CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            selectModeList[index],
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(fontSize: 13, color: pickerTextColor, fontWeight: FontWeight.w600),
+                                          ),
+                                          modeSurchargeData[index] == '' ? const SizedBox() : Text(
+                                            modeSurchargeData[index],
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(fontSize: 13, color: pickerGoldColor, fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 12),
+                                    selectedIndex == index
+                                        ? const CircleAvatar(
+                                      backgroundColor: pickerGoldColor,
+                                      child: Icon(Icons.check_rounded, color: Colors.white),
+                                    )
+                                      :
+                                    const CircleAvatar(
+                                      backgroundColor: pickerGoldColor,
+                                      child: SizedBox(),
+                                    )
+                                  ],
+                                ),
+                              )
+                          ),
                         ),
                       );
                     }
@@ -117,7 +144,12 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
                   height: 54,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectDeliveryTimePage()));
+
+
+
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectDeliveryTimePage(
+
+                      )));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: pickerGoldColor,

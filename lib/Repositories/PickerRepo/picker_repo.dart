@@ -732,7 +732,7 @@ class PickerRepository {
     }
   }
 
-  // Order Details
+  // Search
   Future<Search> getSearchResults({required String searchKey, required String token}) async {
     Dio dio = Dio();
     Options options = Options(
