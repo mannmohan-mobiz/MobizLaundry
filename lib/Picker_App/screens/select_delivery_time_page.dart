@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/Picker_App/screens/select_category.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 
@@ -13,6 +17,9 @@ class SelectDeliveryTimePage extends StatefulWidget {
 }
 
 class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
+
+
+  List<DateTime> dateTime = [];
   List<String> selectTime = [
     '11:00AM - 12:00PM',
     '12:00PM - 1:00PM',
@@ -39,7 +46,12 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
   ];
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return BlocProvider(
+  create: (context) => PickerBloc(
+      RepositoryProvider.of<PickerRepository>(context)
+  )..add(PickupDeliveryDateListFetchEvent(
+    authData.user_token.toString(), authData.user_id.toString())),
+  child: Scaffold(
         backgroundColor:  pickerBackgroundColor,
         appBar: AppBar(
           centerTitle: true,
@@ -83,7 +95,7 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
                     child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         shrinkWrap: true,
-                        itemCount: selectDay.length,
+                        itemCount: dateTime.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -102,14 +114,15 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
                                       crossAxisAlignment: CrossAxisAlignment.center,
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          selectDay[index],
+                                        const Text(
+                                          '',
+                                         // selectDay[index],
                                           textAlign: TextAlign.center,
-                                          style: const TextStyle(fontSize: 13, color: pickerGoldColor, fontWeight: FontWeight.w600),
+                                          style: TextStyle(fontSize: 13, color: pickerGoldColor, fontWeight: FontWeight.w600),
                                         ),
                                         const SizedBox(height: 2),
                                         Text(
-                                          selectDate[index],
+                                          '${dateTime[index]}',
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(fontSize: 15, color: pickerGoldColor, fontWeight: FontWeight.w600),
                                         ),
@@ -173,6 +186,7 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
               ),
             )
         ),
-    );
+    ),
+);
   }
 }

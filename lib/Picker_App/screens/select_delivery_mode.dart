@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/Picker_App/screens/select_delivery_time_page.dart';
 import 'package:golden_falcon/Picker_App/src/colors.dart';
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../util/common_methods.dart';
 
 class SelectDeliveryMode extends StatefulWidget {
@@ -17,8 +21,9 @@ class SelectDeliveryMode extends StatefulWidget {
 
 class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
   int selectedIndex = -1;
-
-
+  final PickerRepository pickerRepository = PickerRepository();
+  final String mode = '';
+  List<DateTime> dateTime = [];
 
   List<String> selectModeList = ['Normal (Delivery with in 42 hrs)',
     'Express(Delivery with in 24 hrs)',
@@ -34,7 +39,12 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
   Widget build(BuildContext context) {
     print('#######${widget.customerID}');
 
-    return  Scaffold(
+    return  BlocProvider(
+  create: (context) => PickerBloc(
+    RepositoryProvider.of<PickerRepository>(context)
+  )..add(PickupDeliveryDateListFetchEvent(
+      authData.user_token.toString(), authData.user_id.toString())),
+  child: Scaffold(
         backgroundColor:  pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -144,11 +154,11 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
                   height: 54,
                   child: ElevatedButton(
                     onPressed: () {
-
-
+                      //BlocProvider.of<PickerBloc>(context).add(PickupDeliveryDateListFetchEvent(authData.user_token.toString(),selectedIndex.mode));
+                      print('#######MODE#$mode');
+                      pickerRepository.getDeliveryDateList(token: authData.user_token.toString(), mode: 'Normal' );
 
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectDeliveryTimePage(
-
                       )));
                     },
                     style: ElevatedButton.styleFrom(
@@ -167,6 +177,7 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
             ),
           )
       ),
-    );
+    ),
+);
   }
 }

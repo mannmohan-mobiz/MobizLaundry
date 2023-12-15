@@ -23,6 +23,7 @@ import '../../Models/PickerModel/order_details_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/outstanding_model.dart';
 import '../../Models/PickerModel/picker_category_model.dart';
+import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
 import '../../Models/PickerModel/picker_sub_category_model.dart';
@@ -432,6 +433,39 @@ class PickerRepository {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = Search.fromJson(response.data);
         print('#########ssssdd##${result.toString()}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('fctctr##'+e.toString());
+    }
+  }
+
+  // Delivery List
+
+  Future<DeliveryModes> getDeliveryDateList({required String token, required String mode}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "delivery_mode": mode
+    };
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/delivery_date',
+          data: data,
+          options: options
+      );
+      print('#########ssssdd11##${response.data}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = DeliveryModes.fromJson(response.data);
+        print('#########ssssdd111122##${result.toString()}');
         return result;
       } else {
         return response.data;

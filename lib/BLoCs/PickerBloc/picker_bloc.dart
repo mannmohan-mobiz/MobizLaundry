@@ -245,6 +245,24 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
       }
     });
 
+    on<PickupDeliveryDateListFetchEvent>((event, emit) async {
+      debugPrint('###DDEERRsss###');
+      emit(PickupDeliveryDateListFetching());
+      try {
+        await pickerRepository.getDeliveryDateList(token: event.token, mode: event.mode).then((value) {
+          debugPrint('33W33sss${value.status}');
+          debugPrint('${value.message}');
+          if (value.status == true && value.message == "Data fetched successfully!") {
+            emit(PickupDeliveryDateListFetched(value.data));
+          } else {
+            emit(PickupDeliveryDateListError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PickupConfirmedListError(e.toString()));
+      }
+    });
+
     on<PickerPunchInOutEvent>((event, emit) async {
       emit(PickerPunchingInOutState());
       try {

@@ -371,6 +371,35 @@ class PickupSearchCustomerListError extends PickerState {
 
 /***********************[search customer List]***********************/
 
+
+/***********************[Delivery Date List]***********************/
+
+class PickupDeliveryDateListFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PickupDeliveryDateListFetched extends PickerState {
+  List<DateTime> dateList;
+
+  PickupDeliveryDateListFetched(this.dateList);
+
+  @override
+  List<Object?> get props => [dateList];
+}
+
+class PickupDeliveryDateListError extends PickerState {
+  final String message;
+
+  PickupDeliveryDateListError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+
+/***********************[Delivery Date List]***********************/
+
 /***********************[Picker Punch In]***********************/
 class PickerPunchingInOutState extends PickerState {
   @override
