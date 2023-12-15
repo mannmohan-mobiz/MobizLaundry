@@ -19,6 +19,7 @@ import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
+import '../../Models/PickerModel/modes.dart';
 import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
@@ -252,7 +253,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         await pickerRepository.getDeliveryDateList(token: event.token, mode: event.mode).then((value) {
           debugPrint('33W33sss${value.status}');
           debugPrint('${value.message}');
-          if (value.status == true && value.message == "Data fetched successfully!") {
+          if (value.status == true && value.message == "Delivery Dates passed successfully") {
             emit(PickupDeliveryDateListFetched(value.data));
           } else {
             emit(PickupDeliveryDateListError(value.message));
@@ -260,6 +261,26 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PickupConfirmedListError(e.toString()));
+      }
+    });
+
+
+    on<PickupDeliveryModeFetchEvent>((event, emit) async {
+      debugPrint('###DDEERRsss111###');
+      emit(PickupDeliveryModeFetching());
+      debugPrint('###DDEERRsss222###');
+      try {
+        await pickerRepository.getDeliveryModesData(token: event.token,).then((value) {
+          debugPrint('33W33sss111${value.status}');
+          debugPrint('2222222${value.message}');
+          if (value.status == true && value.message == "data passed successfully") {
+            emit(PickupDeliveryModeFetched(value.data));
+          } else {
+            emit(PickupDeliveryModeError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PickupDeliveryModeError(e.toString()));
       }
     });
 

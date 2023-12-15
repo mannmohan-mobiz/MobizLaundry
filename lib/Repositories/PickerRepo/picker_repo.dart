@@ -18,6 +18,7 @@ import '../../Models/PickerModel/expense_add_model.dart';
 import '../../Models/PickerModel/expense_drop_down_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
+import '../../Models/PickerModel/modes.dart';
 import '../../Models/PickerModel/new_order_save.dart';
 import '../../Models/PickerModel/order_details_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
@@ -444,7 +445,7 @@ class PickerRepository {
 
   // Delivery List
 
-  Future<DeliveryModes> getDeliveryDateList({required String token, required String mode}) async {
+  Future<DeliveryDateList> getDeliveryDateList({required String token, required String mode}) async {
     Dio dio = Dio();
     Map<String, String> data = {
       "delivery_mode": mode
@@ -464,7 +465,7 @@ class PickerRepository {
       print('#########ssssdd11##${response.data}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var result = DeliveryModes.fromJson(response.data);
+        var result = DeliveryDateList.fromJson(response.data);
         print('#########ssssdd111122##${result.toString()}');
         return result;
       } else {
@@ -535,6 +536,34 @@ class PickerRepository {
       print(response);
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = LocationPriceGroupModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Delivery Modes GET
+  Future<Modes> getDeliveryModesData({required String token}) async {
+
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      print('RRRRRRR332222');
+      var response = await dio.get(
+          baseUrl+'picker/delivery_mode',
+          options: options
+      );
+      print('RRRRRRR33$response');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = Modes.fromJson(response.data);
         return result;
       } else {
         return response.data;

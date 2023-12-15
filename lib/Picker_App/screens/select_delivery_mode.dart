@@ -42,8 +42,8 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
     return  BlocProvider(
   create: (context) => PickerBloc(
     RepositoryProvider.of<PickerRepository>(context)
-  )..add(PickupDeliveryDateListFetchEvent(
-      authData.user_token.toString(), authData.user_id.toString())),
+  )..add(PickupDeliveryModeFetchEvent(
+      authData.user_token.toString())),
   child: Scaffold(
         backgroundColor:  pickerBackgroundColor,
       appBar: AppBar(
@@ -84,70 +84,100 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
               children: [
                 const Text('Choose Mode of Delivery', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, color: pickerBlackColor)),
                 const SizedBox(height: 12),
-                ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemCount: selectModeList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      print('#######1111#${selectedIndex == index}');
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: InkWell(
-                          onTap: (){
-                            setState(() {
-                              selectedIndex = index;
-
-                            });
-                          },
-                          child: Container(
-                            //height: 59,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(34),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Flexible(
-                                      child: Column(
-                                        crossAxisAlignment : CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            selectModeList[index],
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(fontSize: 13, color: pickerTextColor, fontWeight: FontWeight.w600),
-                                          ),
-                                          modeSurchargeData[index] == '' ? const SizedBox() : Text(
-                                            modeSurchargeData[index],
-                                            textAlign: TextAlign.center,
-                                            style: const TextStyle(fontSize: 13, color: pickerGoldColor, fontWeight: FontWeight.w600),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    selectedIndex == index
-                                        ? const CircleAvatar(
-                                      backgroundColor: pickerGoldColor,
-                                      child: Icon(Icons.check_rounded, color: Colors.white),
-                                    )
-                                      :
-                                    const CircleAvatar(
-                                      backgroundColor: pickerGoldColor,
-                                      child: SizedBox(),
-                                    )
-                                  ],
+                BlocBuilder<PickerBloc, PickerState>(
+              builder: (context, state) {
+                print('res${state}');
+                if (state is PickupDeliveryModeFetching) {
+                  return const Center(
+                      child: CircularProgressIndicator(
+                        color: pickerGoldColor,
+                      ));
+                }else if (state is PickupDeliveryModeFetched) {
+                  final data = state.deliveryModes;
+                  return ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        print('#######1111#${selectedIndex == index}');
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8),
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                selectedIndex = index;
+                              });
+                            },
+                            child: Container(
+                              //height: 59,
+                                width: MediaQuery
+                                    .of(context)
+                                    .size
+                                    .width,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(34),
                                 ),
-                              )
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 24, vertical: 12),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment
+                                        .spaceBetween,
+                                    children: [
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .center,
+                                          mainAxisAlignment: MainAxisAlignment
+                                              .center,
+                                          children: [
+                                            Text(
+                                              data[index].name,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  color: pickerTextColor,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            data[index].extraValue == ''
+                                                ? const SizedBox()
+                                                : Text(
+                                              data[index].extraValue,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                  fontSize: 13,
+                                                  color: pickerGoldColor,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      selectedIndex == index
+                                          ? const CircleAvatar(
+                                        backgroundColor: pickerGoldColor,
+                                        child: Icon(Icons.check_rounded,
+                                            color: Colors.white),
+                                      )
+                                          :
+                                      const CircleAvatar(
+                                        backgroundColor: pickerGoldColor,
+                                        child: SizedBox(),
+                                      )
+                                    ],
+                                  ),
+                                )
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                ),
+                        );
+                      }
+                  );
+                } else {
+                  return const Center(child: Text('No Data'));
+                }
+  },
+),
                 const SizedBox(height: 22),
                 SizedBox(
                   width: double.infinity,

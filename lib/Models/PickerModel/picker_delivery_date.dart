@@ -1,25 +1,25 @@
 // To parse this JSON data, do
 //
-//     final deliveryModes = deliveryModesFromJson(jsonString);
+//     final deliveryDateList = deliveryDateListFromJson(jsonString);
 
 import 'dart:convert';
 
-DeliveryModes deliveryModesFromJson(String str) => DeliveryModes.fromJson(json.decode(str));
+DeliveryDateList deliveryDateListFromJson(String str) => DeliveryDateList.fromJson(json.decode(str));
 
-String deliveryModesToJson(DeliveryModes data) => json.encode(data.toJson());
+String deliveryDateListToJson(DeliveryDateList data) => json.encode(data.toJson());
 
-class DeliveryModes {
+class DeliveryDateList {
   bool status;
   List<DateTime> data;
   String message;
 
-  DeliveryModes({
+  DeliveryDateList({
     required this.status,
     required this.data,
     required this.message,
   });
 
-  factory DeliveryModes.fromJson(Map<String, dynamic> json) => DeliveryModes(
+  factory DeliveryDateList.fromJson(Map<String, dynamic> json) => DeliveryDateList(
     status: json["status"],
     data: List<DateTime>.from(json["data"].map((x) => DateTime.parse(x))),
     message: json["message"],

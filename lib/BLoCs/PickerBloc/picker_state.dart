@@ -400,6 +400,34 @@ class PickupDeliveryDateListError extends PickerState {
 
 /***********************[Delivery Date List]***********************/
 
+/***********************[Delivery Mode List]***********************/
+
+class PickupDeliveryModeFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PickupDeliveryModeFetched extends PickerState {
+  List<DeliveryModes> deliveryModes;
+
+  PickupDeliveryModeFetched(this.deliveryModes);
+
+  @override
+  List<Object?> get props => [deliveryModes];
+}
+
+class PickupDeliveryModeError extends PickerState {
+  final String message;
+
+  PickupDeliveryModeError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+
+/***********************[Delivery Mode List]***********************/
+
 /***********************[Picker Punch In]***********************/
 class PickerPunchingInOutState extends PickerState {
   @override
