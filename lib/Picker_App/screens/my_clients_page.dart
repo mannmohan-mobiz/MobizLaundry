@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../Customers/Customer_Home.dart';
 import '../src/colors.dart';
 import '../util/column_item.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
 import '../util/search_widget.dart';
+import 'customer_home_page.dart';
 
 class MyClientsPage extends StatefulWidget {
   const MyClientsPage({super.key});
@@ -81,19 +83,25 @@ class _MyClientsPageState extends State<MyClientsPage> {
                     border: Border.all(color: pickerWhiteColor),
                     boxShadow: const [BoxShadow(color: Colors.grey,blurRadius: 7,offset: Offset(0,4))]
                 ),
-                child:  const Column(
+                child:   Column(
                   children: [
-                    RowItem( label: 'Customer name:',value: 'Jason Roy',),
-                    RowItem( label: 'Customer type:',value: 'Home',),
-                    RowItem( label: 'Mode of Delivery:',value: 'Urgent',color : pickerOrangeTypeColor,isShowButton: true),
-                    RowItem( label: 'Order ID:',value: '',),
-                    RowItem(label: 'Building Name/No:',value: '',),
-                    RowItem(label: 'Floor No:',value: '',),
-                    RowItem(label: 'House No:',value: '',),
-                    RowItem(label: 'Mobile No:',value: '',),
-                    RowItem(label: 'Delivery time:',value: '7am to 9am'),
-                    Divider(),
-                    Row(
+                    RowItem(
+                        label: 'Customer name:',value: 'Jason Roy',isShowButton: true,borderColor: pickerGoldColor,
+                        onTap: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  CustomerHomePageScreen()));
+  }
+
+                    ),
+                    const RowItem( label: 'Customer type:',value: 'Home',),
+                    const RowItem( label: 'Mode of Delivery:',value: 'Urgent',color : pickerOrangeTypeColor,isShowButton: true),
+                    const RowItem( label: 'Order ID:',value: '',),
+                    const RowItem(label: 'Building Name/No:',value: '',),
+                    const RowItem(label: 'Floor No:',value: '',),
+                    const RowItem(label: 'House No:',value: '',),
+                    const RowItem(label: 'Mobile No:',value: '',),
+                    const RowItem(label: 'Delivery time:',value: '7am to 9am'),
+                    const Divider(),
+                    const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         ColumItem(image: 'Assets/Images/view_icon.png',label: 'View'),

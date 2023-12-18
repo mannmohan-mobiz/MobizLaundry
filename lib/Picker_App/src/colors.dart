@@ -6,6 +6,7 @@ const Color pickerButtonColor = Color(0xffCEDCDF);
 const Color pickerWhiteColor = Color(0xffFFFFFF);
 const Color pickerNotificationColor = Color(0xffE4E1CE);
 const Color pickerGoldColor = Color.fromRGBO (163, 142, 35,1);
+const Color pickerDarRedColor = Color(0xffA12D2D);
 const Color pickerBackgroundColor = Color(0xffECECEC);
 const Color pickerSubTextColor = Color(0xff94989B);
 const Color pickerGreenCallColor = Color(0xff68BC4A);

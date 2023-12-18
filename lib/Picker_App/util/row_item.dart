@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../src/colors.dart';
 
@@ -8,7 +9,9 @@ class RowItem extends StatelessWidget {
   final bool isShow;
   final bool isShowButton;
   final Color color;
-  const RowItem({super.key,required this.value,required this.label,this.isShow = false,this.isShowButton = false,this.color = pickerBackgroundColor});
+  final Color borderColor;
+  final Function()? onTap;
+  const RowItem({super.key,required this.value,required this.label,this.isShow = false,this.isShowButton = false,this.color = pickerWhiteColor,this.borderColor = pickerWhiteColor,this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +27,22 @@ class RowItem extends StatelessWidget {
           Flexible(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: isShowButton ? Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: color
-                  ),
-                  child: Padding(
-                    padding:  const EdgeInsets.symmetric(horizontal: 12.0),
-                    child: Text(
-                      value,
-                      textAlign: TextAlign.start,
+                child: isShowButton ? InkWell(
+                  onTap: onTap,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: borderColor),
+                        color: color
                     ),
-                  )
+                    child: Padding(
+                      padding:  const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Text(
+                        value,
+                        textAlign: TextAlign.start,
+                      ),
+                    )
+                  ),
                 )  : Text(
                   value,
                   textAlign: TextAlign.start,
