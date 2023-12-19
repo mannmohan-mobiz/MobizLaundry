@@ -21,6 +21,7 @@ class SelectDeliveryMode extends StatefulWidget {
 
 class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
   int selectedIndex = -1;
+  String selectedMode = '';
   final PickerRepository pickerRepository = PickerRepository();
   final String mode = '';
   List<DateTime> dateTime = [];
@@ -94,18 +95,21 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
                       ));
                 }else if (state is PickupDeliveryModeFetched) {
                   final data = state.deliveryModes;
+                  //selectedMode = data[0].mode;
                   return ListView.builder(
                       scrollDirection: Axis.vertical,
                       shrinkWrap: true,
                       itemCount: data.length,
                       itemBuilder: (BuildContext context, int index) {
-                        print('#######1111#${selectedIndex == index}');
+                        print('#######1111#$mode');
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 8),
                           child: InkWell(
                             onTap: () {
                               setState(() {
                                 selectedIndex = index;
+                                selectedMode = data[index].mode;
+
                               });
                             },
                             child: Container(
@@ -185,10 +189,9 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
                   child: ElevatedButton(
                     onPressed: () {
                       //BlocProvider.of<PickerBloc>(context).add(PickupDeliveryDateListFetchEvent(authData.user_token.toString(),selectedIndex.mode));
-                      print('#######MODE#$mode');
-                      pickerRepository.getDeliveryDateList(token: authData.user_token.toString(), mode: 'Normal' );
-
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectDeliveryTimePage(
+                      print('#######MODE#${selectedIndex.toString()} ');
+                      pickerRepository.getDeliveryDateList(token: authData.user_token.toString(), mode: selectedMode );
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => SelectDeliveryTimePage(mode: selectedMode,
                       )));
                     },
                     style: ElevatedButton.styleFrom(

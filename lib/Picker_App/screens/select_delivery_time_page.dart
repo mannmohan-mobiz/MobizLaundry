@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/Picker_App/screens/select_category.dart';
+import 'package:intl/intl.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
@@ -10,7 +11,8 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 
 class SelectDeliveryTimePage extends StatefulWidget {
-  const SelectDeliveryTimePage({super.key});
+  final String? mode;
+  const SelectDeliveryTimePage({super.key, this.mode});
 
   @override
   State<SelectDeliveryTimePage> createState() => _SelectDeliveryTimePageState();
@@ -18,8 +20,6 @@ class SelectDeliveryTimePage extends StatefulWidget {
 
 class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
 
-
-  List<DateTime> dateTime = [];
   List<String> selectTime = [
     '11:00AM - 12:00PM',
     '12:00PM - 1:00PM',
@@ -28,29 +28,14 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
     '8:00AM - 9:00PM',
     '9:00AM - 10:00PM',
   ];
-
-  List<String> selectDay = [
-    'Friday',
-    'Saturday',
-    'Sunday',
-    'Monday',
-    'Tuesday',
-  ];
-
-  List<String> selectDate = [
-    '08 Dec 2023',
-    '09 Dec 2023',
-    '10 Dec 2023',
-    '11 Dec 2023',
-    '12 Dec 2023',
-  ];
   @override
   Widget build(BuildContext context) {
+    print('#####${widget.mode.toString()}');
     return BlocProvider(
   create: (context) => PickerBloc(
       RepositoryProvider.of<PickerRepository>(context)
   )..add(PickupDeliveryDateListFetchEvent(
-    authData.user_token.toString(), authData.user_id.toString())),
+    authData.user_token.toString(), widget.mode.toString())),
   child: Scaffold(
         backgroundColor:  pickerBackgroundColor,
         appBar: AppBar(
@@ -92,48 +77,64 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
                   const SizedBox(height: 12),
                   SizedBox(
                     height: 75,
-                    child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: true,
-                        itemCount: dateTime.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: Container(
-                                height: 75,
-                                width: 128,
-                                decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(16),
-                                    border: Border.all(color: pickerGoldColor, width: 2)
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                                  child: Center(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          '',
-                                         // selectDay[index],
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 13, color: pickerGoldColor, fontWeight: FontWeight.w600),
-                                        ),
-                                        const SizedBox(height: 2),
-                                        Text(
-                                          '${dateTime[index]}',
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(fontSize: 15, color: pickerGoldColor, fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
+                    child: BlocBuilder<PickerBloc, PickerState>(
+                  builder: (context, state) {
+                    if (state is PickupDeliveryDateListFetching) {
+                      return const Center(
+                          child: CircularProgressIndicator(
+                            color: pickerGoldColor,
+                          ));
+                    } else if(state is PickupDeliveryDateListFetched){
+                      final data = state.dateList;
+                       return InkWell(
+                         onTap: (){
+                           
+                         },
+                         child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          shrinkWrap: true,
+                          itemCount: data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                              child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(color: pickerGoldColor, width: 2)
                                   ),
-                                )
-                            ),
-                          );
-                        }
-                    ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                                    child: Center(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                           Text(
+                                            ' ${DateFormat('EEEE').format(data[index])}',
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(fontSize: 13, color: pickerGoldColor, fontWeight: FontWeight.w600),
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Text(
+                                            DateFormat('dd-MMM-yyyy').format(data[index]),
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(fontSize: 15, color: pickerGoldColor, fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                              ),
+                            );
+                          }
+                                             ),
+                       );
+                    } else {
+                      return const Center(child: Text('No Data'));
+                    }
+  },
+),
                   ),
                   const SizedBox(height: 22),
                   ListView.builder(
@@ -185,7 +186,7 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
                 ],
               ),
             )
-        ),
+        )
     ),
 );
   }
