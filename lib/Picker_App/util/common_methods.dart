@@ -26,6 +26,11 @@ open(BuildContext context, Widget target) => Navigator.push(
 
 close(BuildContext context, {dynamic result}) => Navigator.pop(context, result);
 
+void snackBar(BuildContext context, {required String message}) {
+  ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(backgroundColor: pickerGoldColor, content: Text(message, textAlign: TextAlign.start, style: const TextStyle(color: Colors.white))));
+}
+
 
 openDialer(String? mobile) async {
   final url = "tel: +971 $mobile";

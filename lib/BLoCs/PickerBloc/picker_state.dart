@@ -380,12 +380,12 @@ class PickupDeliveryDateListFetching extends PickerState {
 }
 
 class PickupDeliveryDateListFetched extends PickerState {
-  List<DateTime> dateList;
+  List<Date> date;
 
-  PickupDeliveryDateListFetched(this.dateList);
+  PickupDeliveryDateListFetched(this.date);
 
   @override
-  List<Object?> get props => [dateList];
+  List<Object?> get props => [date];
 }
 
 class PickupDeliveryDateListError extends PickerState {
@@ -399,6 +399,33 @@ class PickupDeliveryDateListError extends PickerState {
 
 
 /***********************[Delivery Date List]***********************/
+
+/***********************[Delivery Time List]***********************/
+
+class PickupDeliveryTimeListFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PickupDeliveryTimeListFetched extends PickerState {
+  List<String> time;
+
+  PickupDeliveryTimeListFetched(this.time);
+
+  @override
+  List<Object?> get props => [time];
+}
+
+class PickupDeliveryTimeListError extends PickerState {
+  final String message;
+
+  PickupDeliveryTimeListError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+/***********************[Delivery Time List]***********************/
 
 /***********************[Delivery Mode List]***********************/
 

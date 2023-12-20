@@ -10,7 +10,7 @@ String deliveryDateListToJson(DeliveryDateList data) => json.encode(data.toJson(
 
 class DeliveryDateList {
   bool status;
-  List<DateTime> data;
+  List<Date> data;
   String message;
 
   DeliveryDateList({
@@ -21,13 +21,33 @@ class DeliveryDateList {
 
   factory DeliveryDateList.fromJson(Map<String, dynamic> json) => DeliveryDateList(
     status: json["status"],
-    data: List<DateTime>.from(json["data"].map((x) => DateTime.parse(x))),
+    data: List<Date>.from(json["data"].map((x) => Date.fromJson(x))),
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": List<dynamic>.from(data.map((x) => "${x.year.toString().padLeft(4, '0')}-${x.month.toString().padLeft(2, '0')}-${x.day.toString().padLeft(2, '0')}")),
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
     "message": message,
+  };
+}
+
+class Date {
+  DateTime date;
+  String day;
+
+  Date({
+    required this.date,
+    required this.day,
+  });
+
+  factory Date.fromJson(Map<String, dynamic> json) => Date(
+    date: DateTime.parse(json["date"]),
+    day: json["day"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+    "day": day,
   };
 }

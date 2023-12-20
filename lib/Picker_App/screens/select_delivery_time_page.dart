@@ -5,6 +5,7 @@ import 'package:golden_falcon/Picker_App/screens/select_category.dart';
 import 'package:intl/intl.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Models/PickerModel/delivery_time.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
@@ -12,24 +13,26 @@ import '../util/common_methods.dart';
 
 class SelectDeliveryTimePage extends StatefulWidget {
   final String? mode;
-  const SelectDeliveryTimePage({super.key, this.mode});
+  final String? deliveryDate;
+  final String? custID;
+
+  const SelectDeliveryTimePage({super.key, this.mode,this.deliveryDate,this.custID});
 
   @override
   State<SelectDeliveryTimePage> createState() => _SelectDeliveryTimePageState();
 }
 
 class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
+  String selectedDate = '';
+  String isSelectedTimeData = '';
+  final PickerRepository pickerRepository = PickerRepository();
+  bool isSelected = false;
+  DeliveryTimeList? selectedTime;
 
-  List<String> selectTime = [
-    '11:00AM - 12:00PM',
-    '12:00PM - 1:00PM',
-    '1:00PM - 2:00PM',
-    '7:00PM - 8:00PM',
-    '8:00AM - 9:00PM',
-    '9:00AM - 10:00PM',
-  ];
+
   @override
   Widget build(BuildContext context) {
+    print('#####IDDDDD####${widget.custID.toString()}');
     print('#####${widget.mode.toString()}');
     return BlocProvider(
   create: (context) => PickerBloc(
@@ -85,21 +88,29 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
                             color: pickerGoldColor,
                           ));
                     } else if(state is PickupDeliveryDateListFetched){
-                      final data = state.dateList;
-                       return InkWell(
-                         onTap: (){
-                           
-                         },
-                         child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemCount: data.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 5),
+                      final data = state.date;
+
+                       return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        shrinkWrap: true,
+                        itemCount: data.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          print('QQQQQ${data[index].date}');
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: InkWell(
+                              onTap: (){
+                                selectedDate =  DateFormat('yyyy-MM-dd').format(data[index].date);
+                                print('#######DATE#$selectedDate');
+                                pickerRepository.getDeliveryTimeList(token: authData.user_token.toString(), deliveryDate: selectedDate).then((value) {
+                                  setState(() {
+                                    selectedTime = value;
+                                  });
+                                });
+                              },
                               child: Container(
                                   decoration: BoxDecoration(
-                                      color: Colors.white,
+                                      color:   selectedDate ==  DateFormat('yyyy-MM-dd').format(data[index].date) ? pickerGoldColor : Colors.white,
                                       borderRadius: BorderRadius.circular(16),
                                       border: Border.all(color: pickerGoldColor, width: 2)
                                   ),
@@ -111,25 +122,29 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                            Text(
-                                            ' ${DateFormat('EEEE').format(data[index])}',
+                                             data[index].day,
+                                            //'${DateFormat('EEEE').format(data[index])}',
                                             textAlign: TextAlign.center,
-                                            style: const TextStyle(fontSize: 13, color: pickerGoldColor, fontWeight: FontWeight.w600),
+                                            style:  TextStyle(fontSize: 13,
+                                                color: selectedDate ==  DateFormat('yyyy-MM-dd').format(data[index].date) ?  Colors.white : pickerGoldColor, fontWeight: FontWeight.w600),
                                           ),
                                           const SizedBox(height: 2),
                                           Text(
-                                            DateFormat('dd-MMM-yyyy').format(data[index]),
+                                            DateFormat('dd-MMM-yyyy').format(data[index].date),
+                                            //DateFormat('dd-MMM-yyyy').format(data[index]),
                                             textAlign: TextAlign.center,
-                                            style: const TextStyle(fontSize: 15, color: pickerGoldColor, fontWeight: FontWeight.w600),
+                                            style:  TextStyle(fontSize: 15,
+                                                color: selectedDate ==  DateFormat('yyyy-MM-dd').format(data[index].date) ?  Colors.white : pickerGoldColor, fontWeight: FontWeight.w600),
                                           ),
                                         ],
                                       ),
                                     ),
                                   )
                               ),
-                            );
-                          }
-                                             ),
-                       );
+                            ),
+                          );
+                        }
+                    );
                     } else {
                       return const Center(child: Text('No Data'));
                     }
@@ -137,39 +152,77 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
 ),
                   ),
                   const SizedBox(height: 22),
-                  ListView.builder(
-                      scrollDirection: Axis.vertical,
+                  BlocBuilder<PickerBloc, PickerState>(
+                  builder: (context, state) {
+                    final List<String> tData = (selectedTime?.data) ?? [];
+                  if (tData.isNotEmpty){
+
+                  return ListView.builder(
+                    physics: const ScrollPhysics(),
                       shrinkWrap: true,
-                      itemCount: selectTime.length,
+                      itemCount: tData.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 6),
-                          child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(color: pickerGoldColor, width: 2)
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-                                child: Text(
-                                  selectTime[index],
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(fontSize: 13, color: pickerGoldColor, fontWeight: FontWeight.w600),
+                          child: InkWell(
+                            onTap: (){
+                              setState(() {
+                                isSelectedTimeData = tData[index];
+                              });
+
+                                print('#######TIME#$isSelectedTimeData');
+                                print('#######TIMESELECTION#${isSelectedTimeData == tData[index]}');
+                            },
+                            child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                decoration: BoxDecoration(
+                                    color: isSelectedTimeData == tData[index] ? pickerGoldColor : Colors.white,
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(color: pickerGoldColor, width: 2)
                                 ),
-                              )
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                                  child: Text(
+                                    tData[index],
+                                    textAlign: TextAlign.center,
+                                    style:  TextStyle(fontSize: 13,
+                                        color: isSelectedTimeData == tData[index] ? Colors.white :  pickerGoldColor,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                )
+                            ),
                           ),
                         );
                       }
-                  ),
+                  );
+                } else {
+                  return const Center(child: Text(''));
+                }
+  },
+),
                   const SizedBox(height: 22),
                   SizedBox(
                     width: double.infinity,
                     height: 54,
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectCategory()));
+                        Map<String, String> data = {
+                          "id": authData.user_id.toString(),
+                          "customer_id": widget.custID.toString(),
+                          "pickup_date": '',
+                          "pickup_time": '',
+                          "order_type":  widget.mode.toString(),
+                          "Delivery_date": selectedDate,
+                          "Delivery_time": isSelectedTimeData
+                        };
+                        print('#########${(data)}');
+                        //print(jsonEncode(data));
+                        BlocProvider.of<PickerBloc>(context)
+                            .add(AddNewOrderEvent(data, authData.user_token.toString()));
+                        setState(() {
+                         // mode_of_action = "get_items";
+                        });
+                        //Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectCategory()));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: pickerGoldColor,

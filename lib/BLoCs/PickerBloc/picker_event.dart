@@ -166,6 +166,17 @@ class PickupDeliveryDateListFetchEvent extends PickerEvent {
   List<Object?> get props => [token, mode];
 }
 
+// Pickup Delivery Time List
+class PickupDeliveryTimeListFetchEvent extends PickerEvent {
+  final String token;
+  final String deliveryDate;
+
+  const PickupDeliveryTimeListFetchEvent(this.token, this.deliveryDate);
+
+  @override
+  List<Object?> get props => [token, deliveryDate];
+}
+
 // Pickup Delivery mode List
 class PickupDeliveryModeFetchEvent extends PickerEvent {
   final String token;

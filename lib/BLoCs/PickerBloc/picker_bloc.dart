@@ -21,6 +21,7 @@ import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/modes.dart';
 import '../../Models/PickerModel/order_history_model.dart';
+import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
@@ -261,6 +262,25 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PickupConfirmedListError(e.toString()));
+      }
+    });
+
+
+    on<PickupDeliveryTimeListFetchEvent>((event, emit) async {
+      debugPrint('###DDEERRsss###');
+      emit(PickupDeliveryTimeListFetching());
+      try {
+        await pickerRepository.getDeliveryTimeList(token: event.token, deliveryDate: event.deliveryDate).then((value) {
+          debugPrint('33W33sss${value.status}');
+          debugPrint('${value.message}');
+          if (value.status == true  && value.message == "Time intervals") {
+            emit(PickupDeliveryTimeListFetched(value.data));
+          } else {
+            emit(PickupDeliveryTimeListError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PickupDeliveryTimeListError(e.toString()));
       }
     });
 

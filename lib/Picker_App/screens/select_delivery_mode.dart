@@ -24,21 +24,10 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
   String selectedMode = '';
   final PickerRepository pickerRepository = PickerRepository();
   final String mode = '';
-  List<DateTime> dateTime = [];
-
-  List<String> selectModeList = ['Normal (Delivery with in 42 hrs)',
-    'Express(Delivery with in 24 hrs)',
-    'Urgent(Delivery within 8hrs)'];
-
-  List<String> modeSurchargeData = ['',
-  '50% surcharge will apply',
-    '100% surcharge will apply'];
-
-
 
   @override
   Widget build(BuildContext context) {
-    print('#######${widget.customerID}');
+    print('#######111##${widget.customerID}');
 
     return  BlocProvider(
   create: (context) => PickerBloc(
@@ -188,11 +177,18 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
                   height: 54,
                   child: ElevatedButton(
                     onPressed: () {
-                      //BlocProvider.of<PickerBloc>(context).add(PickupDeliveryDateListFetchEvent(authData.user_token.toString(),selectedIndex.mode));
-                      print('#######MODE#${selectedIndex.toString()} ');
-                      pickerRepository.getDeliveryDateList(token: authData.user_token.toString(), mode: selectedMode );
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => SelectDeliveryTimePage(mode: selectedMode,
-                      )));
+                      if(selectedMode == '') {
+                        snackBar(
+                            context, message: 'Please choose delivery mode');
+                      } else {
+                        pickerRepository.getDeliveryDateList(token: authData
+                            .user_token.toString(), mode: selectedMode);
+                        Navigator.push(context, MaterialPageRoute(builder: (
+                            context) =>
+                            SelectDeliveryTimePage(mode: selectedMode,custID: widget.customerID
+                            )));
+                      }
+
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: pickerGoldColor,

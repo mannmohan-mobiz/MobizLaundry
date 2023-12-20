@@ -12,6 +12,7 @@ import '../../Models/PickerModel/add_to_cart_model.dart';
 import '../../Models/PickerModel/confirmed_list_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
+import '../../Models/PickerModel/delivery_time.dart';
 import '../../Models/PickerModel/deposit_history_model.dart';
 import '../../Models/PickerModel/deposit_model.dart';
 import '../../Models/PickerModel/expense_add_model.dart';
@@ -443,7 +444,7 @@ class PickerRepository {
     }
   }
 
-  // Delivery List
+  // Delivery Date List
 
   Future<DeliveryDateList> getDeliveryDateList({required String token, required String mode}) async {
     Dio dio = Dio();
@@ -473,6 +474,38 @@ class PickerRepository {
       }
     } catch (e) {
       throw Exception('fctctr##'+e.toString());
+    }
+  }
+  // Delivery Time List
+
+  Future<DeliveryTimeList> getDeliveryTimeList({required String token, required String deliveryDate}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "date": deliveryDate
+    };
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/delivery_time_api',
+          data: data,
+          options: options
+      );
+      print('#########eeeee22##${response.data}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = DeliveryTimeList.fromJson(response.data);
+        print('#########eeeee23333##${result.toString()}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('grttt##'+e.toString());
     }
   }
 
