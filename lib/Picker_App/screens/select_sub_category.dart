@@ -84,10 +84,7 @@ class _SelectSubCategoryState extends State<SelectSubCategory> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        setState(() {
                           Navigator.push(context, MaterialPageRoute(builder: (context) =>  const ItemsListPage()));
-                          //selectedIndex = index;
-                        });
                       },
                       child: Container(
                         padding: const EdgeInsets.all(8),

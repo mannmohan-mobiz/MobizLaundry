@@ -286,6 +286,31 @@ class PickupListError extends PickerState {
 /***********************[Pickup List]***********************/
 
 
+/***********************[Pickup List]***********************/
+class ReadyForDespatchListFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ReadyForDespatchListFetched extends PickerState {
+  List<ReadyForDespatchList> readyForList;
+
+  ReadyForDespatchListFetched(this.readyForList);
+
+  @override
+  List<Object?> get props => [readyForList];
+}
+
+class ReadyForDespatchListError extends PickerState {
+  final String message;
+
+  ReadyForDespatchListError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Pickup List]***********************/
+
 /***********************[Order Confirm]***********************/
 class OrderConfirmingState extends PickerState {
   @override

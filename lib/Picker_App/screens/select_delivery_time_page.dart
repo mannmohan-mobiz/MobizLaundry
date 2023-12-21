@@ -206,23 +206,23 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
                     height: 54,
                     child: ElevatedButton(
                       onPressed: () {
-                        Map<String, String> data = {
-                          "id": authData.user_id.toString(),
-                          "customer_id": widget.custID.toString(),
-                          "pickup_date": '',
-                          "pickup_time": '',
-                          "order_type":  widget.mode.toString(),
-                          "Delivery_date": selectedDate,
-                          "Delivery_time": isSelectedTimeData
-                        };
-                        print('#########${(data)}');
-                        //print(jsonEncode(data));
-                        BlocProvider.of<PickerBloc>(context)
-                            .add(AddNewOrderEvent(data, authData.user_token.toString()));
-                        setState(() {
-                         // mode_of_action = "get_items";
-                        });
-                        //Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectCategory()));
+                        // Map<String, String> data = {
+                        //   "id": authData.user_id.toString(),
+                        //   "customer_id": widget.custID.toString(),
+                        //   "pickup_date": '',
+                        //   "pickup_time": '',
+                        //   "order_type":  widget.mode.toString(),
+                        //   "Delivery_date": selectedDate,
+                        //   "Delivery_time": isSelectedTimeData
+                        // };
+                        // print('#########${(data)}');
+                        // //print(jsonEncode(data));
+                        // BlocProvider.of<PickerBloc>(context)
+                        //     .add(AddNewOrderEvent(data, authData.user_token.toString()));
+                        // setState(() {
+                        //  // mode_of_action = "get_items";
+                        // });
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectCategory()));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: pickerGoldColor,

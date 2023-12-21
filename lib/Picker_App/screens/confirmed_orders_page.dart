@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/Models/PickerModel/confirmed_list_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
@@ -184,7 +185,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                       return Colors.transparent;
                                     }
                                   }),
-                                  borderRadius: BorderRadius.only(
+                                  borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(12.0),
                                     topRight: Radius.circular(12.0),
                                   ),
@@ -215,6 +216,15 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                       label: 'Pickup time:',
                                       value: tData[index].pickupTime,
                                       isShow: true,
+                                      onPressed: () async {
+                                          // Uri googleUrl = Uri.parse(
+                                          //     'https://www.google.com/maps/search/?api=1&query=${'8.4858828,76.916693'}');
+                                          // if (await canLaunchUrl(googleUrl)) {
+                                          //   await launchUrl(googleUrl);
+                                          // } else {
+                                          //   throw 'Could not open the map';
+                                          // }
+                                      }
                                     ),
                                   ],
                                 ),

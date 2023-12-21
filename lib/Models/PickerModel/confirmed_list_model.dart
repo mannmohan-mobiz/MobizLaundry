@@ -35,14 +35,14 @@ class PickerConfirmedListModel {
 class pickerConfirmedList {
   String orderId;
   Customer customer;
-  CreatedBy? createdBy;
+  DatumCreatedBy? createdBy;
   DateTime createdDate;
   String orderNumber;
   DateTime pickupDate;
   String pickupTime;
   PickupMode pickupMode;
   bool confirmPickup;
-  Status status;
+  DatumStatus status;
   OrderType orderType;
   String? totalAmount;
   OrderVia orderVia;
@@ -86,14 +86,14 @@ class pickerConfirmedList {
   factory pickerConfirmedList.fromJson(Map<String, dynamic> json) => pickerConfirmedList(
     orderId: json["order_id"],
     customer: Customer.fromJson(json["customer"]),
-    createdBy: createdByValues.map[json["created_by"]] ?? CreatedBy.ASHOK,
+    createdBy: datumCreatedByValues.map[json["created_by"]] ?? DatumCreatedBy.ASHOK,
     createdDate: DateTime.parse(json["created_date"]),
     orderNumber: json["order_number"],
     pickupDate: DateTime.parse(json["pickup_date"]),
     pickupTime: json["pickup_time"],
     pickupMode: pickupModeValues.map[json["Pickup_mode"]]!,
     confirmPickup: json["confirm_pickup"],
-    status: statusValues.map[json["status"]]!,
+    status: datumStatusValues.map[json["status"]]!,
     orderType: orderTypeValues.map[json["order_type"]]!,
     totalAmount: json["total_amount"],
     orderVia: orderViaValues.map[json["order_via"]]!,
@@ -112,14 +112,14 @@ class pickerConfirmedList {
   Map<String, dynamic> toJson() => {
     "order_id": orderId,
     "customer": customer.toJson(),
-    "created_by": createdByValues.reverse[createdBy],
+    "created_by": datumCreatedByValues.reverse[createdBy],
     "created_date": createdDate.toIso8601String(),
     "order_number": orderNumber,
     "pickup_date": "${pickupDate.year.toString().padLeft(4, '0')}-${pickupDate.month.toString().padLeft(2, '0')}-${pickupDate.day.toString().padLeft(2, '0')}",
     "pickup_time": pickupTime,
     "Pickup_mode": pickupModeValues.reverse[pickupMode],
     "confirm_pickup": confirmPickup,
-    "status": statusValues.reverse[status],
+    "status": datumStatusValues.reverse[status],
     "order_type": orderTypeValues.reverse[orderType],
     "total_amount": totalAmount,
     "order_via": orderViaValues.reverse[orderVia],
@@ -136,45 +136,153 @@ class pickerConfirmedList {
   };
 }
 
-enum CreatedBy {
+enum DatumCreatedBy {
   ASHOK
 }
 
-final createdByValues = EnumValues({
-  "Ashok": CreatedBy.ASHOK
+final datumCreatedByValues = EnumValues({
+  "Ashok": DatumCreatedBy.ASHOK
 });
 
 class Customer {
+  String customerId;
+  Location location;
+  CustomerCreatedBy createdBy;
+  DateTime createdDate;
   CustomerName name;
+  CustomerType customerType;
   String buildingNo;
   String roomNo;
-  Location location;
   String mobile;
+  String? altMobile;
+  String? whatsApp;
+  dynamic creditLimit;
+  dynamic creditDays;
+  dynamic creditInvoices;
+  dynamic gpse;
+  dynamic gpsn;
+  CustomerStatus status;
+  dynamic trn;
+  dynamic billingAddrs;
+  dynamic designation;
+  dynamic buildingName;
+  dynamic floorNumber;
+  dynamic flatNumber;
+  dynamic altEmail;
+  dynamic companyName;
+  int user;
+  String staff;
+  String pricegroup;
 
   Customer({
+    required this.customerId,
+    required this.location,
+    required this.createdBy,
+    required this.createdDate,
     required this.name,
+    required this.customerType,
     required this.buildingNo,
     required this.roomNo,
-    required this.location,
     required this.mobile,
+    required this.altMobile,
+    required this.whatsApp,
+    required this.creditLimit,
+    required this.creditDays,
+    required this.creditInvoices,
+    required this.gpse,
+    required this.gpsn,
+    required this.status,
+    required this.trn,
+    required this.billingAddrs,
+    required this.designation,
+    required this.buildingName,
+    required this.floorNumber,
+    required this.flatNumber,
+    required this.altEmail,
+    required this.companyName,
+    required this.user,
+    required this.staff,
+    required this.pricegroup,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
+    customerId: json["customer_id"],
+    location: Location.fromJson(json["Location"]),
+    createdBy: customerCreatedByValues.map[json["created_by"]]!,
+    createdDate: DateTime.parse(json["created_date"]),
     name: customerNameValues.map[json["name"]]!,
+    customerType: customerTypeValues.map[json["customer_type"]]!,
     buildingNo: json["building_no"],
     roomNo: json["room_no"],
-    location: Location.fromJson(json["Location"]),
     mobile: json["mobile"],
+    altMobile: json["alt_mobile"],
+    whatsApp: json["whats_app"],
+    creditLimit: json["credit_limit"],
+    creditDays: json["credit_days"],
+    creditInvoices: json["credit_invoices"],
+    gpse: json["GPSE"],
+    gpsn: json["GPSN"],
+    status: customerStatusValues.map[json["status"]]!,
+    trn: json["TRN"],
+    billingAddrs: json["billing_addrs"],
+    designation: json["designation"],
+    buildingName: json["building_name"],
+    floorNumber: json["floor_number"],
+    flatNumber: json["flat_number"],
+    altEmail: json["alt_email"],
+    companyName: json["company_name"],
+    user: json["user"],
+    staff: json["staff"],
+    pricegroup: json["Pricegroup"],
   );
 
   Map<String, dynamic> toJson() => {
+    "customer_id": customerId,
+    "Location": location.toJson(),
+    "created_by": customerCreatedByValues.reverse[createdBy],
+    "created_date": createdDate.toIso8601String(),
     "name": customerNameValues.reverse[name],
+    "customer_type": customerTypeValues.reverse[customerType],
     "building_no": buildingNo,
     "room_no": roomNo,
-    "Location": location.toJson(),
     "mobile": mobile,
+    "alt_mobile": altMobile,
+    "whats_app": whatsApp,
+    "credit_limit": creditLimit,
+    "credit_days": creditDays,
+    "credit_invoices": creditInvoices,
+    "GPSE": gpse,
+    "GPSN": gpsn,
+    "status": customerStatusValues.reverse[status],
+    "TRN": trn,
+    "billing_addrs": billingAddrs,
+    "designation": designation,
+    "building_name": buildingName,
+    "floor_number": floorNumber,
+    "flat_number": flatNumber,
+    "alt_email": altEmail,
+    "company_name": companyName,
+    "user": user,
+    "staff": staff,
+    "Pricegroup": pricegroup,
   };
 }
+
+enum CustomerCreatedBy {
+  MOBIZ
+}
+
+final customerCreatedByValues = EnumValues({
+  "mobiz": CustomerCreatedBy.MOBIZ
+});
+
+enum CustomerType {
+  HOME
+}
+
+final customerTypeValues = EnumValues({
+  "Home": CustomerType.HOME
+});
 
 class Location {
   LocationName name;
@@ -208,6 +316,14 @@ enum CustomerName {
 final customerNameValues = EnumValues({
   "Deepesh George": CustomerName.DEEPESH_GEORGE,
   "test": CustomerName.TEST
+});
+
+enum CustomerStatus {
+  ACTIVE
+}
+
+final customerStatusValues = EnumValues({
+  "Active": CustomerStatus.ACTIVE
 });
 
 enum OrderType {
@@ -244,12 +360,12 @@ final pickupModeValues = EnumValues({
   "Staff Pick": PickupMode.STAFF_PICK
 });
 
-enum Status {
+enum DatumStatus {
   CONFIRMED
 }
 
-final statusValues = EnumValues({
-  "Confirmed": Status.CONFIRMED
+final datumStatusValues = EnumValues({
+  "Confirmed": DatumStatus.CONFIRMED
 });
 
 class EnumValues<T> {

@@ -25,6 +25,7 @@ import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
+import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/search.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 
@@ -193,6 +194,20 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PickupListError(e.toString()));
+      }
+    });
+    on<ReadyForDespatchListFetchEvent>((event, emit) async {
+      emit(ReadyForDespatchListFetching());
+      try {
+        await pickerRepository.getReadyForDespatch(token: event.token, id: event.id).then((value) {
+          if (value.status == true && value.message == "Pickup List!") {
+            emit(ReadyForDespatchListFetched(value.data));
+          } else {
+            emit(ReadyForDespatchListError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(ReadyForDespatchListError(e.toString()));
       }
     });
     on<PickerConfirmOrderEvent>((event, emit) async {

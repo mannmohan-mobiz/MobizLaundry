@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../src/colors.dart';
 import '../util/common_methods.dart';
+import 'cart_page_new.dart';
 
 
 class ItemsListPage extends StatefulWidget {
@@ -34,16 +35,19 @@ class _ItemsListPageState extends State<ItemsListPage> {
               },
               icon: Image.asset('Assets/Images/back_arrow.png')),
           title: const Text(
-            'Select Sub-Service',
+            'New Order',
             style: TextStyle(
                 color: pickerGoldColor,
                 fontWeight: FontWeight.bold,
                 fontSize: 20),
           ),
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 16.0),
-              child: Image.asset('Assets/Images/notification_icon.png'),
+            InkWell(
+              onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  const CartPageScreen())),
+              child: Padding(
+                padding: const EdgeInsets.only(right: 16.0),
+                child: Image.asset('Assets/Images/cart_icon.png'),
+              ),
             )
           ],
         ),
@@ -87,11 +91,11 @@ class _ItemsListPageState extends State<ItemsListPage> {
                                             borderRadius:
                                             BorderRadius.circular(30),
                                           ),
-                                          child: Image.network(
+                                          child: Image.asset(
                                             // baseUrl+state.pckItemList[index][index].itemServices.item.itemImage,
                                             // baseUrl+lstData[index].itemServices.item.itemImage,
 
-                                            'Assets/Images/service_1.png',
+                                            'Assets/Images/item_img.png',
                                            // baseUrl+lstData.itemServices.item.itemImage,
                                             fit: BoxFit.fill,
                                           )),
@@ -101,10 +105,10 @@ class _ItemsListPageState extends State<ItemsListPage> {
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                           children: [
-                                            Text(
+                                            const Text(
                                               'shirt',
                                               //state.pckItemList[index].itemServices.item.itemName,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w600,
                                               ),
@@ -143,12 +147,12 @@ class _ItemsListPageState extends State<ItemsListPage> {
                                                 ),
                                               ],
                                             ),
-                                            Row(
+                                            const Row(
                                               crossAxisAlignment: CrossAxisAlignment.end,
                                               mainAxisAlignment: MainAxisAlignment
                                                   .spaceBetween,
                                               children: [
-                                                const Text(
+                                                Text(
                                                   'Rate',
                                                   style: TextStyle(
                                                     fontSize: 15,
@@ -158,7 +162,7 @@ class _ItemsListPageState extends State<ItemsListPage> {
                                                 Text(
                                                   'AED',
                                                   //'AED ${state.pckItemList[index].amount}',
-                                                  style: const TextStyle(
+                                                  style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.w700,
                                                   ),
@@ -170,10 +174,6 @@ class _ItemsListPageState extends State<ItemsListPage> {
                                               child: ElevatedButton(
                                                 onPressed: () {
                                                 },
-                                                child: Text(
-                                                  'ADD TO CART',
-                                                  style: TextStyle(fontSize: 13.0, color: pickerGoldColor, fontWeight: FontWeight.w600),
-                                                ),
                                                 style: ElevatedButton.styleFrom(
                                                   backgroundColor: Colors.white,
                                                   surfaceTintColor: Colors.white,
@@ -185,6 +185,10 @@ class _ItemsListPageState extends State<ItemsListPage> {
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius: BorderRadius.circular(2),
                                                   ),
+                                                ),
+                                                child: const Text(
+                                                  'ADD TO CART',
+                                                  style: TextStyle(fontSize: 13.0, color: pickerGoldColor, fontWeight: FontWeight.w600),
                                                 ),
                                               ),
                                             ),

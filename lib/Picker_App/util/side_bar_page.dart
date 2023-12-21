@@ -76,19 +76,19 @@ class SideMenuPage extends StatelessWidget {
                   ),
                 ),
                 // ListTile(
-                //   leading: Image.asset('Assets/Images/edit_profile_icon.png'), //Image.asset('assets/images/home.png'),
+                //   leading: Image.asset('Assets/Images/edit_profile_icon1.png'), //Image.asset('assets/images/home.png'),
                 //   title: const Text('Edit profile'),
                 //   onTap: () {},
                 // ),
                 // divider(),
                 ListTile(
-                  leading: Image.asset('Assets/Images/lang_icon.png'), //Image.asset('assets/images/home.png'),
+                  leading: Image.asset('Assets/Images/lang_icon1.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Language'),
                   onTap: () {},
                 ),
                 divider(),
                 ListTile(
-                  leading: Image.asset('Assets/Images/order_report_icon.png'), //Image.asset('assets/images/home.png'),
+                  leading: Image.asset('Assets/Images/order_report_icon1.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Order Report'),
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderHistoryPage()));
@@ -96,31 +96,31 @@ class SideMenuPage extends StatelessWidget {
                 ),
                 divider(),
                 ListTile(
-                  leading: Image.asset('Assets/Images/tariffs_img.png'), //Image.asset('assets/images/home.png'),
+                  leading: Image.asset('Assets/Images/tariffs_img1.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Transaction History'),
                   onTap: () {},
                 ),
                 divider(),
                 ListTile(
-                  leading: Image.asset('Assets/Images/complaints_icon.png'), //Image.asset('assets/images/home.png'),
+                  leading: Image.asset('Assets/Images/complaints_icon1.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Customer Complaints'),
                   onTap: () {},
                 ),
                 divider(),
                 // ListTile(
-                //   leading: Image.asset('Assets/Images/change_pass_icon.png'), //Image.asset('assets/images/home.png'),
+                //   leading: Image.asset('Assets/Images/change_pass_icon1.png'), //Image.asset('assets/images/home.png'),
                 //   title: const Text('Change password'),
                 //   onTap: () {},
                 // ),
                 // divider(),
                 ListTile(
-                  leading: Image.asset('Assets/Images/change_address_icon.png'), //Image.asset('assets/images/home.png'),
+                  leading: Image.asset('Assets/Images/change_address_icon1.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Change Address'),
                   onTap: () {},
                 ),
                 divider(),
                 ListTile(
-                  leading: Image.asset('Assets/Images/offers_icon.png'), //Image.asset('assets/images/home.png'),
+                  leading: Image.asset('Assets/Images/offers_icon1.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Our Offers'),
                   onTap: () {},
                 ),
@@ -134,7 +134,7 @@ class SideMenuPage extends StatelessWidget {
                 ),
                 divider(),
                 ListTile(
-                  leading: Image.asset('Assets/Images/branches_icon.png'), //Image.asset('assets/images/home.png'),
+                  leading: Image.asset('Assets/Images/branches_icon1.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Our Branches'),
                   onTap: () {
 
@@ -143,19 +143,19 @@ class SideMenuPage extends StatelessWidget {
                 ),
                 divider(),
                 ListTile(
-                  leading: Image.asset('Assets/Images/share_icon.png'), //Image.asset('assets/images/home.png'),
+                  leading: Image.asset('Assets/Images/share_icon1.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Share App'),
                   onTap: () {},
                 ),
                 // divider(),
                 // ListTile(
-                //   leading: Image.asset('Assets/Images/terms_icon.png'), //Image.asset('assets/images/home.png'),
+                //   leading: Image.asset('Assets/Images/terms_icon1.png'), //Image.asset('assets/images/home.png'),
                 //   title: const Text('Terms & conditions'),
                 //   onTap: () {},
                 // ),
                 divider(),
                 ListTile(
-                  leading: Image.asset('Assets/Images/logout_icon.png'), //Image.asset('assets/images/home.png'),
+                  leading: Image.asset('Assets/Images/logout_icon1.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Logout'),
                   onTap: () {
                     final authData = AuthData();

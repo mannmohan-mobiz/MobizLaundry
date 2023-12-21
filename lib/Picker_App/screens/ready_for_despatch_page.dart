@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
@@ -19,7 +23,11 @@ class _ReadyForDespatchPageState extends State<ReadyForDespatchPage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return  BlocProvider(
+  create: (context) => PickerBloc(
+    RepositoryProvider.of<PickerRepository>(context),)..add(ReadyForDespatchListFetchEvent(
+        authData.user_token.toString(), authData.user_id.toString())),
+  child: Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -84,9 +92,15 @@ class _ReadyForDespatchPageState extends State<ReadyForDespatchPage> {
               ],
             ),
             const Text('Ready for Despatch',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.bold,fontSize: 18),),
-            ListView.builder(
+            BlocBuilder<PickerBloc, PickerState>(
+  builder: (context, state) {
+    if (state is ReadyForDespatchListFetching) {
+      return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
+    } else if (state is ReadyForDespatchListFetched) {
+    final tData = state.readyForList;
+    return ListView.builder(
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: tData.length,
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemBuilder: (itemBuilder, index) =>
@@ -132,11 +146,17 @@ class _ReadyForDespatchPageState extends State<ReadyForDespatchPage> {
                       ],
                     ),
                   ),
-            ),
+            );
+    } else {
+      return const Center(child: Text('No Data'));
+    }
+  },
+),
           ],
         ),
       ),
-    );
+    ),
+);
   }
   showInTransitDialog(){
     return showDialog(

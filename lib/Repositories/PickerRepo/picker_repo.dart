@@ -30,6 +30,7 @@ import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
 import '../../Models/PickerModel/picker_sub_category_model.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
+import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/search.dart';
 
 class PickerRepository {
@@ -411,6 +412,37 @@ class PickerRepository {
     }
   }
 
+
+  // Ready For Despatch List
+  Future<ReadyForDespatch> getReadyForDespatch({required String token, required String id}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "id":id
+    };
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/picker_ready_for_dispatch_Api',
+          data: data,
+          options: options
+      );
+      print('######PICKUP LIST$response');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = ReadyForDespatch.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
   // Customer Search
 
   Future<Search> getSearchCustomerList({required String token, required String key}) async {

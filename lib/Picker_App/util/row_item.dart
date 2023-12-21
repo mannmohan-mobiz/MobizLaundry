@@ -11,7 +11,8 @@ class RowItem extends StatelessWidget {
   final Color color;
   final Color borderColor;
   final Function()? onTap;
-  const RowItem({super.key,required this.value,required this.label,this.isShow = false,this.isShowButton = false,this.color = pickerWhiteColor,this.borderColor = pickerWhiteColor,this.onTap});
+  final Function()? onPressed;
+  const RowItem({super.key,required this.value,required this.label,this.isShow = false,this.isShowButton = false,this.color = pickerWhiteColor,this.borderColor = pickerWhiteColor,this.onTap,this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -49,14 +50,17 @@ class RowItem extends StatelessWidget {
                 ),
               )),
           isShow ?  const Spacer() :const SizedBox() ,
-          isShow ? Container(
-            decoration: BoxDecoration(
-                color: pickerWhiteColor,
-                borderRadius: BorderRadius.circular(4)
+          isShow ? InkWell(
+            onTap: onPressed,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: pickerWhiteColor,
+                  borderRadius: BorderRadius.circular(4)
+              ),
+              height: 40,
+              width: 40,
+              child: Image.asset('Assets/Images/nav_icon.png'),
             ),
-            height: 40,
-            width: 40,
-            child: Image.asset('Assets/Images/nav_icon.png'),
           ) : const SizedBox()
         ],
       ),
