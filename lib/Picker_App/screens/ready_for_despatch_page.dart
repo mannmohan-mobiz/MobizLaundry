@@ -94,6 +94,7 @@ class _ReadyForDespatchPageState extends State<ReadyForDespatchPage> {
             const Text('Ready for Despatch',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.bold,fontSize: 18),),
             BlocBuilder<PickerBloc, PickerState>(
   builder: (context, state) {
+    print(state);
     if (state is ReadyForDespatchListFetching) {
       return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
     } else if (state is ReadyForDespatchListFetched) {
@@ -119,18 +120,27 @@ class _ReadyForDespatchPageState extends State<ReadyForDespatchPage> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
                           decoration:  BoxDecoration(
-                            color: colorListSub[index],
+                            color:  MaterialStateColor.resolveWith((states) {
+                              if(state.readyForList[index].orderType == "Urgent"){
+                                return pickerOrangeTypeColor;
+                              } else if(state.readyForList[index].orderType == "Express"){
+                                return pickerYellowTypeColor;
+                              } else if(state.readyForList[index].orderType == "Normal"){
+                                return pickerGreyTypeColor;
+                              } else {
+                                return Colors.transparent;
+                              }}),
                             borderRadius: const BorderRadius.only( topLeft: Radius.circular(12.0),
                               topRight: Radius.circular(12.0),),
                           ),
-                          child:  const Column(
+                          child:   Column(
                             children: [
-                              RowItem( label: 'Customer name:',value: 'Jason Roy',),
-                              RowItem(label: 'Building Name/No:',value: '',),
-                              RowItem(label: 'Floor No:',value: '',),
-                              RowItem(label: 'Room No/House No:',value: '',),
-                              RowItem(label: 'Mobile No:',value: '',),
-                              RowItem(label: 'Pickup time:',value: '7am to 9am',isShow: true,),
+                              RowItem( label: 'Customer name:',value: tData[index].customer.name,),
+                              RowItem(label: 'Building Name/No:',value: tData[index].customer.buildingNo,),
+                              RowItem(label: 'Floor No:',value: tData[index].customer.floorNumber ?? '',),
+                              RowItem(label: 'Room No/House No:',value: tData[index].customer.roomNo,),
+                              RowItem(label: 'Mobile No:',value: tData[index].customer.mobile,),
+                              RowItem(label: 'Pickup time:',value: tData[index].pickupTime,isShow: true,),
                             ],
                           ),
                         ),

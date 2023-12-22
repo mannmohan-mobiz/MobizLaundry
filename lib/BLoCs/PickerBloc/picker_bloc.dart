@@ -200,7 +200,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
       emit(ReadyForDespatchListFetching());
       try {
         await pickerRepository.getReadyForDespatch(token: event.token, id: event.id).then((value) {
-          if (value.status == true && value.message == "Pickup List!") {
+          if (value.status == true && value.message == "Ready For Dispatch Orders List!") {
             emit(ReadyForDespatchListFetched(value.data));
           } else {
             emit(ReadyForDespatchListError(value.message));

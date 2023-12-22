@@ -12,6 +12,7 @@ import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
+import 'collect_items_page.dart';
 
 class ConfirmedOrdersPage extends StatefulWidget {
   const ConfirmedOrdersPage({super.key});
@@ -214,7 +215,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                     ),
                                     RowItem(
                                       label: 'Pickup time:',
-                                      value: tData[index].pickupTime,
+                                      value: '${tData[index].pickupTime}',
                                       isShow: true,
                                       onPressed: () async {
                                           // Uri googleUrl = Uri.parse(
@@ -415,7 +416,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  const CollectItemsPage())),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: pickerGoldColor,
                               ),

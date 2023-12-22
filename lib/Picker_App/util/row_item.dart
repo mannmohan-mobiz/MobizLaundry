@@ -12,7 +12,9 @@ class RowItem extends StatelessWidget {
   final Color borderColor;
   final Function()? onTap;
   final Function()? onPressed;
-  const RowItem({super.key,required this.value,required this.label,this.isShow = false,this.isShowButton = false,this.color = pickerWhiteColor,this.borderColor = pickerWhiteColor,this.onTap,this.onPressed});
+  final double? fontSize;
+  final double? fontSizeValue;
+  const RowItem({super.key,required this.value,required this.label,this.isShow = false,this.fontSize,this.fontSizeValue,this.isShowButton = false,this.color = pickerWhiteColor,this.borderColor = pickerWhiteColor,this.onTap,this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +26,9 @@ class RowItem extends StatelessWidget {
           Text(
             label,
             textAlign: TextAlign.start,
+            style: TextStyle(
+              fontSize: fontSize
+            ),
           ),
           Flexible(
               child: Padding(
@@ -41,12 +46,16 @@ class RowItem extends StatelessWidget {
                       child: Text(
                         value,
                         textAlign: TextAlign.start,
+
                       ),
                     )
                   ),
                 )  : Text(
                   value,
                   textAlign: TextAlign.start,
+                  style: TextStyle(
+                      fontSize: fontSizeValue
+                  ),
                 ),
               )),
           isShow ?  const Spacer() :const SizedBox() ,

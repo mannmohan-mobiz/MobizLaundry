@@ -35,7 +35,7 @@ class ReadyForDespatch {
 class ReadyForDespatchList {
   String orderId;
   Customer customer;
-  dynamic createdBy;
+  String? createdBy;
   DateTime createdDate;
   String orderNumber;
   DateTime pickupDate;
@@ -44,16 +44,16 @@ class ReadyForDespatchList {
   bool confirmPickup;
   String status;
   String orderType;
-  String totalAmount;
+  String? totalAmount;
   String orderVia;
   DateTime orderDate;
-  DateTime deliveryDate;
-  String deliveryTime;
+  DateTime? deliveryDate;
+  String? deliveryTime;
   bool paidStatus;
-  String discount;
-  String netTaxable;
-  String vat;
-  String grantTotal;
+  dynamic discount;
+  dynamic netTaxable;
+  dynamic vat;
+  dynamic grantTotal;
   String staff;
   dynamic invoice;
 
@@ -98,7 +98,7 @@ class ReadyForDespatchList {
     totalAmount: json["total_amount"],
     orderVia: json["order_via"],
     orderDate: DateTime.parse(json["order_date"]),
-    deliveryDate: DateTime.parse(json["Delivery_date"]),
+    deliveryDate: json["Delivery_date"] == null ? null : DateTime.parse(json["Delivery_date"]),
     deliveryTime: json["Delivery_time"],
     paidStatus: json["paid_status"],
     discount: json["discount"],
@@ -124,7 +124,7 @@ class ReadyForDespatchList {
     "total_amount": totalAmount,
     "order_via": orderVia,
     "order_date": "${orderDate.year.toString().padLeft(4, '0')}-${orderDate.month.toString().padLeft(2, '0')}-${orderDate.day.toString().padLeft(2, '0')}",
-    "Delivery_date": "${deliveryDate.year.toString().padLeft(4, '0')}-${deliveryDate.month.toString().padLeft(2, '0')}-${deliveryDate.day.toString().padLeft(2, '0')}",
+    "Delivery_date": "${deliveryDate!.year.toString().padLeft(4, '0')}-${deliveryDate!.month.toString().padLeft(2, '0')}-${deliveryDate!.day.toString().padLeft(2, '0')}",
     "Delivery_time": deliveryTime,
     "paid_status": paidStatus,
     "discount": discount,
@@ -137,26 +137,126 @@ class ReadyForDespatchList {
 }
 
 class Customer {
-  String name;
-  String buildingNo;
+  String customerId;
   Location location;
+  String createdBy;
+  DateTime createdDate;
+  String name;
+  String customerType;
+  String buildingNo;
+  String roomNo;
+  String mobile;
+  String? altMobile;
+  String? whatsApp;
+  dynamic creditLimit;
+  dynamic creditDays;
+  dynamic creditInvoices;
+  dynamic gpse;
+  dynamic gpsn;
+  String status;
+  dynamic trn;
+  dynamic billingAddrs;
+  dynamic designation;
+  dynamic buildingName;
+  dynamic floorNumber;
+  dynamic flatNumber;
+  dynamic altEmail;
+  dynamic companyName;
+  int user;
+  String staff;
+  String pricegroup;
 
   Customer({
-    required this.name,
-    required this.buildingNo,
+    required this.customerId,
     required this.location,
+    required this.createdBy,
+    required this.createdDate,
+    required this.name,
+    required this.customerType,
+    required this.buildingNo,
+    required this.roomNo,
+    required this.mobile,
+    required this.altMobile,
+    required this.whatsApp,
+    required this.creditLimit,
+    required this.creditDays,
+    required this.creditInvoices,
+    required this.gpse,
+    required this.gpsn,
+    required this.status,
+    required this.trn,
+    required this.billingAddrs,
+    required this.designation,
+    required this.buildingName,
+    required this.floorNumber,
+    required this.flatNumber,
+    required this.altEmail,
+    required this.companyName,
+    required this.user,
+    required this.staff,
+    required this.pricegroup,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
-    name: json["name"],
-    buildingNo: json["building_no"],
+    customerId: json["customer_id"],
     location: Location.fromJson(json["Location"]),
+    createdBy: json["created_by"],
+    createdDate: DateTime.parse(json["created_date"]),
+    name: json["name"],
+    customerType: json["customer_type"],
+    buildingNo: json["building_no"],
+    roomNo: json["room_no"],
+    mobile: json["mobile"],
+    altMobile: json["alt_mobile"],
+    whatsApp: json["whats_app"],
+    creditLimit: json["credit_limit"],
+    creditDays: json["credit_days"],
+    creditInvoices: json["credit_invoices"],
+    gpse: json["GPSE"],
+    gpsn: json["GPSN"],
+    status: json["status"],
+    trn: json["TRN"],
+    billingAddrs: json["billing_addrs"],
+    designation: json["designation"],
+    buildingName: json["building_name"],
+    floorNumber: json["floor_number"],
+    flatNumber: json["flat_number"],
+    altEmail: json["alt_email"],
+    companyName: json["company_name"],
+    user: json["user"],
+    staff: json["staff"],
+    pricegroup: json["Pricegroup"],
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "building_no": buildingNo,
+    "customer_id": customerId,
     "Location": location.toJson(),
+    "created_by": createdBy,
+    "created_date": createdDate.toIso8601String(),
+    "name": name,
+    "customer_type": customerType,
+    "building_no": buildingNo,
+    "room_no": roomNo,
+    "mobile": mobile,
+    "alt_mobile": altMobile,
+    "whats_app": whatsApp,
+    "credit_limit": creditLimit,
+    "credit_days": creditDays,
+    "credit_invoices": creditInvoices,
+    "GPSE": gpse,
+    "GPSN": gpsn,
+    "status": status,
+    "TRN": trn,
+    "billing_addrs": billingAddrs,
+    "designation": designation,
+    "building_name": buildingName,
+    "floor_number": floorNumber,
+    "flat_number": flatNumber,
+    "alt_email": altEmail,
+    "company_name": companyName,
+    "user": user,
+    "staff": staff,
+    "Pricegroup": pricegroup,
   };
 }
 

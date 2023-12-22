@@ -39,7 +39,7 @@ class pickerConfirmedList {
   DateTime createdDate;
   String orderNumber;
   DateTime pickupDate;
-  String pickupTime;
+  String? pickupTime;
   PickupMode pickupMode;
   bool confirmPickup;
   DatumStatus status;
@@ -86,7 +86,7 @@ class pickerConfirmedList {
   factory pickerConfirmedList.fromJson(Map<String, dynamic> json) => pickerConfirmedList(
     orderId: json["order_id"],
     customer: Customer.fromJson(json["customer"]),
-    createdBy: datumCreatedByValues.map[json["created_by"]] ?? DatumCreatedBy.ASHOK,
+    createdBy: datumCreatedByValues.map[json["created_by"]]!,
     createdDate: DateTime.parse(json["created_date"]),
     orderNumber: json["order_number"],
     pickupDate: DateTime.parse(json["pickup_date"]),

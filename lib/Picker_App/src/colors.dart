@@ -16,6 +16,7 @@ const Color pickerOrangeTypeColor = Color(0xffEEA319);
 const Color pickerVerticalDividerColor = Color(0xffD1D4D7);
 const Color pickerDividerColor = Color(0xffC2CCD4);
 const Color pickerBlackColor = Color(0xff3F454A);
+const Color pickerCommentColor = Color(0xffA4AAAF);
 const Color pickerTextColor = Color(0xff99A4AA);
 const Color pickerHintTextColor = Color(0xFF99AAB5);
 const Color barrierColor = Color(0xff2e6c6436);
