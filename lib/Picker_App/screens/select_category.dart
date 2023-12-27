@@ -11,30 +11,20 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 
 class SelectCategory extends StatefulWidget {
-  const SelectCategory({super.key});
+ final String orderID;
+ final String customerID;
+  const SelectCategory({super.key,required this.orderID,required this.customerID});
 
   @override
   State<SelectCategory> createState() => _SelectCategoryState();
 }
 
 class _SelectCategoryState extends State<SelectCategory> {
-  List<String> serviceList = [
-    "Assets/Images/service_1.png",
-    "Assets/Images/service_2.png",
-    "Assets/Images/service_3.png",
-    "Assets/Images/service_4.png",
-    "Assets/Images/service_5.png",
-    "Assets/Images/service_6.png"];
 
-  List<String> serviceName = [
-    "Wash & Fold",
-    "Wash & Hang",
-    "Dry Cleaning",
-    "Curtain Cleaning",
-    "Carpet Cleaning",
-    "Other Services"];
   @override
   Widget build(BuildContext context) {
+    print('######ORDERID#${widget.orderID}');
+    print('######CUSTOMERID#${widget.customerID}');
     return  BlocProvider(
     create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context),)
       ..add(PckCategoryFetchEvent(authData.user_token.toString(), authData.user_id.toString())),
@@ -88,7 +78,8 @@ class _SelectCategoryState extends State<SelectCategory> {
                     color: pickerGoldColor,
                   ));
                 } else if (state is PckCategoryFetchedState) {
-                  return GridView.builder(
+                  return state.categList.isEmpty == true ? const Center(
+                      child: Text("No Data")) : GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 12,
@@ -100,10 +91,13 @@ class _SelectCategoryState extends State<SelectCategory> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                            authData.setCatId(state.categList[index].categoryId);
-                            Navigator.push(context, MaterialPageRoute(builder: (
-                                context) =>  SelectSubCategory(categId: state.categList[index].categoryId )));
-
+                          authData.setCatId(state.categList[index].categoryId);
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (context) =>
+                                  SelectSubCategory(ordId: widget.orderID,
+                                      categId: state.categList[index]
+                                          .categoryId,
+                                      custId: widget.customerID)));
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8),
@@ -113,9 +107,12 @@ class _SelectCategoryState extends State<SelectCategory> {
                           ),
                           child: Column(
                             children: [
-                              Expanded(child: Image.network(baseUrl+state.categList[index].serviceMaster.categoryImage,fit: BoxFit.fill,)),
+                              Expanded(child: Image.network(baseUrl +
+                                  state.categList[index].serviceMaster
+                                      .categoryImage, fit: BoxFit.fill,)),
                               const SizedBox(height: 8),
-                              Text((state.categList[index].serviceMaster.categoryName),
+                              Text((state.categList[index].serviceMaster
+                                  .categoryName),
                                   textAlign: TextAlign.center,
                                   style: const TextStyle(fontSize: 13,
                                       fontWeight: FontWeight.w600,

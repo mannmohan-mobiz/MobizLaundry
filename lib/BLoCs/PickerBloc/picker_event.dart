@@ -278,11 +278,13 @@ class PckItemFetchEvent extends PickerEvent {
   final String categId;
   final String subCategId;
   final String custId;
+  final String ordIdd;
 
-  PckItemFetchEvent(this.token, this.categId, this.subCategId, this.custId);
+
+  PckItemFetchEvent(this.token, this.categId, this.subCategId, this.custId,this.ordIdd);
 
   @override
-  List<Object?> get props => [token, categId, subCategId, custId];
+  List<Object?> get props => [token, categId, subCategId, custId, ordIdd];
 }
 
 class PckAddtoCartEvent extends PickerEvent {

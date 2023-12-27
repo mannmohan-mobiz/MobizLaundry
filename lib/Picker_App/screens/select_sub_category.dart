@@ -12,30 +12,16 @@ import 'item_list_page.dart';
 import 'new_order_2_2.dart';
 
 class SelectSubCategory extends StatefulWidget {
+  final String ordId;
   final String categId;
-  const SelectSubCategory({super.key,required this.categId});
+  final String custId;
+  const SelectSubCategory({super.key,required this.categId,required this.ordId,required this.custId});
 
   @override
   State<SelectSubCategory> createState() => _SelectSubCategoryState();
 }
 
 class _SelectSubCategoryState extends State<SelectSubCategory> {
-
-  List<String> serviceList = [
-    "Assets/Images/service_1.png",
-    "Assets/Images/service_2.png",
-    "Assets/Images/service_3.png",
-    "Assets/Images/service_4.png",
-    "Assets/Images/service_5.png",
-    "Assets/Images/service_6.png"];
-
-  List<String> serviceName = [
-    "Wash & Fold",
-    "Wash & Hang",
-    "Dry Cleaning",
-    "Curtain Cleaning",
-    "Carpet Cleaning",
-    "Other Services"];
   @override
   Widget build(BuildContext context) {
     print('##CATEGORYID##${widget.categId}');
@@ -91,7 +77,8 @@ class _SelectSubCategoryState extends State<SelectSubCategory> {
                 ));
               } else if (state is PckSubCategoryFetchedState) {
 
-                return GridView.builder(
+                return state.subCategList.isEmpty == true ? const Center(
+                    child: Text("No Data")) : GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 12,
@@ -106,7 +93,7 @@ class _SelectSubCategoryState extends State<SelectSubCategory> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => const ItemsListPage()));
+                            builder: (context) =>  ItemsListPage(ordIdd:widget.ordId, catId: widget.categId, subCatId: state.subCategList[index].subCatId,customId: widget.custId)));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(8),

@@ -35,7 +35,7 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
       body: BlocProvider(
         create: (context) => PickerBloc(
           RepositoryProvider.of<PickerRepository>(context),
-        )..add(PckItemFetchEvent(authData.user_token.toString(), authData.pck_cat_id, authData.pck_sub_cat_id, authData.pck_ord_cstmr_id)),
+        )..add(PckItemFetchEvent(authData.user_token.toString(), authData.pck_cat_id, authData.pck_sub_cat_id, authData.pck_ord_cstmr_id,authData.pck_ord_id)),
         child: BlocBuilder<PickerBloc, PickerState>(
           builder: (context, state) {
             if (state is PckItemFetchingState) {

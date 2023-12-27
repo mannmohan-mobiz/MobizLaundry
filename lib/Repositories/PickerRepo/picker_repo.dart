@@ -815,7 +815,7 @@ class PickerRepository {
       }
     );
 
-    Future.delayed(Duration(seconds: 1));
+    Future.delayed(const Duration(seconds: 1));
 
     try {
       var response = await dio.post(
@@ -823,16 +823,17 @@ class PickerRepository {
         data: body,
         options: options
       );
+      print('######RESPONSE${response}');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        print('######RESPONSE${response}');
         var result = PickerItemsPriceModel.fromJson(response.data);
+        print('######RESULT#${result}');
         return result;
       } else {
         return response.data;
       }
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception('EEE'+e.toString());
     }
   }
 

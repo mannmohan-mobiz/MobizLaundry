@@ -177,7 +177,7 @@ class _SelectDeliveryModeState extends State<SelectDeliveryMode> {
                   height: 54,
                   child: ElevatedButton(
                     onPressed: () {
-                      if(selectedMode == '') {
+                      if(selectedMode.isEmpty) {
                         snackBar(
                             context, message: 'Please choose delivery mode');
                       } else {

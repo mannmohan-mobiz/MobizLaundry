@@ -427,7 +427,8 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
             body: {
               "sub_cat_id": event.subCategId,
               "category_id": event.categId,
-              "customer_id":event.custId
+              "customer_id":event.custId,
+              "order_id": event.ordIdd
             },
           token: event.token
         ).then((value) {

@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Models/PickerModel/delivery_time.dart';
+import '../../Models/PickerModel/new_order_save.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
@@ -31,7 +32,7 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
   bool isSelected = false;
   DeliveryTimeList? selectedTime;
   String mode_of_action = "save_order";
-
+  List<NewOrderData> orderData = [];
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +160,6 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
                   builder: (context, state) {
                     final List<String> tData = (selectedTime?.data) ?? [];
                   if (tData.isNotEmpty){
-
                   return ListView.builder(
                     physics: const ScrollPhysics(),
                       shrinkWrap: true,
@@ -209,6 +209,12 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
                     height: 54,
                     child: ElevatedButton(
                       onPressed: () {
+                        if(selectedDate.isEmpty){
+                          snackBar(context, message: 'Please choose delivery date');
+                        } else if (isSelectedTimeData.isEmpty){
+                          snackBar(context, message: 'Please choose delivery time');
+                        }
+                        else {
                         Map<String, String> data = {
                           "id": authData.user_id.toString(),
                           "customer_id": widget.custID.toString(),
@@ -218,8 +224,10 @@ class _SelectDeliveryTimePageState extends State<SelectDeliveryTimePage> {
                         };
                         print('#########${(data)}');
                         print(jsonEncode(data));
-                        pickerRepository.saveNewOrder(token: authData.user_token.toString(),body: data);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  const SelectCategory()));
+                        pickerRepository.saveNewOrder(token: authData.user_token.toString(),body: data).then((value) {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) =>   SelectCategory(orderID: value.data.orderId,customerID: value.data.customer)));
+                        });
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: pickerGoldColor,
