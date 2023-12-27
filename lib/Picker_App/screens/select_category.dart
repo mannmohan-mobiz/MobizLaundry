@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/Picker_App/screens/select_sub_category.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
+import '../../Utils/common.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 
@@ -30,7 +35,10 @@ class _SelectCategoryState extends State<SelectCategory> {
     "Other Services"];
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return  BlocProvider(
+    create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context),)
+      ..add(PckCategoryFetchEvent(authData.user_token.toString(), authData.user_id.toString())),
+    child: Scaffold(
         backgroundColor:  pickerBackgroundColor,
         appBar: AppBar(
           centerTitle: true,
@@ -71,22 +79,31 @@ class _SelectCategoryState extends State<SelectCategory> {
                   const SizedBox(height: 12),
                   const Text('Choose the Laundry Services, which you are interested in today', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: pickerBlackColor)),
                   const SizedBox(height: 28),
-                  GridView.builder(
+                  BlocBuilder<PickerBloc, PickerState>(
+              builder: (context, state) {
+                if (state is PckCategoryFetchingState) {
+                  print(state.toString());
+                  return const Center(
+                      child: CircularProgressIndicator(
+                    color: pickerGoldColor,
+                  ));
+                } else if (state is PckCategoryFetchedState) {
+                  return GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 12,
                     ),
-                    itemCount: serviceList.length,
+                    itemCount: state.categList.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          setState(() {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectSubCategory()));
-                            //selectedIndex = index;
-                          });
+                            authData.setCatId(state.categList[index].categoryId);
+                            Navigator.push(context, MaterialPageRoute(builder: (
+                                context) =>  SelectSubCategory(categId: state.categList[index].categoryId )));
+
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8),
@@ -96,21 +113,30 @@ class _SelectCategoryState extends State<SelectCategory> {
                           ),
                           child: Column(
                             children: [
-                              Expanded(child: Image.asset(serviceList[index])),
+                              Expanded(child: Image.network(baseUrl+state.categList[index].serviceMaster.categoryImage,fit: BoxFit.fill,)),
                               const SizedBox(height: 8),
-                              Text(serviceName[index],
+                              Text((state.categList[index].serviceMaster.categoryName),
                                   textAlign: TextAlign.center,
-                                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: pickerTextColor, height: 1.2)),
+                                  style: const TextStyle(fontSize: 13,
+                                      fontWeight: FontWeight.w600,
+                                      color: pickerTextColor,
+                                      height: 1.2)),
                             ],
                           ),
                         ),
                       );
                     },
-                  ),
+                  );
+                } else{
+                  return const Center(child: Text("No Data"),);
+                }
+  },
+),
                 ],
               ),
             )
         ),
-    );
+    ),
+);
   }
 }

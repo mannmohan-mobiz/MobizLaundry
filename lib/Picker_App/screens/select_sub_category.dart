@@ -1,19 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
+import '../../Utils/common.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import 'item_list_page.dart';
 import 'new_order_2_2.dart';
 
 class SelectSubCategory extends StatefulWidget {
-  const SelectSubCategory({super.key});
+  final String categId;
+  const SelectSubCategory({super.key,required this.categId});
 
   @override
   State<SelectSubCategory> createState() => _SelectSubCategoryState();
 }
 
 class _SelectSubCategoryState extends State<SelectSubCategory> {
+
   List<String> serviceList = [
     "Assets/Images/service_1.png",
     "Assets/Images/service_2.png",
@@ -31,7 +38,11 @@ class _SelectSubCategoryState extends State<SelectSubCategory> {
     "Other Services"];
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    print('##CATEGORYID##${widget.categId}');
+    return  BlocProvider(
+  create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
+    ..add(PckSubCategoryFetchEvent(authData.user_token.toString(), widget.categId)),
+  child: Scaffold(
       backgroundColor:  pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -72,19 +83,30 @@ class _SelectSubCategoryState extends State<SelectSubCategory> {
                 const SizedBox(height: 12),
                 const Text('Choose the Laundry Sub-Service, which you are interested in today', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w400, color: pickerBlackColor)),
                 const SizedBox(height: 28),
-                GridView.builder(
+                BlocBuilder<PickerBloc, PickerState>(
+            builder: (context, state) {
+              if (state is PckSubCategoryFetchingState) {
+                return const Center(child: CircularProgressIndicator(
+                  color: pickerGoldColor,
+                ));
+              } else if (state is PckSubCategoryFetchedState) {
+
+                return GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 12,
                     mainAxisSpacing: 12,
                   ),
-                  itemCount: serviceList.length,
+                  itemCount: state.subCategList.length,
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
+                    print(state.subCategList.length);
+                    print('#SUBCATEGORYID#${state.subCategList[index].subCatId}');
                     return GestureDetector(
                       onTap: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) =>  const ItemsListPage()));
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => const ItemsListPage()));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(8),
@@ -94,21 +116,30 @@ class _SelectSubCategoryState extends State<SelectSubCategory> {
                         ),
                         child: Column(
                           children: [
-                            Expanded(child: Image.asset(serviceList[index])),
+                            Expanded(child: Image.network(baseUrl+state.subCategList[index].subServiceMaster.subCatImage)),
                             const SizedBox(height: 8),
-                            Text(serviceName[index],
+                            Text(state.subCategList[index].subServiceMaster.subCatName,
                                 textAlign: TextAlign.center,
-                                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: pickerTextColor, height: 1.2)),
+                                style: const TextStyle(fontSize: 13,
+                                    fontWeight: FontWeight.w600,
+                                    color: pickerTextColor,
+                                    height: 1.2)),
                           ],
                         ),
                       ),
                     );
                   },
-                ),
+                );
+              } else {
+                return const Center(child: Text("No Data!"),);
+              }
+  },
+),
               ],
             ),
           )
       ),
-    );
+    ),
+);
   }
 }

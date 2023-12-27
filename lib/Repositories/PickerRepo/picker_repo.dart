@@ -712,6 +712,7 @@ class PickerRepository {
         'Authorization': 'Basic $token'
       }
     );
+    print('WW####$options####');
     Future.delayed(Duration(seconds: 1));
     try {
       var response = await dio.post(
@@ -720,18 +721,20 @@ class PickerRepository {
         options: options,
       );
 
-      print("***************************");
-      print(response.data);
-      print("***************************");
+
+      print('RESPONSE####${response.data}####');
+
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerNewOrderSaveModel.fromJson(response.data);
+        print('RESULT####$result####');
         return result;
+
       } else {
         return response.data;
       }
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception('EEEE#$e');
     }
   }
 
@@ -756,7 +759,7 @@ class PickerRepository {
       );
 
       print("*******************[RESP]*************************");
-      print(response.data);
+      print("RESP##${response.data}");
       print("*******************[RESP]*************************");
 
       if (response.statusCode == 200 || response.statusCode == 201) {
