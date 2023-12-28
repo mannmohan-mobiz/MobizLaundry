@@ -1,4 +1,12 @@
+// To parse this JSON data, do
+//
+//     final pickerCustomerListModel = pickerCustomerListModelFromJson(jsonString);
+
 import 'dart:convert';
+
+PickerCustomerListModel pickerCustomerListModelFromJson(String str) => PickerCustomerListModel.fromJson(json.decode(str));
+
+String pickerCustomerListModelToJson(PickerCustomerListModel data) => json.encode(data.toJson());
 
 class PickerCustomerListModel {
   bool status;
@@ -10,21 +18,6 @@ class PickerCustomerListModel {
     required this.data,
     required this.message,
   });
-
-  PickerCustomerListModel copyWith({
-    bool? status,
-    List<CustomerListData>? data,
-    String? message,
-  }) =>
-      PickerCustomerListModel(
-        status: status ?? this.status,
-        data: data ?? this.data,
-        message: message ?? this.message,
-      );
-
-  factory PickerCustomerListModel.fromRawJson(String str) => PickerCustomerListModel.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory PickerCustomerListModel.fromJson(Map<String, dynamic> json) => PickerCustomerListModel(
     status: json["status"],
@@ -57,6 +50,14 @@ class CustomerListData {
   dynamic gpse;
   dynamic gpsn;
   String status;
+  dynamic trn;
+  dynamic billingAddrs;
+  dynamic designation;
+  dynamic buildingName;
+  dynamic floorNumber;
+  dynamic flatNumber;
+  dynamic altEmail;
+  dynamic companyName;
   String staff;
   String location;
   String pricegroup;
@@ -79,59 +80,18 @@ class CustomerListData {
     required this.gpse,
     required this.gpsn,
     required this.status,
+    required this.trn,
+    required this.billingAddrs,
+    required this.designation,
+    required this.buildingName,
+    required this.floorNumber,
+    required this.flatNumber,
+    required this.altEmail,
+    required this.companyName,
     required this.staff,
     required this.location,
     required this.pricegroup,
   });
-
-  CustomerListData copyWith({
-    String? customerId,
-    User? user,
-    String? createdBy,
-    DateTime? createdDate,
-    String? name,
-    String? customerType,
-    String? buildingNo,
-    String? roomNo,
-    String? mobile,
-    String? altMobile,
-    String? whatsApp,
-    dynamic creditLimit,
-    dynamic creditDays,
-    dynamic creditInvoices,
-    dynamic gpse,
-    dynamic gpsn,
-    String? status,
-    String? staff,
-    String? location,
-    String? pricegroup,
-  }) =>
-      CustomerListData(
-        customerId: customerId ?? this.customerId,
-        user: user ?? this.user,
-        createdBy: createdBy ?? this.createdBy,
-        createdDate: createdDate ?? this.createdDate,
-        name: name ?? this.name,
-        customerType: customerType ?? this.customerType,
-        buildingNo: buildingNo ?? this.buildingNo,
-        roomNo: roomNo ?? this.roomNo,
-        mobile: mobile ?? this.mobile,
-        altMobile: altMobile ?? this.altMobile,
-        whatsApp: whatsApp ?? this.whatsApp,
-        creditLimit: creditLimit ?? this.creditLimit,
-        creditDays: creditDays ?? this.creditDays,
-        creditInvoices: creditInvoices ?? this.creditInvoices,
-        gpse: gpse ?? this.gpse,
-        gpsn: gpsn ?? this.gpsn,
-        status: status ?? this.status,
-        staff: staff ?? this.staff,
-        location: location ?? this.location,
-        pricegroup: pricegroup ?? this.pricegroup,
-      );
-
-  factory CustomerListData.fromRawJson(String str) => CustomerListData.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory CustomerListData.fromJson(Map<String, dynamic> json) => CustomerListData(
     customerId: json["customer_id"],
@@ -139,18 +99,26 @@ class CustomerListData {
     createdBy: json["created_by"],
     createdDate: DateTime.parse(json["created_date"]),
     name: json["name"],
-    customerType: json["customer_type"] ?? "",
-    buildingNo: json["building_no"] ?? "",
-    roomNo: json["room_no"] ?? "",
-    mobile: json["mobile"] ?? "",
-    altMobile: json["alt_mobile"] ?? "",
-    whatsApp: json["whats_app"] ?? "",
-    creditLimit: json["credit_limit"] ?? "",
-    creditDays: json["credit_days"] ?? "",
-    creditInvoices: json["credit_invoices"] ?? "",
-    gpse: json["GPSE"] ?? "",
-    gpsn: json["GPSN"] ?? "",
+    customerType: json["customer_type"],
+    buildingNo: json["building_no"],
+    roomNo: json["room_no"],
+    mobile: json["mobile"],
+    altMobile: json["alt_mobile"],
+    whatsApp: json["whats_app"],
+    creditLimit: json["credit_limit"],
+    creditDays: json["credit_days"],
+    creditInvoices: json["credit_invoices"],
+    gpse: json["GPSE"],
+    gpsn: json["GPSN"],
     status: json["status"],
+    trn: json["TRN"],
+    billingAddrs: json["billing_addrs"],
+    designation: json["designation"],
+    buildingName: json["building_name"],
+    floorNumber: json["floor_number"],
+    flatNumber: json["flat_number"],
+    altEmail: json["alt_email"],
+    companyName: json["company_name"],
     staff: json["staff"],
     location: json["Location"],
     pricegroup: json["Pricegroup"],
@@ -174,6 +142,14 @@ class CustomerListData {
     "GPSE": gpse,
     "GPSN": gpsn,
     "status": status,
+    "TRN": trn,
+    "billing_addrs": billingAddrs,
+    "designation": designation,
+    "building_name": buildingName,
+    "floor_number": floorNumber,
+    "flat_number": flatNumber,
+    "alt_email": altEmail,
+    "company_name": companyName,
     "staff": staff,
     "Location": location,
     "Pricegroup": pricegroup,
@@ -188,19 +164,6 @@ class User {
     required this.username,
     required this.email,
   });
-
-  User copyWith({
-    String? username,
-    String? email,
-  }) =>
-      User(
-        username: username ?? this.username,
-        email: email ?? this.email,
-      );
-
-  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     username: json["username"],

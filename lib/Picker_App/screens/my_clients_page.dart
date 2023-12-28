@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Customers/Customer_Home.dart';
+import '../../Models/PickerModel/customer_list_model.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/column_item.dart';
 import '../util/common_methods.dart';
@@ -21,7 +26,11 @@ class _MyClientsPageState extends State<MyClientsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return  BlocProvider(
+    create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context),
+    )..add(ListAllClientsEvent(
+        authData.user_id.toString(), authData.user_token.toString())),
+    child: Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -68,56 +77,89 @@ class _MyClientsPageState extends State<MyClientsPage> {
               searchCtrl: TextEditingController(),
                 onChanged: (String myString){},
             ),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: 3,
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemBuilder: (itemBuilder, index) =>
-            Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
-                margin: const EdgeInsets.symmetric(vertical: 18),
-                decoration: BoxDecoration(
-                    color: pickerWhiteColor,
-                    borderRadius:  BorderRadius.circular(12),
-                    border: Border.all(color: pickerWhiteColor),
-                    boxShadow: const [BoxShadow(color: Colors.grey,blurRadius: 7,offset: Offset(0,4))]
-                ),
-                child:   Column(
-                  children: [
-                    RowItem(
-                        label: 'Customer name:',value: 'Jason Roy',isShowButton: true,borderColor: pickerGoldColor,
-                        onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  CustomerHomePageScreen()));
-  }
-
+            BlocBuilder<PickerBloc, PickerState>(
+        builder: (context, state) {
+          if (state is FetchingClientList) {
+            print(state.toString());
+            return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
+          } else if (state is FetchedClientList) {
+            return state.customerList.isEmpty == true ? const Center(
+                child: Text("No Data")) : ListView.builder(
+              shrinkWrap: true,
+              itemCount: state.customerList.length,
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemBuilder: (itemBuilder, index) =>
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 8),
+                    margin: const EdgeInsets.symmetric(vertical: 18),
+                    decoration: BoxDecoration(
+                        color: pickerWhiteColor,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: pickerWhiteColor),
+                        boxShadow: const [
+                          BoxShadow(color: Colors.grey,
+                              blurRadius: 7,
+                              offset: Offset(0, 4))
+                        ]
                     ),
-                    const RowItem( label: 'Customer type:',value: 'Home',),
-                    const RowItem( label: 'Mode of Delivery:',value: 'Urgent',color : pickerOrangeTypeColor,isShowButton: true),
-                    const RowItem( label: 'Order ID:',value: '',),
-                    const RowItem(label: 'Building Name/No:',value: '',),
-                    const RowItem(label: 'Floor No:',value: '',),
-                    const RowItem(label: 'House No:',value: '',),
-                    const RowItem(label: 'Mobile No:',value: '',),
-                    const RowItem(label: 'Delivery time:',value: '7am to 9am'),
-                    const Divider(),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    child: Column(
                       children: [
-                        ColumItem(image: 'Assets/Images/view_icon.png',label: 'View'),
-                        ColumItem(image: 'Assets/Images/edit_icon.png',label: 'Edit'),
-                        ColumItem(image: 'Assets/Images/nav_icon.png',label: 'Navigate'),
-                        ColumItem(image: 'Assets/Images/call_icon.png',label: 'Call')
+                        RowItem(
+                            label: 'Customer name:',
+                            value: state.customerList[index].name,
+                            isShowButton: true,
+                            borderColor: pickerGoldColor,
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) =>
+                                      CustomerHomePageScreen()));
+                            }
+
+                        ),
+                         RowItem(label: 'Customer type:', value: state.customerList[index].customerType,),
+                        const RowItem(label: 'Mode of Delivery:',
+                            value: 'Urgent',
+                            color: pickerOrangeTypeColor,
+                            isShowButton: true),
+                        const RowItem(label: 'Order ID:', value: '',),
+                         RowItem(label: 'Building Name/No:', value: state.customerList[index].buildingNo,),
+                         RowItem(label: 'Floor No:', value: state.customerList[index].flatNumber ?? '',),
+                         RowItem(label: 'House No:', value: state.customerList[index].floorNumber ?? '',),
+                         RowItem(label: 'Mobile No:', value: state.customerList[index].mobile,),
+                        const RowItem(
+                            label: 'Delivery time:', value: '7am to 9am'),
+                        const Divider(),
+                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            ColumItem(image: 'Assets/Images/view_icon.png',
+                                label: 'View',onTap: (){}),
+                            ColumItem(image: 'Assets/Images/edit_icon.png',
+                                label: 'Edit',onTap: (){}),
+                            ColumItem(image: 'Assets/Images/nav_icon.png',
+                                label: 'Navigate',onTap: (){}),
+                            ColumItem(image: 'Assets/Images/call_icon.png',
+                                label: 'Call',onTap: (){
+                                  openDialer(state.customerList[index].mobile);
+                                })
+                          ],
+                        )
                       ],
-                    )
-                  ],
-                ),
-              ),
-            )
+                    ),
+                  ),
+            );
+          } else{
+            return const Center(child: Text('No Data'));
+          }
+  },
+)
           ],
         ),
       ),
 
-    );
+    ),
+);
   }
 }
