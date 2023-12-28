@@ -35,14 +35,14 @@ class PickerConfirmedListModel {
 class pickerConfirmedList {
   String orderId;
   Customer customer;
-  DatumCreatedBy? createdBy;
+  CreatedBy? createdBy;
   DateTime createdDate;
   String orderNumber;
-  DateTime pickupDate;
+  DateTime? pickupDate;
   String? pickupTime;
   PickupMode pickupMode;
   bool confirmPickup;
-  DatumStatus status;
+  Status status;
   OrderType orderType;
   String? totalAmount;
   OrderVia orderVia;
@@ -86,14 +86,14 @@ class pickerConfirmedList {
   factory pickerConfirmedList.fromJson(Map<String, dynamic> json) => pickerConfirmedList(
     orderId: json["order_id"],
     customer: Customer.fromJson(json["customer"]),
-    createdBy: datumCreatedByValues.map[json["created_by"]]!,
+    createdBy: CreatedByValues.map[json["created_by"]] ?? CreatedBy.ASHOK,
     createdDate: DateTime.parse(json["created_date"]),
     orderNumber: json["order_number"],
-    pickupDate: DateTime.parse(json["pickup_date"]),
+    pickupDate: json["pickup_date"] == null ? null : DateTime.parse(json["pickup_date"]),
     pickupTime: json["pickup_time"],
     pickupMode: pickupModeValues.map[json["Pickup_mode"]]!,
     confirmPickup: json["confirm_pickup"],
-    status: datumStatusValues.map[json["status"]]!,
+    status: StatusValues.map[json["status"]]!,
     orderType: orderTypeValues.map[json["order_type"]]!,
     totalAmount: json["total_amount"],
     orderVia: orderViaValues.map[json["order_via"]]!,
@@ -112,14 +112,14 @@ class pickerConfirmedList {
   Map<String, dynamic> toJson() => {
     "order_id": orderId,
     "customer": customer.toJson(),
-    "created_by": datumCreatedByValues.reverse[createdBy],
+    "created_by": CreatedByValues.reverse[createdBy],
     "created_date": createdDate.toIso8601String(),
     "order_number": orderNumber,
-    "pickup_date": "${pickupDate.year.toString().padLeft(4, '0')}-${pickupDate.month.toString().padLeft(2, '0')}-${pickupDate.day.toString().padLeft(2, '0')}",
+    "pickup_date": "${pickupDate!.year.toString().padLeft(4, '0')}-${pickupDate!.month.toString().padLeft(2, '0')}-${pickupDate!.day.toString().padLeft(2, '0')}",
     "pickup_time": pickupTime,
     "Pickup_mode": pickupModeValues.reverse[pickupMode],
     "confirm_pickup": confirmPickup,
-    "status": datumStatusValues.reverse[status],
+    "status": StatusValues.reverse[status],
     "order_type": orderTypeValues.reverse[orderType],
     "total_amount": totalAmount,
     "order_via": orderViaValues.reverse[orderVia],
@@ -136,12 +136,12 @@ class pickerConfirmedList {
   };
 }
 
-enum DatumCreatedBy {
+enum CreatedBy {
   ASHOK
 }
 
-final datumCreatedByValues = EnumValues({
-  "Ashok": DatumCreatedBy.ASHOK
+final CreatedByValues = EnumValues({
+  "Ashok": CreatedBy.ASHOK
 });
 
 class Customer {
@@ -360,12 +360,12 @@ final pickupModeValues = EnumValues({
   "Staff Pick": PickupMode.STAFF_PICK
 });
 
-enum DatumStatus {
+enum Status {
   CONFIRMED
 }
 
-final datumStatusValues = EnumValues({
-  "Confirmed": DatumStatus.CONFIRMED
+final StatusValues = EnumValues({
+  "Confirmed": Status.CONFIRMED
 });
 
 class EnumValues<T> {

@@ -79,6 +79,10 @@ class _NewOrderSearchPageState extends State<NewOrderSearchPage> {
                     });
                     print('#######ssss${value.data[0].name}');
                   }
+                  // else {
+                  //   value.status == false;
+                  //   snackBar(context, message: value.message);
+                  // }
                 });
               },
               hintText: 'Customer Id/phone',

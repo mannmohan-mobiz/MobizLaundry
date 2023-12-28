@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
+import 'package:golden_falcon/Picker_App/util/common_methods.dart';
 import 'package:http/http.dart' as http;
 import 'package:golden_falcon/Models/PickerModel/collection_list_model.dart';
 import 'package:golden_falcon/Models/PickerModel/punch_in_out_model.dart';
@@ -30,6 +32,7 @@ import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
 import '../../Models/PickerModel/picker_sub_category_model.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
+import '../../Models/PickerModel/quantity_price.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/search.dart';
 
@@ -837,6 +840,38 @@ class PickerRepository {
     }
   }
 
+  //Get QUANTITY price
+  Future<QunatityPriceModel> getQuantityPrice({required Map<String, String> body, required String token }) async {
+    Dio dio = Dio();
+    print(body);
+    Options options = Options(
+        headers: {
+          'Authorization' : 'Basic $token'
+        }
+    );
+
+    Future.delayed(const Duration(seconds: 1));
+
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/picker_addmore_quantity_api',
+          data: body,
+          options: options
+      );
+      print('######RESPONSE${response}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = QunatityPriceModel.fromJson(response.data);
+        print('######RESULT#${result}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEE'+e.toString());
+    }
+  }
+
   // Add to Cart
   Future<PickerAddtoCartModel> addToCart({required String token, required Map<String, String> body}) async {
     Dio dio = Dio();
@@ -888,7 +923,7 @@ class PickerRepository {
         var result = Search.fromJson(response.data);
         return result;
       } else {
-        return response.data;
+         return response.data;
       }
     } catch (e) {
       throw Exception('oooo' + e.toString());

@@ -23,6 +23,24 @@ class ItemsListPage extends StatefulWidget {
 }
 
 class _ItemsListPageState extends State<ItemsListPage> {
+  final PickerRepository pickerRepository = PickerRepository();
+  String? priceValue;
+  int counter = 1;
+
+
+  void decrementCounter() {
+    setState(() {
+      if (counter > 1) {
+        counter--;
+      }
+    });
+  }
+
+  void incrementCounter() {
+    setState(() {
+      counter++;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     print('##CATEGORYID##${widget.catId}');
@@ -76,7 +94,7 @@ class _ItemsListPageState extends State<ItemsListPage> {
           ));
         } else if (state is PckItemFetchedState) {
           return state.pckItemList.isEmpty == true ? const Center(
-              child: Text("No Data")) :SingleChildScrollView(
+              child: Text("No Data")) : SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 24, vertical: 24),
@@ -158,24 +176,60 @@ class _ItemsListPageState extends State<ItemsListPage> {
                                                     ),
                                                     Row(
                                                       children: [
-                                                        Image.asset(
-                                                          'Assets/Images/decrement.png',
+                                                        InkWell(
+                                                          child: Image.asset(
+                                                            'Assets/Images/decrement.png',
+                                                          ),
+                                                          onTap: (){
+                                                            decrementCounter();
+                                                    Map<String, String> data = {
+                                                        "id": authData.user_id.toString(),
+                                                        "order_id": widget.ordIdd,
+                                                        "price_list_id":  state.pckItemList[index].priceListId,
+                                                        "item_ser_id": state.pckItemList[index].itemServices.itemSerId,
+                                                        "quantity": '$counter'
+                                      };
+                                      print('#########${(data)}');
+                                      pickerRepository.getQuantityPrice(token: authData.user_token.toString(),body: data).then((value) {
+                                        setState(() {
+                                          priceValue = '${value.data.amount}';
+                                        });
+                                      });
+                                                          },
                                                         ),
-                                                        const Padding(
-                                                          padding: EdgeInsets
+                                                         Padding(
+                                                          padding: const EdgeInsets
                                                               .symmetric(
                                                               horizontal: 4.0),
                                                           child: Text(
-                                                            '1',
-                                                            style: TextStyle(
+                                                            '$counter',
+                                                            style: const TextStyle(
                                                               fontSize: 13,
                                                               fontWeight: FontWeight
                                                                   .w600,
                                                             ),
                                                           ),
                                                         ),
-                                                        Image.asset(
-                                                          'Assets/Images/increment.png',
+                                                        InkWell(
+                                                          onTap: (){
+                                                            incrementCounter();
+                                                            Map<String, String> data = {
+                                                              "id": authData.user_id.toString(),
+                                                              "order_id": widget.ordIdd,
+                                                              "price_list_id":  state.pckItemList[index].priceListId,
+                                                              "item_ser_id": state.pckItemList[index].itemServices.itemSerId,
+                                                              "quantity": '$counter'
+                                                            };
+                                                            print('#########${(data)}');
+                                                            pickerRepository.getQuantityPrice(token: authData.user_token.toString(),body: data).then((value) {
+                                                              setState(() {
+                                                                priceValue = '${value.data.amount}';
+                                                              });
+                                                            });
+                                                          },
+                                                          child: Image.asset(
+                                                            'Assets/Images/increment.png',
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -196,7 +250,8 @@ class _ItemsListPageState extends State<ItemsListPage> {
                                                       ),
                                                     ),
                                                     Text(
-                                                      'AED ${state.pckItemList[index].amount}',
+                                                      priceValue!= null ?
+                                                      'AED $priceValue' : 'AED ${state.pckItemList[index].amount}',
                                                       style: const TextStyle(
                                                         fontSize: 15,
                                                         fontWeight: FontWeight
