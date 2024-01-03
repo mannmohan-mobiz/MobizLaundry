@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:golden_falcon/Picker_App/screens/wallet_page.dart';
 
 import '../src/colors.dart';
 import '../util/common_methods.dart';
@@ -316,20 +317,20 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
   }
 
   onButtonTap(int index, BuildContext context) {
-    // switch (index) {
+     switch (index) {
     //   case 0:
     //     open(context, const NewOrderSearchPage());
     //     break;
     //   case 1:
     //     open(context, const DeliveryPage());
     //     break;
-    //   case 4:
-    //     open(context, const MyClientsPage());
-    //     break;
+      case 3:
+        open(context, const WalletNewPage());
+        break;
     //   case 5:
     //     open(context, const UnDeliveredPage());
       //  break;
-    //}
+    }
   }
 }
 
