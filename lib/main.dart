@@ -20,6 +20,7 @@ import 'Loginscreen.dart';
 import 'Owners/Dashboard/pages2/21-06/Order_Statistics_120.dart';
 import 'Picker_App/screens/attendance_screen.dart';
 import 'Picker_App/screens/category_wise_order_report.dart';
+import 'Picker_App/screens/create_client_page.dart';
 import 'Picker_App/screens/deposit.dart';
 import 'Picker_App/screens/deposit_history.dart';
 import 'Picker_App/screens/expense.dart';
@@ -29,6 +30,7 @@ import 'Picker_App/screens/item_wise_order_report.dart';
 import 'Picker_App/screens/my_collections.dart';
 import 'Picker_App/screens/order_report.dart';
 import 'Picker_App/screens/outstanding_due.dart';
+import 'Picker_App/screens/punch_out_page.dart';
 import 'Picker_App/screens/ready_dispatch.dart';
 
 void main() {

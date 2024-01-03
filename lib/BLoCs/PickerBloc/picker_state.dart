@@ -657,6 +657,57 @@ class PckSubCategoryErrorState extends PickerState {
 }
 /***********************[Get Sub Category]***********************/
 
+
+/***********************[Get Cart List]***********************/
+class PckCartListFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckCartListFetchedState extends PickerState {
+  CartList? cartList;
+
+  PckCartListFetchedState(this.cartList);
+
+  @override
+  List<Object?> get props => [cartList];
+}
+
+class PckCartListErrorState extends PickerState {
+  final String message;
+
+  PckCartListErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Cart List]]***********************/
+
+/***********************[Get Thankyou List]***********************/
+class PckThankyouFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckThankyouFetchedState extends PickerState {
+  ThankyouDetail? thankYouDetail;
+
+  PckThankyouFetchedState(this.thankYouDetail);
+
+  @override
+  List<Object?> get props => [thankYouDetail];
+}
+
+class PckThankyouErrorState extends PickerState {
+  final String message;
+
+  PckThankyouErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Thankyou List]]***********************/
+
 /***********************[Get Item List]***********************/
 class PckItemFetchingState extends PickerState {
   @override

@@ -25,11 +25,6 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
     pickerYellowTypeColor,
     pickerOrangeTypeColor
   ];
-  List<Color> colorListSub = [
-    pickerOrangeTypeColor,
-    pickerYellowTypeColor,
-    pickerGreyTypeColor
-  ];
 
   @override
   Widget build(BuildContext context) {

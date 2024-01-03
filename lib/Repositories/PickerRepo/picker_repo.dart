@@ -11,6 +11,10 @@ import 'package:dio/dio.dart';
 
 import '../../Models/PickerModel/add_customer_model.dart';
 import '../../Models/PickerModel/add_to_cart_model.dart';
+import '../../Models/PickerModel/cart_count.dart';
+import '../../Models/PickerModel/cart_delete.dart';
+import '../../Models/PickerModel/cart_list_model.dart';
+import '../../Models/PickerModel/cart_list_quantity_model.dart';
 import '../../Models/PickerModel/confirmed_list_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
@@ -35,6 +39,7 @@ import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Models/PickerModel/quantity_price.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/search.dart';
+import '../../Models/PickerModel/thankyou_model.dart';
 
 class PickerRepository {
   // Dashboard counts
@@ -875,7 +880,7 @@ class PickerRepository {
   // Add to Cart
   Future<PickerAddtoCartModel> addToCart({required String token, required Map<String, String> body}) async {
     Dio dio = Dio();
-    Future.delayed(Duration(seconds: 1));
+    Future.delayed(const Duration(seconds: 1));
     Options options = Options(
       headers:  {
         'Authorization' : 'Basic $token'
@@ -891,6 +896,169 @@ class PickerRepository {
       print('ADD to CRT : $response.data');
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerAddtoCartModel.fromJson(response.data);
+        print('ADD to CRT RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+
+  // Add to Cart Count
+  Future<PickerCartCountModel> addToCartCount({required String token, required String orderId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "order_id": orderId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/picker_cart_count_api',
+          data: data,
+          options: options
+      );
+
+      print('ADD to CRT COUNT: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerCartCountModel.fromJson(response.data);
+        print('ADD to CRT COUNT RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Add to Cart List
+  Future<PickerCartListModel> addToCartListData({required String token, required String orderId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "order_id": orderId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/picker_cart_list_api',
+          data: data,
+          options: options
+      );
+
+      print('ADD to CRT list: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerCartListModel.fromJson(response.data);
+        print('ADD to CRT list RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Thank you
+  Future<PickerThankyouModel> thankYouListData({required String token, required String orderId, required String customerId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "order_id": orderId,
+      "customer_id": customerId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/picker_thankyou_api',
+          data: data,
+          options: options
+      );
+
+      print('RESPONSE DETAILS: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerThankyouModel.fromJson(response.data);
+        print('RESPONSE DETAILS RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  //Get Cart list  QUANTITY price
+  Future<PickerCartQuantityListModel> getCartQuantityPrice({required Map<String, String> body, required String token }) async {
+    Dio dio = Dio();
+    print(body);
+    Options options = Options(
+        headers: {
+          'Authorization' : 'Basic $token'
+        }
+    );
+
+    Future.delayed(const Duration(seconds: 1));
+
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/picker_cartin_addmore_quantity_Api',
+          data: body,
+          options: options
+      );
+      print('######RESPONSE${response}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerCartQuantityListModel.fromJson(response.data);
+        print('######RESULT#${result}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEE'+e.toString());
+    }
+  }
+
+  // Cart Delete
+  Future<PickerCartDeleteModel> deleteCartData({required String token, required String cartId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "cart_id": cartId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/cart_deletion_api',
+          data: data,
+          options: options
+      );
+
+      print('cart delete: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerCartDeleteModel.fromJson(response.data);
+        print('cart delete RST : $result');
         return result;
       } else {
         return response.data;

@@ -251,8 +251,7 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
                                                           style: ElevatedButton.styleFrom(
                                                             backgroundColor: pickerButtonColor,
                                                           ),
-                                                          onPressed: () =>
-                                                           showSDeliveryTimeSheet(context),
+                                                          onPressed: (){},
 
                                                           child: const Text('Edit')),
                                                       ElevatedButton(
@@ -344,82 +343,6 @@ class _NewOrderScreen_2_2State extends State<NewOrderScreen_2_2> {
       ),
     );
   }
-}
-
-
-showSDeliveryTimeSheet(BuildContext context) {
-  return showCustomBottomSheet(
-      context,
-      bgColor: Colors.transparent,
-      Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const Spacer(),
-            Container(
-              decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24))),
-              alignment: Alignment.bottomCenter,
-              padding: const EdgeInsets.symmetric(vertical: 40.0, horizontal: 32),
-              height: MediaQuery.of(context).size.width * 0.99,
-              child:  ListView(
-                shrinkWrap: true,
-                  physics: BouncingScrollPhysics(),
-                  // mainAxisSize: MainAxisSize.min,
-                  // crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("To be delivered on"),
-                    TextFormField(
-                      controller: TextEditingController(),
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.black.withOpacity(0.2),
-                        hintText: 'Today/Tomorrow/Day after tomorrow',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8.0),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                      style: const TextStyle(color: Colors.black),
-                    ),
-                    const Text("Time"),
-                    GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            mainAxisSpacing: 50,
-                            crossAxisSpacing: 30
-                        ),
-                        itemCount: 6,
-                        itemBuilder: (context, index) =>
-                  Container(
-                        width: 150,
-                        height: 80,
-                        decoration: BoxDecoration(
-                          color: pickerPrimaryColor,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Center(child: Text("6:00 AM-8.00AM")),
-                      ),
-                    ),
-                    SizedBox(height: 15,),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: pickerPrimaryColor,
-                        ),
-                        onPressed: () {},
-                        child: const Text('Save', style: TextStyle(
-                         color: Colors.white
-                        ),)),
-
-                  ]),
-            ),
-          ],
-        ),
-      ));
 }
 
 

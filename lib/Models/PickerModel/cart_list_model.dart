@@ -1,58 +1,85 @@
 // To parse this JSON data, do
 //
-//     final pickerAddtoCartModel = pickerAddtoCartModelFromJson(jsonString);
+//     final pickerCartListModel = pickerCartListModelFromJson(jsonString);
 
 import 'dart:convert';
 
-PickerAddtoCartModel pickerAddtoCartModelFromJson(String str) => PickerAddtoCartModel.fromJson(json.decode(str));
+PickerCartListModel pickerCartListModelFromJson(String str) => PickerCartListModel.fromJson(json.decode(str));
 
-String pickerAddtoCartModelToJson(PickerAddtoCartModel data) => json.encode(data.toJson());
+String pickerCartListModelToJson(PickerCartListModel data) => json.encode(data.toJson());
 
-class PickerAddtoCartModel {
+class PickerCartListModel {
   bool status;
-  List<AddCartList> data;
+  CartList data;
   String message;
 
-  PickerAddtoCartModel({
+  PickerCartListModel({
     required this.status,
     required this.data,
     required this.message,
   });
 
-  factory PickerAddtoCartModel.fromJson(Map<String, dynamic> json) => PickerAddtoCartModel(
+  factory PickerCartListModel.fromJson(Map<String, dynamic> json) => PickerCartListModel(
     status: json["status"],
-    data: List<AddCartList>.from(json["data"].map((x) => AddCartList.fromJson(x))),
+    data: CartList.fromJson(json["data"]),
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": data.toJson(),
     "message": message,
   };
 }
 
-class AddCartList {
+class CartList {
+  List<Cart> cart;
+  int cartCount;
+  int walletBalance;
+
+  CartList({
+    required this.cart,
+    required this.cartCount,
+    required this.walletBalance,
+  });
+
+  factory CartList.fromJson(Map<String, dynamic> json) => CartList(
+    cart: List<Cart>.from(json["cart"].map((x) => Cart.fromJson(x))),
+    cartCount: json["cart_count"],
+    walletBalance: json["wallet_balance"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "cart": List<dynamic>.from(cart.map((x) => x.toJson())),
+    "cart_count": cartCount,
+    "wallet_balance": walletBalance,
+  };
+}
+
+class Cart {
   String cartId;
   Order order;
   String quantity;
   String amount;
   ItemService itemService;
+  String priceList;
 
-  AddCartList({
+  Cart({
     required this.cartId,
     required this.order,
     required this.quantity,
     required this.amount,
     required this.itemService,
+    required this.priceList,
   });
 
-  factory AddCartList.fromJson(Map<String, dynamic> json) => AddCartList(
+  factory Cart.fromJson(Map<String, dynamic> json) => Cart(
     cartId: json["cart_id"],
     order: Order.fromJson(json["order"]),
     quantity: json["quantity"],
     amount: json["amount"],
     itemService: ItemService.fromJson(json["item_service"]),
+    priceList: json["price_list"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -61,6 +88,7 @@ class AddCartList {
     "quantity": quantity,
     "amount": amount,
     "item_service": itemService.toJson(),
+    "price_list": priceList,
   };
 }
 
@@ -302,25 +330,125 @@ class Order {
 
 class Customer {
   String customerId;
+  String createdBy;
+  DateTime createdDate;
   String name;
+  String customerType;
+  String buildingNo;
+  String roomNo;
   String mobile;
+  dynamic altMobile;
+  String whatsApp;
+  dynamic creditLimit;
+  dynamic creditDays;
+  dynamic creditInvoices;
+  dynamic gpse;
+  dynamic gpsn;
+  String status;
+  dynamic trn;
+  dynamic billingAddrs;
+  dynamic designation;
+  dynamic buildingName;
+  dynamic floorNumber;
+  dynamic flatNumber;
+  dynamic altEmail;
+  dynamic companyName;
+  int user;
+  String staff;
+  String location;
+  String pricegroup;
 
   Customer({
     required this.customerId,
+    required this.createdBy,
+    required this.createdDate,
     required this.name,
+    required this.customerType,
+    required this.buildingNo,
+    required this.roomNo,
     required this.mobile,
+    required this.altMobile,
+    required this.whatsApp,
+    required this.creditLimit,
+    required this.creditDays,
+    required this.creditInvoices,
+    required this.gpse,
+    required this.gpsn,
+    required this.status,
+    required this.trn,
+    required this.billingAddrs,
+    required this.designation,
+    required this.buildingName,
+    required this.floorNumber,
+    required this.flatNumber,
+    required this.altEmail,
+    required this.companyName,
+    required this.user,
+    required this.staff,
+    required this.location,
+    required this.pricegroup,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
     customerId: json["customer_id"],
+    createdBy: json["created_by"],
+    createdDate: DateTime.parse(json["created_date"]),
     name: json["name"],
+    customerType: json["customer_type"],
+    buildingNo: json["building_no"],
+    roomNo: json["room_no"],
     mobile: json["mobile"],
+    altMobile: json["alt_mobile"],
+    whatsApp: json["whats_app"],
+    creditLimit: json["credit_limit"],
+    creditDays: json["credit_days"],
+    creditInvoices: json["credit_invoices"],
+    gpse: json["GPSE"],
+    gpsn: json["GPSN"],
+    status: json["status"],
+    trn: json["TRN"],
+    billingAddrs: json["billing_addrs"],
+    designation: json["designation"],
+    buildingName: json["building_name"],
+    floorNumber: json["floor_number"],
+    flatNumber: json["flat_number"],
+    altEmail: json["alt_email"],
+    companyName: json["company_name"],
+    user: json["user"],
+    staff: json["staff"],
+    location: json["Location"],
+    pricegroup: json["Pricegroup"],
   );
 
   Map<String, dynamic> toJson() => {
     "customer_id": customerId,
+    "created_by": createdBy,
+    "created_date": createdDate.toIso8601String(),
     "name": name,
+    "customer_type": customerType,
+    "building_no": buildingNo,
+    "room_no": roomNo,
     "mobile": mobile,
+    "alt_mobile": altMobile,
+    "whats_app": whatsApp,
+    "credit_limit": creditLimit,
+    "credit_days": creditDays,
+    "credit_invoices": creditInvoices,
+    "GPSE": gpse,
+    "GPSN": gpsn,
+    "status": status,
+    "TRN": trn,
+    "billing_addrs": billingAddrs,
+    "designation": designation,
+    "building_name": buildingName,
+    "floor_number": floorNumber,
+    "flat_number": flatNumber,
+    "alt_email": altEmail,
+    "company_name": companyName,
+    "user": user,
+    "staff": staff,
+    "Location": location,
+    "Pricegroup": pricegroup,
   };
 }
 

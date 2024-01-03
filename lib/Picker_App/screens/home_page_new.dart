@@ -16,6 +16,7 @@ import '../util/drawer.dart';
 import '../util/drawer.dart';
 import '../util/side_bar_page.dart';
 import 'confirmed_orders_page.dart';
+import 'create_client_page.dart';
 import 'delivery_page.dart';
 import 'my_clients_page.dart';
 import 'new_order_search_page.dart';
@@ -281,6 +282,9 @@ class _HomePageNewState extends State<HomePageNew> {
         break;
       case 1:
         open(context, const DeliveryPage());
+        break;
+      case 3:
+        open(context, const CreateClientPage());
         break;
       case 4:
         open(context, const MyClientsPage());

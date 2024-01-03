@@ -3,17 +3,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:golden_falcon/BLoCs/CustomerBloc/customer_bloc.dart';
 import 'package:golden_falcon/Models/PickerModel/add_to_cart_model.dart';
+import 'package:golden_falcon/Models/PickerModel/cart_list_model.dart';
 import 'package:golden_falcon/Models/PickerModel/deposit_history_model.dart';
-import 'package:golden_falcon/Models/PickerModel/expense_drop_down_model.dart';
 import 'package:golden_falcon/Models/PickerModel/new_order_save.dart';
 import 'package:golden_falcon/Models/PickerModel/order_details_model.dart';
 import 'package:golden_falcon/Models/PickerModel/outstanding_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_category_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart';
-import 'package:golden_falcon/Picker_App/util/common_methods.dart';
-import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
 
 import '../../Models/PickerModel/confirmed_list_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
@@ -28,6 +25,7 @@ import '../../Models/PickerModel/picker_order_confirm.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/search.dart';
+import '../../Models/PickerModel/thankyou_model.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 
 part 'picker_event.dart';
@@ -419,6 +417,34 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PckSubCategoryErrorState(e.toString()));
+      }
+    });
+    on<PckCartListFetchEvent>((event, emit) async {
+      emit(PckCartListFetchingState());
+      try {
+        await pickerRepository.addToCartListData(token: event.token, orderId: event.ordId).then((value) {
+          if (value.status == true) {
+            emit(PckCartListFetchedState(value.data));
+          } else {
+            emit(PckCartListErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PckCartListErrorState(e.toString()));
+      }
+    });
+    on<PckThankListFetchEvent>((event, emit) async {
+      emit(PckThankyouFetchingState());
+      try {
+        await pickerRepository.thankYouListData(token: event.token, orderId: event.ordId, customerId: event.customId,).then((value) {
+          if (value.status == true) {
+            emit(PckThankyouFetchedState(value.data));
+          } else {
+            emit(PckThankyouErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PckThankyouErrorState(e.toString()));
       }
     });
     on<PckItemFetchEvent>((event, emit) async {

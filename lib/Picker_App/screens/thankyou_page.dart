@@ -1,12 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_falcon/Picker_App/screens/home_page_new.dart';
+import 'package:intl/intl.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
 
 class ThankYouPageScreen extends StatefulWidget {
-  const ThankYouPageScreen({super.key});
+  final String ordId;
+  final String cstId;
+  const ThankYouPageScreen({super.key,required this.ordId,required this.cstId});
 
   @override
   State<ThankYouPageScreen> createState() => _ThankYouPageScreenState();
@@ -15,7 +23,13 @@ class ThankYouPageScreen extends StatefulWidget {
 class _ThankYouPageScreenState extends State<ThankYouPageScreen> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    print('#####ORDERID###${widget.ordId}');
+    print('#####CUSTID###${widget.cstId}');
+    return  BlocProvider(
+    create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context)
+    )..add(PckThankListFetchEvent(
+        authData.user_token.toString(), widget.ordId.toString(),widget.cstId.toString(),)),
+    child: Scaffold(
       backgroundColor:  pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -71,63 +85,108 @@ class _ThankYouPageScreenState extends State<ThankYouPageScreen> {
             ),
           ),
           const SizedBox(height: 4,),
-          Expanded(
-            child: Container(
-              width: double.infinity,
-              color: pickerWhiteColor,
-              child:  Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Text(
-                      'Order Details',
-                      style: TextStyle(
-                          color: pickerBlackColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12),
-                    ),
-                    const RowItem(label: 'Date of purchase:', value: '21.12.2023',fontSize: 12,fontSizeValue:12),
-                    const RowItem(label: 'Pick up date:', value: '09.12.2023',fontSize: 12,fontSizeValue:12),
-                    const RowItem(label: 'Pick up time:', value: '12.00 pm - 1.00 pm',fontSize: 12,fontSizeValue:12),
-                    const RowItem(label: 'Mode of Delivery:', value: 'Express',fontSize: 12,fontSizeValue:12),
-                    const RowItem(label: 'Delivery date:', value: '09.12.2023',fontSize: 12,fontSizeValue:12),
-                    const RowItem(label: 'Delivery time:', value: '12.00 pm - 1.00 pm',fontSize: 12,fontSizeValue:12),
-                    const RowItem(label: 'Order Total:', value: 'AED 100',fontSize: 12,fontSizeValue:12),
-                    const RowItem(label: 'Order ID:', value: '#8929',fontSize: 12,fontSizeValue:12),
-                    const SizedBox(height: 10,),
-                    const Text(
-                      'Great news! Your order is confirmed with order id #8979. Sit back and relax as we handle the rest. Expect top-notch service and the convenience of doorstep pick-up. Your garments are in good hands. Thank you for choosing Golden Falcon Laundry!',
-                      style: TextStyle(
-                          color: pickerBlackColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12),
-                    ),
-                    const SizedBox(height: 20,),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6), // <-- Radius
-                        ),
-                        backgroundColor: pickerWhiteColor,
-                        side: const BorderSide(color: pickerGoldColor, width: 1.0),),
-                      onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  const ThankYouPageScreen())),
-                      child: const Center(
-                        child: Text(
-                          'BACK TO HOME',
-                          style: TextStyle(
-                            color: pickerBlackColor, fontSize: 16,fontWeight: FontWeight.w400,),
-                        ),
-                      ),
-                    ),
-                  ],
+          BlocBuilder<PickerBloc, PickerState>(
+  builder: (context, state) {
+    if (state is PckThankyouFetchingState) {
+      return const Center(
+          child: CircularProgressIndicator(
+            color: pickerGoldColor,
+          ));
+    } else if(state is PckThankyouFetchedState) {
+      final data = state.thankYouDetail;
+      return Expanded(
+        child: Container(
+          width: double.infinity,
+          color: pickerWhiteColor,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const Text(
+                  'Order Details',
+                  style: TextStyle(
+                      color: pickerBlackColor,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12),
                 ),
-              ),
+                 RowItem(label: 'Date of purchase:',
+                    value: DateFormat('dd-MM-yyyy').format(data!.orderDate),
+                    fontSize: 12,
+                    fontSizeValue: 12),
+                const RowItem(label: 'Pick up date:',
+                    value: '09.12.2023',
+                    fontSize: 12,
+                    fontSizeValue: 12),
+                const RowItem(label: 'Pick up time:',
+                    value: '12.00 pm - 1.00 pm',
+                    fontSize: 12,
+                    fontSizeValue: 12),
+                 RowItem(label: 'Mode of Delivery:',
+                    value: '${data?.orderType}',
+                    fontSize: 12,
+                    fontSizeValue: 12),
+                 RowItem(label: 'Delivery date:',
+
+                    value:  DateFormat('dd-MM-yyyy').format(data!.deliveryDate),
+                    fontSize: 12,
+                    fontSizeValue: 12),
+                 RowItem(label: 'Delivery time:',
+                    value: '${data?.deliveryTime}',
+                    fontSize: 12,
+                    fontSizeValue: 12),
+                 RowItem(label: 'Order Total:',
+                    value: '${data?.totalAmount}',
+                    fontSize: 12,
+                    fontSizeValue: 12),
+                 RowItem(label: 'Order ID:',
+                    value: '${data?.orderNumber}',
+                    fontSize: 12,
+                    fontSizeValue: 12),
+                const SizedBox(height: 10,),
+                 Text(
+                  'Great news! Your order is confirmed with order id ${data?.orderNumber}. Sit back and relax as we handle the rest. Expect top-notch service and the convenience of doorstep pick-up. Your garments are in good hands. Thank you for choosing Golden Falcon Laundry!',
+                  style: const TextStyle(
+                      color: pickerBlackColor,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12),
+                ),
+                const SizedBox(height: 20,),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(6), // <-- Radius
+                    ),
+                    backgroundColor: pickerWhiteColor,
+                    side: const BorderSide(
+                        color: pickerGoldColor, width: 1.0),),
+                  onPressed: () =>
+                      Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => const HomePageNew())),
+                  child: const Center(
+                    child: Text(
+                      'BACK TO HOME',
+                      style: TextStyle(
+                        color: pickerBlackColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          )
+          ),
+        ),
+      );
+    } else {
+      return const Center(child: Text(''));
+    }
+  },
+)
         ],
       ),
 
-    );
+    ),
+);
   }
 }
