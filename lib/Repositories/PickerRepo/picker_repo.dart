@@ -38,6 +38,7 @@ import '../../Models/PickerModel/picker_sub_category_model.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Models/PickerModel/quantity_price.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
+import '../../Models/PickerModel/ready_transit_model.dart';
 import '../../Models/PickerModel/search.dart';
 import '../../Models/PickerModel/thankyou_model.dart';
 
@@ -439,10 +440,41 @@ class PickerRepository {
           data: data,
           options: options
       );
-      print('######PICKUP LIST$response');
+      print('######Ready for despatch LIST$response');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = ReadyForDespatch.fromJson(response.data);
+        print('#########responsee##${result.toString()}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+  // Ready For Despatch Intransit
+  Future<PickerReadyTransitModel> getReadyForDespatchTransit({required String token, required String orderid}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "order_id":orderid
+    };
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/order_statuschange_api',
+          data: data,
+          options: options
+      );
+      print('######Ready for despatch status$response');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerReadyTransitModel.fromJson(response.data);
         print('#########responsee##${result.toString()}');
         return result;
       } else {

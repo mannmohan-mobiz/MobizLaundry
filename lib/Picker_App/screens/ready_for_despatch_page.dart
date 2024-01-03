@@ -8,6 +8,7 @@ import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
+import 'home_page_new.dart';
 
 class ReadyForDespatchPage extends StatefulWidget {
   const ReadyForDespatchPage({super.key});
@@ -19,8 +20,7 @@ class ReadyForDespatchPage extends StatefulWidget {
 class _ReadyForDespatchPageState extends State<ReadyForDespatchPage> {
   List<String> typeList = ['Normal','Express','Urgent'];
   List<Color> colorList = [pickerGreyTypeColor,pickerYellowTypeColor,pickerOrangeTypeColor];
-  List<Color> colorListSub = [pickerOrangeTypeColor,pickerYellowTypeColor,pickerGreyTypeColor];
-
+  final PickerRepository pickerRepository = PickerRepository();
   @override
   Widget build(BuildContext context) {
     return  BlocProvider(
@@ -149,7 +149,66 @@ class _ReadyForDespatchPageState extends State<ReadyForDespatchPage> {
                      child: Center(child: InkWell(
                          child: const Text('In Transit', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
                      onTap: (){
-                       showInTransitDialog();
+                       showDialog(
+                             context: context,
+                             builder: (mContext) =>  AlertDialog(
+                               backgroundColor: pickerWhiteColor,
+                               content: Container(
+                                 height: MediaQuery.of(context).size.height * 0.3,
+                                 width: MediaQuery.of(context).size.width,
+                                 padding: const EdgeInsets.all(8),
+                                 margin: const EdgeInsets.all(12),
+                                 child:  Column(
+                                   crossAxisAlignment: CrossAxisAlignment.center,
+                                   children: [
+                                     Image.asset('Assets/Images/intransit_image.png'),
+                                     const Text(
+                                       'Do you really want mark status as "in transit" ?',
+                                       style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                                     ),
+                                     Row(
+                                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                       children: [
+                                         Expanded(
+                                           child: Container(
+                                             padding: const EdgeInsets.symmetric(horizontal: 8),
+                                             child: ElevatedButton(onPressed: (){
+                                               close(context);
+                                             },
+                                               style: ElevatedButton.styleFrom(
+                                                 side: const BorderSide(color: pickerGoldColor, width: 2.0),
+                                               ),
+                                               child: const Text(
+                                                 'No',
+                                                 style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+                                               ),),
+                                           ),
+                                         ),
+                                         Expanded(
+                                           child: Container(
+                                             padding: const EdgeInsets.symmetric(horizontal: 8),
+                                             child: ElevatedButton(onPressed: (){
+                                               pickerRepository.getReadyForDespatchTransit(token: authData.user_token.toString(),orderid: tData[index].orderId,).then((value) {
+                                                 Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomePageNew(),), (route) => false);
+                                               });
+                                             },
+                                               style: ElevatedButton.styleFrom(
+                                                 backgroundColor: pickerGoldColor,
+                                               ),
+                                               child: const Text(
+                                                 'Yes',
+                                                 style: TextStyle(color: pickerWhiteColor,fontSize: 16,fontWeight: FontWeight.w600),
+                                               ),),
+                                           ),
+                                         ),
+                                       ],
+                                     )
+                                   ],
+                                 ),
+                               ),
+                             )
+                         );
+
                      },
                      )),
                         ),
@@ -168,61 +227,61 @@ class _ReadyForDespatchPageState extends State<ReadyForDespatchPage> {
     ),
 );
   }
-  showInTransitDialog(){
-    return showDialog(
-        context: context,
-        builder: (mContext) =>  AlertDialog(
-          backgroundColor: pickerWhiteColor,
-          content: Container(
-            height: MediaQuery.of(context).size.height * 0.3,
-            width: MediaQuery.of(context).size.width,
-            padding: const EdgeInsets.all(8),
-            margin: const EdgeInsets.all(12),
-            child:  Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset('Assets/Images/intransit_image.png'),
-                const Text(
-                  'Do you really want mark status as "in transit" ?',
-                  style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: ElevatedButton(onPressed: (){
-                          close(context);
-                        },
-                          style: ElevatedButton.styleFrom(
-                            side: const BorderSide(color: pickerGoldColor, width: 2.0),
-                          ),
-                          child: const Text(
-                            'No',
-                            style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
-                          ),),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: ElevatedButton(onPressed: (){},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: pickerGoldColor,
-                          ),
-                          child: const Text(
-                            'Yes',
-                            style: TextStyle(color: pickerWhiteColor,fontSize: 16,fontWeight: FontWeight.w600),
-                          ),),
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-          ),
-        )
-    );
-  }
+  // showInTransitDialog(){
+  //   return showDialog(
+  //       context: context,
+  //       builder: (mContext) =>  AlertDialog(
+  //         backgroundColor: pickerWhiteColor,
+  //         content: Container(
+  //           height: MediaQuery.of(context).size.height * 0.3,
+  //           width: MediaQuery.of(context).size.width,
+  //           padding: const EdgeInsets.all(8),
+  //           margin: const EdgeInsets.all(12),
+  //           child:  Column(
+  //             crossAxisAlignment: CrossAxisAlignment.center,
+  //             children: [
+  //               Image.asset('Assets/Images/intransit_image.png'),
+  //               const Text(
+  //                 'Do you really want mark status as "in transit" ?',
+  //                 style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+  //               ),
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //                 children: [
+  //                   Expanded(
+  //                     child: Container(
+  //                       padding: const EdgeInsets.symmetric(horizontal: 8),
+  //                       child: ElevatedButton(onPressed: (){
+  //                         close(context);
+  //                       },
+  //                         style: ElevatedButton.styleFrom(
+  //                           side: const BorderSide(color: pickerGoldColor, width: 2.0),
+  //                         ),
+  //                         child: const Text(
+  //                           'No',
+  //                           style: TextStyle(fontSize: 16,fontWeight: FontWeight.w600),
+  //                         ),),
+  //                     ),
+  //                   ),
+  //                   Expanded(
+  //                     child: Container(
+  //                       padding: const EdgeInsets.symmetric(horizontal: 8),
+  //                       child: ElevatedButton(onPressed: (){},
+  //                         style: ElevatedButton.styleFrom(
+  //                           backgroundColor: pickerGoldColor,
+  //                         ),
+  //                         child: const Text(
+  //                           'Yes',
+  //                           style: TextStyle(color: pickerWhiteColor,fontSize: 16,fontWeight: FontWeight.w600),
+  //                         ),),
+  //                     ),
+  //                   ),
+  //                 ],
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       )
+  //   );
+  // }
 }
