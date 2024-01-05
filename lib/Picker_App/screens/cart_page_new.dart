@@ -97,9 +97,9 @@ class _CartPageScreenState extends State<CartPageScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: ListView(
           children: [
-            const Wrap(
+             Wrap(
               children: [
-                Text(
+                const Text(
                   'Delivery to:',
                   style: TextStyle(
                       color: pickerBlackColor,
@@ -107,8 +107,8 @@ class _CartPageScreenState extends State<CartPageScreen> {
                       fontSize: 15),
                 ),
                 Text(
-                  'Jason Roy , House name ,Floor no,Building number. 8089790114',
-                  style: TextStyle(
+                  '${state.cartList?.cart[0].order.customer.name},' '${state.cartList?.cart[0].order.customer.flatNumber ?? '--'},''${state.cartList?.cart[0].order.customer.floorNumber ?? '--'},''${state.cartList?.cart[0].order.customer.buildingNo ?? '--'},''${state.cartList?.cart[0].order.customer.mobile}.',
+                  style: const TextStyle(
                       color: pickerBlackColor,
                       fontWeight: FontWeight.w400,
                       fontSize: 15),
@@ -355,26 +355,9 @@ class _CartPageScreenState extends State<CartPageScreen> {
                                           pickerRepository.deleteCartData(token: authData.user_token.toString(),
                                               cartId:  '${state.cartList?.cart[index].cartId}').then((value) {
 
-                                                if(value.status == true){
-                                                  if (value.status == true) {
-                                                    // Dispatch the event through the pickerBloc to refresh the cart list
-                                                    PickerBloc(RepositoryProvider.of<PickerRepository>(context)).add(PckCartListFetchEvent(
-                                                      authData.user_token.toString(),
-                                                      widget.orderId.toString(),
-                                                    ));
-                                                  }
-                                                  //open(context,CartPageScreen(orderId: widget.orderId,priceListIdd: '',));
-                                                }
+                                            context.read<PickerBloc>().add(PckCartListFetchEvent(
+                                                authData.user_token.toString(), widget.orderId.toString()));
 
-                                            // if (value.status == true) {
-                                            //   pickerRepository.addToCartListData(token: authData.user_token.toString(),
-                                            //       orderId:  widget.orderId.toString()).then((value) {
-                                            //     setState(() {
-                                            //       cartList = value.data;
-                                            //     });
-                                            //   });
-                                            //
-                                            // }
                                           });
                                         },
                                         style: ElevatedButton.styleFrom(
@@ -499,11 +482,11 @@ class _CartPageScreenState extends State<CartPageScreen> {
                 ),
               ),
             ),
-            const RowValue(label: 'Net Taxable Value',
-                labelValue: 'AED 100',
+             RowValue(label: 'Net Taxable Value',
+                labelValue: 'AED ${state.cartList?.cart[0].order.netTaxable ?? '0'}',
                 labelValueColor: pickerBlackColor),
-            const RowValue(label: 'Vat',
-                labelValue: 'AED 0',
+             RowValue(label: 'Vat',
+                labelValue: 'AED ${state.cartList?.cart[0].order.vat ?? '0'}',
                 labelValueColor: pickerBlackColor),
             Column(
               children: [
@@ -579,17 +562,33 @@ class _CartPageScreenState extends State<CartPageScreen> {
                     side: const BorderSide(color: pickerGoldColor),
                     onChanged: (value) {}
                 ),
-                const Text(
+                 const Text(
                   'Use Wallet Balance ?',
                   style: TextStyle(
                     color: pickerBlackColor,
                     fontSize: 15,
                     fontWeight: FontWeight.w400,),
                 ),
+                const SizedBox(width: 30,),
+                Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        border: Border.all(color: pickerGoldColor),
+                        color: pickerWhiteColor
+                    ),
+                    child: Padding(
+                      padding:  const EdgeInsets.symmetric(horizontal: 12.0),
+                      child: Text(
+                        'AED ${state.cartList?.walletBalance}',
+                        textAlign: TextAlign.start,
+
+                      ),
+                    )
+                ),
               ],
             ),
-            const RowValue(label: 'Total Payable',
-                labelValue: 'AED 100',
+             RowValue(label: 'Total Payable',
+                labelValue: 'AED ${state.cartList?.cart[0].order.grantTotal}',
                 labelValueColor: pickerBlackColor),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -628,23 +627,45 @@ class _CartPageScreenState extends State<CartPageScreen> {
               ),
             ),
             const SizedBox(height: 10),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12), // <-- Radius
+            SizedBox(
+              width: double.infinity,
+              height: 54,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12), // <-- Radius
+                  ),
+                  backgroundColor: pickerGoldColor,
                 ),
-                backgroundColor: pickerGoldColor,
-              ),
-              onPressed: () =>
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) =>  ThankYouPageScreen(ordId: widget.orderId,cstId: widget.custIdd ))),
-              child: const Center(
-                child: Text(
-                  'Place Order',
-                  style: TextStyle(
-                    color: pickerWhiteColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,),
+                onPressed: () {
+                  Map<String, String> data = {
+                    "id": authData.user_id.toString(),
+                    "order_id": widget.orderId,
+                    "discount":  '${state.cartList?.cart[0].order.discount}',
+                    //"net_taxable": '${state.cartList?.cart[0].order.netTaxable ?? 0}',
+                    "net_taxable": 'null',
+                    "vat":  'null',
+                   // "vat":  '${state.cartList?.cart[0].order.vat ?? 0}',
+                    "grant_total": '${state.cartList?.cart[0].order.grantTotal}',
+                    "collect_mode": "Cash",
+                    "payed_amount": '150'
+                  };
+                  print('#########${(data)}');
+                  pickerRepository.orderConfirmApi(token: authData.user_token.toString(),body: data).then((value) {
+                    Navigator.push(context, MaterialPageRoute(
+                     builder: (context) =>  ThankYouPageScreen(ordId: widget.orderId,cstId: widget.custIdd )));
+                  });
+                    // Navigator.push(context, MaterialPageRoute(
+                    //     builder: (context) =>  ThankYouPageScreen(ordId: widget.orderId,cstId: widget.custIdd )));
+                    },
+                child: const Center(
+                  child: Text(
+                    'Place Order',
+                    style: TextStyle(
+                      color: pickerWhiteColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,),
+                  ),
                 ),
               ),
             ),

@@ -15,6 +15,7 @@ import '../../Models/PickerModel/cart_count.dart';
 import '../../Models/PickerModel/cart_delete.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_quantity_model.dart';
+import '../../Models/PickerModel/confirm_order_model.dart';
 import '../../Models/PickerModel/confirmed_list_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
@@ -767,6 +768,42 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerNewOrderSaveModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
+  //Order Confirm || Place order
+  Future<PickerConfirmOrderModel> orderConfirmApi({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    debugPrint('### token ### $token');
+    debugPrint('### body ### $body');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/new_order_payment_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerConfirmOrderModel.fromJson(response.data);
         print('RESULT####$result####');
         return result;
 

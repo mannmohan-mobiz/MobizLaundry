@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../src/colors.dart';
 import '../util/common_methods.dart';
+import '../util/row_item.dart';
 
 class ReceiptRechargePage extends StatefulWidget {
   const ReceiptRechargePage({super.key});
@@ -65,60 +66,28 @@ class _ReceiptRechargePageState extends State<ReceiptRechargePage> {
                        'Recharged successfully',
                        style: TextStyle(
                            color: pickerBlackColor,
-                           fontWeight: FontWeight.w500,
+                           fontWeight: FontWeight.w400,
                            fontSize: 18),
                      ),
                      const Text(
-                       'Your Payment has been successfully done',
+                       'AED 50.00',
                        style: TextStyle(
                            color: pickerBlackColor,
-                           fontWeight: FontWeight.w300,
-                           fontSize: 13),
+                           fontWeight: FontWeight.w500,
+                           fontSize: 22),
                      ),
                      const Divider(color: pickerGoldColor,),
-                     Padding(
-                       padding: const EdgeInsets.symmetric(horizontal: 12.0,vertical: 12),
-                       child: GridView.builder(
-                           physics: const NeverScrollableScrollPhysics(),
-                           shrinkWrap: true,
-                           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                               crossAxisCount: 2,
-                               childAspectRatio: 3 / 2,
-                               mainAxisSpacing: 20,
-                               crossAxisSpacing: 20),
-                           itemCount: 6,
-                           itemBuilder: (context, index) =>
-                                           Container(
-                                             width: double.infinity,
-                                             decoration: BoxDecoration(
-                        color: pickerWhiteColor,
-                        //borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: pickerGoldColor),
-                                             ),
-                                             child: const Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Paid',
-                              style: TextStyle(
-                                  color: pickerBlackColor,
-                                  fontWeight: FontWeight.w300,
-                                  fontSize: 13),
-                            ),
-                            Text(
-                              'Paid',
-                              style: TextStyle(
-                                  color: pickerBlackColor,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 15),
-                            ),
-
-                          ],
-                        ),
-                                             ),
-                                           ),
+                     const Padding(
+                       padding: EdgeInsets.symmetric(horizontal: 12.0,vertical: 12),
+                       child:  Column(
+                         children: [
+                           RowItem( label: 'Reference Number ',value: '12345678901',),
+                           RowItem( label: 'Payment time ',value: '3 Jan 2024, 7.30',),
+                           RowItem( label: 'Payment method ',value: 'Cash',),
+                           RowItem( label: 'Recharge for ',value: '12345678901',),
+                           RowItem( label: 'Recharge by ',value: 'Picker by',),
+                           RowItem( label: 'Recharged for ',value: 'Jason Roy',),
+                         ],
                        ),
                      ),
                    ],
