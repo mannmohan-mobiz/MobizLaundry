@@ -21,6 +21,7 @@ import 'delivery_page.dart';
 import 'my_clients_page.dart';
 import 'new_order_search_page.dart';
 import 'notification_page.dart';
+import 'outstanding_dues.dart';
 
 class HomePageNew extends StatefulWidget {
   const HomePageNew({super.key});
@@ -271,6 +272,9 @@ class _HomePageNewState extends State<HomePageNew> {
         break;
       case 2:
         open(context, const ReadyForDespatchPage());
+        break;
+      case 3:
+        open(context, const OutStandingDuesPage());
         break;
     }
   }

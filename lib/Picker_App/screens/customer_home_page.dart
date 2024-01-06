@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:golden_falcon/Picker_App/screens/statemnt_account_page.dart';
 import 'package:golden_falcon/Picker_App/screens/wallet_page.dart';
 
 import '../src/colors.dart';
@@ -119,22 +120,48 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(6), // <-- Radius
+                  Row(
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6), // <-- Radius
+                          ),
+                          backgroundColor: pickerWhiteColor,
+                          side: const BorderSide(color: pickerGoldColor, width: 1.0),
+                        ),
+                        onPressed: () {},
+                        child: const Center(
+                          child: Text(
+                            'Door Lock',
+                            style: TextStyle(
+                                color: pickerGoldColor, fontSize: 13),
+                          ),
+                        ),
                       ),
-                      backgroundColor: pickerWhiteColor,
-                      side: const BorderSide(color: pickerGoldColor, width: 1.0),
-                    ),
-                    onPressed: () {},
-                    child: const Center(
-                      child: Text(
-                        'Door Lock',
-                        style: TextStyle(
-                            color: pickerGoldColor, fontSize: 13),
+                      const SizedBox(
+                        width: 12,
                       ),
-                    ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6), // <-- Radius
+                          ),
+                          backgroundColor: pickerWhiteColor,
+                          side: const BorderSide(color: pickerGoldColor, width: 1.0),
+                        ),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const StatementOfAccountPage()));
+                        },
+                        child: const Center(
+                          child: Text(
+                            'Statement of account',
+                            style: TextStyle(
+                                color: pickerGoldColor, fontSize: 13),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(
                     height: 10,

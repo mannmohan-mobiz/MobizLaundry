@@ -5,7 +5,8 @@ class ColumItem extends StatelessWidget {
   final String label;
   final String image;
   final Function()? onTap;
-  const ColumItem({super.key,required this.label,required this.image,this.onTap});
+  final double? height;
+  const ColumItem({super.key,required this.label,required this.image,this.height = 20,this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class ColumItem extends StatelessWidget {
         onTap: onTap,
         child: Column(
           children: [
-            Image.asset(image,height: 20),
+            Image.asset(image,height: height),
             Text(
               label,
               textAlign: TextAlign.start,

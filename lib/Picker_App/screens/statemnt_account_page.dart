@@ -1,27 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:golden_falcon/Picker_App/screens/statement%20_account_detail_page.dart';
 import 'package:intl/intl.dart';
 
 import '../src/colors.dart';
 import '../util/common_methods.dart';
-import 'expense_list_page.dart';
-import 'order_history_details_page.dart';
 
-class ExpensePage extends StatefulWidget {
-  const ExpensePage({super.key});
+class StatementOfAccountPage extends StatefulWidget {
+  const StatementOfAccountPage({super.key});
 
   @override
-  State<ExpensePage> createState() => _ExpensePageState();
+  State<StatementOfAccountPage> createState() => _StatementOfAccountPageState();
 }
 
-class _ExpensePageState extends State<ExpensePage> {
-  TextEditingController fromDateController = TextEditingController();
-  TextEditingController toDateController = TextEditingController();
-
+class _StatementOfAccountPageState extends State<StatementOfAccountPage> {
+  TextEditingController fromController = TextEditingController();
+  TextEditingController fromToController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -37,13 +35,7 @@ class _ExpensePageState extends State<ExpensePage> {
             },
             icon: Image.asset('Assets/Images/back_arrow.png')
         ),
-        title: const Text('Expense',style: TextStyle(color: pickerGoldColor,fontWeight: FontWeight.bold,fontSize: 20),),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Image.asset('Assets/Images/notification_icon.png'),
-          )
-        ],
+        title: const Text('Statement of account',style: TextStyle(color: pickerGoldColor,fontWeight: FontWeight.bold,fontSize: 20),),
       ),
       body:   Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0,vertical: 20),
@@ -64,7 +56,7 @@ class _ExpensePageState extends State<ExpensePage> {
                         border: Border.all(color: pickerGoldColor)
                     ),
                     child: TextField(
-                      controller: fromDateController,
+                      controller: fromController,
                       textAlign: TextAlign.center,
                       decoration:  const InputDecoration(
                         hintText: "01.12.2023",
@@ -79,23 +71,30 @@ class _ExpensePageState extends State<ExpensePage> {
                     DateTime? fromDate =
                         await showDatePicker(
                         context: context,
-                        initialDate: DateTime.now(), //get today's date
-                        firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                        initialDate: DateTime
+                            .now(), //get today's date
+                        firstDate: DateTime(
+                            2000), //DateTime.now() - not to allow to choose before today.
                         lastDate: DateTime(2101));
                     if (fromDate != null) {
-                      print(fromDate);
+                      print(
+                          fromDate); //get the picked date in the format => 2022-07-04 00:00:00.000
                       String formattedDate =
-                      DateFormat('dd-MM-yyyy').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
-                      print(formattedDate);
+                      DateFormat('dd-MM-yyyy').format(
+                          fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                      print(
+                          formattedDate); //formatted date output using intl package =>  2022-07-04
+                      //You can format date as per your need
+
                       setState(() {
-                        fromDateController.text =
+                        fromController.text =
                             formattedDate; //set foratted date to TextField value.
                       });
                     } else {
                       print("Date is not selected");
                     }
                   },
-                    child: Image.asset('Assets/Images/calendar.png'))
+                    child: Image.asset('Assets/Images/calendar.png'),)
               ],
             ),
             const SizedBox(height: 30,),
@@ -113,7 +112,7 @@ class _ExpensePageState extends State<ExpensePage> {
                         border: Border.all(color: pickerGoldColor)
                     ),
                     child: TextField(
-                      controller: toDateController,
+                      controller: fromToController,
                       textAlign: TextAlign.center,
                       decoration:  const InputDecoration(
                         hintText: "05.12.2023",
@@ -124,27 +123,28 @@ class _ExpensePageState extends State<ExpensePage> {
                 ),
                 const SizedBox(width: 20,),
                 InkWell(
-                onTap: () async {
-                  DateTime? fromDate =
-                  await showDatePicker(
+                  onTap: () async {
+                  DateTime? toDate =
+                      await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(), //get today's date
-                      firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                      initialDate: DateTime
+                          .now(), //get today's date
+                      firstDate: DateTime(
+                          2000), //DateTime.now() - not to allow to choose before today.
                       lastDate: DateTime(2101));
-                  if (fromDate != null) {
-                    print(fromDate);
-                    String formattedDate =
-                    DateFormat('dd-MM-yyyy').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                  if (toDate != null) {
+                    print(toDate); //get the picked date in the format => 2022-07-04 00:00:00.000
+                    String formattedDate = DateFormat('dd-MM-yyyy').format(toDate); // format date in required form here we use yyyy-MM-dd that means time is removed
                     print(formattedDate);
                     setState(() {
-                      toDateController.text =
-                          formattedDate; //set foratted date to TextField value.
+                      fromToController.text =
+                          formattedDate;
                     });
                   } else {
                     print("Date is not selected");
                   }
-                 },
-                child: Image.asset('Assets/Images/calendar.png'))
+                },
+                    child: Image.asset('Assets/Images/calendar.png'))
               ],
             ),
             const SizedBox(height: 40,),
@@ -158,7 +158,7 @@ class _ExpensePageState extends State<ExpensePage> {
                   ),
                 ),
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ExpenseListPage()));
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => const StatementOfAccountDetailPage()));
                 },
                 child: const Text('LOAD',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
             )
