@@ -179,7 +179,7 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                 children: [
                                   RowItem(
                                     label: 'Customer name:',
-                                    value: tData[index].customer.name,
+                                    value: '${tData[index].customer.name}',
                                   ),
                                   RowItem(
                                     label: 'Order No:',
@@ -203,11 +203,11 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                   ),
                                   RowItem(
                                     label: 'Pickup time:',
-                                    value: DateFormat('yyyy-MM-dd').format(tData[index].pickupDate).toString(),
+                                    value: DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData[index].pickupDate}')).toString(),
                                   ),
                                   RowItem(
                                     label: 'Pickup time:',
-                                    value: tData[index].pickupTime,
+                                    value: '${tData[index].pickupTime}',
                                     isShow: true,
                                   ),
                                 ],
@@ -274,8 +274,8 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                                               Map<String, String> body = {
                                                                 "id":authData.user_id.toString(),
                                                                 "order_id":tData[index].orderId,
-                                                                "pickup_date":DateFormat('yyyy-MM-dd').format(tData[index].pickupDate).toString(),
-                                                                "pickup_time":tData[index].pickupTime
+                                                                "pickup_date":DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData[index].pickupDate}')).toString(),
+                                                                "pickup_time":'${tData[index].pickupTime}'
                                                               };
                                                               print('###Body Response$body');
                                                               BlocProvider.of<PickerBloc>(context).add(PickerConfirmOrderEvent(body, authData.user_token.toString()));

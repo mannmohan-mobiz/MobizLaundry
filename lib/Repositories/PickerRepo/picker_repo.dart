@@ -354,7 +354,9 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerPickupListModel.fromJson(response.data);
+        print('######PICKUP LIST RESULT$result');
         return result;
+
       } else {
         return response.data;
       }
@@ -412,7 +414,7 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerConfirmedListModel.fromJson(response.data);
-        print('#########ghghg##${result.toString()}');
+        print('#########ghghg###${result.toString()}');
         return result;
       } else {
         return response.data;

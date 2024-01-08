@@ -8,6 +8,7 @@ import '../util/common_methods.dart';
 import '../util/customer_divider.dart';
 import '../util/row_item.dart';
 import '../util/table_row.dart';
+import 'customer_home_order_history.dart';
 
 class CustomerHomePageScreen extends StatefulWidget {
   const CustomerHomePageScreen({super.key});
@@ -351,6 +352,9 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
     //   case 1:
     //     open(context, const DeliveryPage());
     //     break;
+       case 2:
+         open(context, const CustomerHomeOrderHistory());
+         break;
       case 3:
         open(context, const WalletNewPage());
         break;

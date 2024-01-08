@@ -157,11 +157,11 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                                     cells: [
                                       DataCell(Center(child: Text((index+1).toString()))),
                                       DataCell(Center(child: Text(tData.orderNumber))),
-                                      DataCell(Center(child: Text(tData.customer.name))),
-                                      DataCell(Center(child: Text(tData.customer.whatsApp))),
+                                      DataCell(Center(child: Text("${tData.customer.name}"))),
+                                      DataCell(Center(child: Text('${tData.customer.whatsApp}'))),
                                       DataCell(Center(child: Text(tData.customer.location))),
                                       DataCell(Center(child: Text(tData.customer.buildingNo))),
-                                      DataCell(Center(child: Text(tData.pickupTime))),
+                                      DataCell(Center(child: Text('${tData.pickupTime}'))),
                                       DataCell(Center(child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: pickerPrimaryColor,
@@ -173,8 +173,8 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                                           Map<String, String> body = {
                                             "id":authData.user_id.toString(),
                                             "order_id":tData.orderId,
-                                            "pickup_date":DateFormat('yyyy-MM-dd').format(tData.pickupDate).toString(),
-                                            "pickup_time":tData.pickupTime
+                                            "pickup_date":DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData.pickupDate}')).toString(),
+                                            "pickup_time":'${tData.pickupTime}'
                                           };
                                           BlocProvider.of<PickerBloc>(context).add(PickerConfirmOrderEvent(body, authData.user_token.toString()));
                                           Future.delayed(

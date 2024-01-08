@@ -6,7 +6,8 @@ class ColumItem extends StatelessWidget {
   final String image;
   final Function()? onTap;
   final double? height;
-  const ColumItem({super.key,required this.label,required this.image,this.height = 20,this.onTap});
+  final double fontSize;
+  const ColumItem({super.key,required this.label,required this.image,this.height = 20,this.onTap,this.fontSize =12});
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +21,8 @@ class ColumItem extends StatelessWidget {
             Text(
               label,
               textAlign: TextAlign.start,
-              style: const TextStyle(
-                fontSize: 12,
+              style:  TextStyle(
+                fontSize: fontSize,
                 fontWeight: FontWeight.w400,
               ),
             ),

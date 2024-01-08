@@ -14,7 +14,10 @@ class RowItem extends StatelessWidget {
   final Function()? onPressed;
   final double? fontSize;
   final double? fontSizeValue;
-  const RowItem({super.key,required this.value,required this.label,this.isShow = false,this.fontSize,this.fontSizeValue,this.isShowButton = false,this.color = pickerWhiteColor,this.borderColor = pickerWhiteColor,this.onTap,this.onPressed});
+  final FontWeight? fontWeight;
+  final FontWeight? fontWeightValue;
+
+  const RowItem({super.key,required this.value,this.fontWeight,this.fontWeightValue,required this.label,this.isShow = false,this.fontSize,this.fontSizeValue,this.isShowButton = false,this.color = pickerWhiteColor,this.borderColor = pickerWhiteColor,this.onTap,this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class RowItem extends StatelessWidget {
             label,
             textAlign: TextAlign.start,
             style: TextStyle(
-              fontSize: fontSize
+              fontSize: fontSize,fontWeight: fontWeight
             ),
           ),
           Flexible(
@@ -54,7 +57,8 @@ class RowItem extends StatelessWidget {
                   value,
                   textAlign: TextAlign.start,
                   style: TextStyle(
-                      fontSize: fontSizeValue
+                      fontSize: fontSizeValue,
+                      fontWeight: fontWeightValue
                   ),
                 ),
               )),
