@@ -19,6 +19,7 @@ import '../../Models/PickerModel/confirm_order_model.dart';
 import '../../Models/PickerModel/confirmed_list_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
+import '../../Models/PickerModel/delivery_address_list.dart';
 import '../../Models/PickerModel/delivery_time.dart';
 import '../../Models/PickerModel/deposit_history_model.dart';
 import '../../Models/PickerModel/deposit_model.dart';
@@ -35,7 +36,9 @@ import '../../Models/PickerModel/picker_category_model.dart';
 import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
+import '../../Models/PickerModel/picker_payment_list.dart';
 import '../../Models/PickerModel/picker_sub_category_model.dart';
+import '../../Models/PickerModel/picker_wallet_balance_model.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Models/PickerModel/quantity_price.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
@@ -682,6 +685,65 @@ class PickerRepository {
     }
   }
 
+
+  // Delivery Address GET
+  Future<DeliveryAddressList> getDeliveryAddressListData({
+    required String token,required String customerId}) async {
+
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      print('RRRRRRR332222');
+      var response = await dio.get(
+          '${baseUrl}picker/get_multiple_addrs_api/$customerId',
+          options: options
+      );
+      print('RRRRRRR$response');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        print('code#${response.statusCode}');
+        var result = DeliveryAddressList.fromJson(response.data);
+        print('RES#$result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Delivery Payment GET
+  Future<PickerPaymentList> getPaymentListApi({required String token}) async {
+
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      print('RRRRRRR332222');
+      var response = await dio.get(
+          '${baseUrl}picker/list_of_payment_picker_api',
+          options: options
+      );
+      print('RRRRRRR33$response');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerPaymentList.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
   // Add Customer
   Future<AddCustomerModel> addNewClient({required Map<String, String> body, required String token}) async {
     Dio dio = Dio();
@@ -906,6 +968,38 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerItemsPriceModel.fromJson(response.data);
+        print('######RESULT#${result}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEE'+e.toString());
+    }
+  }
+
+  //Get wallet balance cart page
+  Future<PickerWalletBalanceModel> getWalletBalanceApi({required Map<String, String> body, required String token }) async {
+    Dio dio = Dio();
+    print(body);
+    Options options = Options(
+        headers: {
+          'Authorization' : 'Basic $token'
+        }
+    );
+
+    Future.delayed(const Duration(seconds: 1));
+
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/get_wallet_balance_picker',
+          data: body,
+          options: options
+      );
+      print('######RESPONSE${response}');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerWalletBalanceModel.fromJson(response.data);
         print('######RESULT#${result}');
         return result;
       } else {

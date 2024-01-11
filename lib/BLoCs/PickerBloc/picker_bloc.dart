@@ -4,17 +4,20 @@ import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:golden_falcon/Models/PickerModel/add_to_cart_model.dart';
-import 'package:golden_falcon/Models/PickerModel/cart_list_model.dart';
+// import 'package:golden_falcon/Models/PickerModel/cart_list_model.dart';
+// import 'package:golden_falcon/Models/PickerModel/cart_list_model.dart' as CartList;
 import 'package:golden_falcon/Models/PickerModel/deposit_history_model.dart';
 import 'package:golden_falcon/Models/PickerModel/new_order_save.dart';
 import 'package:golden_falcon/Models/PickerModel/order_details_model.dart';
 import 'package:golden_falcon/Models/PickerModel/outstanding_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_category_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart';
-
+import '../../Models/PickerModel/cart_list_model.dart';
+import '../../Models/PickerModel/cart_list_model.dart' as CartListValue;
 import '../../Models/PickerModel/confirmed_list_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
+import '../../Models/PickerModel/delivery_address_list.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/modes.dart';
@@ -22,6 +25,7 @@ import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
+import '../../Models/PickerModel/picker_payment_list.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/search.dart';
@@ -317,6 +321,56 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         emit(PickupDeliveryModeError(e.toString()));
       }
     });
+    // on<PickupDeliveryAddressFetchEvent>((event, emit) async {
+    //   debugPrint('###DDEERRsss111###');
+    //   emit(PickupDeliveryAddressFetching());
+    //   debugPrint('###DDEERRsss222###');
+    //   try {
+    //     await pickerRepository.getDeliveryAddressListData(token: event.token, customerId: event.custId,).then((value) {
+    //       debugPrint('33W33sss111${value.status}');
+    //       debugPrint('2222222${value.message}');
+    //       if (value.status == true && value.message == "Data passed successfully!") {
+    //         emit(PickupDeliveryAddressFetched(value.data));
+    //       } else {
+    //         emit(PickupDeliveryAddressError(value.message.toString()));
+    //       }
+    //     });
+    //   } catch (e) {
+    //     emit(PickupDeliveryAddressError(e.toString()));
+    //   }
+    // });
+
+    on<PickupDeliveryAddressFetchEvent>((event, emit) async {
+      print('checkkkkk');
+      CartListValue.Customer customerData = CartListValue.Customer(
+          name: event.address["name"],
+          buildingName: event.address["building_name_no"],
+          buildingNo: '',
+          floorNumber: event.address["floor_no"],
+          flatNumber: event.address["flat_no_house_no"],
+          mobile: event.address["person_incharge_mob"]
+      );
+      emit(PckCartListFetchedState(event.data, customerData.toJson()));
+    });
+
+    on<PickupPaymentListFetchEvent>((event, emit) async {
+      debugPrint('###DDEERRsss111###');
+      emit(PickupPaymentListFetching());
+      debugPrint('###DDEERRsss222###');
+      try {
+        await pickerRepository.getPaymentListApi(token: event.token,).then((value) {
+          debugPrint('33W33sss111${value.status}');
+          debugPrint('2222222${value.message}');
+          if (value.status == true && value.message == "data passed successfully") {
+            emit(PickupPaymentListFetched(value.data));
+          } else {
+            emit(PickupPaymentListError(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(PickupPaymentListError(e.toString()));
+      }
+    });
 
     on<PickerPunchInOutEvent>((event, emit) async {
       emit(PickerPunchingInOutState());
@@ -424,7 +478,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
       try {
         await pickerRepository.addToCartListData(token: event.token, orderId: event.ordId).then((value) {
           if (value.status == true) {
-            emit(PckCartListFetchedState(value.data));
+            emit(PckCartListFetchedState(value.data,value.data.cart.first.order.customer.toJson()));
           } else {
             emit(PckCartListErrorState(value.message));
           }

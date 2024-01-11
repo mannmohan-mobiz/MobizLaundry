@@ -36,23 +36,27 @@ class CartList {
   List<Cart> cart;
   int cartCount;
   String walletBalance;
+  List<Map<String, String?>> deliveryAddress;
 
   CartList({
     required this.cart,
     required this.cartCount,
     required this.walletBalance,
+    required this.deliveryAddress,
   });
 
   factory CartList.fromJson(Map<String, dynamic> json) => CartList(
     cart: List<Cart>.from(json["cart"].map((x) => Cart.fromJson(x))),
     cartCount: json["cart_count"],
     walletBalance: json["wallet_balance"],
+    deliveryAddress: List<Map<String, String?>>.from(json["delivery_address"].map((x) => Map.from(x).map((k, v) => MapEntry<String, String?>(k, v)))),
   );
 
   Map<String, dynamic> toJson() => {
     "cart": List<dynamic>.from(cart.map((x) => x.toJson())),
     "cart_count": cartCount,
     "wallet_balance": walletBalance,
+    "delivery_address": List<dynamic>.from(deliveryAddress.map((x) => Map.from(x).map((k, v) => MapEntry<String, dynamic>(k, v)))),
   };
 }
 
@@ -329,22 +333,22 @@ class Order {
 }
 
 class Customer {
-  String customerId;
-  String createdBy;
-  DateTime createdDate;
-  String name;
-  String customerType;
-  String buildingNo;
-  String roomNo;
-  String mobile;
+  String? customerId;
+  String? createdBy;
+  DateTime? createdDate;
+  String? name;
+  String? customerType;
+  String? buildingNo;
+  String? roomNo;
+  String? mobile;
   dynamic altMobile;
-  String whatsApp;
+  String? whatsApp;
   dynamic creditLimit;
   dynamic creditDays;
   dynamic creditInvoices;
   dynamic gpse;
   dynamic gpsn;
-  String status;
+  String? status;
   dynamic trn;
   dynamic billingAddrs;
   dynamic designation;
@@ -353,40 +357,40 @@ class Customer {
   dynamic flatNumber;
   dynamic altEmail;
   dynamic companyName;
-  int user;
-  String staff;
-  String location;
-  String pricegroup;
+  int? user;
+  String? staff;
+  String? location;
+  String? pricegroup;
 
   Customer({
-    required this.customerId,
-    required this.createdBy,
-    required this.createdDate,
-    required this.name,
-    required this.customerType,
-    required this.buildingNo,
-    required this.roomNo,
-    required this.mobile,
-    required this.altMobile,
-    required this.whatsApp,
-    required this.creditLimit,
-    required this.creditDays,
-    required this.creditInvoices,
-    required this.gpse,
-    required this.gpsn,
-    required this.status,
-    required this.trn,
-    required this.billingAddrs,
-    required this.designation,
-    required this.buildingName,
-    required this.floorNumber,
-    required this.flatNumber,
-    required this.altEmail,
-    required this.companyName,
-    required this.user,
-    required this.staff,
-    required this.location,
-    required this.pricegroup,
+     this.customerId,
+     this.createdBy,
+     this.createdDate,
+     this.name,
+     this.customerType,
+     this.buildingNo,
+     this.roomNo,
+     this.mobile,
+     this.altMobile,
+     this.whatsApp,
+     this.creditLimit,
+     this.creditDays,
+     this.creditInvoices,
+     this.gpse,
+     this.gpsn,
+     this.status,
+     this.trn,
+     this.billingAddrs,
+     this.designation,
+     this.buildingName,
+     this.floorNumber,
+     this.flatNumber,
+     this.altEmail,
+     this.companyName,
+     this.user,
+     this.staff,
+     this.location,
+     this.pricegroup,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
@@ -423,7 +427,7 @@ class Customer {
   Map<String, dynamic> toJson() => {
     "customer_id": customerId,
     "created_by": createdBy,
-    "created_date": createdDate.toIso8601String(),
+    "created_date": createdDate?.toIso8601String(),
     "name": name,
     "customer_type": customerType,
     "building_no": buildingNo,

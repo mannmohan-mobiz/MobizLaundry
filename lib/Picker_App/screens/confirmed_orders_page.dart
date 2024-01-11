@@ -192,11 +192,10 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                   ),
                                 ),
                                 child: Column(
-
                                   children: [
                                     RowItem(
                                         label: 'Customer name:',
-                                        value: '${tData[index].customer.name}'),
+                                        value: tData[index].customer.name.name),
                                     RowItem(
                                       label: 'Building Name/No:',
                                       value: tData[index].customer.buildingNo,
@@ -215,7 +214,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                     ),
                                     RowItem(
                                       label: 'Pickup time:',
-                                      value: '${tData[index].pickupTime}',
+                                        value: '${tData[index].pickupTime}',
                                       isShow: true,
                                       onPressed: () async {
                                           // Uri googleUrl = Uri.parse(

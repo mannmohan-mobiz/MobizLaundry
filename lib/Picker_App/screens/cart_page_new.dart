@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
+import '../../Models/PickerModel/delivery_address_list.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../../Utils/common.dart';
@@ -33,7 +34,8 @@ class _CartPageScreenState extends State<CartPageScreen> {
   List<String> priceValues = [];
   late CartList? data;
   List<String> options = ['Option 1', 'Option 2', 'Option 3'];
-  int selectedValue = -1;
+  TextEditingController collectedAmtController = TextEditingController();
+
 
 
 
@@ -107,7 +109,17 @@ class _CartPageScreenState extends State<CartPageScreen> {
                       fontSize: 15),
                 ),
                 Text(
-                  '${state.cartList?.cart[0].order.customer.name},' '${state.cartList?.cart[0].order.customer.flatNumber ?? '--'},''${state.cartList?.cart[0].order.customer.floorNumber ?? '--'},''${state.cartList?.cart[0].order.customer.buildingNo ?? '--'},''${state.cartList?.cart[0].order.customer.mobile}.',
+                  '${state.deliveryAddress?["name"].toString()}, '
+                      '${state.deliveryAddress?["building_name"].toString()}, '
+                      '${state.deliveryAddress?["building_no"].toString()}, '
+                      '${state.deliveryAddress?["floor_number"].toString()}, '
+                      '${state.deliveryAddress?["flat_number"].toString()}, '
+                      '${state.deliveryAddress?["mobile"].toString()}',
+                  // '${state.cartList?.cart[0].order.customer.name},'
+                  //     '${state.cartList?.cart[0].order.customer.flatNumber ?? '--'},'
+                  //     '${state.cartList?.cart[0].order.customer.floorNumber ?? '--'},'
+                  //     '${state.cartList?.cart[0].order.customer.buildingNo ?? '--'},'
+                  //     '${state.cartList?.cart[0].order.customer.mobile}.',
                   style: const TextStyle(
                       color: pickerBlackColor,
                       fontWeight: FontWeight.w400,
@@ -116,7 +128,7 @@ class _CartPageScreenState extends State<CartPageScreen> {
               ],
             ),
 
-            ElevatedButton(
+       ElevatedButton(
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6), // <-- Radius
@@ -125,56 +137,8 @@ class _CartPageScreenState extends State<CartPageScreen> {
                 side: const BorderSide(color: pickerGoldColor, width: 1.0),
               ),
               onPressed: () {
-                showCustomBottomSheet(
-                    context,
-                    title: 'Select Delivery Address',
-                    ListView.separated(
-                        shrinkWrap: true,
-                        physics: const BouncingScrollPhysics(),
-                        separatorBuilder: (context, index) => const Divider(color: Colors.transparent),
-                        itemCount: 3,
-                        itemBuilder: (context, index) => InkWell(
-                            onTap: () {} ,
-                            child: RadioListTile(
-                              title: Text(options[index]),
-                              value: index,
-                              groupValue: selectedValue,
-                              onChanged: (value) {
-                                setState(() {
-                                  selectedValue = value as int;
-                                });
-                              },
-                            )
-                        )));
-               // showChangeAddressDialog(context);
-                // showCustomBottomSheet(context,
-                //    Padding(
-                //      padding: const EdgeInsets.symmetric(horizontal: 10.0,vertical: 10),
-                //      child: SizedBox(
-                //        height: MediaQuery.of(context).size.height * 0.28,
-                //        child: Column(
-                //         children: [
-                //           Row(
-                //             children: [
-                //               InkWell(
-                //                   onTap: close(context),
-                //                   child: Image.asset('Assets/Images/close.png'),
-                //               ),
-                //               const Text(
-                //                 'Select delivery Address',
-                //                 style: TextStyle(
-                //                   color: pickerBlackColor, fontSize: 12,fontWeight: FontWeight.w400,),
-                //               ),
-                //             ],
-                //           ),
-                //           const Divider(),
-                //
-                //         ],
-                //                          ),
-                //      ),
-                //    )
-                // );
-              },
+                showChangeAddressDialog(context,state.cartList!);
+                },
               child: const Center(
                 child: Text(
                   'CHANGE DELIVERY ADDRESS',
@@ -488,7 +452,11 @@ class _CartPageScreenState extends State<CartPageScreen> {
              RowValue(label: 'Vat',
                 labelValue: 'AED ${state.cartList?.cart[0].order.vat ?? '0'}',
                 labelValueColor: pickerBlackColor),
-            Column(
+            BlocProvider(
+            create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
+              ..add(PickupPaymentListFetchEvent(
+                  authData.user_token.toString())),
+              child: Column(
               children: [
                 InkWell(
                   onTap: () {
@@ -496,71 +464,91 @@ class _CartPageScreenState extends State<CartPageScreen> {
                       isExpanded = !isExpanded;
                     });
                   },
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        border: Border.all(color: pickerGoldColor),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(selectedOption),
-                          Icon(
-                            isExpanded ? Icons.arrow_drop_up : Icons
-                                .arrow_drop_down,
-                            size: 24,
-                            color: pickerGoldColor,
-                          ),
-                        ],
-                      ),
+                  child: Container(
+                    height: 56,
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(18),
+                    decoration: BoxDecoration(
+                      color: pickerWhiteColor,
+                      border: Border.all(color: pickerGoldColor),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(selectedOption,style: const TextStyle(
+                            fontSize: 14,color: pickerBlackColor
+                        ),),
+                        Icon(
+                          isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                          size: 24,
+                          color: pickerGoldColor,
+                        ),
+                      ],
                     ),
                   ),
                 ),
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 300),
                   width: double.infinity,
-                  height: isExpanded ? 150 : 0,
+                  height: isExpanded ? 120 : 0,
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
+                    color: pickerWhiteColor,
                     border: Border.all(color: pickerGoldColor),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: ListView(
-                    children: [
+                  child: BlocBuilder<PickerBloc, PickerState>(
+                 builder: (context, state) {
+                    if (state is PickupPaymentListFetching) {
+                    return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
+                    } else if (state is PickupPaymentListFetched) {
+                   final data = state.paymentList;
+                  return ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: data?.length,
+                    itemBuilder: (BuildContext context, int index) =>
                       ListTile(
-                        title: const Text('Cash'),
+                        title:  Text('${data?[index].paymentMethod}',style: const TextStyle(
+                          fontSize: 12,color: pickerBlackColor
+                        ),),
                         onTap: () {
                           setState(() {
-                            selectedOption = 'Cash';
+                            selectedOption = '${data?[index].paymentMethod}';
                             isExpanded = false;
                           });
                         },
                       ),
-                      ListTile(
-                        title: const Text('e-pay'),
-                        onTap: () {
-                          setState(() {
-                            selectedOption = 'e-pay';
-                            isExpanded = false;
-                          });
-                        },
-                      ),
-                    ],
-                  ),
+                  );
+                } else {
+                      return const Center(child: Text('No Data'));
+                    }
+                 }
+),
                 ),
               ],
             ),
+),
             Row(
               children: [
                 Checkbox(
                     activeColor: pickerGoldColor,
                     value: false,
                     side: const BorderSide(color: pickerGoldColor),
-                    onChanged: (value) {}
+                    onChanged: (value) {
+                      Map<String, String> data = {
+                        "id": authData.user_id.toString(),
+                        "order_id": widget.orderId,
+                        "customer_id":  widget.custIdd,
+                      };
+                      pickerRepository.getWalletBalanceApi(token: authData.user_token.toString(),body: data).then((value) {
+                        setState(() {
+                          //double.parse((state.cartList?.walletBalance).toString()) = value.walletBalance;
+                        });
+                      }
+                      );
+                    }
                 ),
                  const Text(
                   'Use Wallet Balance ?',
@@ -588,7 +576,7 @@ class _CartPageScreenState extends State<CartPageScreen> {
               ],
             ),
              RowValue(label: 'Total Payable',
-                labelValue: 'AED ${state.cartList?.cart[0].order.grantTotal}',
+                labelValue: 'AED ${state.cartList?.cart[0].order.totalAmount}',
                 labelValueColor: pickerBlackColor),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -606,10 +594,10 @@ class _CartPageScreenState extends State<CartPageScreen> {
                     width: 150,
                     height: 50,
                     child: TextField(
-                      controller: TextEditingController(),
+                      controller: collectedAmtController,
                       keyboardType: TextInputType.number,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: pickerBlackColor,
                         fontSize: 20.0,
                         fontWeight: FontWeight.bold,
                       ),
@@ -638,6 +626,9 @@ class _CartPageScreenState extends State<CartPageScreen> {
                   backgroundColor: pickerGoldColor,
                 ),
                 onPressed: () {
+                  if(selectedOption == null){
+                    snackBar(context, message: 'Please choose Payment type');
+                  }else {
                   Map<String, String> data = {
                     "id": authData.user_id.toString(),
                     "order_id": widget.orderId,
@@ -647,8 +638,8 @@ class _CartPageScreenState extends State<CartPageScreen> {
                     "vat":  'null',
                    // "vat":  '${state.cartList?.cart[0].order.vat ?? 0}',
                     "grant_total": '${state.cartList?.cart[0].order.grantTotal}',
-                    "collect_mode": "Cash",
-                    "payed_amount": '150'
+                    "collect_mode": selectedOption,
+                    "payed_amount": collectedAmtController.text
                   };
                   print('#########${(data)}');
                   pickerRepository.orderConfirmApi(token: authData.user_token.toString(),body: data).then((value) {
@@ -657,7 +648,8 @@ class _CartPageScreenState extends State<CartPageScreen> {
                   });
                     // Navigator.push(context, MaterialPageRoute(
                     //     builder: (context) =>  ThankYouPageScreen(ordId: widget.orderId,cstId: widget.custIdd )));
-                    },
+                    }
+    },
                 child: const Center(
                   child: Text(
                     'Place Order',
@@ -683,8 +675,144 @@ class _CartPageScreenState extends State<CartPageScreen> {
 
 );
   }
+//   showChangeAddressDialog(BuildContext context) {
+//     String? selectedValue; // Change the type to String?
+//     //int? gValue = -1;
+//     return showCustomBottomSheet(
+//       context,
+//       title: 'Select Delivery Address',
+//       BlocProvider(
+//     create:  (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
+//       ..add(PickupDeliveryAddressFetchEvent(
+//           authData.user_token.toString(), widget.custIdd.toString())),
+//      child: StatefulBuilder(
+//      builder: (BuildContext context, StateSetter setState) {
+//        return Column(
+//          crossAxisAlignment: CrossAxisAlignment.start,
+//          children: [
+//            BlocBuilder<PickerBloc, PickerState>(
+//                builder: (context, state) {
+//                  if (state is PickupDeliveryAddressFetching) {
+//                    return const Center(child: CircularProgressIndicator(
+//                      color: pickerGoldColor,));
+//                  } else if (state is PickupDeliveryAddressFetched) {
+//                    final dataValue = state.deliveryAddress;
+//                    return ListView.separated(
+//                      shrinkWrap: true,
+//                      physics: const BouncingScrollPhysics(),
+//                      padding: EdgeInsets.zero,
+//                      separatorBuilder: (context, index) =>
+//                      const Divider(color: Colors.transparent),
+//                      itemCount: dataValue!.length,
+//                      itemBuilder: (context, index) {
+//                        //final address = snapshot.data!.data![index];
+//                        print('addd ${dataValue[index].name}');
+//                        return Row(
+//                          children: [
+//                            Radio(
+//                              onChanged: (int? value) {
+//                                debugPrint('### value --- $value');
+//                                setState(() {
+//                                  gValue = value;
+//                                });
+//                              },
+//                              value: index,
+//                              visualDensity: const VisualDensity(
+//                                  horizontal: -4, vertical: 0),
+//                              activeColor: pickerGoldColor,
+//                              groupValue: gValue,
+//                            ),
+//                            Text('${dataValue[index].name} ${dataValue[index]
+//                                .buildingNameNo} ${dataValue[index]
+//                                .floorNo} ${dataValue[index]
+//                                .flatNoHouseNo} ${dataValue[index]
+//                                .personInchargeMob}',
+//                                style: const TextStyle(
+//                                    fontSize: 13, color: pickerBlackColor)),
+//                          ],
+//                        );
+//                      },
+//                    );
+//                  } else {
+//                    return const Center(child: Text('No Data'));
+//                  }
+//                }
+//            ),
+//          ],
+//        );
+//      }
+//      ),
+// ),
+//     );
+//   }
+  //
+  showChangeAddressDialog(BuildContext context,CartList listData) {
+    String? selectedValueData;
+    BuildContext mainContext = context;
+    return showCustomBottomSheet(
+      context,
+      title: 'Select Delivery Address',
+      FutureBuilder<DeliveryAddressList>(
+        future: pickerRepository.getDeliveryAddressListData(
+            token: authData.user_token!, customerId: widget.custIdd),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator(color: pickerGoldColor);
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData || snapshot.data!.data == null ||
+              snapshot.data!.data!.isEmpty) {
+            return const Text('No delivery address available');
+          } else {
+            return StatefulBuilder(
+              builder: (BuildContext context, StateSetter setState) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ListView.separated(
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(),
+                      padding: EdgeInsets.zero,
+                      separatorBuilder: (context, index) => const Divider(color: Colors.transparent),
+                      itemCount: snapshot.data!.data!.length,
+                      itemBuilder: (context, index) {
+                        final address = snapshot.data!.data![index];
+                        print('addd ${address}');
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedValueData = address["pickup_address_id"].toString();
+                            });
+                          },
+                          child: RadioListTile(
+                            activeColor: pickerGoldColor,
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(
+                                '${address["name"]} ${address["building_name_no"]} ${address["floor_no"]} ${address["flat_no_house_no"]} ${address["person_incharge_mob"]}',
+                                style: const TextStyle(fontSize: 13, color: pickerBlackColor)),
+                            value: address["pickup_address_id"].toString(),
+                            groupValue: selectedValueData,
+                            onChanged: (value) {
+                              print('444');
+                              mainContext.read<PickerBloc>().add(PickupDeliveryAddressFetchEvent(listData, address));
+                              setState(() {
+                                selectedValueData = value.toString();
+                              });
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                );
+              }
+            );
+          }
+        },
+      ),
+    );
+  }
 }
-
 
 
 

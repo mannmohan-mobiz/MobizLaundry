@@ -197,6 +197,26 @@ class PickupDeliveryModeFetchEvent extends PickerEvent {
   List<Object?> get props => [token];
 }
 
+
+// Pickup Delivery address List
+class PickupDeliveryAddressFetchEvent extends PickerEvent {
+   final CartList data;
+  final Map<String, dynamic> address;
+  const PickupDeliveryAddressFetchEvent(this.data,this.address);
+
+  @override
+  List<Object?> get props => [data,address];
+}
+
+// Pickup Delivery mode List
+class PickupPaymentListFetchEvent extends PickerEvent {
+  final String token;
+  const PickupPaymentListFetchEvent(this.token);
+
+  @override
+  List<Object?> get props => [token];
+}
+
 // Punch In
 class PickerPunchInOutEvent extends PickerEvent {
   final String token;

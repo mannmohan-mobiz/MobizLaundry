@@ -35,7 +35,7 @@ class PickerConfirmedListModel {
 class pickerConfirmedList {
   String orderId;
   Customer customer;
-  CreatedBy? createdBy;
+  CreatedBy createdBy;
   DateTime createdDate;
   String orderNumber;
   DateTime? pickupDate;
@@ -44,16 +44,16 @@ class pickerConfirmedList {
   bool confirmPickup;
   Status status;
   OrderType orderType;
-  String? totalAmount;
+  String totalAmount;
   OrderVia orderVia;
   DateTime orderDate;
-  DateTime? deliveryDate;
-  String? deliveryTime;
+  DateTime deliveryDate;
+  String deliveryTime;
   bool paidStatus;
-  dynamic discount;
-  dynamic netTaxable;
-  dynamic vat;
-  dynamic grantTotal;
+  String? discount;
+  String? netTaxable;
+  String? vat;
+  String? grantTotal;
   String staff;
   dynamic invoice;
 
@@ -86,7 +86,7 @@ class pickerConfirmedList {
   factory pickerConfirmedList.fromJson(Map<String, dynamic> json) => pickerConfirmedList(
     orderId: json["order_id"],
     customer: Customer.fromJson(json["customer"]),
-    createdBy: CreatedByValues.map[json["created_by"]] ?? CreatedBy.ASHOK,
+    createdBy: CreatedByValues.map[json["created_by"]]!,
     createdDate: DateTime.parse(json["created_date"]),
     orderNumber: json["order_number"],
     pickupDate: json["pickup_date"] == null ? null : DateTime.parse(json["pickup_date"]),
@@ -98,7 +98,7 @@ class pickerConfirmedList {
     totalAmount: json["total_amount"],
     orderVia: orderViaValues.map[json["order_via"]]!,
     orderDate: DateTime.parse(json["order_date"]),
-    deliveryDate: json["Delivery_date"] == null ? null : DateTime.parse(json["Delivery_date"]),
+    deliveryDate: DateTime.parse(json["Delivery_date"]),
     deliveryTime: json["Delivery_time"],
     paidStatus: json["paid_status"],
     discount: json["discount"],
@@ -124,7 +124,7 @@ class pickerConfirmedList {
     "total_amount": totalAmount,
     "order_via": orderViaValues.reverse[orderVia],
     "order_date": "${orderDate.year.toString().padLeft(4, '0')}-${orderDate.month.toString().padLeft(2, '0')}-${orderDate.day.toString().padLeft(2, '0')}",
-    "Delivery_date": "${deliveryDate!.year.toString().padLeft(4, '0')}-${deliveryDate!.month.toString().padLeft(2, '0')}-${deliveryDate!.day.toString().padLeft(2, '0')}",
+    "Delivery_date": "${deliveryDate.year.toString().padLeft(4, '0')}-${deliveryDate.month.toString().padLeft(2, '0')}-${deliveryDate.day.toString().padLeft(2, '0')}",
     "Delivery_time": deliveryTime,
     "paid_status": paidStatus,
     "discount": discount,
@@ -137,11 +137,13 @@ class pickerConfirmedList {
 }
 
 enum CreatedBy {
-  ASHOK
+  ASHOK,
+  STAFF
 }
 
 final CreatedByValues = EnumValues({
-  "Ashok": CreatedBy.ASHOK
+  "Ashok": CreatedBy.ASHOK,
+  "Staff": CreatedBy.STAFF
 });
 
 class Customer {
@@ -156,9 +158,9 @@ class Customer {
   String mobile;
   String? altMobile;
   String? whatsApp;
-  dynamic creditLimit;
-  dynamic creditDays;
-  dynamic creditInvoices;
+  String? creditLimit;
+  String? creditDays;
+  String? creditInvoices;
   dynamic gpse;
   dynamic gpsn;
   CustomerStatus status;
@@ -301,19 +303,23 @@ class Location {
 }
 
 enum LocationName {
-  AL_KHAIL_GATE
+  AL_KHAIL_GATE,
+  AL_QUOZ_4
 }
 
 final locationNameValues = EnumValues({
-  "Al Khail Gate": LocationName.AL_KHAIL_GATE
+  "Al Khail Gate": LocationName.AL_KHAIL_GATE,
+  "Al Quoz 4": LocationName.AL_QUOZ_4
 });
 
 enum CustomerName {
+  CUSTOMER1,
   DEEPESH_GEORGE,
   TEST
 }
 
 final customerNameValues = EnumValues({
+  "Customer1": CustomerName.CUSTOMER1,
   "Deepesh George": CustomerName.DEEPESH_GEORGE,
   "test": CustomerName.TEST
 });

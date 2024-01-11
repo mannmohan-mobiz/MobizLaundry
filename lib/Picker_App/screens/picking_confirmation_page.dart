@@ -9,6 +9,8 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
 import 'home_page_new.dart';
+import '../../Models/PickerModel/pickup_list_midel.dart';
+
 
 class PickingConfirmationPage extends StatefulWidget {
   const PickingConfirmationPage({super.key});
@@ -119,16 +121,19 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
               ),
               BlocBuilder<PickerBloc, PickerState>(
                 builder: (context, state) {
+                  print( 'SS$state');
                   if (state is PickupListFetching) {
                     return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
                   } else if (state is PickupListFetched) {
                    final tData = state.fData;
+                   print( 'SS$tData.length');
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: tData.length,
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.vertical,
-                      itemBuilder: (itemBuilder, index) => Container(
+                      itemBuilder: (itemBuilder, index) {
+                        return Container(
                         margin: const EdgeInsets.symmetric(vertical: 18),
                         decoration: BoxDecoration(
                             color: pickerWhiteColor,
@@ -149,15 +154,22 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                   horizontal: 12, vertical: 8),
                               decoration:  BoxDecoration(
                                 color: MaterialStateColor.resolveWith((states) {
-                                  if(state.fData[index].orderType == "Urgent"){
-                                 return pickerOrangeTypeColor;
-                                } else if(state.fData[index].orderType == "Express"){
-                                 return pickerYellowTypeColor;
-                                } else if(state.fData[index].orderType == "Normal"){
-                                 return pickerGreyTypeColor;
-                                } else {
-                                 return Colors.transparent;
-                                }}),
+                                  if (state.fData[index].orderType == OrderType.URGENT) {
+                                    print(5555);
+                                    return pickerOrangeTypeColor;
+                                  } else
+                                  if (state.fData[index].orderType == OrderType.EXPRESS) {
+                                    print(6666);
+                                    return pickerYellowTypeColor;
+                                  } else
+                                  if (state.fData[index].orderType == OrderType.NORMAL) {
+                                    print(7777);
+                                    return pickerGreyTypeColor;
+                                  } else {
+                                    print(8888);
+                                    return Colors.transparent;
+                                  }
+                                }),
                                 // color: (){
                                 //   switch(state.fData[index].orderType){
                                 //     case "Urgent":
@@ -179,7 +191,7 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                 children: [
                                   RowItem(
                                     label: 'Customer name:',
-                                    value: '${tData[index].customer.name}',
+                                    value: '${tData[index].customer?.name.name}',
                                   ),
                                   RowItem(
                                     label: 'Order No:',
@@ -187,27 +199,27 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                   ),
                                   RowItem(
                                     label: 'Building Name/No:',
-                                    value: tData[index].customer.buildingNo,
+                                    value: '${tData[index].customer?.buildingNo}',
                                   ),
                                   RowItem(
                                     label: 'Floor No:',
-                                    value: tData[index].customer.roomNo,
+                                    value: '${tData[index].customer?.roomNo}',
                                   ),
                                   RowItem(
                                     label: 'Room No/House No:',
-                                    value: tData[index].customer.roomNo,
+                                    value: '${tData[index].customer?.roomNo}',
                                   ),
                                   RowItem(
                                     label: 'Mobile No:',
-                                    value: tData[index].customer.mobile,
+                                    value: '${tData[index].customer?.mobile}',
                                   ),
                                   RowItem(
-                                    label: 'Pickup time:',
+                                    label: 'Pickup Date:',
                                     value: DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData[index].pickupDate}')).toString(),
                                   ),
                                   RowItem(
                                     label: 'Pickup time:',
-                                    value: '${tData[index].pickupTime}',
+                                    value: tData[index].pickupTime,
                                     isShow: true,
                                   ),
                                 ],
@@ -275,7 +287,7 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                                                 "id":authData.user_id.toString(),
                                                                 "order_id":tData[index].orderId,
                                                                 "pickup_date":DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData[index].pickupDate}')).toString(),
-                                                                "pickup_time":'${tData[index].pickupTime}'
+                                                                "pickup_time":tData[index].pickupTime
                                                               };
                                                               print('###Body Response$body');
                                                               BlocProvider.of<PickerBloc>(context).add(PickerConfirmOrderEvent(body, authData.user_token.toString()));
@@ -309,7 +321,7 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                   InkWell(
                                     onTap: (){
                                       //openDialer('987654321');
-                                      openDialer(tData[index].customer.mobile);
+                                      openDialer(tData[index].customer?.mobile);
                                     } ,
                                     child: const Text('Call',
                                         style: TextStyle(
@@ -322,7 +334,8 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                             )
                           ],
                         ),
-                      ),
+                      );
+    }
                     );
                   } else {
                     return const Center(child: Text('No Data'));

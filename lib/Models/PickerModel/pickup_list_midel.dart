@@ -1,4 +1,12 @@
+// To parse this JSON data, do
+//
+//     final pickerPickupListModel = pickerPickupListModelFromJson(jsonString);
+
 import 'dart:convert';
+
+PickerPickupListModel pickerPickupListModelFromJson(String str) => PickerPickupListModel.fromJson(json.decode(str));
+
+String pickerPickupListModelToJson(PickerPickupListModel data) => json.encode(data.toJson());
 
 class PickerPickupListModel {
   bool status;
@@ -10,21 +18,6 @@ class PickerPickupListModel {
     required this.data,
     required this.message,
   });
-
-  PickerPickupListModel copyWith({
-    bool? status,
-    List<PckPickupList>? data,
-    String? message,
-  }) =>
-      PickerPickupListModel(
-        status: status ?? this.status,
-        data: data ?? this.data,
-        message: message ?? this.message,
-      );
-
-  factory PickerPickupListModel.fromRawJson(String str) => PickerPickupListModel.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
 
   factory PickerPickupListModel.fromJson(Map<String, dynamic> json) => PickerPickupListModel(
     status: json["status"],
@@ -44,7 +37,7 @@ class PckPickupList {
   String orderNumber;
   DateTime pickupDate;
   String pickupTime;
-  String orderType;
+  OrderType orderType;
   DateTime orderDate;
   Customer customer;
 
@@ -58,35 +51,12 @@ class PckPickupList {
     required this.customer,
   });
 
-  PckPickupList copyWith({
-    String? orderId,
-    String? orderNumber,
-    DateTime? pickupDate,
-    String? pickupTime,
-    String? orderType,
-    DateTime? orderDate,
-    Customer? customer,
-  }) =>
-      PckPickupList(
-        orderId: orderId ?? this.orderId,
-        orderNumber: orderNumber ?? this.orderNumber,
-        pickupDate: pickupDate ?? this.pickupDate,
-        pickupTime: pickupTime ?? this.pickupTime,
-        orderType: orderType ?? this.orderType,
-        orderDate: orderDate ?? this.orderDate,
-        customer: customer ?? this.customer,
-      );
-
-  factory PckPickupList.fromRawJson(String str) => PckPickupList.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory PckPickupList.fromJson(Map<String, dynamic> json) => PckPickupList(
     orderId: json["order_id"],
     orderNumber: json["order_number"],
     pickupDate: DateTime.parse(json["pickup_date"]),
     pickupTime: json["pickup_time"],
-    orderType: json["order_type"],
+    orderType: orderTypeValues.map[json["order_type"]]!,
     orderDate: DateTime.parse(json["order_date"]),
     customer: Customer.fromJson(json["customer"]),
   );
@@ -96,7 +66,7 @@ class PckPickupList {
     "order_number": orderNumber,
     "pickup_date": "${pickupDate.year.toString().padLeft(4, '0')}-${pickupDate.month.toString().padLeft(2, '0')}-${pickupDate.day.toString().padLeft(2, '0')}",
     "pickup_time": pickupTime,
-    "order_type": orderType,
+    "order_type": orderTypeValues.reverse[orderType],
     "order_date": "${orderDate.year.toString().padLeft(4, '0')}-${orderDate.month.toString().padLeft(2, '0')}-${orderDate.day.toString().padLeft(2, '0')}",
     "customer": customer.toJson(),
   };
@@ -105,10 +75,10 @@ class PckPickupList {
 class Customer {
   String customerId;
   User user;
-  String createdBy;
+  CreatedBy createdBy;
   DateTime createdDate;
-  String name;
-  String customerType;
+  Name name;
+  CustomerType customerType;
   String buildingNo;
   String roomNo;
   String mobile;
@@ -119,7 +89,15 @@ class Customer {
   dynamic creditInvoices;
   dynamic gpse;
   dynamic gpsn;
-  String status;
+  Status status;
+  dynamic trn;
+  dynamic billingAddrs;
+  dynamic designation;
+  dynamic buildingName;
+  dynamic floorNumber;
+  dynamic flatNumber;
+  dynamic altEmail;
+  dynamic companyName;
   String staff;
   String location;
   String pricegroup;
@@ -142,67 +120,26 @@ class Customer {
     required this.gpse,
     required this.gpsn,
     required this.status,
+    required this.trn,
+    required this.billingAddrs,
+    required this.designation,
+    required this.buildingName,
+    required this.floorNumber,
+    required this.flatNumber,
+    required this.altEmail,
+    required this.companyName,
     required this.staff,
     required this.location,
     required this.pricegroup,
   });
 
-  Customer copyWith({
-    String? customerId,
-    User? user,
-    String? createdBy,
-    DateTime? createdDate,
-    String? name,
-    String? customerType,
-    String? buildingNo,
-    String? roomNo,
-    String? mobile,
-    dynamic altMobile,
-    String? whatsApp,
-    dynamic creditLimit,
-    dynamic creditDays,
-    dynamic creditInvoices,
-    dynamic gpse,
-    dynamic gpsn,
-    String? status,
-    String? staff,
-    String? location,
-    String? pricegroup,
-  }) =>
-      Customer(
-        customerId: customerId ?? this.customerId,
-        user: user ?? this.user,
-        createdBy: createdBy ?? this.createdBy,
-        createdDate: createdDate ?? this.createdDate,
-        name: name ?? this.name,
-        customerType: customerType ?? this.customerType,
-        buildingNo: buildingNo ?? this.buildingNo,
-        roomNo: roomNo ?? this.roomNo,
-        mobile: mobile ?? this.mobile,
-        altMobile: altMobile ?? this.altMobile,
-        whatsApp: whatsApp ?? this.whatsApp,
-        creditLimit: creditLimit ?? this.creditLimit,
-        creditDays: creditDays ?? this.creditDays,
-        creditInvoices: creditInvoices ?? this.creditInvoices,
-        gpse: gpse ?? this.gpse,
-        gpsn: gpsn ?? this.gpsn,
-        status: status ?? this.status,
-        staff: staff ?? this.staff,
-        location: location ?? this.location,
-        pricegroup: pricegroup ?? this.pricegroup,
-      );
-
-  factory Customer.fromRawJson(String str) => Customer.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(
     customerId: json["customer_id"],
     user: User.fromJson(json["user"]),
-    createdBy: json["created_by"],
+    createdBy: createdByValues.map[json["created_by"]]!,
     createdDate: DateTime.parse(json["created_date"]),
-    name: json["name"],
-    customerType: json["customer_type"],
+    name: nameValues.map[json["name"]]!,
+    customerType: customerTypeValues.map[json["customer_type"]]!,
     buildingNo: json["building_no"],
     roomNo: json["room_no"],
     mobile: json["mobile"],
@@ -213,7 +150,15 @@ class Customer {
     creditInvoices: json["credit_invoices"],
     gpse: json["GPSE"],
     gpsn: json["GPSN"],
-    status: json["status"],
+    status: statusValues.map[json["status"]]!,
+    trn: json["TRN"],
+    billingAddrs: json["billing_addrs"],
+    designation: json["designation"],
+    buildingName: json["building_name"],
+    floorNumber: json["floor_number"],
+    flatNumber: json["flat_number"],
+    altEmail: json["alt_email"],
+    companyName: json["company_name"],
     staff: json["staff"],
     location: json["Location"],
     pricegroup: json["Pricegroup"],
@@ -222,10 +167,10 @@ class Customer {
   Map<String, dynamic> toJson() => {
     "customer_id": customerId,
     "user": user.toJson(),
-    "created_by": createdBy,
+    "created_by": createdByValues.reverse[createdBy],
     "created_date": createdDate.toIso8601String(),
-    "name": name,
-    "customer_type": customerType,
+    "name": nameValues.reverse[name],
+    "customer_type": customerTypeValues.reverse[customerType],
     "building_no": buildingNo,
     "room_no": roomNo,
     "mobile": mobile,
@@ -236,42 +181,101 @@ class Customer {
     "credit_invoices": creditInvoices,
     "GPSE": gpse,
     "GPSN": gpsn,
-    "status": status,
+    "status": statusValues.reverse[status],
+    "TRN": trn,
+    "billing_addrs": billingAddrs,
+    "designation": designation,
+    "building_name": buildingName,
+    "floor_number": floorNumber,
+    "flat_number": flatNumber,
+    "alt_email": altEmail,
+    "company_name": companyName,
     "staff": staff,
     "Location": location,
     "Pricegroup": pricegroup,
   };
 }
 
+enum CreatedBy {
+  MOBIZ
+}
+
+final createdByValues = EnumValues({
+  "mobiz": CreatedBy.MOBIZ
+});
+
+enum CustomerType {
+  HOME
+}
+
+final customerTypeValues = EnumValues({
+  "Home": CustomerType.HOME
+});
+
+enum Name {
+  DEEPESH_GEORGE
+}
+
+final nameValues = EnumValues({
+  "Deepesh George": Name.DEEPESH_GEORGE
+});
+
+enum Status {
+  ACTIVE
+}
+
+final statusValues = EnumValues({
+  "Active": Status.ACTIVE
+});
+
 class User {
   String username;
-  String email;
+  Email email;
 
   User({
     required this.username,
     required this.email,
   });
 
-  User copyWith({
-    String? username,
-    String? email,
-  }) =>
-      User(
-        username: username ?? this.username,
-        email: email ?? this.email,
-      );
-
-  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
   factory User.fromJson(Map<String, dynamic> json) => User(
     username: json["username"],
-    email: json["email"],
+    email: emailValues.map[json["email"]]!,
   );
 
   Map<String, dynamic> toJson() => {
     "username": username,
-    "email": email,
+    "email": emailValues.reverse[email],
   };
+}
+
+enum Email {
+  DEEPESHGEORGE_GMAIL_COM
+}
+
+final emailValues = EnumValues({
+  "deepeshgeorge@gmail.com": Email.DEEPESHGEORGE_GMAIL_COM
+});
+
+enum OrderType {
+  EXPRESS,
+  NORMAL,
+  URGENT
+}
+
+final orderTypeValues = EnumValues({
+  "Express": OrderType.EXPRESS,
+  "Normal": OrderType.NORMAL,
+  "Urgent": OrderType.URGENT
+});
+
+class EnumValues<T> {
+  Map<String, T> map;
+  late Map<T, String> reverseMap;
+
+  EnumValues(this.map);
+
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
+    return reverseMap;
+  }
 }

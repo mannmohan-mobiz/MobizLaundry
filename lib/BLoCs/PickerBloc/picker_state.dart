@@ -480,6 +480,62 @@ class PickupDeliveryModeError extends PickerState {
 
 /***********************[Delivery Mode List]***********************/
 
+/***********************[Delivery address List]***********************/
+
+class PickupDeliveryAddressFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PickupDeliveryAddressFetched extends PickerState {
+  List<Map<String, String?>>? deliveryAddress;
+
+  PickupDeliveryAddressFetched(this.deliveryAddress);
+
+  @override
+  List<Object?> get props => [deliveryAddress];
+}
+
+class PickupDeliveryAddressError extends PickerState {
+  final String message;
+
+  PickupDeliveryAddressError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+
+/***********************[Delivery address List]***********************/
+
+/***********************[Delivery Mode List]***********************/
+
+class PickupPaymentListFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PickupPaymentListFetched extends PickerState {
+   List<PaymentList>? paymentList;
+
+  PickupPaymentListFetched(this.paymentList);
+
+  @override
+  List<Object?> get props => [paymentList];
+}
+
+class PickupPaymentListError extends PickerState {
+  final String message;
+
+  PickupPaymentListError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+
+/***********************[Delivery Mode List]***********************/
+
 /***********************[Picker Punch In]***********************/
 class PickerPunchingInOutState extends PickerState {
   @override
@@ -666,11 +722,12 @@ class PckCartListFetchingState extends PickerState {
 
 class PckCartListFetchedState extends PickerState {
   CartList? cartList;
+  Map<String, dynamic?>? deliveryAddress;
 
-  PckCartListFetchedState(this.cartList);
+  PckCartListFetchedState(this.cartList,this.deliveryAddress);
 
   @override
-  List<Object?> get props => [cartList];
+  List<Object?> get props => [cartList,deliveryAddress];
 }
 
 class PckCartListErrorState extends PickerState {
