@@ -33,7 +33,6 @@ class _CartPageScreenState extends State<CartPageScreen> {
   List<int> counterQuantity = [];
   List<String> priceValues = [];
   late CartList? data;
-  List<String> options = ['Option 1', 'Option 2', 'Option 3'];
   TextEditingController collectedAmtController = TextEditingController();
 
 

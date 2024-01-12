@@ -15,6 +15,7 @@ import '../../Models/PickerModel/cart_count.dart';
 import '../../Models/PickerModel/cart_delete.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_quantity_model.dart';
+import '../../Models/PickerModel/collect_items_model.dart';
 import '../../Models/PickerModel/confirm_order_model.dart';
 import '../../Models/PickerModel/confirmed_list_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
@@ -1127,6 +1128,38 @@ class PickerRepository {
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerCartListModel.fromJson(response.data);
         print('ADD to CRT list RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Collected Items list
+  Future<CollectItemsList> collectItemsListApi({required String token, required String orderId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "order_id": orderId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/picker_collect_item_api',
+          data: data,
+          options: options
+      );
+
+      print('COLLECT ITEMS list: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = CollectItemsList.fromJson(response.data);
+        print('COLLECT ITEMS RST : $result');
         return result;
       } else {
         return response.data;

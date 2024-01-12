@@ -242,7 +242,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                               color: pickerBlackColor,
                                               fontWeight: FontWeight.w600)),
                                       onTap: () {
-                                        showCollectItemDialog();
+                                        showCollectItemDialog(orderIdd: tData[index].orderId);
                                       },
                                     ),
                                     Container(
@@ -370,7 +370,8 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
             ));
   }
 
-  showCollectItemDialog() {
+  showCollectItemDialog({required String orderIdd}) {
+    print('RRR${orderIdd}');
     return showDialog(
         context: context,
         builder: (mContext) => AlertDialog(
@@ -415,7 +416,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: ElevatedButton(
-                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>  const CollectItemsPage())),
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>   CollectItemsPage(orderId: orderIdd,))),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: pickerGoldColor,
                               ),

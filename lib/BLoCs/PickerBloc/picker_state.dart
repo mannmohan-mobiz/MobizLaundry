@@ -740,6 +740,32 @@ class PckCartListErrorState extends PickerState {
 }
 /***********************[Get Cart List]]***********************/
 
+
+/***********************[Get COLLECT ITEMS List]***********************/
+class PckCollectItemsFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckCollectItemsFetchedState extends PickerState {
+  CollectItems? collectItemsData;
+
+  PckCollectItemsFetchedState(this.collectItemsData);
+
+  @override
+  List<Object?> get props => [collectItemsData];
+}
+
+class PckCollectItemsErrorState extends PickerState {
+  final String message;
+
+  PckCollectItemsErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Cart List]]***********************/
+
 /***********************[Get Thankyou List]***********************/
 class PckThankyouFetchingState extends PickerState {
   @override

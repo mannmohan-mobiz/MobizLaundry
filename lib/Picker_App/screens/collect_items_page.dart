@@ -1,22 +1,56 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Models/PickerModel/collect_items_model.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
+import '../../Utils/common.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/container_widget.dart';
 import '../util/row_value.dart';
 
 class CollectItemsPage extends StatefulWidget {
-  const CollectItemsPage({super.key});
+  final String orderId;
+  const CollectItemsPage({super.key,required this.orderId});
 
   @override
   State<CollectItemsPage> createState() => _CollectItemsPageState();
 }
 
 class _CollectItemsPageState extends State<CollectItemsPage> {
+  final PickerRepository pickerRepository = PickerRepository();
+  late CollectItems? data;
+  List<String> priceValueData = [];
+
+  void decrementQuantity(int index) {
+    setState(() {
+      int currentQuantity = int.parse(data!.cart[index].quantity.toString());
+      if ( currentQuantity > 1) {
+        currentQuantity--;
+        data!.cart[index].quantity = currentQuantity.toString();
+      }
+    });
+  }
+
+  void incrementQuantity(int index, ) {
+    setState(() {
+      int currentQuantity = int.parse(data!.cart[index].quantity.toString());
+      currentQuantity++;
+      data!.cart[index].quantity = currentQuantity.toString();
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    print('ORDERID###${widget.orderId}');
+    return BlocProvider(
+      create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
+        ..add(PckCollectItemsFetchEvent(
+            authData.user_token.toString(), widget.orderId.toString())),
+      child: Scaffold(
       backgroundColor:  pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -41,30 +75,43 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
               fontSize: 20),
         ),
       ),
-      body:  Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-        child: ListView(
-          shrinkWrap: true,
-          children:  [
-             const Row(
-              children: [
-                ContainerWidgets(title: 'Pick-up Time',textTime: '12:00PM - 1:00PM',textDate: '09-DEC-2023'),
-                ContainerWidgets(title: 'Delivery Time',textTime: '12:00PM - 1:00PM',textDate: '09-DEC-2023'),
-              ],
-            ),
-            const RowValue(label: 'Payment Method',labelValue: 'COD',),
-            const RowValue(label: 'Service Type',labelValue: 'Express Delivery',),
-            const RowValue(label:  'Order Type', labelValue:'Dry Clean, Wash & Fold' ),
-            const Text('Items to be picked', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400,)),
-            ListView.builder(
-              physics: const ScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: 3,
-              itemBuilder: (BuildContext context, int index) =>
-                  Card(
+      body:  BlocBuilder<PickerBloc, PickerState>(
+      builder: (context, state) {
+      if (state is PckCollectItemsFetchingState) {
+      return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
+      } else if (state is PckCollectItemsFetchedState) {
+         data = state.collectItemsData;
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: ListView(
+            shrinkWrap: true,
+            children: [
+               ContainerWidgets(title: 'Delivery Time',
+                  textTime: '${state.collectItemsData?.cart![0].order.deliveryTime}',
+                  textDate:  DateFormat('yyyy-MM-dd').format(DateTime.parse('${state.collectItemsData?.cart![0].order.deliveryDate}')),),
+               const RowValue(label: 'Payment Method', labelValue: 'COD',),
+               RowValue(
+                label: 'Order Type', labelValue: '${state.collectItemsData?.cart![0].order.orderType}',),
+               RowValue(
+                  label: 'Service Type', labelValue: '${state.collectItemsData?.cart![0].itemService.category
+                  .serviceMaster.categoryName}''/''${state.collectItemsData?.cart![0]
+                  .itemService.subCategory.subServiceMaster.subCatName}'),
+              const Text('Items to be picked',
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400,)),
+              ListView.builder(
+                physics: const ScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: state.collectItemsData?.cart.length,
+                itemBuilder: (BuildContext context, int index) {
+                  priceValueData.add(state.collectItemsData!.cart[index]
+                      .amount);
+                  return Card(
                     elevation: 10,
                     child: Container(
-                      width: MediaQuery.of(context).size.width,
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
                       decoration: BoxDecoration(
                         color: Colors.grey[200],
                         borderRadius: BorderRadius.circular(10),
@@ -83,12 +130,10 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                                       borderRadius:
                                       BorderRadius.circular(30),
                                     ),
-                                    child: Image.asset(
-                                      // baseUrl+state.pckItemList[index][index].itemServices.item.itemImage,
-                                      // baseUrl+lstData[index].itemServices.item.itemImage,
-
-                                      'Assets/Images/item_img.png',
-                                      // baseUrl+lstData.itemServices.item.itemImage,
+                                    child: Image.network(
+                                      '$baseUrl${state.collectItemsData
+                                          ?.cart[index].itemService
+                                          .item.itemImage}',
                                       fit: BoxFit.fill,
                                     )),
                                 const SizedBox(width: 20),
@@ -97,10 +142,11 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                                     crossAxisAlignment:
                                     CrossAxisAlignment.start,
                                     children: [
-                                      const Text(
-                                        'shirts / Wash & fold',
-                                        //state.pckItemList[index].itemServices.item.itemName,
-                                        style: TextStyle(
+                                      Text(
+                                        '${state.collectItemsData?.cart[index]
+                                            .itemService.item
+                                            .itemName}',
+                                        style: const TextStyle(
                                           fontSize: 13,
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -118,33 +164,109 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                                           ),
                                           Row(
                                             children: [
-                                              Image.asset(
-                                                'Assets/Images/decrement.png',
+                                              InkWell(
+                                                onTap: () {
+                                                  decrementQuantity(index);
+                                                  print('#####$index');
+                                                  Map<String,
+                                                      String>dataList = {
+                                                    "id": authData.user_id
+                                                        .toString(),
+                                                    "order_id": widget.orderId,
+                                                    "cart_id": '${data
+                                                        ?.cart[index].cartId}',
+                                                    "price_list_id": '${data
+                                                        ?.cart[index]
+                                                        .priceList}',
+                                                    "item_ser_id": '${data
+                                                        ?.cart[index]
+                                                        .itemService
+                                                        .itemSerId}',
+                                                    "quantity": '${data
+                                                        ?.cart[index]
+                                                        .quantity}',
+                                                  };
+                                                  print(
+                                                      '#########${(dataList)}');
+                                                  pickerRepository
+                                                      .getCartQuantityPrice(
+                                                      token: authData.user_token
+                                                          .toString(),
+                                                      body: dataList).then((
+                                                      value) {
+                                                    setState(() {
+                                                      priceValueData[index] =
+                                                          value.data.amount;
+                                                    });
+                                                  });
+                                                },
+                                                child: Image.asset(
+                                                  'Assets/Images/decrement.png',
+                                                ),
                                               ),
-                                              const Padding(
-                                                padding: EdgeInsets.symmetric(
+                                              Padding(
+                                                padding: const EdgeInsets
+                                                    .symmetric(
                                                     horizontal: 4.0),
                                                 child: Text(
-                                                  '1',
-                                                  style: TextStyle(
+                                                  '${data?.cart[index]
+                                                      .quantity}',
+                                                  style: const TextStyle(
                                                     fontSize: 13,
-                                                    fontWeight: FontWeight.w600,
+                                                    fontWeight: FontWeight
+                                                        .w600,
                                                   ),
                                                 ),
                                               ),
-                                              Image.asset(
-                                                'Assets/Images/increment.png',
+                                              InkWell(
+                                                onTap: () {
+                                                  incrementQuantity(index);
+                                                  Map<String,
+                                                      String> dataList = {
+                                                    "id": authData.user_id
+                                                        .toString(),
+                                                    "order_id": widget.orderId,
+                                                    "cart_id": '${data
+                                                        ?.cart[index].cartId}',
+                                                    "price_list_id": '${data
+                                                        ?.cart[index]
+                                                        .priceList}',
+                                                    "item_ser_id": '${data
+                                                        ?.cart[index]
+                                                        .itemService
+                                                        .itemSerId}',
+                                                    "quantity": '${data
+                                                        ?.cart[index].quantity}'
+                                                  };
+                                                  print(
+                                                      '#########${(dataList)}');
+                                                  pickerRepository
+                                                      .getCartQuantityPrice(
+                                                      token: authData.user_token
+                                                          .toString(),
+                                                      body: dataList).then((
+                                                      value) {
+                                                    setState(() {
+                                                      priceValueData[index] =
+                                                          value.data.amount;
+                                                    });
+                                                  });
+                                                },
+                                                child: Image.asset(
+                                                  'Assets/Images/increment.png',
+                                                ),
                                               ),
                                             ],
                                           ),
                                         ],
                                       ),
-                                      const Row(
-                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment
+                                            .end,
                                         mainAxisAlignment: MainAxisAlignment
                                             .spaceBetween,
                                         children: [
-                                          Text(
+                                          const Text(
                                             'Rate',
                                             style: TextStyle(
                                               fontSize: 13,
@@ -152,37 +274,14 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                                             ),
                                           ),
                                           Text(
-                                            'AED 14',
-                                            //'AED ${state.pckItemList[index].amount}',
-                                            style: TextStyle(
+                                            priceValueData[index] != null ? 'AED ${priceValueData[index]}' :
+                                            'AED ${state.collectItemsData?.cart[index].amount}',
+                                            style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
                                         ],
-                                      ),
-                                      SizedBox(
-                                        height: 32,
-                                        child: ElevatedButton(
-                                          onPressed: () {
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.white,
-                                            surfaceTintColor: Colors.white,
-                                            side: const BorderSide(
-                                              width: 1.0,
-                                              color: pickerGoldColor,
-                                            ),
-                                            //padding: EdgeInsets.symmetric(horizontal: 84.0),
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(9),
-                                            ),
-                                          ),
-                                          child: const Text(
-                                            'REMOVE FROM CART',
-                                            style: TextStyle(fontSize: 12.0, color: pickerBlackColor, fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
                                       ),
                                     ],
                                   ),
@@ -194,113 +293,137 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                         ),
                       ),
                     ),
-                  ),
-            ),
-             const SizedBox(height: 10,),
-             TextField(
-                controller: TextEditingController(),
-                maxLines: 8,
-                style: const TextStyle(
-                    color: pickerCommentColor),
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(8),
-                  hintText: 'Write Your Order Comment Here..',
-                  hintStyle:  TextStyle(
-                    inherit: true,
-                    fontSize: 13,
-                  ),
+                  );
+                }
+              ),
+              const SizedBox(height: 10,),
+              TextField(
+                  controller: TextEditingController(),
+                  maxLines: 8,
+                  style: const TextStyle(
+                      color: pickerCommentColor),
+                  decoration: const InputDecoration(
+                    contentPadding: EdgeInsets.all(8),
+                    hintText: 'Write Your Order Comment Here..',
+                    hintStyle: TextStyle(
+                      inherit: true,
+                      fontSize: 13,
+                    ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: pickerGoldColor), // Enabled border color
+                      borderSide: BorderSide(
+                          color: pickerGoldColor), // Enabled border color
                     ),
 
-                )
-            ),
-            const SizedBox(height: 2,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      close(context);
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      surfaceTintColor: Colors.white,
-                      side: const BorderSide(
-                        width: 1.0,
-                        color: pickerGoldColor,
+                  )
+              ),
+              // const SizedBox(height: 2,),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.end,
+              //   children: [
+              //     Container(
+              //       padding: const EdgeInsets.symmetric(horizontal: 8),
+              //       child: ElevatedButton(
+              //         onPressed: () {
+              //           close(context);
+              //         },
+              //         style: ElevatedButton.styleFrom(
+              //           backgroundColor: Colors.white,
+              //           surfaceTintColor: Colors.white,
+              //           side: const BorderSide(
+              //             width: 1.0,
+              //             color: pickerGoldColor,
+              //           ),
+              //           //padding: EdgeInsets.symmetric(horizontal: 84.0),
+              //           shape: RoundedRectangleBorder(
+              //             borderRadius: BorderRadius.circular(9),
+              //           ),
+              //         ),
+              //         child: const Text(
+              //           'Submit',
+              //           style: TextStyle(
+              //               fontSize: 16, fontWeight: FontWeight.w600),
+              //         ),
+              //       ),
+              //     ),
+              //
+              //   ],
+              // ),
+              const RowValue(label: 'Amount',
+                  labelValue: 'AED 100',
+                  labelValueColor: pickerBlackColor),
+              // const RowValue(label: 'Delivery Charges',
+              //     labelValue: 'AED 0',
+              //     labelValueColor: pickerBlackColor),
+               RowValue(label: 'VAT',
+                  labelValue:'AED ${state.collectItemsData?.cart[0].order.vat ?? '0'}',
+                  labelValueColor: pickerBlackColor),
+               RowValue(label: 'Total Payable',
+                  labelValue:  'AED ${state.collectItemsData?.cart[0].order.totalAmount}',
+                  labelValueColor: pickerBlackColor),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Collected Amount',
+                    style: TextStyle(
+                      color: pickerBlackColor,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,),
+                  ),
+                  SizedBox(
+                    width: 150,
+                    height: 50,
+                    child: TextField(
+                      controller: TextEditingController(),
+                      keyboardType: TextInputType.number,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold,
                       ),
-                      //padding: EdgeInsets.symmetric(horizontal: 84.0),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(9),
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                          borderSide: const BorderSide(
+                              color: pickerGoldColor), // Enabled border color
+                        ),
                       ),
                     ),
-                    child: const Text(
-                      'Submit',
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 54,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12), // <-- Radius
+                    ),
+                    backgroundColor: pickerGoldColor,
+                  ),
+                  onPressed: () {},
+                  child: const Center(
+                    child: Text(
+                      'MARK AS PICKED',
                       style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w600),
+                        color: pickerWhiteColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,),
                     ),
                   ),
                 ),
-
-              ],
-            ),
-            const RowValue(label: 'Amount',labelValue: 'AED 100',labelValueColor: pickerBlackColor),
-            const RowValue(label: 'Delivery Charges',labelValue: 'AED 0',labelValueColor: pickerBlackColor),
-            const RowValue(label: 'Sur Charges',labelValue: 'AED 0',labelValueColor: pickerBlackColor),
-            const RowValue(label: 'Total Payable',labelValue: 'AED 100',labelValueColor: pickerBlackColor),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Collected Amount',
-                  style: TextStyle(
-                    color: pickerBlackColor, fontSize: 15,fontWeight: FontWeight.w400,),
-                ),
-                SizedBox(
-                  width: 150,
-                  height: 50,
-                  child: TextField(
-                    controller: TextEditingController(),
-                    keyboardType: TextInputType.number,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                        borderSide: const BorderSide(color: pickerGoldColor), // Enabled border color
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12), // <-- Radius
-                ),
-                backgroundColor: pickerGoldColor,
               ),
-              onPressed: () {},
-              child: const Center(
-                child: Text(
-                  'MARK AS PICKED',
-                  style: TextStyle(
-                    color: pickerWhiteColor, fontSize: 16,fontWeight: FontWeight.w400,),
-                ),
-              ),
-            ),
 
-          ],
-        ),
-      ),
-    );
+            ],
+          ),
+        );
+      } else {
+        return const Center(child: Text('No Data'));
+      }
+  },
+),
+    ),
+);
   }
 }

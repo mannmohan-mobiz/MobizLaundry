@@ -14,6 +14,7 @@ import 'package:golden_falcon/Models/PickerModel/picker_category_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart' as CartListValue;
+import '../../Models/PickerModel/collect_items_model.dart';
 import '../../Models/PickerModel/confirmed_list_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
@@ -481,6 +482,21 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
             emit(PckCartListFetchedState(value.data,value.data.cart.first.order.customer.toJson()));
           } else {
             emit(PckCartListErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PckCartListErrorState(e.toString()));
+      }
+    });
+
+    on<PckCollectItemsFetchEvent>((event, emit) async {
+      emit(PckCollectItemsFetchingState());
+      try {
+        await pickerRepository.collectItemsListApi(token: event.token, orderId: event.ordId).then((value) {
+          if (value.status == true) {
+            emit(PckCollectItemsFetchedState(value.data));
+          } else {
+            emit(PckCollectItemsErrorState(value.message));
           }
         });
       } catch (e) {
