@@ -28,12 +28,6 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
     pickerYellowTypeColor,
     pickerOrangeTypeColor
   ];
-  List<Color> colorListSub = [
-    pickerOrangeTypeColor,
-    pickerYellowTypeColor,
-    pickerGreyTypeColor
-  ];
-  Random random = Random();
 
   @override
   Widget build(BuildContext context) {
@@ -242,7 +236,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                               color: pickerBlackColor,
                                               fontWeight: FontWeight.w600)),
                                       onTap: () {
-                                        showCollectItemDialog(orderIdd: tData[index].orderId);
+                                        showCollectItemDialog(orderIdd: tData[index].orderId,custId: tData[index].customer.customerId );
                                       },
                                     ),
                                     Container(
@@ -370,7 +364,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
             ));
   }
 
-  showCollectItemDialog({required String orderIdd}) {
+  showCollectItemDialog({required String orderIdd,required String custId}) {
     print('RRR${orderIdd}');
     return showDialog(
         context: context,
@@ -416,7 +410,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: ElevatedButton(
-                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>   CollectItemsPage(orderId: orderIdd,))),
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>   CollectItemsPage(orderId: orderIdd,customerId:custId))),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: pickerGoldColor,
                               ),

@@ -46,6 +46,8 @@ import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/ready_transit_model.dart';
 import '../../Models/PickerModel/search.dart';
 import '../../Models/PickerModel/thankyou_model.dart';
+import '../../Models/PickerModel/undelivered_model.dart';
+import '../../Models/PickerModel/undelivered_status_model.dart';
 
 class PickerRepository {
   // Dashboard counts
@@ -482,6 +484,71 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerReadyTransitModel.fromJson(response.data);
+        print('#########responsee##${result.toString()}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Undelivered List
+  Future<PickerUndeliveredModel> getUndeliveredApi({required String token, required String id}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "id":id
+    };
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/picker_undelivered_order_api',
+          data: data,
+          options: options
+      );
+      print('######Undelivered LIST$response');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerUndeliveredModel.fromJson(response.data);
+        print('#########responsee##${result.toString()}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+
+  // Undelivered status
+  Future<PickerUndeliveredStatusModel> getUndeliveredStatusApi({required String token, required String orderId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "order_id":orderId
+    };
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/order_status_deliverd_api',
+          data: data,
+          options: options
+      );
+      print('######Undelivered Status###$response');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerUndeliveredStatusModel.fromJson(response.data);
         print('#########responsee##${result.toString()}');
         return result;
       } else {

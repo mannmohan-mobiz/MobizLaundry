@@ -31,6 +31,8 @@ import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/search.dart';
 import '../../Models/PickerModel/thankyou_model.dart';
+import '../../Models/PickerModel/undelivered_model.dart';
+import '../../Models/PickerModel/undelivered_status_model.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 
 part 'picker_event.dart';
@@ -212,6 +214,20 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(ReadyForDespatchListError(e.toString()));
+      }
+    });
+    on<UndeliveredListFetchEvent>((event, emit) async {
+      emit(UndeliveredListFetching());
+      try {
+        await pickerRepository.getUndeliveredApi(token: event.token, id: event.id).then((value) {
+          if (value.status == true && value.message == "Undelivered Orders List!") {
+            emit(UndeliveredListFetched(value.data));
+          } else {
+            emit(UndeliveredListError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(UndeliveredListError(e.toString()));
       }
     });
     on<PickerConfirmOrderEvent>((event, emit) async {

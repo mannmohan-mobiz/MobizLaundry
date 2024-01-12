@@ -15,7 +15,8 @@ import '../util/row_value.dart';
 
 class CollectItemsPage extends StatefulWidget {
   final String orderId;
-  const CollectItemsPage({super.key,required this.orderId});
+  final String customerId;
+  const CollectItemsPage({super.key,required this.orderId,required this.customerId});
 
   @override
   State<CollectItemsPage> createState() => _CollectItemsPageState();
@@ -25,6 +26,9 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
   final PickerRepository pickerRepository = PickerRepository();
   late CollectItems? data;
   List<String> priceValueData = [];
+  bool isExpanded = false;
+  String selectedOption = '';
+  var selectedWalletBalance;
 
   void decrementQuantity(int index) {
     setState(() {
@@ -46,6 +50,7 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
   @override
   Widget build(BuildContext context) {
     print('ORDERID###${widget.orderId}');
+    print('CSTID###${widget.customerId}');
     return BlocProvider(
       create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
         ..add(PckCollectItemsFetchEvent(
@@ -90,6 +95,99 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                   textTime: '${state.collectItemsData?.cart![0].order.deliveryTime}',
                   textDate:  DateFormat('yyyy-MM-dd').format(DateTime.parse('${state.collectItemsData?.cart![0].order.deliveryDate}')),),
                const RowValue(label: 'Payment Method', labelValue: 'COD',),
+              // BlocProvider(
+              //   create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
+              //     ..add(PickupPaymentListFetchEvent(
+              //         authData.user_token.toString())),
+              //   child: Column(
+              //     children: [
+              //       InkWell(
+              //         onTap: () {
+              //           setState(() {
+              //             isExpanded = !isExpanded;
+              //           });
+              //         },
+              //         child: Container(
+              //           height: 56,
+              //           width: double.infinity,
+              //           padding: const EdgeInsets.all(18),
+              //           decoration: BoxDecoration(
+              //             color: pickerWhiteColor,
+              //             border: Border.all(color: pickerGoldColor),
+              //             borderRadius: BorderRadius.circular(8),
+              //           ),
+              //           child: Row(
+              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //             children: [
+              //               Text(selectedOption,style: const TextStyle(
+              //                   fontSize: 14,color: pickerBlackColor
+              //               ),),
+              //               Icon(
+              //                 isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+              //                 size: 24,
+              //                 color: pickerGoldColor,
+              //               ),
+              //             ],
+              //           ),
+              //         ),
+              //       ),
+              //       AnimatedContainer(
+              //         duration: const Duration(milliseconds: 300),
+              //         width: double.infinity,
+              //         height: isExpanded ? 120 : 0,
+              //         padding: const EdgeInsets.all(8),
+              //         decoration: BoxDecoration(
+              //           color: pickerWhiteColor,
+              //           border: Border.all(color: pickerGoldColor),
+              //           borderRadius: BorderRadius.circular(8),
+              //         ),
+              //         child: BlocBuilder<PickerBloc, PickerState>(
+              //             builder: (context, state) {
+              //               if (state is PickupPaymentListFetching) {
+              //                 return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
+              //               } else if (state is PickupPaymentListFetched) {
+              //                 final data = state.paymentList;
+              //                 return ListView.builder(
+              //                   scrollDirection: Axis.vertical,
+              //                   shrinkWrap: true,
+              //                   itemCount: data?.length,
+              //                   itemBuilder: (BuildContext context, int index) =>
+              //                       ListTile(
+              //                         title:  Text('${data?[index].paymentMethod}',style: const TextStyle(
+              //                             fontSize: 12,color: pickerBlackColor
+              //                         ),),
+              //                         onTap: () {
+              //                           setState(() {
+              //                             selectedOption = '${data?[index].paymentMethod}';
+              //                             isExpanded = false;
+              //                           });
+              //                           if( selectedOption == 'Wallet') {
+              //                             Map<String, String> data = {
+              //                               "id": authData.user_id.toString(),
+              //                               "order_id": widget.orderId,
+              //                               "customer_id":  widget.customerId,
+              //                             };
+              //                             pickerRepository.getWalletBalanceApi(token: authData.user_token.toString(),body: data).then((value) {
+              //                               setState(() {
+              //                                 selectedWalletBalance = value.walletBalance;
+              //                               });
+              //                               print('BALANCE###$selectedWalletBalance');
+              //                             }
+              //                             );
+              //                           }
+              //
+              //                         },
+              //                       ),
+              //                 );
+              //               } else {
+              //                 return const Center(child: Text('No Data'));
+              //               }
+              //             }
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
                RowValue(
                 label: 'Order Type', labelValue: '${state.collectItemsData?.cart![0].order.orderType}',),
                RowValue(

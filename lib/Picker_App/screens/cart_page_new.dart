@@ -33,6 +33,7 @@ class _CartPageScreenState extends State<CartPageScreen> {
   List<int> counterQuantity = [];
   List<String> priceValues = [];
   late CartList? data;
+  var newWalletBalance;
   TextEditingController collectedAmtController = TextEditingController();
 
 
@@ -517,6 +518,21 @@ class _CartPageScreenState extends State<CartPageScreen> {
                             selectedOption = '${data?[index].paymentMethod}';
                             isExpanded = false;
                           });
+                         if( selectedOption == 'Wallet') {
+                           Map<String, String> data = {
+                             "id": authData.user_id.toString(),
+                             "order_id": widget.orderId,
+                             "customer_id":  widget.custIdd,
+                           };
+                           pickerRepository.getWalletBalanceApi(token: authData.user_token.toString(),body: data).then((value) {
+                            setState(() {
+                              newWalletBalance = value.walletBalance;
+                            });
+                            print('BALANCE###$newWalletBalance');
+                          }
+                          );
+                         }
+
                         },
                       ),
                   );
@@ -529,51 +545,55 @@ class _CartPageScreenState extends State<CartPageScreen> {
               ],
             ),
 ),
-            Row(
-              children: [
-                Checkbox(
-                    activeColor: pickerGoldColor,
-                    value: false,
-                    side: const BorderSide(color: pickerGoldColor),
-                    onChanged: (value) {
-                      Map<String, String> data = {
-                        "id": authData.user_id.toString(),
-                        "order_id": widget.orderId,
-                        "customer_id":  widget.custIdd,
-                      };
-                      pickerRepository.getWalletBalanceApi(token: authData.user_token.toString(),body: data).then((value) {
-                        setState(() {
-                          //double.parse((state.cartList?.walletBalance).toString()) = value.walletBalance;
-                        });
-                      }
-                      );
-                    }
-                ),
-                 const Text(
-                  'Use Wallet Balance ?',
-                  style: TextStyle(
-                    color: pickerBlackColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.w400,),
-                ),
-                const SizedBox(width: 30,),
-                Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(color: pickerGoldColor),
-                        color: pickerWhiteColor
-                    ),
-                    child: Padding(
-                      padding:  const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Text(
-                        'AED ${state.cartList?.walletBalance}',
-                        textAlign: TextAlign.start,
-
-                      ),
-                    )
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Checkbox(
+            //         activeColor: pickerGoldColor,
+            //         value: false,
+            //         side: const BorderSide(color: pickerGoldColor),
+            //         onChanged: (value) {
+            //           Map<String, String> data = {
+            //             "id": authData.user_id.toString(),
+            //             "order_id": widget.orderId,
+            //             "customer_id":  widget.custIdd,
+            //           };
+            //           pickerRepository.getWalletBalanceApi(token: authData.user_token.toString(),body: data).then((value) {
+            //             setState(() {
+            //               //double.parse((state.cartList?.walletBalance).toString()) = value.walletBalance;
+            //             });
+            //           }
+            //           );
+            //         }
+            //     ),
+            //      const Text(
+            //       'Use Wallet Balance ?',
+            //       style: TextStyle(
+            //         color: pickerBlackColor,
+            //         fontSize: 15,
+            //         fontWeight: FontWeight.w400,),
+            //     ),
+            //     const SizedBox(width: 30,),
+            //     Container(
+            //         decoration: BoxDecoration(
+            //             borderRadius: BorderRadius.circular(4),
+            //             border: Border.all(color: pickerGoldColor),
+            //             color: pickerWhiteColor
+            //         ),
+            //         child: Padding(
+            //           padding:  const EdgeInsets.symmetric(horizontal: 12.0),
+            //           child: Text(
+            //            'AED ${state.cartList?.walletBalance}'!= null ?  'AED ${state.cartList?.walletBalance}' : newWalletBalance,
+            //             textAlign: TextAlign.start,
+            //
+            //           ),
+            //         )
+            //     ),
+            //   ],
+            // ),
+            RowValue(label: 'Wallet Balance',
+                labelValue: selectedOption == 'Wallet' ? "$newWalletBalance" :
+                'AED ${state.cartList?.walletBalance}',
+                labelValueColor: pickerBlackColor),
              RowValue(label: 'Total Payable',
                 labelValue: 'AED ${state.cartList?.cart[0].order.totalAmount}',
                 labelValueColor: pickerBlackColor),
@@ -632,10 +652,8 @@ class _CartPageScreenState extends State<CartPageScreen> {
                     "id": authData.user_id.toString(),
                     "order_id": widget.orderId,
                     "discount":  '${state.cartList?.cart[0].order.discount}',
-                    //"net_taxable": '${state.cartList?.cart[0].order.netTaxable ?? 0}',
-                    "net_taxable": 'null',
-                    "vat":  'null',
-                   // "vat":  '${state.cartList?.cart[0].order.vat ?? 0}',
+                    "net_taxable": '${state.cartList?.cart[0].order.netTaxable ?? 0}',
+                    "vat":  '${state.cartList?.cart[0].order.vat ?? 0}',
                     "grant_total": '${state.cartList?.cart[0].order.grantTotal}',
                     "collect_mode": selectedOption,
                     "payed_amount": collectedAmtController.text

@@ -10,32 +10,32 @@ String pickerWalletBalanceModelToJson(PickerWalletBalanceModel data) => json.enc
 
 class PickerWalletBalanceModel {
   bool status;
-  String totalAmount;
+  var totalAmountPayable;
   var walletBalance;
-  int outstandingDue;
+  String walletid;
   String message;
 
   PickerWalletBalanceModel({
     required this.status,
-    required this.totalAmount,
+    required this.totalAmountPayable,
     required this.walletBalance,
-    required this.outstandingDue,
+    required this.walletid,
     required this.message,
   });
 
   factory PickerWalletBalanceModel.fromJson(Map<String, dynamic> json) => PickerWalletBalanceModel(
     status: json["status"],
-    totalAmount: json["total_amount"],
+    totalAmountPayable: json["total_amount_payable"],
     walletBalance: json["wallet_balance"],
-    outstandingDue: json["outstanding_due"],
+    walletid: json["walletid"],
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "total_amount": totalAmount,
+    "total_amount_payable": totalAmountPayable,
     "wallet_balance": walletBalance,
-    "outstanding_due": outstandingDue,
+    "walletid": walletid,
     "message": message,
   };
 }

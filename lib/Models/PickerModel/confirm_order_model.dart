@@ -10,7 +10,7 @@ String pickerConfirmOrderModelToJson(PickerConfirmOrderModel data) => json.encod
 
 class PickerConfirmOrderModel {
   bool status;
-  List<Datum> data;
+  List<PickerConfirmOrder> data;
   String message;
 
   PickerConfirmOrderModel({
@@ -21,7 +21,7 @@ class PickerConfirmOrderModel {
 
   factory PickerConfirmOrderModel.fromJson(Map<String, dynamic> json) => PickerConfirmOrderModel(
     status: json["status"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: List<PickerConfirmOrder>.from(json["data"].map((x) => PickerConfirmOrder.fromJson(x))),
     message: json["message"],
   );
 
@@ -32,17 +32,17 @@ class PickerConfirmOrderModel {
   };
 }
 
-class Datum {
-  DatumOrder order;
+class PickerConfirmOrder {
+  ConfirmOrder order;
   List<Cart> cart;
 
-  Datum({
+  PickerConfirmOrder({
     required this.order,
     required this.cart,
   });
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    order: DatumOrder.fromJson(json["order"]),
+  factory PickerConfirmOrder.fromJson(Map<String, dynamic> json) => PickerConfirmOrder(
+    order: ConfirmOrder.fromJson(json["order"]),
     cart: List<Cart>.from(json["cart"].map((x) => Cart.fromJson(x))),
   );
 
@@ -236,8 +236,8 @@ class CartOrder {
   String deliveryTime;
   bool paidStatus;
   String discount;
-  dynamic netTaxable;
-  dynamic vat;
+  String netTaxable;
+  String vat;
   String grantTotal;
   dynamic invoice;
 
@@ -472,7 +472,7 @@ class Staff {
   };
 }
 
-class DatumOrder {
+class ConfirmOrder {
   String orderId;
   FluffyCustomer customer;
   String createdBy;
@@ -490,14 +490,14 @@ class DatumOrder {
   DateTime deliveryDate;
   String deliveryTime;
   bool paidStatus;
-  String discount;
+  dynamic discount;
   dynamic netTaxable;
   dynamic vat;
-  String grantTotal;
+  dynamic grantTotal;
   String staff;
   dynamic invoice;
 
-  DatumOrder({
+  ConfirmOrder({
     required this.orderId,
     required this.customer,
     required this.createdBy,
@@ -523,7 +523,7 @@ class DatumOrder {
     required this.invoice,
   });
 
-  factory DatumOrder.fromJson(Map<String, dynamic> json) => DatumOrder(
+  factory ConfirmOrder.fromJson(Map<String, dynamic> json) => ConfirmOrder(
     orderId: json["order_id"],
     customer: FluffyCustomer.fromJson(json["customer"]),
     createdBy: json["created_by"],

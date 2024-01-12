@@ -132,6 +132,18 @@ class ReadyForDespatchListFetchEvent extends PickerEvent {
   List<Object?> get props => [token, id];
 }
 
+// Undelivered
+class UndeliveredListFetchEvent extends PickerEvent {
+  final String token;
+  final String id;
+
+  UndeliveredListFetchEvent(this.token, this.id);
+
+  @override
+  List<Object?> get props => [token, id];
+}
+
+
 // Confirm New Order
 class PickerConfirmOrderEvent extends PickerEvent {
   final Map<String, String> body;

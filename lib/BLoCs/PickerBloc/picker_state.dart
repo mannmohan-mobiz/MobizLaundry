@@ -286,7 +286,7 @@ class PickupListError extends PickerState {
 /***********************[Pickup List]***********************/
 
 
-/***********************[Pickup List]***********************/
+/***********************[Pickup ReadyForDespatch List]***********************/
 class ReadyForDespatchListFetching extends PickerState {
   @override
   List<Object?> get props => [];
@@ -309,7 +309,32 @@ class ReadyForDespatchListError extends PickerState {
   @override
   List<Object?> get props => [message];
 }
-/***********************[Pickup List]***********************/
+/***********************[Pickup ReadyForDespatch List]***********************/
+
+/***********************[Pickup Undelivered List]***********************/
+class UndeliveredListFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class UndeliveredListFetched extends PickerState {
+  List<Undelivered> unDeliveredList;
+
+  UndeliveredListFetched(this.unDeliveredList);
+
+  @override
+  List<Object?> get props => [unDeliveredList];
+}
+
+class UndeliveredListError extends PickerState {
+  final String message;
+
+  UndeliveredListError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Pickup Undelivered List]***********************/
 
 /***********************[Order Confirm]***********************/
 class OrderConfirmingState extends PickerState {
