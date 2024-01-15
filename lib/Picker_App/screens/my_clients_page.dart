@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Customers/Customer_Home.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
+import '../../Models/PickerModel/search.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
@@ -26,6 +27,9 @@ class _MyClientsPageState extends State<MyClientsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final PickerRepository pickerRepository = PickerRepository();
+    TextEditingController searchController = TextEditingController();
+    List<CustomerListData> customerList = [];
     return  BlocProvider(
     create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context),
     )..add(ListAllClientsEvent(
@@ -74,8 +78,25 @@ class _MyClientsPageState extends State<MyClientsPage> {
                   fontSize: 18),),
             const SizedBox(height: 2,),
             SearchWidget(
-              searchCtrl: TextEditingController(),
-                onChanged: (String myString){},
+                onTap: (){
+                  pickerRepository.getSearchResults(token: authData.user_token.toString(), searchKey: searchController.text).then((value) {
+                    setState(() {
+                      customerList = [];
+                    });
+                    if (value.status == true) {
+                      setState(() {
+                        customerList = value.data.cast<CustomerListData>();
+                      });
+                      print('#######ssss${value.data[0].name}');
+                    }
+                    else {
+                      value.status == false;
+                      snackBar(context, message: value.message);
+                    }
+                  });
+                },
+                hintText: 'Customer Id/phone',
+                searchCtrl: searchController
             ),
             BlocBuilder<PickerBloc, PickerState>(
         builder: (context, state) {
@@ -83,7 +104,8 @@ class _MyClientsPageState extends State<MyClientsPage> {
             print(state.toString());
             return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
           } else if (state is FetchedClientList) {
-            return state.customerList.isEmpty == true ? const Center(
+            return
+              state.customerList.isEmpty == true ? const Center(
                 child: Text("No Data")) : ListView.builder(
               shrinkWrap: true,
               itemCount: state.customerList.length,

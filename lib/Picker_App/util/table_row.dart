@@ -7,7 +7,14 @@ class TableWidget extends StatelessWidget {
   final String value;
   final Color colorText;
   final Color colorValue;
-  const TableWidget({super.key,this.text = '',this.value = '',this.colorValue = pickerBlackColor,this.colorText = pickerBlackColor });
+  final double fontSize;
+  final double fontSizeValue;
+  final FontWeight fontWeight;
+  final FontWeight fontWeightValue;
+
+
+  const TableWidget({super.key,this.text = '',this.value = '',this.fontSize = 13,this.fontSizeValue = 13,this.fontWeight = FontWeight.w500,
+    this.fontWeightValue = FontWeight.w700,this.colorValue = pickerBlackColor,this.colorText = pickerBlackColor });
 
   @override
   Widget build(BuildContext context) {
@@ -22,8 +29,8 @@ class TableWidget extends StatelessWidget {
         children:   [
           TableRow(
               children: [
-                Text(text,style:  TextStyle(color: colorText,fontWeight: FontWeight.w500,fontSize: 13),),
-                 Text(value,style:  TextStyle(color: colorValue,fontWeight: FontWeight.w700,fontSize: 13),),
+                Text(text,style:  TextStyle(color: colorText,fontWeight: fontWeight,fontSize: fontSize),),
+                 Text(value,style:  TextStyle(color: colorValue,fontWeight: fontWeightValue,fontSize: fontSizeValue),),
               ]
           )
         ],

@@ -41,3 +41,5 @@ const Color pickerBlueColor =Color(0xff4f5a91);
 const Color pickerBlue2Color =Color(0xb64f5a91);
 const Color pickerDarkPinkColor =Color(0xffb40271);
 const Color pickerPinkColor =Color(0xffc2467f);
+const Color pickerDivColor =Color(0xFFE8EBEC);
+

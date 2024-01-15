@@ -80,6 +80,26 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
               fontSize: 20),
         ),
       ),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              //   Map<String, String> data = {
+              //     "id": authData.user_id.toString(),
+              //     "customer_id": selectedCustomerId,
+              //     "pickup_date": pickup_dt_controller.text,
+              //     "pickup_time": pickup_tmt_controller.text,
+              //     "order_type": selectedType,
+              //     "Delivery_date": del_dt_controller.text,
+              //     "Delivery_time": del_tm_controller.text
+              //   };
+              //   print(jsonEncode(data));
+              //   BlocProvider.of<PickerBloc>(context)
+              //       .add(AddNewOrderEvent(data, authData.user_token.toString()));
+              //   setState(() {
+              //     mode_of_action = "get_items";
+              //   });
+            },
+            child: const Icon(Icons.add,color: pickerGoldColor,)
+        ),
       body:  BlocBuilder<PickerBloc, PickerState>(
       builder: (context, state) {
       if (state is PckCollectItemsFetchingState) {
