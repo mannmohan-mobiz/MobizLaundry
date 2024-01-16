@@ -136,7 +136,7 @@ class _MyClientsPageState extends State<MyClientsPage> {
                             onTap: () {
                               Navigator.push(context, MaterialPageRoute(
                                   builder: (context) =>
-                                      CustomerHomePageScreen()));
+                                       CustomerHomePageScreen(custId:state.customerList[index].customerId )));
                             }
 
                         ),

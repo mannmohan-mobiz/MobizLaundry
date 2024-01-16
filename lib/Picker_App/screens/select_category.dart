@@ -13,7 +13,8 @@ import '../util/common_methods.dart';
 class SelectCategory extends StatefulWidget {
  final String orderID;
  final String customerID;
-  const SelectCategory({super.key,required this.orderID,required this.customerID});
+ final bool isFromCollect;
+  const SelectCategory({super.key,required this.orderID,required this.customerID,this.isFromCollect = false,});
 
   @override
   State<SelectCategory> createState() => _SelectCategoryState();
@@ -25,6 +26,8 @@ class _SelectCategoryState extends State<SelectCategory> {
   Widget build(BuildContext context) {
     print('######ORDERID#${widget.orderID}');
     print('######CUSTOMERID#${widget.customerID}');
+    print('######COLLECT#${widget.isFromCollect}');
+
     return  BlocProvider(
     create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context),)
       ..add(PckCategoryFetchEvent(authData.user_token.toString(), authData.user_id.toString())),
@@ -97,7 +100,9 @@ class _SelectCategoryState extends State<SelectCategory> {
                                   SelectSubCategory(ordId: widget.orderID,
                                       categId: state.categList[index]
                                           .categoryId,
-                                      custId: widget.customerID)));
+                                      custId: widget.customerID,
+                                      isFromCollItem : widget.isFromCollect
+                                  )));
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8),

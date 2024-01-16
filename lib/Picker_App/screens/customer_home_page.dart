@@ -12,7 +12,8 @@ import 'complaint_page.dart';
 import 'customer_home_order_history.dart';
 
 class CustomerHomePageScreen extends StatefulWidget {
-  const CustomerHomePageScreen({super.key});
+  final String? custId;
+  const CustomerHomePageScreen({super.key,this.custId});
 
   @override
   State<CustomerHomePageScreen> createState() => _CustomerHomePageScreenState();
@@ -106,7 +107,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
                           fixedSize: const Size(150, 50),
                           side: const BorderSide(color: pickerWhiteColor, width: 2.0),
                         ),
-                        onPressed: () => onButtonTap(index, context),
+                        onPressed: () => onButtonTap(index, context,cstId: '${widget.custId}'),
                         child: Padding(
                           padding:
                           const EdgeInsets.only(top: 2.0, bottom: 2, right: 0),
@@ -345,7 +346,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
     );
   }
 
-  onButtonTap(int index, BuildContext context) {
+  onButtonTap(int index, BuildContext context,{required String cstId}) {
      switch (index) {
     //   case 0:
     //     open(context, const NewOrderSearchPage());
@@ -354,7 +355,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
     //     open(context, const DeliveryPage());
     //     break;
        case 2:
-         open(context, const CustomerHomeOrderHistory());
+         open(context,  CustomerHomeOrderHistory(customerId: cstId));
          break;
       case 3:
         open(context, const WalletNewPage());

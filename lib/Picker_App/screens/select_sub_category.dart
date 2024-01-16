@@ -15,7 +15,8 @@ class SelectSubCategory extends StatefulWidget {
   final String ordId;
   final String categId;
   final String custId;
-  const SelectSubCategory({super.key,required this.categId,required this.ordId,required this.custId});
+  final bool isFromCollItem;
+  const SelectSubCategory({super.key,required this.categId,required this.ordId,required this.custId,this.isFromCollItem = false});
 
   @override
   State<SelectSubCategory> createState() => _SelectSubCategoryState();
@@ -25,6 +26,8 @@ class _SelectSubCategoryState extends State<SelectSubCategory> {
   @override
   Widget build(BuildContext context) {
     print('##CATEGORYID##${widget.categId}');
+    print('##COLECTITEMS##${widget.isFromCollItem}');
+
     return  BlocProvider(
   create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
     ..add(PckSubCategoryFetchEvent(authData.user_token.toString(), widget.categId)),
@@ -93,7 +96,7 @@ class _SelectSubCategoryState extends State<SelectSubCategory> {
                     return GestureDetector(
                       onTap: () {
                         Navigator.push(context, MaterialPageRoute(
-                            builder: (context) =>  ItemsListPage(ordIdd:widget.ordId, catId: widget.categId, subCatId: state.subCategList[index].subCatId,customId: widget.custId)));
+                            builder: (context) =>  ItemsListPage(isFromSelect: widget.isFromCollItem,ordIdd:widget.ordId, catId: widget.categId, subCatId: state.subCategList[index].subCatId,customId: widget.custId)));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(8),

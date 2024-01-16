@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:golden_falcon/Picker_App/screens/select_category.dart';
 import 'package:intl/intl.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
@@ -29,6 +30,7 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
   bool isExpanded = false;
   String selectedOption = '';
   var selectedWalletBalance;
+  bool isFromCollectItems = true;
 
   void decrementQuantity(int index) {
     setState(() {
@@ -82,6 +84,10 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
       ),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>   SelectCategory(isFromCollect: true,
+                  orderID: widget.orderId,customerID: widget.customerId)));
+              print('@@#${widget.orderId}');
+              print('@@#${widget.customerId}');
               //   Map<String, String> data = {
               //     "id": authData.user_id.toString(),
               //     "customer_id": selectedCustomerId,

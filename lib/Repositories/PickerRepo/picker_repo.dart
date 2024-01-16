@@ -18,6 +18,7 @@ import '../../Models/PickerModel/cart_list_quantity_model.dart';
 import '../../Models/PickerModel/collect_items_model.dart';
 import '../../Models/PickerModel/confirm_order_model.dart';
 import '../../Models/PickerModel/confirmed_list_model.dart';
+import '../../Models/PickerModel/customer_home_history_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/delivery_address_list.dart';
@@ -1330,6 +1331,40 @@ class PickerRepository {
       }
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  // Customer Home History
+  Future<PickerCustomerHomeHistoryModel> getCustomerHistoryResults({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/order_history_status_picker_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerCustomerHomeHistoryModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
     }
   }
 

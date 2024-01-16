@@ -9,18 +9,20 @@ import '../../Utils/common.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import 'cart_page_new.dart';
+import 'collect_items_page.dart';
 
 class ItemsListPage extends StatefulWidget {
   final String ordIdd;
   final String catId;
   final String subCatId;
   final String customId;
+  final bool isFromSelect;
 
   const ItemsListPage(
       {Key? key,
       required this.ordIdd,
       required this.catId,
-      required this.subCatId,
+      required this.subCatId,this.isFromSelect = false,
       required this.customId})
       : super(key: key);
 
@@ -33,6 +35,8 @@ class _ItemsListPageState extends State<ItemsListPage> {
   List<String> priceValues = [];
   List<int> counters = [];
   int count = 0;
+  bool isFromCollectItems = false;
+
 
   void decrementCounter(int index) {
     setState(() {
@@ -57,6 +61,8 @@ class _ItemsListPageState extends State<ItemsListPage> {
     print('##SUBCATEGORYID##${widget.subCatId}');
     print('##ORDERID##${widget.ordIdd}');
     print('##CUSTOMID##${widget.customId}');
+    print('##value##${widget.isFromSelect}');
+
     return BlocProvider(
       create: (context) => PickerBloc(
         RepositoryProvider.of<PickerRepository>(context),
@@ -92,18 +98,19 @@ class _ItemsListPageState extends State<ItemsListPage> {
                 fontSize: 20),
           ),
           actions: [
+           widget.isFromSelect ?
             InkWell(
               onTap: () {
                   Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>  CartPageScreen(orderId: widget.ordIdd,custIdd:  widget.customId,)));
+                      builder: (context) =>  CollectItemsPage(orderId: widget.ordIdd,customerId:  widget.customId,)));
                   },
               child: Stack(
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(right: 20.0,top: 20),
-                    child: Image.asset('Assets/Images/cart_icon.png'),
+                    padding: const EdgeInsets.only(right: 20.0,top: 12),
+                    child: Image.asset('Assets/Images/collect_shop.png'),
                   ),
                   Positioned(
                     top: 2,
@@ -117,6 +124,35 @@ class _ItemsListPageState extends State<ItemsListPage> {
                              '$count',style: const TextStyle(
                             color: pickerWhiteColor,
                             ))),
+                    ),
+                  ),
+                ],
+              ),
+            ) :  InkWell(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>  CartPageScreen(orderId: widget.ordIdd,custIdd:  widget.customId,)));
+              },
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20.0,top: 20),
+                    child: Image.asset('Assets/Images/cart_icon.png'),
+                  ),
+                  Positioned(
+                    top: 2,
+                    right: 8,
+                    child: Container(
+                      height: 20,width: 20,
+                      decoration: BoxDecoration(
+                          color: pickerGoldColor, borderRadius: BorderRadius.circular(20)),
+                      child:  Center(
+                          child: Text(
+                              '$count',style: const TextStyle(
+                            color: pickerWhiteColor,
+                          ))),
                     ),
                   ),
                 ],
