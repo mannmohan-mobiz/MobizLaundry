@@ -4,6 +4,8 @@ import 'package:golden_falcon/Picker_App/util/table_row.dart';
 
 import '../src/colors.dart';
 import '../util/common_methods.dart';
+import 'add_complaint_detail_page.dart';
+import 'complaint_detail_page.dart';
 
 class ComplaintPage extends StatefulWidget {
   const ComplaintPage({super.key});
@@ -31,7 +33,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
     },
     icon: Image.asset('Assets/Images/back_arrow.png')
     ),
-    title: const Text('My Collections',style: TextStyle(color: pickerGoldColor,fontWeight: FontWeight.bold,fontSize: 20),),
+    title: const Text('Complaints',style: TextStyle(color: pickerGoldColor,fontWeight: FontWeight.bold,fontSize: 20),),
     actions: [
     Padding(
     padding: const EdgeInsets.only(right: 16.0),
@@ -49,7 +51,10 @@ class _ComplaintPageState extends State<ComplaintPage> {
               children: [
                 Expanded(
                   child: InkWell(
-                    onTap: (){},
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const AddComplaintDetailPage()),
+                      );
+                    },
                     child: Container(
                       height:  MediaQuery.of(context).size.height * 0.24,
                       width:MediaQuery.of(context).size.width *  0.5,
@@ -120,13 +125,17 @@ class _ComplaintPageState extends State<ComplaintPage> {
                   itemBuilder: (itemBuilder, index) =>
                ListView(
                     shrinkWrap: true,
-                    physics: BouncingScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     children:  [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           const Text('Complaint heading',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w400,fontSize: 15),),
-                          Image.asset('Assets/Images/for_arrow.png')
+                          InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => const ComplaintDetailsPage()));
+                            },
+                              child: Image.asset('Assets/Images/for_arrow.png'))
                         ],
                       ),
                       const SizedBox(height: 5,),
