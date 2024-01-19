@@ -23,7 +23,7 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
   TextEditingController fromDateController = TextEditingController();
   TextEditingController toDateController = TextEditingController();
   final PickerRepository pickerRepository = PickerRepository();
-  List<CustomerHomeHistory> customerHistoryData = [];
+  List<CustomerHomeHistory>? customerHistoryData = [];
   bool isDelivered = false;
   @override
   Widget build(BuildContext context) {
@@ -176,6 +176,9 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
                             setState(() {
                               customerHistoryData = value.data;
                             });
+                            // if(value.status == false) {
+                            // snackBar(context, message: value.message.toString());
+                            // }
                           });
                         }
                       },
@@ -186,11 +189,10 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
               const SizedBox(height: 10),
               ListView.builder(
               shrinkWrap: true,
-              itemCount: customerHistoryData.length,
+              itemCount: customerHistoryData?.length,
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemBuilder: (itemBuilder, index) {
-                if(isDelivered == false) {
                  return  Card(
                     child: Container(
                       width: MediaQuery
@@ -207,15 +209,15 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
                         child: Column(
                           children: [
                             ListTile(
-                               leading:  Image.asset('Assets/Images/in_transit.png'),
+                               leading:  '${customerHistoryData?[index].status}' == 'Delivered' ? Image.asset('Assets/Images/delivered.png') :  Image.asset('Assets/Images/in_transit.png'),
                                title:  Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('${customerHistoryData[index].status}', style: const TextStyle(
+                                    Text('${customerHistoryData?[index].status}', style: const TextStyle(
                                         color: pickerBlackColor,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14),),
-                                    Text('Ordered on ${DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerHistoryData[index].orderDate}')).toString()}', style: const TextStyle(
+                                    Text('Ordered on ${DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerHistoryData?[index].orderDate}')).toString()}', style: const TextStyle(
                                         color: pickerBlackColor,
                                         fontWeight: FontWeight.w300,
                                         fontSize: 13),),
@@ -223,32 +225,36 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
                                 ),
                               trailing: InkWell(
                                 onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const CustomerHomeOrderDetailPage()));
-
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  CustomerHomeOrderDetailPage(
+                                    //  orderId:'${customerHistoryData?[index].orderId}',
+                                      orderId:"dde383d4b48047339272ee42b7b5cee4",
+                                      statusValue: '${customerHistoryData?[index].status}',
+                                      orderDateValue: DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerHistoryData?[index].orderDate}')).toString()
+                                  )));
                                 },
                                   child: Image.asset('Assets/Images/for_arrow.png')),
                             ),
                              RowItem(label: 'Order Number:',
-                              value: customerHistoryData[index].orderNumber,
+                              value: '${customerHistoryData?[index].orderNumber}',
                               fontSize: 13,
                               fontSizeValue: 13,
                               fontWeightValue: FontWeight.w300,
                               fontWeight: FontWeight.w300,),
                              RowItem(label: 'Number of items:',
-                              value: '${customerHistoryData[index].quantity}',
+                              value: '${customerHistoryData?[index].quantity}',
                               fontSize: 13,
                               fontSizeValue: 13,
                               fontWeightValue: FontWeight.w300,
                               fontWeight: FontWeight.w300,),
                              RowItem(label: 'Delivery date:',
-                               value:'${customerHistoryData[index].deliveryDate}',
+                               value:'${customerHistoryData?[index].deliveryDate}',
                               // value: DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerHistoryData[index].deliveryDate}')).toString() ?? '',
                               fontSize: 13,
                               fontSizeValue: 13,
                               fontWeightValue: FontWeight.w300,
                               fontWeight: FontWeight.w300,),
                              RowItem(label: 'Amount payable:',
-                              value: customerHistoryData[index].totalAmount,
+                              value: '${customerHistoryData?[index].totalAmount}',
                               fontSize: 13,
                               fontSizeValue: 13,
                               fontWeightValue: FontWeight.w300,
@@ -258,174 +264,8 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
                       ),
                     ),
                   );
-                } else {
-                 return Card(
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        color: pickerWhiteColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child:  Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              leading:  Image.asset('Assets/Images/delivered.png'),
-                               title: const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Delivered',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w500,fontSize: 14),),
-                                    Text('On 3.1.2024',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w300,fontSize: 13),),
-                                  ],
-                                ),
-                                trailing: Image.asset('Assets/Images/for_arrow.png'),
-                            ),
-                            const RowItem( label: 'Order Number:',value: 'INX 87654321',fontSize: 13,fontSizeValue: 13,fontWeightValue: FontWeight.w300,fontWeight: FontWeight.w300,),
-                            const RowItem( label: 'Number of items:',value: '15',fontSize: 13,fontSizeValue: 13,fontWeightValue: FontWeight.w300,fontWeight: FontWeight.w300,),
-                            const RowItem( label: 'Amount paid:',value: 'AED 100',fontSize: 13,fontSizeValue: 13,fontWeightValue: FontWeight.w300,fontWeight: FontWeight.w300,),
-                            const Divider(color: pickerGreyColor,),
-                            const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                ColumItem(image: 'Assets/Images/excellent1.png',label: 'Excellent',fontSize: 6),
-                                ColumItem(image: 'Assets/Images/good1.png',label: 'Good',fontSize: 6),
-                                ColumItem(image: 'Assets/Images/average1.png',label: 'Average',fontSize: 6),
-                                ColumItem(image: 'Assets/Images/poor1.png',label: 'Poor',fontSize: 6),
-                                ColumItem(image: 'Assets/Images/verypoor1.png',label: 'Very Poor',fontSize: 6),
-                                Text('Write a review',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w500,fontSize: 14),),
-                              ],
-                            )
-
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                }
-
-                // return Card(
-                //   child: Container(
-                //     width: MediaQuery
-                //         .of(context)
-                //         .size
-                //         .width,
-                //     decoration: BoxDecoration(
-                //       color: pickerWhiteColor,
-                //       borderRadius: BorderRadius.circular(10),
-                //     ),
-                //     child: Padding(
-                //       padding: const EdgeInsets.symmetric(
-                //           horizontal: 20, vertical: 10),
-                //       child: Column(
-                //         children: [
-                //           // Align(
-                //           //     alignment: Alignment.topRight,
-                //           //     child: Image.asset('Assets/Images/for_arrow.png')),
-                //           Row(
-                //             children: [
-                //               Image.asset('Assets/Images/in_transit.png'),
-                //               const SizedBox(width: 10),
-                //               const Column(
-                //                 crossAxisAlignment: CrossAxisAlignment.start,
-                //                 children: [
-                //                   Text('In transit', style: TextStyle(
-                //                       color: pickerBlackColor,
-                //                       fontWeight: FontWeight.w500,
-                //                       fontSize: 14),),
-                //                   Text('Ordered on 3.1.2024', style: TextStyle(
-                //                       color: pickerBlackColor,
-                //                       fontWeight: FontWeight.w300,
-                //                       fontSize: 13),),
-                //                 ],
-                //               ),
-                //               Image.asset('Assets/Images/for_arrow.png'),
-                //             ],
-                //           ),
-                //           const RowItem(label: 'Order Number:',
-                //             value: 'INX 87654321',
-                //             fontSize: 13,
-                //             fontSizeValue: 13,
-                //             fontWeightValue: FontWeight.w300,
-                //             fontWeight: FontWeight.w300,),
-                //           const RowItem(label: 'Number of items:',
-                //             value: '15',
-                //             fontSize: 13,
-                //             fontSizeValue: 13,
-                //             fontWeightValue: FontWeight.w300,
-                //             fontWeight: FontWeight.w300,),
-                //           const RowItem(label: 'Delivery date:',
-                //             value: '09 jan 2024',
-                //             fontSize: 13,
-                //             fontSizeValue: 13,
-                //             fontWeightValue: FontWeight.w300,
-                //             fontWeight: FontWeight.w300,),
-                //           const RowItem(label: 'Amount payable:',
-                //             value: 'AED 100',
-                //             fontSize: 13,
-                //             fontSizeValue: 13,
-                //             fontWeightValue: FontWeight.w300,
-                //             fontWeight: FontWeight.w300,),
-                //         ],
-                //       ),
-                //     ),
-                //   ),
-                // );
               }
               ),
-              // Card(
-              //   child: Container(
-              //     width: MediaQuery.of(context).size.width,
-              //     decoration: BoxDecoration(
-              //       color: pickerWhiteColor,
-              //       borderRadius: BorderRadius.circular(10),
-              //     ),
-              //     child:  Padding(
-              //       padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-              //       child: Column(
-              //         children: [
-              //           // Align(
-              //           //     alignment: Alignment.topRight,
-              //           //     child: Image.asset('Assets/Images/for_arrow.png')),
-              //           Row(
-              //             children: [
-              //               Image.asset('Assets/Images/delivered.png'),
-              //               const SizedBox(width: 10),
-              //               const Column(
-              //                 crossAxisAlignment: CrossAxisAlignment.start,
-              //                 children: [
-              //                   Text('Delivered',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w500,fontSize: 14),),
-              //                   Text('On 3.1.2024',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w300,fontSize: 13),),
-              //                 ],
-              //               ),
-              //               Image.asset('Assets/Images/for_arrow.png'),
-              //             ],
-              //           ),
-              //           const RowItem( label: 'Order Number:',value: 'INX 87654321',fontSize: 13,fontSizeValue: 13,fontWeightValue: FontWeight.w300,fontWeight: FontWeight.w300,),
-              //           const RowItem( label: 'Number of items:',value: '15',fontSize: 13,fontSizeValue: 13,fontWeightValue: FontWeight.w300,fontWeight: FontWeight.w300,),
-              //           const RowItem( label: 'Amount paid:',value: 'AED 100',fontSize: 13,fontSizeValue: 13,fontWeightValue: FontWeight.w300,fontWeight: FontWeight.w300,),
-              //         const Divider(color: pickerGreyColor,),
-              //           const Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             children: [
-              //               ColumItem(image: 'Assets/Images/excellent1.png',label: 'Excellent',fontSize: 6),
-              //               ColumItem(image: 'Assets/Images/good1.png',label: 'Good',fontSize: 6),
-              //               ColumItem(image: 'Assets/Images/average1.png',label: 'Average',fontSize: 6),
-              //               ColumItem(image: 'Assets/Images/poor1.png',label: 'Poor',fontSize: 6),
-              //               ColumItem(image: 'Assets/Images/verypoor1.png',label: 'Very Poor',fontSize: 6),
-              //               Text('Write a review',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w500,fontSize: 14),),
-              //             ],
-              //           )
-              //
-              //         ],
-              //       ),
-              //     ),
-              //   ),
-              // ),
-
-
-
-
             ],
           ),
         )

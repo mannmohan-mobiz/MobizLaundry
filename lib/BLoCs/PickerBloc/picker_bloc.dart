@@ -15,7 +15,7 @@ import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart'
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart' as CartListValue;
 import '../../Models/PickerModel/collect_items_model.dart';
-import '../../Models/PickerModel/confirmed_list_model.dart';
+import '../../Models/PickerModel/customer_home_order_history_detail_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/delivery_address_list.dart';
@@ -23,6 +23,7 @@ import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/modes.dart';
 import '../../Models/PickerModel/order_history_model.dart';
+import '../../Models/PickerModel/picker_confirmed_list_model.dart';
 import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
@@ -255,7 +256,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
           if (value.status == true && value.message == "Confirmed Orders List!") {
             emit(PickupConfirmedListFetched(value.data));
           } else {
-            emit(PickupConfirmedListError(value.message));
+            emit(PickupConfirmedListError(value.message.toString()));
           }
         });
       } catch (e) {
@@ -517,6 +518,20 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PckCartListErrorState(e.toString()));
+      }
+    });
+    on<PckCustomerHistoryDetailFetchEvent>((event, emit) async {
+      emit(PckCustHistoryDetailFetchingState());
+      try {
+        await pickerRepository.getCustomerHistoryDetail(token: event.token, orderid: event.ordId).then((value) {
+          if (value.status == true) {
+            emit(PckCustHistoryDetailFetchedState(value.data));
+          } else {
+            emit(PckCustHistoryDetailErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(PckCustHistoryDetailErrorState(e.toString()));
       }
     });
     on<PckThankListFetchEvent>((event, emit) async {

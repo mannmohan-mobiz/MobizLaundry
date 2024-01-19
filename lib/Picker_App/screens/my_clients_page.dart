@@ -79,22 +79,22 @@ class _MyClientsPageState extends State<MyClientsPage> {
             const SizedBox(height: 2,),
             SearchWidget(
                 onTap: (){
-                  pickerRepository.getSearchResults(token: authData.user_token.toString(), searchKey: searchController.text).then((value) {
-                    setState(() {
-                      customerList = [];
-                    });
-                    if (value.status == true) {
-                      setState(() {
-                        customerList = value.data.cast<CustomerListData>();
-                      });
-                      print('#######ssss${value.data[0].name}');
-                    }
-                    else {
-                      value.status == false;
-                      snackBar(context, message: value.message);
-                    }
-                  });
-                },
+                //   pickerRepository.getSearchResults(token: authData.user_token.toString(), searchKey: searchController.text).then((value) {
+                //     setState(() {
+                //       customerList = [];
+                //     });
+                //     if (value.status == true) {
+                //       setState(() {
+                //         customerList = value.data;
+                //       });
+                //       print('#######ssss${value.data[0].name}');
+                //     }
+                //     else {
+                //       value.status == false;
+                //       snackBar(context, message: value.message);
+                //     }
+                //   });
+                 },
                 hintText: 'Customer Id/phone',
                 searchCtrl: searchController
             ),

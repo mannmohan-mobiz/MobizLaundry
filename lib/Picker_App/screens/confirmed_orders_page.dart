@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:golden_falcon/Models/PickerModel/confirmed_list_model.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
@@ -132,16 +131,16 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                   } else if (state is PickupConfirmedListFetched) {
                     final tData = state.dataList;
                     print('DATA${tData}');
-                    print('LENGTH${tData.length}');
+                    print('LENGTH${tData?.length}');
                     return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: tData.length,
+                      itemCount: tData?.length,
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       itemBuilder: (itemBuilder, index)  {
-                        print('33333 NAME###${tData[0].customer.name}');
-                        print('33333 ORDER TYPE ###${state.dataList[index].orderType}');
-                        print('ssssss ORDER TYPE ###${state.dataList[index].orderType == "URGENT"}');
+                        print('33333 NAME###${tData?[0].customer?.name}');
+                        print('33333 ORDER TYPE ###${state.dataList?[index].orderType}');
+                        print('ssssss ORDER TYPE ###${state.dataList?[index].orderType == "URGENT"}');
 
                         return  Container(
                           margin: const EdgeInsets.symmetric(vertical: 18),
@@ -164,15 +163,15 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                     horizontal: 12, vertical: 8),
                                 decoration: BoxDecoration(
                                   color: MaterialStateColor.resolveWith((states) {
-                                    if (state.dataList[index].orderType == OrderType.URGENT) {
+                                    if (state.dataList?[index].orderType == "Urgent") {
                                       print(5555);
                                       return pickerOrangeTypeColor;
                                     } else
-                                    if (state.dataList[index].orderType == OrderType.EXPRESS) {
+                                    if (state.dataList?[index].orderType == "Express") {
                                       print(6666);
                                       return pickerYellowTypeColor;
                                     } else
-                                    if (state.dataList[index].orderType == OrderType.NORMAL) {
+                                    if (state.dataList?[index].orderType == "Normal") {
                                       print(7777);
                                       return pickerGreyTypeColor;
                                     } else {
@@ -189,26 +188,26 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                   children: [
                                     RowItem(
                                         label: 'Customer name:',
-                                        value: tData[index].customer.name.name),
+                                        value: '${tData?[index].customer?.name}'),
                                     RowItem(
                                       label: 'Building Name/No:',
-                                      value: tData[index].customer.buildingNo,
+                                      value: '${tData?[index].customer?.buildingNo}',
                                     ),
                                     RowItem(
                                       label: 'Floor No:',
-                                      value: tData[index].customer.roomNo,
+                                      value: '${tData?[index].customer?.roomNo}',
                                     ),
                                     RowItem(
                                       label: 'Room No/House No:',
-                                      value: tData[index].customer.roomNo,
+                                      value: '${tData?[index].customer?.roomNo}',
                                     ),
                                     RowItem(
                                       label: 'Mobile No:',
-                                      value: tData[index].customer.mobile,
+                                      value: '${tData?[index].customer?.mobile}',
                                     ),
                                     RowItem(
                                       label: 'Pickup time:',
-                                        value: '${tData[index].pickupTime}',
+                                        value: '${tData?[index].pickupTime}',
                                       isShow: true,
                                       onPressed: () async {
                                           // Uri googleUrl = Uri.parse(
@@ -236,7 +235,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                               color: pickerBlackColor,
                                               fontWeight: FontWeight.w600)),
                                       onTap: () {
-                                        showCollectItemDialog(orderIdd: tData[index].orderId,custId: tData[index].customer.customerId );
+                                        showCollectItemDialog(orderIdd: '${tData?[index].orderId}',custId: '${tData?[index].customer?.customerId}' );
                                       },
                                     ),
                                     Container(
@@ -268,7 +267,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                   child: InkWell(
                                     onTap: (){
                                       //openDialer('987654321');
-                                      openDialer(tData[index].customer.mobile);
+                                      openDialer(tData?[index].customer?.mobile);
                                     } ,
                                     child: const Center(
                                         child: Text('Call',

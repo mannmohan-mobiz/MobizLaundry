@@ -372,7 +372,7 @@ class PickupConfirmedListFetching extends PickerState {
 }
 
 class PickupConfirmedListFetched extends PickerState {
-  List<pickerConfirmedList> dataList;
+  List<pickerConfirmedList>? dataList;
 
   PickupConfirmedListFetched(this.dataList);
 
@@ -790,6 +790,31 @@ class PckCollectItemsErrorState extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************[Get Cart List]]***********************/
+
+/***********************[Get Customer History Detail List]***********************/
+class PckCustHistoryDetailFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckCustHistoryDetailFetchedState extends PickerState {
+  OrderHistoryDetail? orderHistoryDetailList;
+
+  PckCustHistoryDetailFetchedState(this.orderHistoryDetailList);
+
+  @override
+  List<Object?> get props => [orderHistoryDetailList];
+}
+
+class PckCustHistoryDetailErrorState extends PickerState {
+  final String message;
+
+  PckCustHistoryDetailErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Customer History Detail List]]***********************/
 
 /***********************[Get Thankyou List]***********************/
 class PckThankyouFetchingState extends PickerState {
