@@ -791,6 +791,31 @@ class PckCollectItemsErrorState extends PickerState {
 }
 /***********************[Get Cart List]]***********************/
 
+/***********************[Get Order REport List]***********************/
+class PckOrderReportFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckOrderReportFetchedState extends PickerState {
+  OrderReport? reportValues;
+
+  PckOrderReportFetchedState(this.reportValues);
+
+  @override
+  List<Object?> get props => [reportValues];
+}
+
+class PckOrderReportErrorState extends PickerState {
+  final String message;
+
+  PckOrderReportErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Order REport List]]***********************/
+
 /***********************[Get Customer History Detail List]***********************/
 class PckCustHistoryDetailFetchingState extends PickerState {
   @override
@@ -815,6 +840,31 @@ class PckCustHistoryDetailErrorState extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************[Get Customer History Detail List]]***********************/
+
+/***********************[Get Order Report Detail List]***********************/
+class PckOrdReportDetailFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckOrdReportDetailFetchedState extends PickerState {
+  OrderReportDetail? orderReportDetailList;
+
+  PckOrdReportDetailFetchedState(this.orderReportDetailList);
+
+  @override
+  List<Object?> get props => [orderReportDetailList];
+}
+
+class PckOrdReportDetailErrorState extends PickerState {
+  final String message;
+
+  PckOrdReportDetailErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Order Report Detail List]]***********************/
 
 /***********************[Get Thankyou List]***********************/
 class PckThankyouFetchingState extends PickerState {

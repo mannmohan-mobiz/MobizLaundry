@@ -23,6 +23,8 @@ import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/modes.dart';
 import '../../Models/PickerModel/order_history_model.dart';
+import '../../Models/PickerModel/order_report_detail_model.dart';
+import '../../Models/PickerModel/order_report_model.dart';
 import '../../Models/PickerModel/picker_confirmed_list_model.dart';
 import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
@@ -520,6 +522,41 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         emit(PckCartListErrorState(e.toString()));
       }
     });
+
+    on<PckOrderReportFetchEvent>((event, emit) async {
+      emit(PckOrderReportFetchingState());
+      try {
+        await pickerRepository.getOrderReport(token: event.token, body: {
+          "id": event.id,
+          "from_date": event.fDate,
+          "to_date": event.tDate
+        }).then((value) {
+          if (value.status == true) {
+            emit(PckOrderReportFetchedState(value.data));
+          } else {
+            emit(PckOrderReportErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(PckOrderReportErrorState(e.toString()));
+      }
+    });
+
+    on<PckOrderReportDetailFetchEvent>((event, emit) async {
+      emit(PckOrdReportDetailFetchingState());
+      try {
+        await pickerRepository.getOrderReportDetail(token: event.token, orderid: event.ordId).then((value) {
+          if (value.status == true) {
+            emit(PckOrdReportDetailFetchedState(value.data));
+          } else {
+            emit(PckOrdReportDetailErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(PckOrdReportDetailErrorState(e.toString()));
+      }
+    });
+
     on<PckCustomerHistoryDetailFetchEvent>((event, emit) async {
       emit(PckCustHistoryDetailFetchingState());
       try {

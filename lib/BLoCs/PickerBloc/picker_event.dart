@@ -327,6 +327,31 @@ class PckCollectItemsFetchEvent extends PickerEvent {
   List<Object?> get props => [token, ordId];
 }
 
+// Get Order Report List
+class PckOrderReportFetchEvent extends PickerEvent {
+  final String token;
+  final String id;
+  final String fDate;
+  final String tDate;
+
+  PckOrderReportFetchEvent(this.token,this.id, this.fDate,this.tDate);
+
+  @override
+  List<Object?> get props => [token, fDate,tDate,id];
+}
+
+// Get Order Report Detail
+class PckOrderReportDetailFetchEvent extends PickerEvent {
+  final String token;
+  final String ordId;
+
+  PckOrderReportDetailFetchEvent(this.token,this.ordId);
+
+  @override
+  List<Object?> get props => [token, ordId];
+}
+
+
 // Get customer order history detail List
 class PckCustomerHistoryDetailFetchEvent extends PickerEvent {
   final String token;

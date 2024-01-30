@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import 'order_history_details_page.dart';
@@ -13,6 +16,9 @@ class OrderHistoryPage extends StatefulWidget {
 }
 
 class _OrderHistoryPageState extends State<OrderHistoryPage> {
+  TextEditingController fromDateController = TextEditingController();
+  TextEditingController toDateController = TextEditingController();
+  final PickerRepository pickerRepository = PickerRepository();
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -58,17 +64,38 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                       border: Border.all(color: pickerGoldColor)
                     ),
                     child: TextField(
-                      controller: TextEditingController(),
+                      controller: fromDateController,
                       textAlign: TextAlign.center,
                       decoration:  const InputDecoration(
-                          hintText: "01.12.2023",
+                          hintText: "",
                         border: InputBorder.none,
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 20,),
-                Image.asset('Assets/Images/calendar.png')
+                InkWell(
+                    onTap: () async {
+                      DateTime? fromDate =
+                      await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(), //get today's date
+                          firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2101));
+                      if (fromDate != null) {
+                        print(fromDate);
+                        String formattedDate =
+                        DateFormat('dd-MM-yyyy').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                        print(formattedDate);
+                        setState(() {
+                          fromDateController.text =
+                              formattedDate; //set foratted date to TextField value.
+                        });
+                      } else {
+                        print("Date is not selected");
+                      }
+                    },
+                    child: Image.asset('Assets/Images/calendar.png'))
               ],
             ),
             const SizedBox(height: 30,),
@@ -86,17 +113,38 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                         border: Border.all(color: pickerGoldColor)
                     ),
                     child: TextField(
-                      controller: TextEditingController(),
+                      controller: toDateController,
                       textAlign: TextAlign.center,
                       decoration:  const InputDecoration(
-                        hintText: "05.12.2023",
+                        hintText: "",
                         border: InputBorder.none,
                       ),
                     ),
                   ),
                 ),
                 const SizedBox(width: 20,),
-                Image.asset('Assets/Images/calendar.png')
+                InkWell(
+                    onTap: () async {
+                      DateTime? fromDate =
+                      await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(), //get today's date
+                          firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                          lastDate: DateTime(2101));
+                      if (fromDate != null) {
+                        print(fromDate);
+                        String formattedDate =
+                        DateFormat('dd-MM-yyyy').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                        print(formattedDate);
+                        setState(() {
+                          toDateController.text =
+                              formattedDate; //set foratted date to TextField value.
+                        });
+                      } else {
+                        print("Date is not selected");
+                      }
+                    },
+                    child: Image.asset('Assets/Images/calendar.png'))
               ],
             ),
             const SizedBox(height: 40,),
@@ -110,7 +158,20 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                   ),
                 ),
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const OrderHistoryDetailsPage()));
+                  // Map<String, String> data = {
+                  //   "id": authData.user_id.toString(),
+                  //   "from_date": fromDateController.text,
+                  //   "to_date": toDateController.text
+                  // };
+                  // print('#########${(data)}');
+                  // pickerRepository.getOrderReport(
+                  //     token: authData.user_token.toString(), body: data)
+                  //     .then((value) {
+                  //       setState(() {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) =>  OrderHistoryDetailsPage(fromDate: fromDateController.text,toDate: toDateController.text,)));
+                  //       });
+                  // });
+
                 },
                 child: const Text('LOAD',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
             )

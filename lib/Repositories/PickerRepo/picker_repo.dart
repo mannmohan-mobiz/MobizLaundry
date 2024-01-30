@@ -33,6 +33,8 @@ import '../../Models/PickerModel/modes.dart';
 import '../../Models/PickerModel/new_order_save.dart';
 import '../../Models/PickerModel/order_details_model.dart';
 import '../../Models/PickerModel/order_history_model.dart';
+import '../../Models/PickerModel/order_report_detail_model.dart';
+import '../../Models/PickerModel/order_report_model.dart';
 import '../../Models/PickerModel/outstanding_model.dart';
 import '../../Models/PickerModel/picker_category_model.dart';
 import '../../Models/PickerModel/picker_confirmed_list_model.dart';
@@ -1402,6 +1404,75 @@ class PickerRepository {
     }
   }
 
+  //order Report detail
+  Future<OrderReportDetailModel> getOrderReportDetail({required String token, required String orderid}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "order_id":orderid
+    };
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/order_report_detail_api',
+          data: data,
+          options: options
+      );
+      print('###### status$response');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = OrderReportDetailModel.fromJson(response.data);
+        print('#########responsee##${result.toString()}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+
+
+  // Order Report
+  Future<OrderReportModel> getOrderReport({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    debugPrint('WW11####$body####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/order_report_picker_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = OrderReportModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
   // Search
   Future<Search> getSearchResults({required String searchKey, required String token}) async {
     Dio dio = Dio();
@@ -1427,6 +1498,37 @@ class PickerRepository {
         return result;
       } else {
          return response.data;
+      }
+    } catch (e) {
+      throw Exception('oooo' + e.toString());
+    }
+  }
+
+  // Search Order
+  Future<OrderReportModel> getSearchOrder({required String searchKey, required String token}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Map<String, String> data = {
+      "key": searchKey
+    };
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl + 'picker/order_report_search_api',
+          data: data,
+          options: options
+      );
+      print('ORDRES#${response.data}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = OrderReportModel.fromJson(response.data);
+        print('ORDRES211#${response.data}');
+        return result;
+      } else {
+        return response.data;
       }
     } catch (e) {
       throw Exception('oooo' + e.toString());
