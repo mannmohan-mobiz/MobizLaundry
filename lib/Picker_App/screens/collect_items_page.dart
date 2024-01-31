@@ -88,21 +88,6 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                   orderID: widget.orderId,customerID: widget.customerId)));
               print('@@#${widget.orderId}');
               print('@@#${widget.customerId}');
-              //   Map<String, String> data = {
-              //     "id": authData.user_id.toString(),
-              //     "customer_id": selectedCustomerId,
-              //     "pickup_date": pickup_dt_controller.text,
-              //     "pickup_time": pickup_tmt_controller.text,
-              //     "order_type": selectedType,
-              //     "Delivery_date": del_dt_controller.text,
-              //     "Delivery_time": del_tm_controller.text
-              //   };
-              //   print(jsonEncode(data));
-              //   BlocProvider.of<PickerBloc>(context)
-              //       .add(AddNewOrderEvent(data, authData.user_token.toString()));
-              //   setState(() {
-              //     mode_of_action = "get_items";
-              //   });
             },
             child: const Icon(Icons.add,color: pickerGoldColor,)
         ),
@@ -112,6 +97,7 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
       return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
       } else if (state is PckCollectItemsFetchedState) {
          data = state.collectItemsData;
+         selectedOption = selectedOption == '' ? state.collectItemsData?.paymentMethod ?? '' : selectedOption;
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: ListView(
@@ -120,100 +106,100 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                ContainerWidgets(title: 'Delivery Time',
                   textTime: '${state.collectItemsData?.cart![0].order.deliveryTime}',
                   textDate:  DateFormat('yyyy-MM-dd').format(DateTime.parse('${state.collectItemsData?.cart![0].order.deliveryDate}')),),
-               const RowValue(label: 'Payment Method', labelValue: 'COD',),
-              // BlocProvider(
-              //   create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
-              //     ..add(PickupPaymentListFetchEvent(
-              //         authData.user_token.toString())),
-              //   child: Column(
-              //     children: [
-              //       InkWell(
-              //         onTap: () {
-              //           setState(() {
-              //             isExpanded = !isExpanded;
-              //           });
-              //         },
-              //         child: Container(
-              //           height: 56,
-              //           width: double.infinity,
-              //           padding: const EdgeInsets.all(18),
-              //           decoration: BoxDecoration(
-              //             color: pickerWhiteColor,
-              //             border: Border.all(color: pickerGoldColor),
-              //             borderRadius: BorderRadius.circular(8),
-              //           ),
-              //           child: Row(
-              //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //             children: [
-              //               Text(selectedOption,style: const TextStyle(
-              //                   fontSize: 14,color: pickerBlackColor
-              //               ),),
-              //               Icon(
-              //                 isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
-              //                 size: 24,
-              //                 color: pickerGoldColor,
-              //               ),
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //       AnimatedContainer(
-              //         duration: const Duration(milliseconds: 300),
-              //         width: double.infinity,
-              //         height: isExpanded ? 120 : 0,
-              //         padding: const EdgeInsets.all(8),
-              //         decoration: BoxDecoration(
-              //           color: pickerWhiteColor,
-              //           border: Border.all(color: pickerGoldColor),
-              //           borderRadius: BorderRadius.circular(8),
-              //         ),
-              //         child: BlocBuilder<PickerBloc, PickerState>(
-              //             builder: (context, state) {
-              //               if (state is PickupPaymentListFetching) {
-              //                 return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
-              //               } else if (state is PickupPaymentListFetched) {
-              //                 final data = state.paymentList;
-              //                 return ListView.builder(
-              //                   scrollDirection: Axis.vertical,
-              //                   shrinkWrap: true,
-              //                   itemCount: data?.length,
-              //                   itemBuilder: (BuildContext context, int index) =>
-              //                       ListTile(
-              //                         title:  Text('${data?[index].paymentMethod}',style: const TextStyle(
-              //                             fontSize: 12,color: pickerBlackColor
-              //                         ),),
-              //                         onTap: () {
-              //                           setState(() {
-              //                             selectedOption = '${data?[index].paymentMethod}';
-              //                             isExpanded = false;
-              //                           });
-              //                           if( selectedOption == 'Wallet') {
-              //                             Map<String, String> data = {
-              //                               "id": authData.user_id.toString(),
-              //                               "order_id": widget.orderId,
-              //                               "customer_id":  widget.customerId,
-              //                             };
-              //                             pickerRepository.getWalletBalanceApi(token: authData.user_token.toString(),body: data).then((value) {
-              //                               setState(() {
-              //                                 selectedWalletBalance = value.walletBalance;
-              //                               });
-              //                               print('BALANCE###$selectedWalletBalance');
-              //                             }
-              //                             );
-              //                           }
-              //
-              //                         },
-              //                       ),
-              //                 );
-              //               } else {
-              //                 return const Center(child: Text('No Data'));
-              //               }
-              //             }
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
+                const RowValue(label: 'Payment Method',),
+              BlocProvider(
+                create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
+                  ..add(PickupPaymentListFetchEvent(
+                      authData.user_token.toString())),
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isExpanded = !isExpanded;
+                        });
+                      },
+                      child: Container(
+                        height: 56,
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(18),
+                        decoration: BoxDecoration(
+                          color: pickerWhiteColor,
+                          border: Border.all(color: pickerGoldColor),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(selectedOption,style: const TextStyle(
+                                fontSize: 14,color: pickerBlackColor
+                            ),),
+                            Icon(
+                              isExpanded ? Icons.arrow_drop_up : Icons.arrow_drop_down,
+                              size: 24,
+                              color: pickerGoldColor,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      width: double.infinity,
+                      height: isExpanded ? 120 : 0,
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: pickerWhiteColor,
+                        border: Border.all(color: pickerGoldColor),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: BlocBuilder<PickerBloc, PickerState>(
+                          builder: (context, state) {
+                            if (state is PickupPaymentListFetching) {
+                              return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
+                            } else if (state is PickupPaymentListFetched) {
+                              final data = state.paymentList;
+                              return ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: data?.length,
+                                itemBuilder: (BuildContext context, int index) =>
+                                    ListTile(
+                                      title:  Text('${data?[index].paymentMethod}',style: const TextStyle(
+                                          fontSize: 12,color: pickerBlackColor
+                                      ),),
+                                      onTap: () {
+                                        setState(() {
+                                          selectedOption = '${data?[index].paymentMethod}';
+                                          isExpanded = false;
+                                        });
+                                        if( selectedOption == 'Wallet') {
+                                          Map<String, String> data = {
+                                            "id": authData.user_id.toString(),
+                                            "order_id": widget.orderId,
+                                            "customer_id":  widget.customerId,
+                                          };
+                                          pickerRepository.getWalletBalanceApi(token: authData.user_token.toString(),body: data).then((value) {
+                                            setState(() {
+                                              selectedWalletBalance = value.walletBalance;
+                                            });
+                                            print('BALANCE###$selectedWalletBalance');
+                                          }
+                                          );
+                                        }
+
+                                      },
+                                    ),
+                              );
+                            } else {
+                              return const Center(child: Text('No Data'));
+                            }
+                          }
+                      ),
+                    ),
+                  ],
+                ),
+              ),
                RowValue(
                 label: 'Order Type', labelValue: '${state.collectItemsData?.cart![0].order.orderType}',),
                RowValue(
@@ -472,17 +458,17 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
               //
               //   ],
               // ),
-              const RowValue(label: 'Amount',
-                  labelValue: 'AED 100',
+               RowValue(label: 'Amount',
+                  labelValue: 'AED ${state.collectItemsData?.totalAmount}',
                   labelValueColor: pickerBlackColor),
               // const RowValue(label: 'Delivery Charges',
               //     labelValue: 'AED 0',
               //     labelValueColor: pickerBlackColor),
                RowValue(label: 'VAT',
-                  labelValue:'AED ${state.collectItemsData?.cart[0].order.vat ?? '0'}',
+                  labelValue:'AED ${state.collectItemsData?.vat ?? '0'}',
                   labelValueColor: pickerBlackColor),
                RowValue(label: 'Total Payable',
-                  labelValue:  'AED ${state.collectItemsData?.cart[0].order.totalAmount}',
+                  labelValue:  'AED ${state.collectItemsData?.totalAmountPayble}',
                   labelValueColor: pickerBlackColor),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -2,32 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../Models/PickerModel/customer_home_history_model.dart';
-import '../../Repositories/AuthRepo/auth_repository.dart';
-import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
-import '../util/column_item.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
-import 'customer_home_order_details_page.dart';
 
-class CustomerHomeOrderHistory extends StatefulWidget {
-  final String? customerId;
-  const CustomerHomeOrderHistory({super.key,this.customerId});
+class DeliveredScreen extends StatefulWidget {
+  const DeliveredScreen({super.key});
 
   @override
-  State<CustomerHomeOrderHistory> createState() => _CustomerHomeOrderHistoryState();
+  State<DeliveredScreen> createState() => _DeliveredScreenState();
 }
 
-class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
+class _DeliveredScreenState extends State<DeliveredScreen> {
   TextEditingController fromDateController = TextEditingController();
   TextEditingController toDateController = TextEditingController();
-  final PickerRepository pickerRepository = PickerRepository();
-  List<CustomerHomeHistory>? customerHistoryData = [];
   bool isDelivered = false;
   @override
   Widget build(BuildContext context) {
-    print('${widget.customerId}');
     return  Scaffold(
         backgroundColor: pickerBackgroundColor,
         appBar: AppBar(
@@ -63,7 +54,7 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
                     child: InkWell(
                       onTap: () async {
                         DateTime? fromDate =
-                            await showDatePicker(
+                        await showDatePicker(
                             context: context,
                             initialDate: DateTime.now(), //get today's date
                             firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
@@ -90,7 +81,7 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
                         ),
                         child: AbsorbPointer(
                           // This widget absorbs pointer events, preventing the TextField from being editable
-                        absorbing: true,
+                          absorbing: true,
                           child: TextField(
                             controller: fromDateController,
                             textAlign: TextAlign.center,
@@ -159,28 +150,28 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
                         ),
                       ),
                       onPressed: (){
-                        if(fromDateController.text.isEmpty){
-                        snackBar(context, message: 'Please choose From date');
-                        } else if(toDateController.text.isEmpty){
-                          snackBar(context, message: 'Please choose To date');
-                        } else {
-                          Map<String, String> data = {
-                            "customer_id": widget.customerId.toString(),
-                            "from_date": fromDateController.text,
-                            "to_date": toDateController.text
-                          };
-                          print('#########${(data)}');
-                          pickerRepository.getCustomerHistoryResults(
-                              token: authData.user_token.toString(), body: data)
-                              .then((value) {
-                            setState(() {
-                              customerHistoryData = value.data;
-                            });
-                            // if(value.status == false) {
-                            // snackBar(context, message: value.message.toString());
-                            // }
-                          });
-                        }
+                        // if(fromDateController.text.isEmpty){
+                        //   snackBar(context, message: 'Please choose From date');
+                        // } else if(toDateController.text.isEmpty){
+                        //   snackBar(context, message: 'Please choose To date');
+                        // } else {
+                        //   Map<String, String> data = {
+                        //     "customer_id": widget.customerId.toString(),
+                        //     "from_date": fromDateController.text,
+                        //     "to_date": toDateController.text
+                        //   };
+                        //   print('#########${(data)}');
+                        //   pickerRepository.getCustomerHistoryResults(
+                        //       token: authData.user_token.toString(), body: data)
+                        //       .then((value) {
+                        //     setState(() {
+                        //       customerHistoryData = value.data;
+                        //     });
+                        //     // if(value.status == false) {
+                        //     // snackBar(context, message: value.message.toString());
+                        //     // }
+                        //   });
+                        // }
                       },
                       child: const Text('LOAD',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
                   )
@@ -188,82 +179,117 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
               ),
               const SizedBox(height: 10),
               ListView.builder(
-              shrinkWrap: true,
-              itemCount: customerHistoryData?.length,
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              itemBuilder: (itemBuilder, index) {
-                 return  Card(
-                    child: Container(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
-                      decoration: BoxDecoration(
-                        color: pickerWhiteColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
-                        child: Column(
-                          children: [
-                            ListTile(
-                               leading:  '${customerHistoryData?[index].status}' == 'Delivered' ? Image.asset('Assets/Images/delivered.png') :  Image.asset('Assets/Images/in_transit.png'),
-                               title:  Column(
+                  shrinkWrap: true,
+                  itemCount: 2,
+                  physics: const BouncingScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (itemBuilder, index) {
+                    return  Card(
+                      child: Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        decoration: BoxDecoration(
+                          color: pickerWhiteColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                leading: Image.asset('Assets/Images/delivered.png'),
+                                title:  const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('${customerHistoryData?[index].status}', style: const TextStyle(
+                                    Text('Delivered', style: TextStyle(
                                         color: pickerBlackColor,
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14),),
-                                    Text('Ordered on ${DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerHistoryData?[index].orderDate}')).toString()}', style: const TextStyle(
+                                    Text('on 12.12.2023 ', style: TextStyle(
                                         color: pickerBlackColor,
                                         fontWeight: FontWeight.w300,
                                         fontSize: 13),),
                                   ],
                                 ),
-                              trailing: InkWell(
-                                onTap: () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  CustomerHomeOrderDetailPage(
-                                     orderId:'${customerHistoryData?[index].orderId}',
-                                      statusValue: '${customerHistoryData?[index].status}',
-                                      orderDateValue: DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerHistoryData?[index].orderDate}')).toString()
-                                  )));
-                                },
-                                  child: Image.asset('Assets/Images/for_arrow.png')),
-                            ),
-                             RowItem(label: 'Order Number:',
-                              value: '${customerHistoryData?[index].orderNumber}',
-                              fontSize: 13,
-                              fontSizeValue: 13,
-                              fontWeightValue: FontWeight.w300,
-                              fontWeight: FontWeight.w300,),
-                             RowItem(label: 'Number of items:',
-                              value: '${customerHistoryData?[index].quantity}',
-                              fontSize: 13,
-                              fontSizeValue: 13,
-                              fontWeightValue: FontWeight.w300,
-                              fontWeight: FontWeight.w300,),
-                             RowItem(label: 'Delivery date:',
-                               value:'${customerHistoryData?[index].deliveryDate}',
-                              // value: DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerHistoryData[index].deliveryDate}')).toString() ?? '',
-                              fontSize: 13,
-                              fontSizeValue: 13,
-                              fontWeightValue: FontWeight.w300,
-                              fontWeight: FontWeight.w300,),
-                             RowItem(label: 'Amount payable:',
-                              value: '${customerHistoryData?[index].totalAmount}',
-                              fontSize: 13,
-                              fontSizeValue: 13,
-                              fontWeightValue: FontWeight.w300,
-                              fontWeight: FontWeight.w300,),
-                          ],
+                                trailing: InkWell(
+                                    onTap: () {},
+                                    child: Image.asset('Assets/Images/for_arrow.png')),
+                              ),
+                              const RowItem(label: 'Customer Name:',
+                                value: 'Jason Roy',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                              const RowItem(label: 'Customer type:',
+                                value: 'Home',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                              const RowItem(label: 'Order Number:',
+                                value:'INX 8989898989',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                              const RowItem(label: 'No of items:',
+                                value: '15',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                              const RowItem(label: 'Building name/number:',
+                                value: '',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                              const RowItem(label: 'Floor no:',
+                                value: '',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                              const RowItem(label: 'House no:',
+                                value: '',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                              const RowItem(label: 'Mobile no:',
+                                value: '',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                              const RowItem(label: 'Amount paid:',
+                                value: 'AED 100',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                              const RowItem(label: 'Balance to pay:',
+                                value: 'AED 10',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                              const RowItem(label: 'Delivery date/time:',
+                                value: '1.4.2023/7am to 9am',
+                                fontSize: 13,
+                                fontSizeValue: 13,
+                                fontWeightValue: FontWeight.w300,
+                                fontWeight: FontWeight.w300,),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-              }
+                    );
+                  }
               ),
             ],
           ),

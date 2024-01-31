@@ -17,6 +17,7 @@ import '../util/drawer.dart';
 import '../util/side_bar_page.dart';
 import 'confirmed_orders_page.dart';
 import 'create_client_page.dart';
+import 'delivered_screen.dart';
 import 'delivery_page.dart';
 import 'my_clients_page.dart';
 import 'my_collections_page.dart';
@@ -276,6 +277,9 @@ class _HomePageNewState extends State<HomePageNew> {
         break;
       case 3:
         open(context, const OutStandingDuesPage());
+        break;
+      case 4:
+        open(context, const DeliveredScreen());
         break;
     }
   }

@@ -409,7 +409,9 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: ElevatedButton(
-                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>   CollectItemsPage(orderId: orderIdd,customerId:custId))),
+                              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                // CollectItemsPage(orderId: "ff75a9ff2c84438db292ccede6e829df",customerId:custId))),
+                             CollectItemsPage(orderId: orderIdd,customerId:custId))),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: pickerGoldColor,
                               ),

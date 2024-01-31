@@ -515,7 +515,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
           if (value.status == true) {
             emit(PckCollectItemsFetchedState(value.data));
           } else {
-            emit(PckCollectItemsErrorState(value.message));
+            emit(PckCollectItemsErrorState(value.message.toString()));
           }
         });
       } catch (e) {
