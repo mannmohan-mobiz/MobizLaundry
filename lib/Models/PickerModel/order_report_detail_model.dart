@@ -53,7 +53,7 @@ class Cart {
   Order order;
   String quantity;
   String amount;
-  ItemService itemService;
+  List<ItemService> itemService;
   String priceList;
 
   Cart({
@@ -70,7 +70,7 @@ class Cart {
     order: Order.fromJson(json["order"]),
     quantity: json["quantity"],
     amount: json["amount"],
-    itemService: ItemService.fromJson(json["item_service"]),
+    itemService: List<ItemService>.from(json["item_service"].map((x) => ItemService.fromJson(x))),
     priceList: json["price_list"],
   );
 
@@ -79,7 +79,7 @@ class Cart {
     "order": order.toJson(),
     "quantity": quantity,
     "amount": amount,
-    "item_service": itemService.toJson(),
+    "item_service": List<dynamic>.from(itemService.map((x) => x.toJson())),
     "price_list": priceList,
   };
 }

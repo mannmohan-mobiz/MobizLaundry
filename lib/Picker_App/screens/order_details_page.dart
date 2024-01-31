@@ -67,8 +67,9 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                 return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
                 } else if (state is PckOrdReportDetailFetchedState) {
                   final tData = state.orderReportDetailList;
-                  return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                  return ListView(
+                    shrinkWrap: true,
+                     // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Item Name/Category', style: TextStyle(
                             color: pickerBlackColor,
@@ -98,7 +99,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                   child: ListView(
                                       shrinkWrap: true,
                                       children: [
-                                        Text('${tData?.cart[index].itemService.category.serviceMaster.categoryName}',
+                                        Text('${tData?.cart[index].itemService[0].category.serviceMaster.categoryName}',
                                           style: const TextStyle(
                                               color: pickerBlackColor,
                                               fontWeight: FontWeight.w600,
@@ -108,12 +109,12 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
                                               horizontal: 25.0, vertical: 10),
                                           child: ListView.builder(
                                             shrinkWrap: true,
-                                            itemCount: tData?.cart.length,
+                                            itemCount: tData?.cart[index].itemService.length,
                                             physics: const BouncingScrollPhysics(),
                                             scrollDirection: Axis.vertical,
-                                            itemBuilder: (itemBuilder, index) =>
+                                            itemBuilder: (itemBuilder, innerIndex) =>
                                                 TableWidget(
-                                                    text: '${tData?.cart[index].itemService.item.itemName}',
+                                                    text: '${tData?.cart[index].itemService[innerIndex].item.itemName}',
                                                     value: '${tData?.cart[index].quantity}',
                                                     colorValue: pickerGoldColor),
                                           ),

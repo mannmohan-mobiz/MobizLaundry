@@ -4,55 +4,53 @@
 
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
-
 OrderReportModel orderReportModelFromJson(String str) => OrderReportModel.fromJson(json.decode(str));
 
 String orderReportModelToJson(OrderReportModel data) => json.encode(data.toJson());
 
 class OrderReportModel {
-  bool status;
-  OrderReport data;
-  String message;
+  final bool? status;
+  final OrderReport? data;
+  final String? message;
 
   OrderReportModel({
-    required this.status,
-    required this.data,
-    required this.message,
+    this.status,
+    this.data,
+    this.message,
   });
 
   factory OrderReportModel.fromJson(Map<String, dynamic> json) => OrderReportModel(
     status: json["status"],
-    data: OrderReport.fromJson(json["data"]),
+    data: json["data"] == null ? null : OrderReport.fromJson(json["data"]),
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": data.toJson(),
+    "data": data?.toJson(),
     "message": message,
   };
 }
 
 class OrderReport {
-  List<Customerdatum> customerdata;
-  int? totalOrders;
-  int? orderViaApp;
-  int? orderViaStaff;
-  int? orderViaCall;
-  int? newclients;
+  final List<Customerdatum>? customerdata;
+  final int? totalOrders;
+  final int? orderViaApp;
+  final int? orderViaStaff;
+  final int? orderViaCall;
+  final int? newclients;
 
   OrderReport({
-    required this.customerdata,
-    required this.totalOrders,
-    required this.orderViaApp,
-    required this.orderViaStaff,
-    required this.orderViaCall,
-    required this.newclients,
+    this.customerdata,
+    this.totalOrders,
+    this.orderViaApp,
+    this.orderViaStaff,
+    this.orderViaCall,
+    this.newclients,
   });
 
   factory OrderReport.fromJson(Map<String, dynamic> json) => OrderReport(
-    customerdata: List<Customerdatum>.from(json["customerdata"].map((x) => Customerdatum.fromJson(x))),
+    customerdata: json["customerdata"] == null ? [] : List<Customerdatum>.from(json["customerdata"]!.map((x) => Customerdatum.fromJson(x))),
     totalOrders: json["total_orders"],
     orderViaApp: json["order_via_app"],
     orderViaStaff: json["order_via_staff"],
@@ -61,7 +59,7 @@ class OrderReport {
   );
 
   Map<String, dynamic> toJson() => {
-    "customerdata": List<dynamic>.from(customerdata.map((x) => x.toJson())),
+    "customerdata": customerdata == null ? [] : List<dynamic>.from(customerdata!.map((x) => x.toJson())),
     "total_orders": totalOrders,
     "order_via_app": orderViaApp,
     "order_via_staff": orderViaStaff,
@@ -71,46 +69,46 @@ class OrderReport {
 }
 
 class Customerdatum {
-  String orderId;
-  DateTime createdDate;
-  String orderNumber;
-  DateTime pickupDate;
-  String? pickupTime;
-  Customer customer;
-  String? totalAmount;
-  DateTime deliveryDate;
-  String? deliveryTime;
-  String? orderType;
-  String? netTaxable;
-  String? vat;
-  Map<String, String?>? customerAddress;
+  final String? orderId;
+  final DateTime? createdDate;
+  final String? orderNumber;
+  final DateTime? pickupDate;
+  final String? pickupTime;
+  final Customer? customer;
+  final String? totalAmount;
+  final DateTime? deliveryDate;
+  final String? deliveryTime;
+  final String? orderType;
+  final String? netTaxable;
+  final String? vat;
+  final Map<String, String?>? customerAddress;
 
   Customerdatum({
-    required this.orderId,
-    required this.createdDate,
-    required this.orderNumber,
-    required this.pickupDate,
-    required this.pickupTime,
-    required this.customer,
-    required this.totalAmount,
-    required this.deliveryDate,
-    required this.deliveryTime,
-    required this.orderType,
-    required this.netTaxable,
-    required this.vat,
-    required this.customerAddress,
+    this.orderId,
+    this.createdDate,
+    this.orderNumber,
+    this.pickupDate,
+    this.pickupTime,
+    this.customer,
+    this.totalAmount,
+    this.deliveryDate,
+    this.deliveryTime,
+    this.orderType,
+    this.netTaxable,
+    this.vat,
+    this.customerAddress,
   });
 
   factory Customerdatum.fromJson(Map<String, dynamic> json) => Customerdatum(
     orderId: json["order_id"],
-    createdDate: DateTime.parse(json["created_date"]),
+    createdDate: json["created_date"] == null ? null : DateTime.parse(json["created_date"]),
     orderNumber: json["order_number"],
-    pickupDate: DateTime.parse(json["pickup_date"]),
+    pickupDate: json["pickup_date"] == null ? null : DateTime.parse(json["pickup_date"]),
     pickupTime: json["pickup_time"],
-    customer: Customer.fromJson(json["customer"]),
+    customer: json["customer"] == null ? null : Customer.fromJson(json["customer"]),
     totalAmount: json["total_amount"],
-    deliveryDate: json["Delivery_date"] != null ? DateTime.parse(json["Delivery_date"]) : DateTime.now(),
-    deliveryTime: json["Delivery_time"] ?? '',
+    deliveryDate: json["Delivery_date"] == null ? null : DateTime.parse(json["Delivery_date"]),
+    deliveryTime: json["Delivery_time"],
     orderType: json["order_type"],
     netTaxable: json["net_taxable"],
     vat: json["vat"],
@@ -119,28 +117,28 @@ class Customerdatum {
 
   Map<String, dynamic> toJson() => {
     "order_id": orderId,
-    "created_date": createdDate.toIso8601String(),
+    "created_date": createdDate?.toIso8601String(),
     "order_number": orderNumber,
-    "pickup_date": "${pickupDate.year.toString().padLeft(4, '0')}-${pickupDate.month.toString().padLeft(2, '0')}-${pickupDate.day.toString().padLeft(2, '0')}",
+    "pickup_date": "${pickupDate!.year.toString().padLeft(4, '0')}-${pickupDate!.month.toString().padLeft(2, '0')}-${pickupDate!.day.toString().padLeft(2, '0')}",
     "pickup_time": pickupTime,
-    "customer": customer.toJson(),
+    "customer": customer?.toJson(),
     "total_amount": totalAmount,
-    "Delivery_date": "${deliveryDate.year.toString().padLeft(4, '0')}-${deliveryDate.month.toString().padLeft(2, '0')}-${deliveryDate.day.toString().padLeft(2, '0')}",
+    "Delivery_date": "${deliveryDate!.year.toString().padLeft(4, '0')}-${deliveryDate!.month.toString().padLeft(2, '0')}-${deliveryDate!.day.toString().padLeft(2, '0')}",
     "Delivery_time": deliveryTime,
     "order_type": orderType,
     "net_taxable": netTaxable,
     "vat": vat,
- //   "customer_address": Map.from(customerAddress!).map((k, v) => MapEntry<String, dynamic>(k, v)),
+    "customer_address": Map.from(customerAddress!).map((k, v) => MapEntry<String, dynamic>(k, v)),
   };
 }
 
 class Customer {
-  String name;
-  String customerType;
+  final String? name;
+  final String? customerType;
 
   Customer({
-    required this.name,
-    required this.customerType,
+    this.name,
+    this.customerType,
   });
 
   factory Customer.fromJson(Map<String, dynamic> json) => Customer(

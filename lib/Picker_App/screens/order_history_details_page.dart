@@ -295,13 +295,13 @@ class _OrderHistoryDetailsPageState extends State<OrderHistoryDetailsPage> {
                 });
                 if (value.status == true) {
                   setState(() {
-                    customerData = value.data.customerdata;
+                    customerData = value.data?.customerdata ?? [];
                   });
-                  print('#######ssss${value.data.customerdata[0].deliveryDate}');
+                  print('#######ssss${value.data?.customerdata?[0].deliveryDate}');
                 }
                 else {
                   value.status == false;
-                  snackBar(context, message: value.message);
+                  snackBar(context, message: value.message.toString());
                 }
               });
 
@@ -334,7 +334,7 @@ class _OrderHistoryDetailsPageState extends State<OrderHistoryDetailsPage> {
                       InkWell(
                         onTap: () {
                           Navigator.push(context, MaterialPageRoute(
-                              builder: (context) =>  OrderDetailsPage(orderId: "3ffd4493-7d0a-4fee-82a5-af1f103d6b57")));
+                              builder: (context) =>  OrderDetailsPage(orderId: customerData[index].orderId)));
                         },
                         child: Align(
                             alignment: Alignment.topRight,
@@ -342,13 +342,29 @@ class _OrderHistoryDetailsPageState extends State<OrderHistoryDetailsPage> {
                         ),
                       ),
                        RowItem(
-                        label: 'Customer name:', value: customerData[index].customer.name,),
-                       RowItem(label: 'Customer type:', value: customerData[index].customer.customerType,),
+                        label: 'Customer name:', value: '${customerData[index].customer?.name}',),
+                       RowItem(label: 'Customer type:', value: '${customerData[index].customer?.customerType}',),
                        RowItem(label: 'Mode of Delivery:',
                           value: '${customerData[index].orderType}',
-                          color: pickerOrangeTypeColor,
+                          color: MaterialStateColor.resolveWith((states) {
+                            if (customerData[index].orderType == 'Urgent') {
+                              print(5555);
+                              return pickerOrangeTypeColor;
+                            } else
+                            if (customerData[index].orderType == 'Express') {
+                              print(6666);
+                              return pickerYellowTypeColor;
+                            } else
+                            if (customerData[index].orderType == 'Normal') {
+                              print(7777);
+                              return pickerGreyTypeColor;
+                            } else {
+                              print(8888);
+                              return Colors.transparent;
+                            }
+                          }),
                           isShowButton: true),
-                       RowItem(label: 'Order No:', value: customerData[index].orderNumber,),
+                       RowItem(label: 'Order No:', value: '${customerData[index].orderNumber}',),
                        RowItem(label: 'Building Name/No:', value: '${customerData[index].customerAddress!["building_name_no"]}',),
                        RowItem(label: 'Floor No:', value: '${customerData[index].customerAddress!["floor_no"]}',),
                        RowItem(label: 'House No:', value: '${customerData[index].customerAddress!["flat_no_house_no"]}',),
