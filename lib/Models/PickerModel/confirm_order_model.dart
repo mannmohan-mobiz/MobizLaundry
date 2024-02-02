@@ -9,136 +9,136 @@ PickerConfirmOrderModel pickerConfirmOrderModelFromJson(String str) => PickerCon
 String pickerConfirmOrderModelToJson(PickerConfirmOrderModel data) => json.encode(data.toJson());
 
 class PickerConfirmOrderModel {
-  bool status;
-  List<PickerConfirmOrder> data;
-  String message;
+  final bool? status;
+  final List<PickerConfirmOrder>? data;
+  final String? message;
 
   PickerConfirmOrderModel({
-    required this.status,
-    required this.data,
-    required this.message,
+    this.status,
+    this.data,
+    this.message,
   });
 
   factory PickerConfirmOrderModel.fromJson(Map<String, dynamic> json) => PickerConfirmOrderModel(
     status: json["status"],
-    data: List<PickerConfirmOrder>.from(json["data"].map((x) => PickerConfirmOrder.fromJson(x))),
+    data: json["data"] == null ? [] : List<PickerConfirmOrder>.from(json["data"]!.map((x) => PickerConfirmOrder.fromJson(x))),
     message: json["message"],
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": List<dynamic>.from(data.map((x) => x.toJson())),
+    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x.toJson())),
     "message": message,
   };
 }
 
 class PickerConfirmOrder {
-  ConfirmOrder order;
-  List<Cart> cart;
+  final DatumOrder? order;
+  final List<Cart>? cart;
 
   PickerConfirmOrder({
-    required this.order,
-    required this.cart,
+    this.order,
+    this.cart,
   });
 
   factory PickerConfirmOrder.fromJson(Map<String, dynamic> json) => PickerConfirmOrder(
-    order: ConfirmOrder.fromJson(json["order"]),
-    cart: List<Cart>.from(json["cart"].map((x) => Cart.fromJson(x))),
+    order: json["order"] == null ? null : DatumOrder.fromJson(json["order"]),
+    cart: json["cart"] == null ? [] : List<Cart>.from(json["cart"]!.map((x) => Cart.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
-    "order": order.toJson(),
-    "cart": List<dynamic>.from(cart.map((x) => x.toJson())),
+    "order": order?.toJson(),
+    "cart": cart == null ? [] : List<dynamic>.from(cart!.map((x) => x.toJson())),
   };
 }
 
 class Cart {
-  String cartId;
-  CartOrder order;
-  String quantity;
-  String amount;
-  ItemService itemService;
+  final String? cartId;
+  final CartOrder? order;
+  final String? quantity;
+  final String? amount;
+  final ItemService? itemService;
 
   Cart({
-    required this.cartId,
-    required this.order,
-    required this.quantity,
-    required this.amount,
-    required this.itemService,
+    this.cartId,
+    this.order,
+    this.quantity,
+    this.amount,
+    this.itemService,
   });
 
   factory Cart.fromJson(Map<String, dynamic> json) => Cart(
     cartId: json["cart_id"],
-    order: CartOrder.fromJson(json["order"]),
+    order: json["order"] == null ? null : CartOrder.fromJson(json["order"]),
     quantity: json["quantity"],
     amount: json["amount"],
-    itemService: ItemService.fromJson(json["item_service"]),
+    itemService: json["item_service"] == null ? null : ItemService.fromJson(json["item_service"]),
   );
 
   Map<String, dynamic> toJson() => {
     "cart_id": cartId,
-    "order": order.toJson(),
+    "order": order?.toJson(),
     "quantity": quantity,
     "amount": amount,
-    "item_service": itemService.toJson(),
+    "item_service": itemService?.toJson(),
   };
 }
 
 class ItemService {
-  String itemSerId;
-  Item item;
-  Category category;
-  SubCategory subCategory;
+  final String? itemSerId;
+  final Item? item;
+  final Category? category;
+  final SubCategory? subCategory;
 
   ItemService({
-    required this.itemSerId,
-    required this.item,
-    required this.category,
-    required this.subCategory,
+    this.itemSerId,
+    this.item,
+    this.category,
+    this.subCategory,
   });
 
   factory ItemService.fromJson(Map<String, dynamic> json) => ItemService(
     itemSerId: json["item_ser_id"],
-    item: Item.fromJson(json["item"]),
-    category: Category.fromJson(json["category"]),
-    subCategory: SubCategory.fromJson(json["sub_category"]),
+    item: json["item"] == null ? null : Item.fromJson(json["item"]),
+    category: json["category"] == null ? null : Category.fromJson(json["category"]),
+    subCategory: json["sub_category"] == null ? null : SubCategory.fromJson(json["sub_category"]),
   );
 
   Map<String, dynamic> toJson() => {
     "item_ser_id": itemSerId,
-    "item": item.toJson(),
-    "category": category.toJson(),
-    "sub_category": subCategory.toJson(),
+    "item": item?.toJson(),
+    "category": category?.toJson(),
+    "sub_category": subCategory?.toJson(),
   };
 }
 
 class Category {
-  String categoryId;
-  ServiceMaster serviceMaster;
+  final String? categoryId;
+  final ServiceMaster? serviceMaster;
 
   Category({
-    required this.categoryId,
-    required this.serviceMaster,
+    this.categoryId,
+    this.serviceMaster,
   });
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
     categoryId: json["category_id"],
-    serviceMaster: ServiceMaster.fromJson(json["service_master"]),
+    serviceMaster: json["service_master"] == null ? null : ServiceMaster.fromJson(json["service_master"]),
   );
 
   Map<String, dynamic> toJson() => {
     "category_id": categoryId,
-    "service_master": serviceMaster.toJson(),
+    "service_master": serviceMaster?.toJson(),
   };
 }
 
 class ServiceMaster {
-  String categoryName;
-  String categoryImage;
+  final String? categoryName;
+  final String? categoryImage;
 
   ServiceMaster({
-    required this.categoryName,
-    required this.categoryImage,
+    this.categoryName,
+    this.categoryImage,
   });
 
   factory ServiceMaster.fromJson(Map<String, dynamic> json) => ServiceMaster(
@@ -153,14 +153,14 @@ class ServiceMaster {
 }
 
 class Item {
-  String itemId;
-  String itemName;
-  String itemImage;
+  final String? itemId;
+  final String? itemName;
+  final String? itemImage;
 
   Item({
-    required this.itemId,
-    required this.itemName,
-    required this.itemImage,
+    this.itemId,
+    this.itemName,
+    this.itemImage,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => Item(
@@ -177,32 +177,32 @@ class Item {
 }
 
 class SubCategory {
-  String subCatId;
-  SubServiceMaster subServiceMaster;
+  final String? subCatId;
+  final SubServiceMaster? subServiceMaster;
 
   SubCategory({
-    required this.subCatId,
-    required this.subServiceMaster,
+    this.subCatId,
+    this.subServiceMaster,
   });
 
   factory SubCategory.fromJson(Map<String, dynamic> json) => SubCategory(
     subCatId: json["sub_cat_id"],
-    subServiceMaster: SubServiceMaster.fromJson(json["sub_service_master"]),
+    subServiceMaster: json["sub_service_master"] == null ? null : SubServiceMaster.fromJson(json["sub_service_master"]),
   );
 
   Map<String, dynamic> toJson() => {
     "sub_cat_id": subCatId,
-    "sub_service_master": subServiceMaster.toJson(),
+    "sub_service_master": subServiceMaster?.toJson(),
   };
 }
 
 class SubServiceMaster {
-  String subCatName;
-  String subCatImage;
+  final String? subCatName;
+  final String? subCatImage;
 
   SubServiceMaster({
-    required this.subCatName,
-    required this.subCatImage,
+    this.subCatName,
+    this.subCatImage,
   });
 
   factory SubServiceMaster.fromJson(Map<String, dynamic> json) => SubServiceMaster(
@@ -217,62 +217,64 @@ class SubServiceMaster {
 }
 
 class CartOrder {
-  String orderId;
-  PurpleCustomer customer;
-  Staff staff;
-  String createdBy;
-  DateTime createdDate;
-  String orderNumber;
-  dynamic pickupDate;
-  dynamic pickupTime;
-  String pickupMode;
-  bool confirmPickup;
-  String status;
-  String orderType;
-  String totalAmount;
-  String orderVia;
-  DateTime orderDate;
-  DateTime deliveryDate;
-  String deliveryTime;
-  bool paidStatus;
-  String discount;
-  String netTaxable;
-  String vat;
-  String grantTotal;
-  dynamic invoice;
+  final String? orderId;
+  final PurpleCustomer? customer;
+  final Staff? staff;
+  final String? createdBy;
+  final DateTime? createdDate;
+  final String? orderNumber;
+  final dynamic pickupDate;
+  final dynamic pickupTime;
+  final String? pickupMode;
+  final bool? confirmPickup;
+  final String? status;
+  final String? orderType;
+  final String? totalAmount;
+  final String? orderVia;
+  final DateTime? orderDate;
+  final DateTime? deliveryDate;
+  final String? deliveryTime;
+  final bool? paidStatus;
+  final dynamic? discount;
+  final dynamic? netTaxable;
+  final dynamic? vat;
+  final dynamic? grantTotal;
+  final dynamic invoice;
+  final String? customerAddress;
 
   CartOrder({
-    required this.orderId,
-    required this.customer,
-    required this.staff,
-    required this.createdBy,
-    required this.createdDate,
-    required this.orderNumber,
-    required this.pickupDate,
-    required this.pickupTime,
-    required this.pickupMode,
-    required this.confirmPickup,
-    required this.status,
-    required this.orderType,
-    required this.totalAmount,
-    required this.orderVia,
-    required this.orderDate,
-    required this.deliveryDate,
-    required this.deliveryTime,
-    required this.paidStatus,
-    required this.discount,
-    required this.netTaxable,
-    required this.vat,
-    required this.grantTotal,
-    required this.invoice,
+    this.orderId,
+    this.customer,
+    this.staff,
+    this.createdBy,
+    this.createdDate,
+    this.orderNumber,
+    this.pickupDate,
+    this.pickupTime,
+    this.pickupMode,
+    this.confirmPickup,
+    this.status,
+    this.orderType,
+    this.totalAmount,
+    this.orderVia,
+    this.orderDate,
+    this.deliveryDate,
+    this.deliveryTime,
+    this.paidStatus,
+    this.discount,
+    this.netTaxable,
+    this.vat,
+    this.grantTotal,
+    this.invoice,
+    this.customerAddress,
   });
 
   factory CartOrder.fromJson(Map<String, dynamic> json) => CartOrder(
     orderId: json["order_id"],
-    customer: PurpleCustomer.fromJson(json["customer"]),
-    staff: Staff.fromJson(json["staff"]),
+    customer: json["customer"] == null ? null : PurpleCustomer.fromJson(json["customer"]),
+    staff: json["staff"] == null ? null : Staff.fromJson(json["staff"]),
     createdBy: json["created_by"],
-    createdDate: DateTime.parse(json["created_date"]),
+    createdDate: json["created_date"] == null ? null : DateTime.parse(json["created_date"]),
     orderNumber: json["order_number"],
     pickupDate: json["pickup_date"],
     pickupTime: json["pickup_time"],
@@ -282,8 +284,8 @@ class CartOrder {
     orderType: json["order_type"],
     totalAmount: json["total_amount"],
     orderVia: json["order_via"],
-    orderDate: DateTime.parse(json["order_date"]),
-    deliveryDate: DateTime.parse(json["Delivery_date"]),
+    orderDate: json["order_date"] == null ? null : DateTime.parse(json["order_date"]),
+    deliveryDate: json["Delivery_date"] == null ? null : DateTime.parse(json["Delivery_date"]),
     deliveryTime: json["Delivery_time"],
     paidStatus: json["paid_status"],
     discount: json["discount"],
@@ -291,14 +293,15 @@ class CartOrder {
     vat: json["vat"],
     grantTotal: json["grant_total"],
     invoice: json["invoice"],
+    customerAddress: json["customer_address"],
   );
 
   Map<String, dynamic> toJson() => {
     "order_id": orderId,
-    "customer": customer.toJson(),
-    "staff": staff.toJson(),
+    "customer": customer?.toJson(),
+    "staff": staff?.toJson(),
     "created_by": createdBy,
-    "created_date": createdDate.toIso8601String(),
+    "created_date": createdDate?.toIso8601String(),
     "order_number": orderNumber,
     "pickup_date": pickupDate,
     "pickup_time": pickupTime,
@@ -308,8 +311,8 @@ class CartOrder {
     "order_type": orderType,
     "total_amount": totalAmount,
     "order_via": orderVia,
-    "order_date": "${orderDate.year.toString().padLeft(4, '0')}-${orderDate.month.toString().padLeft(2, '0')}-${orderDate.day.toString().padLeft(2, '0')}",
-    "Delivery_date": "${deliveryDate.year.toString().padLeft(4, '0')}-${deliveryDate.month.toString().padLeft(2, '0')}-${deliveryDate.day.toString().padLeft(2, '0')}",
+    "order_date": "${orderDate!.year.toString().padLeft(4, '0')}-${orderDate!.month.toString().padLeft(2, '0')}-${orderDate!.day.toString().padLeft(2, '0')}",
+    "Delivery_date": "${deliveryDate!.year.toString().padLeft(4, '0')}-${deliveryDate!.month.toString().padLeft(2, '0')}-${deliveryDate!.day.toString().padLeft(2, '0')}",
     "Delivery_time": deliveryTime,
     "paid_status": paidStatus,
     "discount": discount,
@@ -317,74 +320,75 @@ class CartOrder {
     "vat": vat,
     "grant_total": grantTotal,
     "invoice": invoice,
+    "customer_address": customerAddress,
   };
 }
 
 class PurpleCustomer {
-  String customerId;
-  String createdBy;
-  DateTime createdDate;
-  String name;
-  String customerType;
-  String buildingNo;
-  String roomNo;
-  String mobile;
-  dynamic altMobile;
-  String whatsApp;
-  dynamic creditLimit;
-  dynamic creditDays;
-  dynamic creditInvoices;
-  dynamic gpse;
-  dynamic gpsn;
-  String status;
-  dynamic trn;
-  dynamic billingAddrs;
-  dynamic designation;
-  dynamic buildingName;
-  dynamic floorNumber;
-  dynamic flatNumber;
-  dynamic altEmail;
-  dynamic companyName;
-  int user;
-  String staff;
-  String location;
-  String pricegroup;
+  final String? customerId;
+  final String? createdBy;
+  final DateTime? createdDate;
+  final String? name;
+  final String? customerType;
+  final String? buildingNo;
+  final String? roomNo;
+  final String? mobile;
+  final dynamic altMobile;
+  final String? whatsApp;
+  final dynamic creditLimit;
+  final dynamic creditDays;
+  final dynamic creditInvoices;
+  final dynamic gpse;
+  final dynamic gpsn;
+  final String? status;
+  final dynamic trn;
+  final dynamic billingAddrs;
+  final dynamic designation;
+  final dynamic buildingName;
+  final dynamic floorNumber;
+  final dynamic flatNumber;
+  final dynamic altEmail;
+  final dynamic companyName;
+  final int? user;
+  final String? staff;
+  final String? location;
+  final String? pricegroup;
 
   PurpleCustomer({
-    required this.customerId,
-    required this.createdBy,
-    required this.createdDate,
-    required this.name,
-    required this.customerType,
-    required this.buildingNo,
-    required this.roomNo,
-    required this.mobile,
-    required this.altMobile,
-    required this.whatsApp,
-    required this.creditLimit,
-    required this.creditDays,
-    required this.creditInvoices,
-    required this.gpse,
-    required this.gpsn,
-    required this.status,
-    required this.trn,
-    required this.billingAddrs,
-    required this.designation,
-    required this.buildingName,
-    required this.floorNumber,
-    required this.flatNumber,
-    required this.altEmail,
-    required this.companyName,
-    required this.user,
-    required this.staff,
-    required this.location,
-    required this.pricegroup,
+    this.customerId,
+    this.createdBy,
+    this.createdDate,
+    this.name,
+    this.customerType,
+    this.buildingNo,
+    this.roomNo,
+    this.mobile,
+    this.altMobile,
+    this.whatsApp,
+    this.creditLimit,
+    this.creditDays,
+    this.creditInvoices,
+    this.gpse,
+    this.gpsn,
+    this.status,
+    this.trn,
+    this.billingAddrs,
+    this.designation,
+    this.buildingName,
+    this.floorNumber,
+    this.flatNumber,
+    this.altEmail,
+    this.companyName,
+    this.user,
+    this.staff,
+    this.location,
+    this.pricegroup,
   });
 
   factory PurpleCustomer.fromJson(Map<String, dynamic> json) => PurpleCustomer(
     customerId: json["customer_id"],
     createdBy: json["created_by"],
-    createdDate: DateTime.parse(json["created_date"]),
+    createdDate: json["created_date"] == null ? null : DateTime.parse(json["created_date"]),
     name: json["name"],
     customerType: json["customer_type"],
     buildingNo: json["building_no"],
@@ -415,7 +419,7 @@ class PurpleCustomer {
   Map<String, dynamic> toJson() => {
     "customer_id": customerId,
     "created_by": createdBy,
-    "created_date": createdDate.toIso8601String(),
+    "created_date": createdDate?.toIso8601String(),
     "name": name,
     "customer_type": customerType,
     "building_no": buildingNo,
@@ -445,16 +449,16 @@ class PurpleCustomer {
 }
 
 class Staff {
-  String staffId;
-  String name;
-  String curMobile;
-  String perMobile;
+  final String? staffId;
+  final String? name;
+  final String? curMobile;
+  final String? perMobile;
 
   Staff({
-    required this.staffId,
-    required this.name,
-    required this.curMobile,
-    required this.perMobile,
+    this.staffId,
+    this.name,
+    this.curMobile,
+    this.perMobile,
   });
 
   factory Staff.fromJson(Map<String, dynamic> json) => Staff(
@@ -472,62 +476,64 @@ class Staff {
   };
 }
 
-class ConfirmOrder {
-  String orderId;
-  FluffyCustomer customer;
-  String createdBy;
-  DateTime createdDate;
-  String orderNumber;
-  dynamic pickupDate;
-  dynamic pickupTime;
-  String pickupMode;
-  bool confirmPickup;
-  String status;
-  String orderType;
-  String totalAmount;
-  String orderVia;
-  DateTime orderDate;
-  DateTime deliveryDate;
-  String deliveryTime;
-  bool paidStatus;
-  dynamic discount;
-  dynamic netTaxable;
-  dynamic vat;
-  dynamic grantTotal;
-  String staff;
-  dynamic invoice;
+class DatumOrder {
+  final String? orderId;
+  final FluffyCustomer? customer;
+  final String? createdBy;
+  final DateTime? createdDate;
+  final String? orderNumber;
+  final dynamic pickupDate;
+  final dynamic pickupTime;
+  final String? pickupMode;
+  final bool? confirmPickup;
+  final String? status;
+  final String? orderType;
+  final String? totalAmount;
+  final String? orderVia;
+  final DateTime? orderDate;
+  final DateTime? deliveryDate;
+  final String? deliveryTime;
+  final bool? paidStatus;
+  final String? discount;
+  final String? netTaxable;
+  final String? vat;
+  final String? grantTotal;
+  final String? staff;
+  final dynamic invoice;
+  final String? customerAddress;
 
-  ConfirmOrder({
-    required this.orderId,
-    required this.customer,
-    required this.createdBy,
-    required this.createdDate,
-    required this.orderNumber,
-    required this.pickupDate,
-    required this.pickupTime,
-    required this.pickupMode,
-    required this.confirmPickup,
-    required this.status,
-    required this.orderType,
-    required this.totalAmount,
-    required this.orderVia,
-    required this.orderDate,
-    required this.deliveryDate,
-    required this.deliveryTime,
-    required this.paidStatus,
-    required this.discount,
-    required this.netTaxable,
-    required this.vat,
-    required this.grantTotal,
-    required this.staff,
-    required this.invoice,
+  DatumOrder({
+    this.orderId,
+    this.customer,
+    this.createdBy,
+    this.createdDate,
+    this.orderNumber,
+    this.pickupDate,
+    this.pickupTime,
+    this.pickupMode,
+    this.confirmPickup,
+    this.status,
+    this.orderType,
+    this.totalAmount,
+    this.orderVia,
+    this.orderDate,
+    this.deliveryDate,
+    this.deliveryTime,
+    this.paidStatus,
+    this.discount,
+    this.netTaxable,
+    this.vat,
+    this.grantTotal,
+    this.staff,
+    this.invoice,
+    this.customerAddress,
   });
 
-  factory ConfirmOrder.fromJson(Map<String, dynamic> json) => ConfirmOrder(
+  factory DatumOrder.fromJson(Map<String, dynamic> json) => DatumOrder(
     orderId: json["order_id"],
-    customer: FluffyCustomer.fromJson(json["customer"]),
+    customer: json["customer"] == null ? null : FluffyCustomer.fromJson(json["customer"]),
     createdBy: json["created_by"],
-    createdDate: DateTime.parse(json["created_date"]),
+    createdDate: json["created_date"] == null ? null : DateTime.parse(json["created_date"]),
     orderNumber: json["order_number"],
     pickupDate: json["pickup_date"],
     pickupTime: json["pickup_time"],
@@ -537,8 +543,8 @@ class ConfirmOrder {
     orderType: json["order_type"],
     totalAmount: json["total_amount"],
     orderVia: json["order_via"],
-    orderDate: DateTime.parse(json["order_date"]),
-    deliveryDate: DateTime.parse(json["Delivery_date"]),
+    orderDate: json["order_date"] == null ? null : DateTime.parse(json["order_date"]),
+    deliveryDate: json["Delivery_date"] == null ? null : DateTime.parse(json["Delivery_date"]),
     deliveryTime: json["Delivery_time"],
     paidStatus: json["paid_status"],
     discount: json["discount"],
@@ -547,13 +553,14 @@ class ConfirmOrder {
     grantTotal: json["grant_total"],
     staff: json["staff"],
     invoice: json["invoice"],
+    customerAddress: json["customer_address"],
   );
 
   Map<String, dynamic> toJson() => {
     "order_id": orderId,
-    "customer": customer.toJson(),
+    "customer": customer?.toJson(),
     "created_by": createdBy,
-    "created_date": createdDate.toIso8601String(),
+    "created_date": createdDate?.toIso8601String(),
     "order_number": orderNumber,
     "pickup_date": pickupDate,
     "pickup_time": pickupTime,
@@ -563,8 +570,8 @@ class ConfirmOrder {
     "order_type": orderType,
     "total_amount": totalAmount,
     "order_via": orderVia,
-    "order_date": "${orderDate.year.toString().padLeft(4, '0')}-${orderDate.month.toString().padLeft(2, '0')}-${orderDate.day.toString().padLeft(2, '0')}",
-    "Delivery_date": "${deliveryDate.year.toString().padLeft(4, '0')}-${deliveryDate.month.toString().padLeft(2, '0')}-${deliveryDate.day.toString().padLeft(2, '0')}",
+    "order_date": "${orderDate!.year.toString().padLeft(4, '0')}-${orderDate!.month.toString().padLeft(2, '0')}-${orderDate!.day.toString().padLeft(2, '0')}",
+    "Delivery_date": "${deliveryDate!.year.toString().padLeft(4, '0')}-${deliveryDate!.month.toString().padLeft(2, '0')}-${deliveryDate!.day.toString().padLeft(2, '0')}",
     "Delivery_time": deliveryTime,
     "paid_status": paidStatus,
     "discount": discount,
@@ -573,75 +580,76 @@ class ConfirmOrder {
     "grant_total": grantTotal,
     "staff": staff,
     "invoice": invoice,
+    "customer_address": customerAddress,
   };
 }
 
 class FluffyCustomer {
-  String customerId;
-  Location location;
-  String createdBy;
-  DateTime createdDate;
-  String name;
-  String customerType;
-  String buildingNo;
-  String roomNo;
-  String mobile;
-  dynamic altMobile;
-  String whatsApp;
-  dynamic creditLimit;
-  dynamic creditDays;
-  dynamic creditInvoices;
-  dynamic gpse;
-  dynamic gpsn;
-  String status;
-  dynamic trn;
-  dynamic billingAddrs;
-  dynamic designation;
-  dynamic buildingName;
-  dynamic floorNumber;
-  dynamic flatNumber;
-  dynamic altEmail;
-  dynamic companyName;
-  int user;
-  String staff;
-  String pricegroup;
+  final String? customerId;
+  final Location? location;
+  final String? createdBy;
+  final DateTime? createdDate;
+  final String? name;
+  final String? customerType;
+  final String? buildingNo;
+  final String? roomNo;
+  final String? mobile;
+  final dynamic altMobile;
+  final String? whatsApp;
+  final dynamic creditLimit;
+  final dynamic creditDays;
+  final dynamic creditInvoices;
+  final dynamic gpse;
+  final dynamic gpsn;
+  final String? status;
+  final dynamic trn;
+  final dynamic billingAddrs;
+  final dynamic designation;
+  final dynamic buildingName;
+  final dynamic floorNumber;
+  final dynamic flatNumber;
+  final dynamic altEmail;
+  final dynamic companyName;
+  final int? user;
+  final String? staff;
+  final String? pricegroup;
 
   FluffyCustomer({
-    required this.customerId,
-    required this.location,
-    required this.createdBy,
-    required this.createdDate,
-    required this.name,
-    required this.customerType,
-    required this.buildingNo,
-    required this.roomNo,
-    required this.mobile,
-    required this.altMobile,
-    required this.whatsApp,
-    required this.creditLimit,
-    required this.creditDays,
-    required this.creditInvoices,
-    required this.gpse,
-    required this.gpsn,
-    required this.status,
-    required this.trn,
-    required this.billingAddrs,
-    required this.designation,
-    required this.buildingName,
-    required this.floorNumber,
-    required this.flatNumber,
-    required this.altEmail,
-    required this.companyName,
-    required this.user,
-    required this.staff,
-    required this.pricegroup,
+    this.customerId,
+    this.location,
+    this.createdBy,
+    this.createdDate,
+    this.name,
+    this.customerType,
+    this.buildingNo,
+    this.roomNo,
+    this.mobile,
+    this.altMobile,
+    this.whatsApp,
+    this.creditLimit,
+    this.creditDays,
+    this.creditInvoices,
+    this.gpse,
+    this.gpsn,
+    this.status,
+    this.trn,
+    this.billingAddrs,
+    this.designation,
+    this.buildingName,
+    this.floorNumber,
+    this.flatNumber,
+    this.altEmail,
+    this.companyName,
+    this.user,
+    this.staff,
+    this.pricegroup,
   });
 
   factory FluffyCustomer.fromJson(Map<String, dynamic> json) => FluffyCustomer(
     customerId: json["customer_id"],
-    location: Location.fromJson(json["Location"]),
+    location: json["Location"] == null ? null : Location.fromJson(json["Location"]),
     createdBy: json["created_by"],
-    createdDate: DateTime.parse(json["created_date"]),
+    createdDate: json["created_date"] == null ? null : DateTime.parse(json["created_date"]),
     name: json["name"],
     customerType: json["customer_type"],
     buildingNo: json["building_no"],
@@ -670,9 +678,9 @@ class FluffyCustomer {
 
   Map<String, dynamic> toJson() => {
     "customer_id": customerId,
-    "Location": location.toJson(),
+    "Location": location?.toJson(),
     "created_by": createdBy,
-    "created_date": createdDate.toIso8601String(),
+    "created_date": createdDate?.toIso8601String(),
     "name": name,
     "customer_type": customerType,
     "building_no": buildingNo,
@@ -701,10 +709,10 @@ class FluffyCustomer {
 }
 
 class Location {
-  String name;
+  final String? name;
 
   Location({
-    required this.name,
+    this.name,
   });
 
   factory Location.fromJson(Map<String, dynamic> json) => Location(

@@ -37,12 +37,20 @@ class CartList {
   int cartCount;
   String walletBalance;
   List<Map<String, String?>> deliveryAddress;
+  String vat;
+  String grandTotal;
+  String discount;
+  String netTaxable;
 
   CartList({
     required this.cart,
     required this.cartCount,
     required this.walletBalance,
     required this.deliveryAddress,
+    required this.vat,
+    required this.grandTotal,
+    required this.discount,
+    required this.netTaxable,
   });
 
   factory CartList.fromJson(Map<String, dynamic> json) => CartList(
@@ -50,6 +58,10 @@ class CartList {
     cartCount: json["cart_count"],
     walletBalance: json["wallet_balance"],
     deliveryAddress: List<Map<String, String?>>.from(json["delivery_address"].map((x) => Map.from(x).map((k, v) => MapEntry<String, String?>(k, v)))),
+    vat: json["VAT"],
+    grandTotal: json["grand_total"],
+    discount: json["discount"],
+    netTaxable: json["net_taxable"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -57,6 +69,10 @@ class CartList {
     "cart_count": cartCount,
     "wallet_balance": walletBalance,
     "delivery_address": List<dynamic>.from(deliveryAddress.map((x) => Map.from(x).map((k, v) => MapEntry<String, dynamic>(k, v)))),
+    "VAT": vat,
+    "grand_total": grandTotal,
+    "discount": discount,
+    "net_taxable": netTaxable,
   };
 }
 
@@ -247,11 +263,12 @@ class Order {
   DateTime deliveryDate;
   String deliveryTime;
   bool paidStatus;
-  dynamic discount;
-  dynamic netTaxable;
-  dynamic vat;
-  dynamic grantTotal;
+  String discount;
+  String netTaxable;
+  String vat;
+  String grantTotal;
   dynamic invoice;
+  dynamic customerAddress;
 
   Order({
     required this.orderId,
@@ -277,6 +294,7 @@ class Order {
     required this.vat,
     required this.grantTotal,
     required this.invoice,
+    required this.customerAddress,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
@@ -303,6 +321,7 @@ class Order {
     vat: json["vat"],
     grantTotal: json["grant_total"],
     invoice: json["invoice"],
+    customerAddress: json["customer_address"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -329,6 +348,7 @@ class Order {
     "vat": vat,
     "grant_total": grantTotal,
     "invoice": invoice,
+    "customer_address": customerAddress,
   };
 }
 

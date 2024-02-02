@@ -29,6 +29,7 @@ import '../../Models/PickerModel/expense_add_model.dart';
 import '../../Models/PickerModel/expense_drop_down_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
+import '../../Models/PickerModel/mark_as_picked_model.dart';
 import '../../Models/PickerModel/modes.dart';
 import '../../Models/PickerModel/new_order_save.dart';
 import '../../Models/PickerModel/order_details_model.dart';
@@ -917,7 +918,7 @@ class PickerRepository {
   }
 
   //Order Confirm || Place order
-  Future<PickerConfirmOrderModel> orderConfirmApi({required String token, required Map<String, String> body}) async {
+  Future<PickerConfirmOrderModel> orderConfirmApi({required String token, required Map<String, dynamic> body}) async {
     Dio dio = Dio();
     Options options = Options(
         headers: {
@@ -941,6 +942,42 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = PickerConfirmOrderModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
+  //Mark as picked
+  Future<MarkAsPickedModel> markAsPickedApi({required String token, required Map<String, dynamic> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    debugPrint('### token ### $token');
+    debugPrint('### body ### $body');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/mark_as_picked_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = MarkAsPickedModel.fromJson(response.data);
         print('RESULT####$result####');
         return result;
 

@@ -13,6 +13,7 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/container_widget.dart';
 import '../util/row_value.dart';
+import 'home_page_new.dart';
 
 class CollectItemsPage extends StatefulWidget {
   final String orderId;
@@ -25,6 +26,8 @@ class CollectItemsPage extends StatefulWidget {
 
 class _CollectItemsPageState extends State<CollectItemsPage> {
   final PickerRepository pickerRepository = PickerRepository();
+  TextEditingController commentController = TextEditingController();
+  TextEditingController collectedAmountController = TextEditingController();
   late CollectItems? data;
   List<String> priceValueData = [];
   bool isExpanded = false;
@@ -408,10 +411,10 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
               ),
               const SizedBox(height: 10,),
               TextField(
-                  controller: TextEditingController(),
+                  controller: commentController,
                   maxLines: 8,
                   style: const TextStyle(
-                      color: pickerCommentColor),
+                      color: pickerBlackColor),
                   decoration: const InputDecoration(
                     contentPadding: EdgeInsets.all(8),
                     hintText: 'Write Your Order Comment Here..',
@@ -461,46 +464,46 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                RowValue(label: 'Amount',
                   labelValue: 'AED ${state.collectItemsData?.totalAmount}',
                   labelValueColor: pickerBlackColor),
-              // const RowValue(label: 'Delivery Charges',
-              //     labelValue: 'AED 0',
-              //     labelValueColor: pickerBlackColor),
                RowValue(label: 'VAT',
                   labelValue:'AED ${state.collectItemsData?.vat ?? '0'}',
                   labelValueColor: pickerBlackColor),
                RowValue(label: 'Total Payable',
                   labelValue:  'AED ${state.collectItemsData?.totalAmountPayble}',
                   labelValueColor: pickerBlackColor),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Collected Amount',
-                    style: TextStyle(
-                      color: pickerBlackColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,),
-                  ),
-                  SizedBox(
-                    width: 150,
-                    height: 50,
-                    child: TextField(
-                      controller: TextEditingController(),
-                      keyboardType: TextInputType.number,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: const BorderSide(
-                              color: pickerGoldColor), // Enabled border color
+              Visibility(
+                visible: selectedOption == 'Cash',
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Collected Amount',
+                      style: TextStyle(
+                        color: pickerBlackColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,),
+                    ),
+                    SizedBox(
+                      width: 150,
+                      height: 50,
+                      child: TextField(
+                        controller: collectedAmountController,
+                        keyboardType: TextInputType.number,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: const BorderSide(
+                                color: pickerGoldColor), // Enabled border color
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               const SizedBox(height: 10),
               SizedBox(
@@ -512,7 +515,18 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                     ),
                     backgroundColor: pickerGoldColor,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+
+                    Map<String, dynamic> data = {
+                      "order_id": widget.orderId,
+                      "collect_amount": selectedOption == 'Cash' ? collectedAmountController.text : 0,
+                      "comments":  commentController.text,
+                    };
+                    print('#########${(data)}');
+                    pickerRepository.markAsPickedApi(token: authData.user_token.toString(),body: data).then((value) {
+                      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomePageNew(),), (route) => false);
+                    });
+                  },
                   child: const Center(
                     child: Text(
                       'MARK AS PICKED',

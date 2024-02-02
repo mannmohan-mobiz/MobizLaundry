@@ -29,11 +29,12 @@ class CartPageScreen extends StatefulWidget {
 class _CartPageScreenState extends State<CartPageScreen> {
   final PickerRepository pickerRepository = PickerRepository();
   bool isExpanded = false;
-  String selectedOption = 'Choose Payment method';
+  String selectedOption = 'Choose payment method';
   List<int> counterQuantity = [];
   List<String> priceValues = [];
   late CartList? data;
   var newWalletBalance;
+  String? wallId;
   TextEditingController collectedAmtController = TextEditingController();
 
 
@@ -447,10 +448,10 @@ class _CartPageScreenState extends State<CartPageScreen> {
               ),
             ),
              RowValue(label: 'Net Taxable Value',
-                labelValue: 'AED ${state.cartList?.cart[0].order.netTaxable ?? '0'}',
+                labelValue: 'AED ${state.cartList?.netTaxable}',
                 labelValueColor: pickerBlackColor),
              RowValue(label: 'Vat',
-                labelValue: 'AED ${state.cartList?.cart[0].order.vat ?? '0'}',
+                labelValue: 'AED ${state.cartList?.vat}',
                 labelValueColor: pickerBlackColor),
             BlocProvider(
             create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
@@ -527,9 +528,12 @@ class _CartPageScreenState extends State<CartPageScreen> {
                            pickerRepository.getWalletBalanceApi(token: authData.user_token.toString(),body: data).then((value) {
                             setState(() {
                               newWalletBalance = value.walletBalance;
+                              wallId = value.walletid;
                             });
                             print('BALANCE###$newWalletBalance');
-                          }
+                            print('ID###$wallId');
+
+                           }
                           );
                          }
 
@@ -595,42 +599,45 @@ class _CartPageScreenState extends State<CartPageScreen> {
                 'AED ${state.cartList?.walletBalance}',
                 labelValueColor: pickerBlackColor),
              RowValue(label: 'Total Payable',
-                labelValue: 'AED ${state.cartList?.cart[0].order.totalAmount}',
+                labelValue: 'AED ${state.cartList?.grandTotal}',
                 labelValueColor: pickerBlackColor),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Collected Amount',
-                    style: TextStyle(
-                      color: pickerBlackColor,
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,),
-                  ),
-                  SizedBox(
-                    width: 150,
-                    height: 50,
-                    child: TextField(
-                      controller: collectedAmtController,
-                      keyboardType: TextInputType.number,
-                      style: const TextStyle(
+            Visibility(
+              visible: selectedOption == 'Cash',
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Collected Amount',
+                      style: TextStyle(
                         color: pickerBlackColor,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                          borderSide: const BorderSide(
-                              color: pickerGoldColor), // Enabled border color
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,),
+                    ),
+                    SizedBox(
+                      width: 150,
+                      height: 50,
+                      child: TextField(
+                        controller: collectedAmtController,
+                        keyboardType: TextInputType.number,
+                        style: const TextStyle(
+                          color: pickerBlackColor,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            borderSide: const BorderSide(
+                                color: pickerGoldColor), // Enabled border color
+                          ),
                         ),
                       ),
                     ),
-                  ),
 
-                ],
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -645,26 +652,27 @@ class _CartPageScreenState extends State<CartPageScreen> {
                   backgroundColor: pickerGoldColor,
                 ),
                 onPressed: () {
-                  if(selectedOption == null){
+                  if(selectedOption == 'Choose payment method'){
                     snackBar(context, message: 'Please choose Payment type');
                   }else {
-                  Map<String, String> data = {
-                    "id": authData.user_id.toString(),
+                  Map<String, dynamic> data = {
+                    "customer_id": widget.custIdd,
                     "order_id": widget.orderId,
-                    "discount":  '${state.cartList?.cart[0].order.discount}',
-                    "net_taxable": '${state.cartList?.cart[0].order.netTaxable ?? 0}',
-                    "vat":  '${state.cartList?.cart[0].order.vat ?? 0}',
-                    "grant_total": '${state.cartList?.cart[0].order.grantTotal}',
+                    "discount":  double.parse(state.cartList!.discount).toDouble(),
+                    "net_taxable": double.parse(state.cartList!.netTaxable).toDouble(),
+                    "vat":  double.parse(state.cartList!.vat).toDouble(),
+                    "grant_total": double.parse(state.cartList!.grandTotal).toDouble(),
                     "collect_mode": selectedOption,
-                    "payed_amount": collectedAmtController.text
+                    "payed_amount": selectedOption == 'Cash' ? collectedAmtController.text : 0,
+                    //"payed_amount": collectedAmtController.text,
+                    "customer_address": "04882634ab7a465fa5fe85f129cb1b5b",
+                    "wallet_id": '$wallId'
                   };
                   print('#########${(data)}');
-                  pickerRepository.orderConfirmApi(token: authData.user_token.toString(),body: data).then((value) {
+                 pickerRepository.orderConfirmApi(token: authData.user_token.toString(),body: data).then((value) {
                     Navigator.push(context, MaterialPageRoute(
                      builder: (context) =>  ThankYouPageScreen(ordId: widget.orderId,cstId: widget.custIdd )));
                   });
-                    // Navigator.push(context, MaterialPageRoute(
-                    //     builder: (context) =>  ThankYouPageScreen(ordId: widget.orderId,cstId: widget.custIdd )));
                     }
     },
                 child: const Center(
