@@ -214,9 +214,9 @@ class _DeliveredScreenState extends State<DeliveredScreen> {
                                         fontSize: 13),),
                                   ],
                                 ),
-                                trailing: InkWell(
-                                    onTap: () {},
-                                    child: Image.asset('Assets/Images/for_arrow.png')),
+                                // trailing: InkWell(
+                                //     onTap: () {},
+                                //     child: Image.asset('Assets/Images/for_arrow.png')),
                               ),
                               const RowItem(label: 'Customer Name:',
                                 value: 'Jason Roy',

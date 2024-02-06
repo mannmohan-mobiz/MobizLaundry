@@ -176,10 +176,11 @@ class _CustomerHomeOrderHistoryState extends State<CustomerHomeOrderHistory> {
                             setState(() {
                               customerHistoryData = value.data;
                             });
-                            // if(value.status == false) {
-                            // snackBar(context, message: value.message.toString());
-                            // }
+                            if(value.status == false) {
+                            snackBar(context, message: value.message.toString());
+                            }
                           });
+
                         }
                       },
                       child: const Text('LOAD',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),

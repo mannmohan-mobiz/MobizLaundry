@@ -1420,6 +1420,7 @@ class PickerRepository {
           'Authorization': 'Basic $token'
         }
     );
+    print('WW####$options####');
     Future.delayed(Duration(seconds: 1));
     try {
       var response = await dio.post(
@@ -1427,7 +1428,7 @@ class PickerRepository {
           data: data,
           options: options
       );
-      print('######Ready for despatch status$response');
+      print('###### status$response');
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = CustomerHomeOrderHistoryDetailModel.fromJson(response.data);
@@ -1437,7 +1438,7 @@ class PickerRepository {
         return response.data;
       }
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception('EEEE#$e');
     }
   }
 

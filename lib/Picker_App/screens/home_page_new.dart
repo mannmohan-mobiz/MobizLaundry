@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/Picker_App/screens/picking_confirmation_page.dart';
 import 'package:golden_falcon/Picker_App/screens/ready_for_despatch_page.dart';
+import 'package:golden_falcon/Picker_App/screens/top_up_request_page.dart';
 import 'package:golden_falcon/Picker_App/screens/undelivered_page.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
@@ -280,6 +281,9 @@ class _HomePageNewState extends State<HomePageNew> {
         break;
       case 4:
         open(context, const DeliveredScreen());
+        break;
+      case 7:
+        open(context, const TopUpRequestPage());
         break;
     }
   }

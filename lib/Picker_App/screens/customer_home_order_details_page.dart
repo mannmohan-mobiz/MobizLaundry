@@ -61,10 +61,12 @@ class _CustomerHomeOrderDetailPageState extends State<CustomerHomeOrderDetailPag
           padding: const EdgeInsets.symmetric(horizontal: 25.0,vertical: 20),
           child: BlocBuilder<PickerBloc, PickerState>(
            builder: (context, state) {
+             print('@@$state');
     if (state is PckCustHistoryDetailFetchingState) {
     return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
     } else if (state is PckCustHistoryDetailFetchedState) {
     final data = state.orderHistoryDetailList;
+    print('@@$state');
             return ListView(
             shrinkWrap: true,
             children: [
@@ -244,7 +246,7 @@ class _CustomerHomeOrderDetailPageState extends State<CustomerHomeOrderDetailPag
                                           fontSize: 14),
                                     ),
                                     Text(
-                                      'AED ${data?.cart?[0].order?.netTaxable}',
+                                      'AED ${data?.netTaxable ?? 0}',
                                       style: const TextStyle(
                                           color: pickerBlackColor,
                                           fontWeight: FontWeight.w500,
@@ -264,7 +266,7 @@ class _CustomerHomeOrderDetailPageState extends State<CustomerHomeOrderDetailPag
                                           fontSize: 14),
                                     ),
                                     Text(
-                                      'AED ${data?.cart?[0].order?.vat}',
+                                      'AED ${data?.vat ?? 0}',
                                       style: const TextStyle(
                                           color: pickerBlackColor,
                                           fontWeight: FontWeight.w500,
