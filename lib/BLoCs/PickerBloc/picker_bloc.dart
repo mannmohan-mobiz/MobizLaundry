@@ -15,9 +15,11 @@ import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart'
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart' as CartListValue;
 import '../../Models/PickerModel/collect_items_model.dart';
+import '../../Models/PickerModel/customer_home_model.dart';
 import '../../Models/PickerModel/customer_home_order_history_detail_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
+import '../../Models/PickerModel/delivered_order_model.dart';
 import '../../Models/PickerModel/delivery_address_list.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
@@ -341,6 +343,25 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         emit(PickupDeliveryModeError(e.toString()));
       }
     });
+
+    on<PickupDeliveredOrdersFetchEvent>((event, emit) async {
+      debugPrint('###DDEERRsss111###');
+      emit(DeliveredOrdersFetching());
+      debugPrint('###DDEERRsss222###');
+      try {
+        await pickerRepository.getDeliveredOrdersApi(token: event.token,).then((value) {
+          debugPrint('33W33sss111${value.status}');
+          debugPrint('2222222${value.message}');
+          if (value.status == true && value.message == "Customer deliverd order list!") {
+            emit(DeliveredOrdersFetched(value.data));
+          } else {
+            emit(DeliveredOrdersError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(DeliveredOrdersError(e.toString()));
+      }
+    });
     // on<PickupDeliveryAddressFetchEvent>((event, emit) async {
     //   debugPrint('###DDEERRsss111###');
     //   emit(PickupDeliveryAddressFetching());
@@ -583,6 +604,21 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PckThankyouErrorState(e.toString()));
+      }
+    });
+
+    on<CustomerHomeFetchEvent>((event, emit) async {
+      emit(CustomerHomeFetchingState());
+      try {
+        await pickerRepository.customerHomeApi(token: event.token, customerId: event.customId,).then((value) {
+          if (value.status == true) {
+            emit(CustomerHomeFetchedState(value.data));
+          } else {
+            emit(CustomerHomeErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(CustomerHomeErrorState(e.toString()));
       }
     });
     on<PckItemFetchEvent>((event, emit) async {

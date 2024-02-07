@@ -1,7 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
@@ -19,7 +23,12 @@ class _DeliveredScreenState extends State<DeliveredScreen> {
   bool isDelivered = false;
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return  BlocProvider(
+    create: (context) => PickerBloc(
+        RepositoryProvider.of<PickerRepository>(context)
+    )..add(PickupDeliveredOrdersFetchEvent(
+        authData.user_token.toString())),
+    child: Scaffold(
         backgroundColor: pickerBackgroundColor,
         appBar: AppBar(
           centerTitle: true,
@@ -178,122 +187,139 @@ class _DeliveredScreenState extends State<DeliveredScreen> {
                 ],
               ),
               const SizedBox(height: 10),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 2,
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  itemBuilder: (itemBuilder, index) {
-                    return  Card(
-                      child: Container(
-                        width: MediaQuery
-                            .of(context)
-                            .size
-                            .width,
-                        decoration: BoxDecoration(
-                          color: pickerWhiteColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          child: Column(
-                            children: [
-                              ListTile(
-                                leading: Image.asset('Assets/Images/delivered.png'),
-                                title:  const Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text('Delivered', style: TextStyle(
-                                        color: pickerBlackColor,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14),),
-                                    Text('on 12.12.2023 ', style: TextStyle(
-                                        color: pickerBlackColor,
-                                        fontWeight: FontWeight.w300,
-                                        fontSize: 13),),
-                                  ],
+              BlocBuilder<PickerBloc, PickerState>(
+              builder: (context, state) {
+              if (state is DeliveredOrdersFetching) {
+              return const Center(
+              child: CircularProgressIndicator(
+              color: pickerGoldColor,
+              ));
+              }else if (state is DeliveredOrdersFetched) {
+                final data = state.deliveredOrderList;
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: data.length,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (itemBuilder, index) {
+                      return Card(
+                        child: Container(
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width,
+                          decoration: BoxDecoration(
+                            color: pickerWhiteColor,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                  leading: Image.asset(
+                                      'Assets/Images/delivered.png'),
+                                  title:  Column(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [
+                                      Text(data[index].status, style: const TextStyle(
+                                          color: pickerBlackColor,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14),),
+                                       Text('on ${DateFormat('dd-MM-yyyy').format(data[index].deliveryDate)}', style: const TextStyle(
+                                          color: pickerBlackColor,
+                                          fontWeight: FontWeight.w300,
+                                          fontSize: 13),),
+                                    ],
+                                  ),
+                                  // trailing: InkWell(
+                                  //     onTap: () {},
+                                  //     child: Image.asset('Assets/Images/for_arrow.png')),
                                 ),
-                                // trailing: InkWell(
-                                //     onTap: () {},
-                                //     child: Image.asset('Assets/Images/for_arrow.png')),
-                              ),
-                              const RowItem(label: 'Customer Name:',
-                                value: 'Jason Roy',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                              const RowItem(label: 'Customer type:',
-                                value: 'Home',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                              const RowItem(label: 'Order Number:',
-                                value:'INX 8989898989',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                              const RowItem(label: 'No of items:',
-                                value: '15',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                              const RowItem(label: 'Building name/number:',
-                                value: '',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                              const RowItem(label: 'Floor no:',
-                                value: '',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                              const RowItem(label: 'House no:',
-                                value: '',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                              const RowItem(label: 'Mobile no:',
-                                value: '',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                              const RowItem(label: 'Amount paid:',
-                                value: 'AED 100',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                              const RowItem(label: 'Balance to pay:',
-                                value: 'AED 10',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                              const RowItem(label: 'Delivery date/time:',
-                                value: '1.4.2023/7am to 9am',
-                                fontSize: 13,
-                                fontSizeValue: 13,
-                                fontWeightValue: FontWeight.w300,
-                                fontWeight: FontWeight.w300,),
-                            ],
+                                 RowItem(label: 'Customer Name:',
+                                  value: data[index].customerAddress.name,
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                                 RowItem(label: 'Customer type:',
+                                  value: data[index].customerAddress.customerType,
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                                 RowItem(label: 'Order Number:',
+                                  value: data[index].orderNumber,
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                                 RowItem(label: 'No of items:',
+                                  value: '${data[index].noOfItems}',
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                                 RowItem(label: 'Building name/number:',
+                                  value: '${data[index].customerAddress.buildingName} / ${data[index].customerAddress.buildingNo} ',
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                                 RowItem(label: 'Floor no:',
+                                  value: data[index].customerAddress.floorNumber,
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                                 RowItem(label: 'Flat no:',
+                                  value: data[index].customerAddress.flatNumber,
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                                 RowItem(label: 'Mobile no:',
+                                  value: data[index].mobile,
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                                 RowItem(label: 'Amount paid:',
+                                  value:  data[index].amountPaid,
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                                 RowItem(label: 'Balance to pay:',
+                                  value:  '${data[index].balanceAmount}',
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                                 RowItem(label: 'Delivery date/time:',
+                                  value: '${DateFormat('dd-MM-yyyy').format(data[index].deliveryDate)} /${data[index].deliveryTime}',
+                                  fontSize: 13,
+                                  fontSizeValue: 13,
+                                  fontWeightValue: FontWeight.w300,
+                                  fontWeight: FontWeight.w300,),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  }
-              ),
+                      );
+                    }
+                );
+              } else {
+                return const Center(child: Text('No Data'));
+              }
+  },
+),
             ],
           ),
         )
-    );
+    ),
+);
   }
 }

@@ -505,6 +505,34 @@ class PickupDeliveryModeError extends PickerState {
 
 /***********************[Delivery Mode List]***********************/
 
+/***********************[Delivered orders List]***********************/
+
+class DeliveredOrdersFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class DeliveredOrdersFetched extends PickerState {
+  List<DeliveredOrder> deliveredOrderList;
+
+  DeliveredOrdersFetched(this.deliveredOrderList);
+
+  @override
+  List<Object?> get props => [deliveredOrderList];
+}
+
+class DeliveredOrdersError extends PickerState {
+  final String message;
+
+  DeliveredOrdersError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+/***********************[Delivered orders List]***********************/
+
+
 /***********************[Delivery address List]***********************/
 
 class PickupDeliveryAddressFetching extends PickerState {
@@ -890,6 +918,31 @@ class PckThankyouErrorState extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************[Get Thankyou List]]***********************/
+
+/***********************[Customer Home]***********************/
+class CustomerHomeFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class CustomerHomeFetchedState extends PickerState {
+  CustomerHome? customerHomeData;
+
+  CustomerHomeFetchedState(this.customerHomeData);
+
+  @override
+  List<Object?> get props => [customerHomeData];
+}
+
+class CustomerHomeErrorState extends PickerState {
+  final String message;
+
+  CustomerHomeErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Customer Home]]***********************/
 
 /***********************[Get Item List]***********************/
 class PckItemFetchingState extends PickerState {

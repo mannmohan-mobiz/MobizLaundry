@@ -18,9 +18,11 @@ import '../../Models/PickerModel/cart_list_quantity_model.dart';
 import '../../Models/PickerModel/collect_items_model.dart';
 import '../../Models/PickerModel/confirm_order_model.dart';
 import '../../Models/PickerModel/customer_home_history_model.dart';
+import '../../Models/PickerModel/customer_home_model.dart';
 import '../../Models/PickerModel/customer_home_order_history_detail_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
+import '../../Models/PickerModel/delivered_order_model.dart';
 import '../../Models/PickerModel/delivery_address_list.dart';
 import '../../Models/PickerModel/delivery_time.dart';
 import '../../Models/PickerModel/deposit_history_model.dart';
@@ -759,6 +761,34 @@ class PickerRepository {
     }
   }
 
+  // Delivered orders
+  Future<DeliveredOrderModel> getDeliveredOrdersApi({required String token}) async {
+
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      print('RRRRRRR332222');
+      var response = await dio.get(
+          baseUrl+'picker/deliverd_orders_api',
+          options: options
+      );
+      print('RRRRRRR33$response');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = DeliveredOrderModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
 
   // Delivery Address GET
   Future<DeliveryAddressList> getDeliveryAddressListData({
@@ -1308,6 +1338,39 @@ class PickerRepository {
       }
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  // Customer Home
+  Future<CustomerHomeOrderModel> customerHomeApi({required String token,required String customerId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "customer_id": customerId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/customer_home_api',
+          data: data,
+          options: options
+      );
+
+      print('RESPONSE DETAILS: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = CustomerHomeOrderModel.fromJson(response.data);
+        print('RESPONSE DETAILS RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+
+    } catch (e) {
+      throw Exception('EEE'+e.toString());
     }
   }
 
