@@ -185,8 +185,8 @@ class Category {
 }
 
 class ServiceMaster {
-  final CategoryName? categoryName;
-  final CategoryImage? categoryImage;
+  final String? categoryName;
+  final String? categoryImage;
 
   ServiceMaster({
     this.categoryName,
@@ -194,13 +194,13 @@ class ServiceMaster {
   });
 
   factory ServiceMaster.fromJson(Map<String, dynamic> json) => ServiceMaster(
-    categoryName: categoryNameValues.map[json["category_name"]]!,
-    categoryImage: categoryImageValues.map[json["category_image"]]!,
+    categoryName: json["category_name"],
+    categoryImage: json["category_image"],
   );
 
   Map<String, dynamic> toJson() => {
-    "category_name": categoryNameValues.reverse[categoryName],
-    "category_image": categoryImageValues.reverse[categoryImage],
+    "category_name": categoryName,
+    "category_image": categoryImage,
   };
 }
 
@@ -245,8 +245,8 @@ class SubCategory {
 }
 
 class SubServiceMaster {
-  final SubCatName? subCatName;
-  final SubCatImage? subCatImage;
+  final String? subCatName;
+  final String? subCatImage;
 
   SubServiceMaster({
     this.subCatName,
@@ -254,13 +254,13 @@ class SubServiceMaster {
   });
 
   factory SubServiceMaster.fromJson(Map<String, dynamic> json) => SubServiceMaster(
-    subCatName: subCatNameValues.map[json["sub_cat_name"]]!,
-    subCatImage: subCatImageValues.map[json["sub_cat_image"]]!,
+    subCatName: json["sub_cat_name"],
+    subCatImage: json["sub_cat_image"],
   );
 
   Map<String, dynamic> toJson() => {
-    "sub_cat_name": subCatNameValues.reverse[subCatName],
-    "sub_cat_image": subCatImageValues.reverse[subCatImage],
+    "sub_cat_name": subCatName,
+    "sub_cat_image": subCatImage,
   };
 }
 
@@ -290,7 +290,7 @@ class Order {
   final String? totalAmount;
   final OrderType? orderType;
   final DateTime? orderDate;
-  final Status? status;
+  final String? status;
   final DateTime? deliveryDate;
   var invoiceNumber;
   var invoiceDate;
@@ -317,7 +317,7 @@ class Order {
     totalAmount: json["total_amount"],
     orderType: orderTypeValues.map[json["order_type"]]!,
     orderDate: json["order_date"] == null ? null : DateTime.parse(json["order_date"]),
-    status: statusValues.map[json["status"]]!,
+    status: json["status"],
     deliveryDate: json["Delivery_date"] == null ? null : DateTime.parse(json["Delivery_date"]),
     invoiceNumber: json["invoice_number"],
     invoiceDate: json["invoice_date"],
@@ -331,7 +331,7 @@ class Order {
     "total_amount": totalAmount,
     "order_type": orderTypeValues.reverse[orderType],
     "order_date": "${orderDate!.year.toString().padLeft(4, '0')}-${orderDate!.month.toString().padLeft(2, '0')}-${orderDate!.day.toString().padLeft(2, '0')}",
-    "status": statusValues.reverse[status],
+    "status": status,
     "Delivery_date": "${deliveryDate!.year.toString().padLeft(4, '0')}-${deliveryDate!.month.toString().padLeft(2, '0')}-${deliveryDate!.day.toString().padLeft(2, '0')}",
     "invoice_number": invoiceNumber,
     "invoice_date": invoiceDate,

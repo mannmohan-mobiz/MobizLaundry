@@ -1,12 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import 'add_to_wallet_page.dart';
 
 class WalletNewPage extends StatefulWidget {
-  const WalletNewPage({super.key});
+  final String? customId;
+
+  const WalletNewPage({super.key,this.customId});
 
   @override
   State<WalletNewPage> createState() => _WalletNewPageState();
@@ -15,7 +21,12 @@ class WalletNewPage extends StatefulWidget {
 class _WalletNewPageState extends State<WalletNewPage> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    print('CUSTID##3${widget.customId}');
+    return  BlocProvider(
+  create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context)
+  )..add(AddToWalletFetchEvent(
+    authData.user_token.toString(),widget.customId.toString(),)),
+  child: Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -46,7 +57,16 @@ class _WalletNewPageState extends State<WalletNewPage> {
           )
         ],
       ),
-      body: SingleChildScrollView(
+      body: BlocBuilder<PickerBloc, PickerState>(
+      builder: (context, state) {
+    if (state is AddToWalletFetchingState) {
+    return const Center(
+    child: CircularProgressIndicator(
+    color: pickerGoldColor,
+    ));
+    } else if(state is AddToWalletFetchedState) {
+      final data = state.addToWalletData;
+      return SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           child: Column(
@@ -79,33 +99,41 @@ class _WalletNewPageState extends State<WalletNewPage> {
                           ],
                         ),
                         const SizedBox(height: 8),
-                        const Row(
+                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Total Balance',
-                                  style: TextStyle(fontSize: 13.0, color: Colors.white, fontWeight: FontWeight.w500),
+                                  style: TextStyle(fontSize: 13.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 Text(
-                                  'AED 3500',
-                                  style: TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.w600),
+                                  'AED ${data?.walletBalance}',
+                                  style: const TextStyle(fontSize: 20.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ],
                             ),
-                           // SizedBox(width: 12,),
+                            // SizedBox(width: 12,),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
+                                const Text(
                                   'Amount to collect',
-                                  style: TextStyle(fontSize: 13.0, color: Colors.white, fontWeight: FontWeight.w500),
+                                  style: TextStyle(fontSize: 13.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
                                 ),
                                 Text(
-                                  'AED 50',
-                                  style: TextStyle(fontSize: 20.0, color: Colors.white, fontWeight: FontWeight.w600),
+                                  'AED ${data?.collectToAmount.totalShortSum}',
+                                  style: const TextStyle(fontSize: 20.0,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w600),
                                 ),
                               ],
                             ),
@@ -126,7 +154,8 @@ class _WalletNewPageState extends State<WalletNewPage> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const AddToWalletPage()),
+                      MaterialPageRoute(
+                          builder: (context) =>  AddToWalletPage(customerId: widget.customId)),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -150,7 +179,13 @@ class _WalletNewPageState extends State<WalletNewPage> {
             ],
           ),
         ),
-      ),
-    );
+      );
+    } else {
+      return const Center(child: Text('No Data'));
+    }
+  },
+),
+    ),
+);
   }
 }

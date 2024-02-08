@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Models/PickerModel/delivered_order_model.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
@@ -20,6 +21,8 @@ class DeliveredScreen extends StatefulWidget {
 class _DeliveredScreenState extends State<DeliveredScreen> {
   TextEditingController fromDateController = TextEditingController();
   TextEditingController toDateController = TextEditingController();
+  final PickerRepository pickerRepository = PickerRepository();
+  List<DeliveredOrder> deliveredOrderList = [];
   bool isDelivered = false;
   @override
   Widget build(BuildContext context) {
@@ -71,7 +74,7 @@ class _DeliveredScreenState extends State<DeliveredScreen> {
                         if (fromDate != null) {
                           print(fromDate);
                           String formattedDate =
-                          DateFormat('dd-MM-yyyy').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                          DateFormat('yyyy-MM-dd').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
                           print(formattedDate);
                           setState(() {
                             fromDateController.text =
@@ -116,7 +119,7 @@ class _DeliveredScreenState extends State<DeliveredScreen> {
                         if (fromDate != null) {
                           print(fromDate);
                           String formattedDate =
-                          DateFormat('dd-MM-yyyy').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                          DateFormat('yyyy-MM-dd').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
                           print(formattedDate);
                           setState(() {
                             toDateController.text =
@@ -159,28 +162,27 @@ class _DeliveredScreenState extends State<DeliveredScreen> {
                         ),
                       ),
                       onPressed: (){
-                        // if(fromDateController.text.isEmpty){
-                        //   snackBar(context, message: 'Please choose From date');
-                        // } else if(toDateController.text.isEmpty){
-                        //   snackBar(context, message: 'Please choose To date');
-                        // } else {
-                        //   Map<String, String> data = {
-                        //     "customer_id": widget.customerId.toString(),
-                        //     "from_date": fromDateController.text,
-                        //     "to_date": toDateController.text
-                        //   };
-                        //   print('#########${(data)}');
-                        //   pickerRepository.getCustomerHistoryResults(
-                        //       token: authData.user_token.toString(), body: data)
-                        //       .then((value) {
-                        //     setState(() {
-                        //       customerHistoryData = value.data;
-                        //     });
-                        //     // if(value.status == false) {
-                        //     // snackBar(context, message: value.message.toString());
-                        //     // }
-                        //   });
-                        // }
+                        if(fromDateController.text.isEmpty){
+                          snackBar(context, message: 'Please choose From date');
+                        } else if(toDateController.text.isEmpty){
+                          snackBar(context, message: 'Please choose To date');
+                        } else {
+                          Map<String, String> data = {
+                            "from_date": fromDateController.text,
+                            "to_date": toDateController.text
+                          };
+                          print('#########${(data)}');
+                          pickerRepository.getDeliveredOrder(
+                              token: authData.user_token.toString(), body: data)
+                              .then((value) {
+                            setState(() {
+                              deliveredOrderList = value.data;
+                            });
+                            // if(value.status == false) {
+                            // snackBar(context, message: value.message.toString());
+                            // }
+                          });
+                        }
                       },
                       child: const Text('LOAD',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
                   )
@@ -195,7 +197,7 @@ class _DeliveredScreenState extends State<DeliveredScreen> {
               color: pickerGoldColor,
               ));
               }else if (state is DeliveredOrdersFetched) {
-                final data = state.deliveredOrderList;
+                final data = deliveredOrderList.isEmpty ? state.deliveredOrderList : deliveredOrderList;
                 return ListView.builder(
                     shrinkWrap: true,
                     itemCount: data.length,

@@ -944,6 +944,32 @@ class CustomerHomeErrorState extends PickerState {
 }
 /***********************[Customer Home]]***********************/
 
+
+/***********************[Customer Home Add to wallet]***********************/
+class AddToWalletFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class AddToWalletFetchedState extends PickerState {
+  AddToWallet? addToWalletData;
+
+  AddToWalletFetchedState(this.addToWalletData);
+
+  @override
+  List<Object?> get props => [addToWalletData];
+}
+
+class AddToWalletErrorState extends PickerState {
+  final String message;
+
+  AddToWalletErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Customer Home Add to wallet]]***********************/
+
 /***********************[Get Item List]***********************/
 class PckItemFetchingState extends PickerState {
   @override

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:golden_falcon/Picker_App/screens/statemnt_account_page.dart';
 import 'package:golden_falcon/Picker_App/screens/wallet_page.dart';
+import 'package:intl/intl.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
@@ -257,7 +258,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20.0),
                                     child: TableWidget(
-                                      text: 'Order Date', value: '${data?.todayDelivery?[index].order?.orderDate}',),
+                                      text: 'Order Date', value: DateFormat('dd-MM-yyyy').format(DateTime.parse('${data?.todayDelivery?[index].order?.orderDate}')),),
                                   ),
                                    Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -308,7 +309,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
                                           ),
                                           child:  Center(
                                             child: Text(
-                                              'AED${data?.todayDelivery?[index].order?.amountPaid}',
+                                              'AED ${data?.todayDelivery?[index].order?.amountPaid}',
                                               style: const TextStyle(
                                                 color: pickerBlackColor,
                                                 fontSize: 10,
@@ -328,7 +329,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20.0),
                                     child: TableWidget(
-                                      text: 'Balance Amount', value: 'AED${data?.todayDelivery?[index].order?.balanceAmount}',),
+                                      text: 'Balance Amount', value: 'AED ${data?.todayDelivery?[index].order?.balanceAmount}',),
                                   ),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
@@ -393,7 +394,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20.0),
                                     child: TableWidget(text: 'Order Date',
-                                        value: '${data?.pendingOrders?[index].order?.orderDate}',
+                                        value: DateFormat('dd-MM-yyyy').format(DateTime.parse('${data?.pendingOrders?[index].order?.orderDate}')),
                                         colorValue: pickerGoldColor),
                                   ),
                                   Padding(
@@ -447,7 +448,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
          open(context,  CustomerHomeOrderHistory(customerId: cstId));
          break;
       case 3:
-        open(context, const WalletNewPage());
+        open(context,  WalletNewPage(customId:cstId ));
         break;
        case 4:
          open(context, const ComplaintPage());

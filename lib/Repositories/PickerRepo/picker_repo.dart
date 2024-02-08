@@ -11,6 +11,7 @@ import 'package:dio/dio.dart';
 
 import '../../Models/PickerModel/add_customer_model.dart';
 import '../../Models/PickerModel/add_to_cart_model.dart';
+import '../../Models/PickerModel/add_to_wallet_model.dart';
 import '../../Models/PickerModel/cart_count.dart';
 import '../../Models/PickerModel/cart_delete.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
@@ -1374,6 +1375,38 @@ class PickerRepository {
     }
   }
 
+
+  //Add to wallet
+  Future<AddtoWalletModel> addToWalletApi({required String token, required String customerId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "customer_id": customerId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/customer_wallet_picker',
+          data: data,
+          options: options
+      );
+
+      print('RESPONSE DETAILS: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = AddtoWalletModel.fromJson(response.data);
+        print('RESPONSE DETAILS RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEE'+e.toString());
+    }
+  }
   //Get Cart list  QUANTITY price
   Future<PickerCartQuantityListModel> getCartQuantityPrice({required Map<String, String> body, required String token }) async {
     Dio dio = Dio();
@@ -1497,6 +1530,41 @@ class PickerRepository {
         var result = CustomerHomeOrderHistoryDetailModel.fromJson(response.data);
         print('#########responsee##${result.toString()}');
         return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
+
+  // Delivered order list
+  Future<DeliveredOrderModel> getDeliveredOrder({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/deliverd_orders_datefilter_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = DeliveredOrderModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
       } else {
         return response.data;
       }

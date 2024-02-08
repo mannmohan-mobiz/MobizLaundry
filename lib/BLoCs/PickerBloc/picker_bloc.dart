@@ -12,6 +12,7 @@ import 'package:golden_falcon/Models/PickerModel/order_details_model.dart';
 import 'package:golden_falcon/Models/PickerModel/outstanding_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_category_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart';
+import '../../Models/PickerModel/add_to_wallet_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart' as CartListValue;
 import '../../Models/PickerModel/collect_items_model.dart';
@@ -619,6 +620,20 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(CustomerHomeErrorState(e.toString()));
+      }
+    });
+    on<AddToWalletFetchEvent>((event, emit) async {
+      emit(AddToWalletFetchingState());
+      try {
+        await pickerRepository.addToWalletApi(token: event.token, customerId: event.customId,).then((value) {
+          if (value.status == true) {
+            emit(AddToWalletFetchedState(value.data));
+          } else {
+            emit(AddToWalletErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(AddToWalletErrorState(e.toString()));
       }
     });
     on<PckItemFetchEvent>((event, emit) async {

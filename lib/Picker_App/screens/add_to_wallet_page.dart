@@ -6,7 +6,8 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 
 class AddToWalletPage extends StatefulWidget {
-  const AddToWalletPage({super.key});
+  final String? customerId;
+  const AddToWalletPage({super.key,this.customerId});
 
   @override
   State<AddToWalletPage> createState() => _AddToWalletPageState();
@@ -15,6 +16,7 @@ class AddToWalletPage extends StatefulWidget {
 class _AddToWalletPageState extends State<AddToWalletPage> {
   @override
   Widget build(BuildContext context) {
+    print('CUSTID##4${widget.customerId}');
     return  Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(

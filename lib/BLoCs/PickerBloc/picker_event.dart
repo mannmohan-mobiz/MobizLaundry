@@ -395,6 +395,17 @@ class CustomerHomeFetchEvent extends PickerEvent {
   List<Object?> get props => [token, customId];
 }
 
+// customer home add to wallet
+class AddToWalletFetchEvent extends PickerEvent {
+  final String token;
+  final String customId;
+
+  AddToWalletFetchEvent(this.token,this.customId);
+
+  @override
+  List<Object?> get props => [token, customId];
+}
+
 class PckItemFetchEvent extends PickerEvent {
   final String token;
   final String categId;
