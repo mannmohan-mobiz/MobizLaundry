@@ -406,6 +406,17 @@ class AddToWalletFetchEvent extends PickerEvent {
   List<Object?> get props => [token, customId];
 }
 
+// customer home wallet recharge receipt
+class WalletRechargeReceiptFetchEvent extends PickerEvent {
+  final String token;
+  final String transfId;
+
+  WalletRechargeReceiptFetchEvent(this.token,this.transfId);
+
+  @override
+  List<Object?> get props => [token, transfId];
+}
+
 class PckItemFetchEvent extends PickerEvent {
   final String token;
   final String categId;

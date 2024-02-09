@@ -52,6 +52,8 @@ import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Models/PickerModel/quantity_price.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/ready_transit_model.dart';
+import '../../Models/PickerModel/recharge_wallet_model.dart';
+import '../../Models/PickerModel/recharge_wallet_receipt_model.dart';
 import '../../Models/PickerModel/search.dart';
 import '../../Models/PickerModel/thankyou_model.dart';
 import '../../Models/PickerModel/undelivered_model.dart';
@@ -914,6 +916,41 @@ class PickerRepository {
     }
   }
 
+
+  // Customer wallet_recharge
+  Future<WalletRechargeModel> rechargeWalletApi({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/pick_cust_wallet_recharge_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = WalletRechargeModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
   // Save New Order
   Future<PickerNewOrderSaveModel> saveNewOrder({required String token, required Map<String, String> body}) async {
     Dio dio = Dio();
@@ -1398,6 +1435,38 @@ class PickerRepository {
       print('RESPONSE DETAILS: $response.data');
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = AddtoWalletModel.fromJson(response.data);
+        print('RESPONSE DETAILS RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEE'+e.toString());
+    }
+  }
+
+  //wallet recharge receipt
+  Future<WalletRechargeReceiptModel> walletRechargeReceipt({required String token, required String transferId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "transfer_id": transferId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/wallet_recharge_receipt',
+          data: data,
+          options: options
+      );
+
+      print('RESPONSE DETAILS: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = WalletRechargeReceiptModel.fromJson(response.data);
         print('RESPONSE DETAILS RST : $result');
         return result;
       } else {

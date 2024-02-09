@@ -35,6 +35,7 @@ import '../../Models/PickerModel/picker_order_confirm.dart';
 import '../../Models/PickerModel/picker_payment_list.dart';
 import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
+import '../../Models/PickerModel/recharge_wallet_receipt_model.dart';
 import '../../Models/PickerModel/search.dart';
 import '../../Models/PickerModel/thankyou_model.dart';
 import '../../Models/PickerModel/undelivered_model.dart';
@@ -634,6 +635,20 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(AddToWalletErrorState(e.toString()));
+      }
+    });
+    on<WalletRechargeReceiptFetchEvent>((event, emit) async {
+      emit(WalletRechargeReceiptFetchingState());
+      try {
+        await pickerRepository.walletRechargeReceipt(token: event.token, transferId: event.transfId,).then((value) {
+          if (value.status == true) {
+            emit(WalletRechargeReceiptFetchedState(value.data));
+          } else {
+            emit(WalletRechargeReceiptErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(WalletRechargeReceiptErrorState(e.toString()));
       }
     });
     on<PckItemFetchEvent>((event, emit) async {

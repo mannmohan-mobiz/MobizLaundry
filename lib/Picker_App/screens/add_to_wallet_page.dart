@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:golden_falcon/Picker_App/screens/receipt_page.dart';
 
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 
@@ -14,6 +16,9 @@ class AddToWalletPage extends StatefulWidget {
 }
 
 class _AddToWalletPageState extends State<AddToWalletPage> {
+  final PickerRepository pickerRepository = PickerRepository();
+  TextEditingController collectedAmountController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     print('CUSTID##4${widget.customerId}');
@@ -74,10 +79,10 @@ class _AddToWalletPageState extends State<AddToWalletPage> {
                       width: 150,
                       height: 50,
                       child: TextField(
-                        controller: TextEditingController(),
+                        controller: collectedAmountController,
                         keyboardType: TextInputType.number,
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 20.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -105,10 +110,21 @@ class _AddToWalletPageState extends State<AddToWalletPage> {
                   backgroundColor: pickerGoldColor,
                 ),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ReceiptRechargePage()),
-                  );
+                  if(collectedAmountController.text.isEmpty){
+                    snackBar(context, message: 'Please enter the amount');
+                  } else {
+                    Map<String, String> data = {
+                      "customer_id": widget.customerId.toString(),
+                      "amount": collectedAmountController.text,
+                    };
+                    print('#########${(data)}');
+                    pickerRepository.rechargeWalletApi(
+                        token: authData.user_token.toString(), body: data)
+                        .then((value) {
+                      Navigator.push(context, MaterialPageRoute(builder: (
+                          context) =>  ReceiptRechargePage(transId: value.data.transferId)),);
+                    });
+                  }
                 },
                child: const Center(
                   child: Text(

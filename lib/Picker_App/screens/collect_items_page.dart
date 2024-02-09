@@ -516,7 +516,6 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                     backgroundColor: pickerGoldColor,
                   ),
                   onPressed: () {
-
                     Map<String, dynamic> data = {
                       "order_id": widget.orderId,
                       "collect_amount": selectedOption == 'Cash' ? collectedAmountController.text : 0,
