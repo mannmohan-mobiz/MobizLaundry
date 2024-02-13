@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
@@ -8,7 +13,10 @@ import '../util/row_value.dart';
 import '../util/table_row.dart';
 
 class StatementOfAccountDetailPage extends StatefulWidget {
-  const StatementOfAccountDetailPage({super.key});
+  final String? customerId;
+  final String? fromDate;
+  final String? toDate;
+  const StatementOfAccountDetailPage({super.key,this.customerId,this.fromDate,this.toDate});
 
   @override
   State<StatementOfAccountDetailPage> createState() => _StatementOfAccountDetailPageState();
@@ -17,7 +25,14 @@ class StatementOfAccountDetailPage extends StatefulWidget {
 class _StatementOfAccountDetailPageState extends State<StatementOfAccountDetailPage> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    print(widget.customerId);
+    print(widget.fromDate);
+    print(widget.toDate);
+    return  BlocProvider(
+    create: (context) => PickerBloc(
+      RepositoryProvider.of<PickerRepository>(context),)..add(StatementAccountFetchEvent(
+        authData.user_token.toString(), widget.customerId.toString(),widget.fromDate.toString(),widget.toDate.toString())),
+    child: Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -35,36 +50,53 @@ class _StatementOfAccountDetailPageState extends State<StatementOfAccountDetailP
         ),
         title: const Text('Statement of account',style: TextStyle(color: pickerGoldColor,fontWeight: FontWeight.bold,fontSize: 20),),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+      body: BlocBuilder<PickerBloc, PickerState>(
+      builder: (context, state) {
+    if (state is StatementAccountFetchingState) {
+    return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
+    } else if (state is StatementAccountFetchedState) {
+      final tData = state.statementAccountList;
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
         child: ListView(
           shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
-          children:  [
-            const Text('Showing details',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w400,fontSize: 15),),
+          children: [
+            const Text('Showing details', style: TextStyle(
+                color: pickerBlackColor,
+                fontWeight: FontWeight.w400,
+                fontSize: 15),),
             const SizedBox(height: 8,),
-            const Row(
+             Row(
               children: [
                 Row(
                   children: [
-                    Text(
-                      'From',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w400,fontSize: 15),
+                    const Text(
+                      'From', style: TextStyle(color: pickerBlackColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15),
                     ),
-                    SizedBox(width: 15,),
+                    const SizedBox(width: 15,),
                     Text(
-                      '01.12.2023',style: TextStyle(color: pickerGoldColor,fontWeight: FontWeight.w700,fontSize: 15),
+                      '${widget.fromDate}', style: const TextStyle(color: pickerGoldColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15),
                     ),
                   ],
                 ),
-                SizedBox(width: 15,),
+                const SizedBox(width: 15,),
                 Row(
                   children: [
-                    Text(
-                      'To',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w400,fontSize: 15),
+                    const Text(
+                      'To', style: TextStyle(color: pickerBlackColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15),
                     ),
-                    SizedBox(width: 15,),
+                    const SizedBox(width: 15,),
                     Text(
-                      '05.12.2023',style: TextStyle(color: pickerGoldColor,fontWeight: FontWeight.w700,fontSize: 15),
+                      '${widget.toDate}', style: const TextStyle(color: pickerGoldColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15),
                     ),
                   ],
                 ),
@@ -72,40 +104,60 @@ class _StatementOfAccountDetailPageState extends State<StatementOfAccountDetailP
             ),
             const SizedBox(height: 15,),
             ListView.builder(
-                shrinkWrap: true,
-                itemCount: 10,
-                physics: const BouncingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemBuilder: (itemBuilder, index) =>
-               Padding(
-                 padding: const EdgeInsets.symmetric(vertical: 8.0),
-                 child: Card(
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      color: pickerWhiteColor,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                      child: Column(
-                        children: [
-                          RowValue( label: 'Invoice Number',labelValue: '#INDS12345678901',labelValueColor: pickerBlackColor,),
-                          RowValue( label: 'Invoice date',labelValue: '12 Feb 2023',labelValueColor: pickerBlackColor,),
-                          RowValue( label: 'Order Number',labelValue: '#INDS12345678901',labelValueColor: pickerBlackColor,),
-                          RowValue( label: 'Status',labelValue: 'Delivered',labelValueColor: pickerBlackColor,),
-                          Divider(color: pickerBlackColor,),
-                          RowValue( label: 'Amount',labelValue: 'AED 200.00',labelValueColor: pickerBlackColor,),
-                        ],
+              shrinkWrap: true,
+              itemCount: tData.length,
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              itemBuilder: (itemBuilder, index) =>
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Card(
+                      child: Container(
+                        width: MediaQuery
+                            .of(context)
+                            .size
+                            .width,
+                        decoration: BoxDecoration(
+                          color: pickerWhiteColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child:  Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          child: Column(
+                            children: [
+                              RowValue(label: 'Invoice Number',
+                                labelValue: '${tData[index].invoiceNumber}',
+                                labelValueColor: pickerBlackColor,),
+                              RowValue(label: 'Invoice date',
+                                labelValue: DateFormat('yyyy-MM-dd').format(tData[index].invoiceDate),
+                                labelValueColor: pickerBlackColor,),
+                              RowValue(label: 'Order Number',
+                                labelValue: tData[index].orderNumber,
+                                labelValueColor: pickerBlackColor,),
+                              RowValue(label: 'Status',
+                                labelValue: tData[index].status,
+                                labelValueColor: pickerBlackColor,),
+                              const Divider(color: pickerBlackColor,),
+                              RowValue(label: 'Amount',
+                                labelValue: 'AED ${tData[index].amountPaid}',
+                                labelValueColor: pickerBlackColor,),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
-               ),
-               ),
             )
           ],
         ),
-      ),
-    );
+      );
+    } else {
+      return const Center(child: Text('No Data'));
+    }
+  },
+),
+    ),
+);
   }
 }

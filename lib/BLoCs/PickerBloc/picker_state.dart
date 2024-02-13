@@ -844,6 +844,31 @@ class PckOrderReportErrorState extends PickerState {
 }
 /***********************[Get Order REport List]]***********************/
 
+/***********************[Get  statement account List]***********************/
+class StatementAccountFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class StatementAccountFetchedState extends PickerState {
+  List<StatementAccoun> statementAccountList = [];
+
+  StatementAccountFetchedState(this.statementAccountList);
+
+  @override
+  List<Object?> get props => [statementAccountList];
+}
+
+class StatementAccountErrorState extends PickerState {
+  final String message;
+
+  StatementAccountErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get statement account List]]***********************/
+
 /***********************[Get Customer History Detail List]***********************/
 class PckCustHistoryDetailFetchingState extends PickerState {
   @override
@@ -1019,6 +1044,56 @@ class PckItemErrorState extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************[Get Item List]***********************/
+
+/***********************[Complaint List]***********************/
+class ComplaintFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ComplaintFetchedState extends PickerState {
+  Complaint? complaintList;
+
+  ComplaintFetchedState(this.complaintList);
+
+  @override
+  List<Object?> get props => [complaintList];
+}
+
+class ComplaintErrorState extends PickerState {
+  final String message;
+
+  ComplaintErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Complaint List]***********************/
+
+/***********************[Add new Complaint List]***********************/
+class AddNewComplaintFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class AddNewComplaintFetchedState extends PickerState {
+  AddNewComplaint? addNewComplaintList;
+
+  AddNewComplaintFetchedState(this.addNewComplaintList);
+
+  @override
+  List<Object?> get props => [addNewComplaintList];
+}
+
+class AddNewComplaintErrorState extends PickerState {
+  final String message;
+
+  AddNewComplaintErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Add new  Complaint List]***********************/
 
 /***********************[Add to Cart]***********************/
 class PckAddingtoCartState extends PickerState {

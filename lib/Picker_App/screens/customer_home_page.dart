@@ -191,7 +191,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
                                   onPressed: () {
                                     Navigator.push(context, MaterialPageRoute(
                                         builder: (
-                                            context) => const StatementOfAccountPage()));
+                                            context) =>  StatementOfAccountPage(cstId: widget.custId)));
                                   },
                                   child: const Center(
                                     child: Text(
@@ -223,7 +223,14 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
                   },
                   body: TabBarView(
                     children: [
-                      ListView.builder(
+                      data?.todayDelivery?.isEmpty == true? const Center(
+                        child: Text(
+                          'No Data',
+                          style: TextStyle(
+                              color: pickerBlackColor,
+                              fontSize: 13),
+                        ),
+                      ) :  ListView.builder(
                         shrinkWrap: true,
                         itemCount: data?.todayDelivery?.length,
                         physics: const BouncingScrollPhysics(),
@@ -356,7 +363,14 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
                               ),
                             ),
                       ),
-                      ListView.builder(
+                      data?.pendingOrders?.isEmpty == true? const Center(
+                        child: Text(
+                          'No Data',
+                          style: TextStyle(
+                              color: pickerBlackColor,
+                              fontSize: 13),
+                        ),
+                      ) : ListView.builder(
                         shrinkWrap: true,
                         itemCount: data?.pendingOrders?.length,
                         physics: const BouncingScrollPhysics(),
@@ -451,7 +465,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
         open(context,  WalletNewPage(customId:cstId ));
         break;
        case 4:
-         open(context, const ComplaintPage());
+         open(context,  ComplaintPage(customId:cstId ));
          break;
     //   case 5:
     //     open(context, const UnDeliveredPage());

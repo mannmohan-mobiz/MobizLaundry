@@ -7,7 +7,8 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 
 class StatementOfAccountPage extends StatefulWidget {
-  const StatementOfAccountPage({super.key});
+  final String? cstId;
+  const StatementOfAccountPage({super.key,this.cstId});
 
   @override
   State<StatementOfAccountPage> createState() => _StatementOfAccountPageState();
@@ -19,6 +20,7 @@ class _StatementOfAccountPageState extends State<StatementOfAccountPage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.cstId);
     return Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(
@@ -59,7 +61,7 @@ class _StatementOfAccountPageState extends State<StatementOfAccountPage> {
                       controller: fromController,
                       textAlign: TextAlign.center,
                       decoration:  const InputDecoration(
-                        hintText: "01.12.2023",
+                        hintText: "",
                         border: InputBorder.none,
                       ),
                     ),
@@ -80,7 +82,7 @@ class _StatementOfAccountPageState extends State<StatementOfAccountPage> {
                       print(
                           fromDate); //get the picked date in the format => 2022-07-04 00:00:00.000
                       String formattedDate =
-                      DateFormat('dd-MM-yyyy').format(
+                      DateFormat('yyyy-MM-dd').format(
                           fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
                       print(
                           formattedDate); //formatted date output using intl package =>  2022-07-04
@@ -115,7 +117,7 @@ class _StatementOfAccountPageState extends State<StatementOfAccountPage> {
                       controller: fromToController,
                       textAlign: TextAlign.center,
                       decoration:  const InputDecoration(
-                        hintText: "05.12.2023",
+                        hintText: "",
                         border: InputBorder.none,
                       ),
                     ),
@@ -134,7 +136,7 @@ class _StatementOfAccountPageState extends State<StatementOfAccountPage> {
                       lastDate: DateTime(2101));
                   if (toDate != null) {
                     print(toDate); //get the picked date in the format => 2022-07-04 00:00:00.000
-                    String formattedDate = DateFormat('dd-MM-yyyy').format(toDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                    String formattedDate = DateFormat('yyyy-MM-dd').format(toDate); // format date in required form here we use yyyy-MM-dd that means time is removed
                     print(formattedDate);
                     setState(() {
                       fromToController.text =
@@ -158,7 +160,7 @@ class _StatementOfAccountPageState extends State<StatementOfAccountPage> {
                   ),
                 ),
                 onPressed: (){
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => const StatementOfAccountDetailPage()));
+                   Navigator.push(context, MaterialPageRoute(builder: (context) =>  StatementOfAccountDetailPage(customerId: widget.cstId,fromDate: fromController.text,toDate: fromToController.text, )));
                 },
                 child: const Text('LOAD',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
             )

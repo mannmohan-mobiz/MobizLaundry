@@ -12,10 +12,12 @@ import 'package:golden_falcon/Models/PickerModel/order_details_model.dart';
 import 'package:golden_falcon/Models/PickerModel/outstanding_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_category_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart';
+import '../../Models/PickerModel/add_new_complaint_model.dart';
 import '../../Models/PickerModel/add_to_wallet_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart' as CartListValue;
 import '../../Models/PickerModel/collect_items_model.dart';
+import '../../Models/PickerModel/complaint_model.dart';
 import '../../Models/PickerModel/customer_home_model.dart';
 import '../../Models/PickerModel/customer_home_order_history_detail_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
@@ -37,6 +39,7 @@ import '../../Models/PickerModel/pickup_list_midel.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/recharge_wallet_receipt_model.dart';
 import '../../Models/PickerModel/search.dart';
+import '../../Models/PickerModel/statement_account_model.dart';
 import '../../Models/PickerModel/thankyou_model.dart';
 import '../../Models/PickerModel/undelivered_model.dart';
 import '../../Models/PickerModel/undelivered_status_model.dart';
@@ -565,6 +568,25 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
       }
     });
 
+    on<StatementAccountFetchEvent>((event, emit) async {
+      emit(StatementAccountFetchingState());
+      try {
+        await pickerRepository.getStatementAccountApi(token: event.token, body: {
+          "customer_id": event.custId,
+          "from_date": event.fromDate,
+          "to_date": event.toDate
+        }).then((value) {
+          if (value.status == true) {
+            emit(StatementAccountFetchedState(value.data));
+          } else {
+            emit(StatementAccountErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(StatementAccountErrorState(e.toString()));
+      }
+    });
+
     on<PckOrderReportDetailFetchEvent>((event, emit) async {
       emit(PckOrdReportDetailFetchingState());
       try {
@@ -606,6 +628,36 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PckThankyouErrorState(e.toString()));
+      }
+    });
+
+    on<ComplaintFetchEvent>((event, emit) async {
+      emit(ComplaintFetchingState());
+      try {
+        await pickerRepository.complaintListApi(token: event.token, customerId: event.customId,).then((value) {
+          if (value.status == true) {
+            emit(ComplaintFetchedState(value.data));
+          } else {
+            emit(ComplaintErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(ComplaintErrorState(e.toString()));
+      }
+    });
+
+    on<AddNewComplaintFetchEvent>((event, emit) async {
+      emit(AddNewComplaintFetchingState());
+      try {
+        await pickerRepository.addNewComplaintListApi(token: event.token, customerId: event.customId,).then((value) {
+          if (value.status == true) {
+            emit(AddNewComplaintFetchedState(value.data));
+          } else {
+            emit(AddNewComplaintErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(AddNewComplaintErrorState(e.toString()));
       }
     });
 

@@ -10,6 +10,7 @@ import 'package:golden_falcon/Utils/common.dart';
 import 'package:dio/dio.dart';
 
 import '../../Models/PickerModel/add_customer_model.dart';
+import '../../Models/PickerModel/add_new_complaint_model.dart';
 import '../../Models/PickerModel/add_to_cart_model.dart';
 import '../../Models/PickerModel/add_to_wallet_model.dart';
 import '../../Models/PickerModel/cart_count.dart';
@@ -17,6 +18,7 @@ import '../../Models/PickerModel/cart_delete.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_quantity_model.dart';
 import '../../Models/PickerModel/collect_items_model.dart';
+import '../../Models/PickerModel/complaint_model.dart';
 import '../../Models/PickerModel/confirm_order_model.dart';
 import '../../Models/PickerModel/customer_home_history_model.dart';
 import '../../Models/PickerModel/customer_home_model.dart';
@@ -55,6 +57,7 @@ import '../../Models/PickerModel/ready_transit_model.dart';
 import '../../Models/PickerModel/recharge_wallet_model.dart';
 import '../../Models/PickerModel/recharge_wallet_receipt_model.dart';
 import '../../Models/PickerModel/search.dart';
+import '../../Models/PickerModel/statement_account_model.dart';
 import '../../Models/PickerModel/thankyou_model.dart';
 import '../../Models/PickerModel/undelivered_model.dart';
 import '../../Models/PickerModel/undelivered_status_model.dart';
@@ -1379,6 +1382,71 @@ class PickerRepository {
     }
   }
 
+
+  // Complaint
+  Future<ComplaintModel> complaintListApi({required String token, required String customerId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "customer_id": customerId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/picker_complaint_api',
+          data: data,
+          options: options
+      );
+
+      print('RESPONSE DETAILS: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = ComplaintModel.fromJson(response.data);
+        print('RESPONSE DETAILS RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Add new Complaint
+  Future<AddNewComplaintModel> addNewComplaintListApi({required String token, required String customerId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "customer_id": customerId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/add_new_complaint',
+          data: data,
+          options: options
+      );
+
+      print('RESPONSE DETAILS: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = AddNewComplaintModel.fromJson(response.data);
+        print('RESPONSE DETAILS RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   // Customer Home
   Future<CustomerHomeOrderModel> customerHomeApi({required String token,required String customerId}) async {
     Dio dio = Dio();
@@ -1700,6 +1768,41 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = OrderReportModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
+  // Statement Account List
+  Future<StatementAccountModel> getStatementAccountApi({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    debugPrint('WW11####$body####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/statement_account_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = StatementAccountModel.fromJson(response.data);
         print('RESULT####$result####');
         return result;
 
