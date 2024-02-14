@@ -1,34 +1,34 @@
 /// status : true
-/// data : {"cart":[{"cart_id":"1945c2be-97c0-4288-a937-ae81570d47b5","order":{"order_id":"01d6604b-9fc7-4f46-b4e0-57174c2ead66","created_date":"2023-12-27T04:15:21.619010Z","order_number":"a3f9c1223","pickup_date":"2023-11-22","pickup_time":"10:00 AM - 11:00 AM","customer":"a59b6ef2-e15e-4175-80c3-141e8caf720c","total_amount":"0","Delivery_date":"2023-12-27","status":"Delivered","order_date":"2024-01-10","Delivery_time":"08:00 PM - 09:00 PM","order_type":"Normal","net_taxable":"0","vat":"0"},"quantity":"1","amount":"20","item_service":{"item_ser_id":"c837b09e-f3d1-44bf-9ad8-c39b371235ba","item":{"item_id":"a4b6880c-faa4-4dda-9e28-b3b690e8df95","item_name":"Shirts","item_image":"/media/shirts.jpeg"},"category":{"category_id":"ee6b720e-f5aa-45aa-9d7b-c55f2c37fd9b","service_master":{"category_name":"Dry Cleaning","category_image":"/media/dry.jpeg"}},"sub_category":{"sub_cat_id":"ac5cbc4f-7dbe-40cd-9e42-e7e3e0aa8955","sub_service_master":{"sub_cat_name":"Dry Cleaning","sub_cat_image":"/media/dry_5CJhkjo.jpeg"}}},"price_list":"0fe1adcc-611f-44a9-bf14-932be3eb4d4d"}],"cart_count":1,"wallet_balance":"-862.0","delivery_address":{"name":"Deepesh George","customer_type":"Home","building_no":"0","room_no":"0","building_name":null,"floor_number":null,"flat_number":null},"payment_method":"Cash on delivery","VAT":"0","Net_taxable":"0"}
+/// data : {"cart":[{"cart_id":"37bf39ee-b11e-46c7-8ab4-1b5e00259a9f","order":{"order_id":"e5acda13-1cb9-4b41-8f6b-3a6446597abd","created_date":"2024-01-12T09:25:28.603409Z","order_number":"8bdbd124","pickup_date":"2024-01-12","pickup_time":"10:00 AM - 11:00 AM","customer":"a59b6ef2-e15e-4175-80c3-141e8caf720c","total_amount":"20.00","Delivery_date":"2024-01-19","status":"Delivered","order_date":"2024-01-18","Delivery_time":"09:34","order_type":"Normal","net_taxable":"20.00","vat":"5"},"quantity":"1","amount":"20","item_service":{"item_ser_id":"c837b09e-f3d1-44bf-9ad8-c39b371235ba","item":{"item_id":"a4b6880c-faa4-4dda-9e28-b3b690e8df95","item_name":"Shirts","item_image":"/media/shirts.jpeg"},"category":{"category_id":"ee6b720e-f5aa-45aa-9d7b-c55f2c37fd9b","service_master":{"category_name":"Dry Cleaning","category_image":"/media/dry.jpeg"}},"sub_category":{"sub_cat_id":"ac5cbc4f-7dbe-40cd-9e42-e7e3e0aa8955","sub_service_master":{"sub_cat_name":"Dry Cleaning","sub_cat_image":"/media/dry_5CJhkjo.jpeg"}}},"price_list":"0fe1adcc-611f-44a9-bf14-932be3eb4d4d"}],"cart_count":1,"wallet_balance":"-146.0","delivery_address":{"name":null,"customer_type":null,"building_no":null,"room_no":null,"building_name":null,"floor_number":null,"flat_number":null},"payment_method":"Wallet","Service_type":"Normal","VAT":"5","Net_taxable":"20.00","total_orderprice":"20.00"}
 /// message : "Customer Cart List!"
 
-class CustomerHomeOrderHistoryDetailModel {
-  CustomerHomeOrderHistoryDetailModel({
+class AddNewComplaintDetailModel {
+  AddNewComplaintDetailModel({
       bool? status,
-      OrderHistoryDetail? data,
+      AddNewComplaintDetail? data,
       String? message,}){
     _status = status;
     _data = data;
     _message = message;
 }
 
-  CustomerHomeOrderHistoryDetailModel.fromJson(dynamic json) {
+  AddNewComplaintDetailModel.fromJson(dynamic json) {
     _status = json['status'];
-    _data = json['data'] != null ? OrderHistoryDetail.fromJson(json['data']) : null;
+    _data = json['data'] != null ? AddNewComplaintDetail.fromJson(json['data']) : null;
     _message = json['message'];
   }
   bool? _status;
-  OrderHistoryDetail? _data;
+  AddNewComplaintDetail? _data;
   String? _message;
-CustomerHomeOrderHistoryDetailModel copyWith({  bool? status,
-  OrderHistoryDetail? data,
+AddNewComplaintDetailModel copyWith({  bool? status,
+  AddNewComplaintDetail? data,
   String? message,
-}) => CustomerHomeOrderHistoryDetailModel(  status: status ?? _status,
+}) => AddNewComplaintDetailModel(  status: status ?? _status,
   data: data ?? _data,
   message: message ?? _message,
 );
   bool? get status => _status;
-  OrderHistoryDetail? get data => _data;
+  AddNewComplaintDetail? get data => _data;
   String? get message => _message;
 
   Map<String, dynamic> toJson() {
@@ -43,33 +43,39 @@ CustomerHomeOrderHistoryDetailModel copyWith({  bool? status,
 
 }
 
-/// cart : [{"cart_id":"1945c2be-97c0-4288-a937-ae81570d47b5","order":{"order_id":"01d6604b-9fc7-4f46-b4e0-57174c2ead66","created_date":"2023-12-27T04:15:21.619010Z","order_number":"a3f9c1223","pickup_date":"2023-11-22","pickup_time":"10:00 AM - 11:00 AM","customer":"a59b6ef2-e15e-4175-80c3-141e8caf720c","total_amount":"0","Delivery_date":"2023-12-27","status":"Delivered","order_date":"2024-01-10","Delivery_time":"08:00 PM - 09:00 PM","order_type":"Normal","net_taxable":"0","vat":"0"},"quantity":"1","amount":"20","item_service":{"item_ser_id":"c837b09e-f3d1-44bf-9ad8-c39b371235ba","item":{"item_id":"a4b6880c-faa4-4dda-9e28-b3b690e8df95","item_name":"Shirts","item_image":"/media/shirts.jpeg"},"category":{"category_id":"ee6b720e-f5aa-45aa-9d7b-c55f2c37fd9b","service_master":{"category_name":"Dry Cleaning","category_image":"/media/dry.jpeg"}},"sub_category":{"sub_cat_id":"ac5cbc4f-7dbe-40cd-9e42-e7e3e0aa8955","sub_service_master":{"sub_cat_name":"Dry Cleaning","sub_cat_image":"/media/dry_5CJhkjo.jpeg"}}},"price_list":"0fe1adcc-611f-44a9-bf14-932be3eb4d4d"}]
+/// cart : [{"cart_id":"37bf39ee-b11e-46c7-8ab4-1b5e00259a9f","order":{"order_id":"e5acda13-1cb9-4b41-8f6b-3a6446597abd","created_date":"2024-01-12T09:25:28.603409Z","order_number":"8bdbd124","pickup_date":"2024-01-12","pickup_time":"10:00 AM - 11:00 AM","customer":"a59b6ef2-e15e-4175-80c3-141e8caf720c","total_amount":"20.00","Delivery_date":"2024-01-19","status":"Delivered","order_date":"2024-01-18","Delivery_time":"09:34","order_type":"Normal","net_taxable":"20.00","vat":"5"},"quantity":"1","amount":"20","item_service":{"item_ser_id":"c837b09e-f3d1-44bf-9ad8-c39b371235ba","item":{"item_id":"a4b6880c-faa4-4dda-9e28-b3b690e8df95","item_name":"Shirts","item_image":"/media/shirts.jpeg"},"category":{"category_id":"ee6b720e-f5aa-45aa-9d7b-c55f2c37fd9b","service_master":{"category_name":"Dry Cleaning","category_image":"/media/dry.jpeg"}},"sub_category":{"sub_cat_id":"ac5cbc4f-7dbe-40cd-9e42-e7e3e0aa8955","sub_service_master":{"sub_cat_name":"Dry Cleaning","sub_cat_image":"/media/dry_5CJhkjo.jpeg"}}},"price_list":"0fe1adcc-611f-44a9-bf14-932be3eb4d4d"}]
 /// cart_count : 1
-/// wallet_balance : "-862.0"
-/// delivery_address : {"name":"Deepesh George","customer_type":"Home","building_no":"0","room_no":"0","building_name":null,"floor_number":null,"flat_number":null}
-/// payment_method : "Cash on delivery"
-/// VAT : "0"
-/// Net_taxable : "0"
+/// wallet_balance : "-146.0"
+/// delivery_address : {"name":null,"customer_type":null,"building_no":null,"room_no":null,"building_name":null,"floor_number":null,"flat_number":null}
+/// payment_method : "Wallet"
+/// Service_type : "Normal"
+/// VAT : "5"
+/// Net_taxable : "20.00"
+/// total_orderprice : "20.00"
 
-class OrderHistoryDetail {
-  OrderHistoryDetail({
+class AddNewComplaintDetail {
+  AddNewComplaintDetail({
       List<Cart>? cart, 
       num? cartCount, 
       String? walletBalance, 
       DeliveryAddress? deliveryAddress, 
       String? paymentMethod, 
+      String? serviceType, 
       String? vat, 
-      String? netTaxable,}){
+      String? netTaxable, 
+      String? totalOrderprice,}){
     _cart = cart;
     _cartCount = cartCount;
     _walletBalance = walletBalance;
     _deliveryAddress = deliveryAddress;
     _paymentMethod = paymentMethod;
+    _serviceType = serviceType;
     _vat = vat;
     _netTaxable = netTaxable;
+    _totalOrderprice = totalOrderprice;
 }
 
-  OrderHistoryDetail.fromJson(dynamic json) {
+  AddNewComplaintDetail.fromJson(dynamic json) {
     if (json['cart'] != null) {
       _cart = [];
       json['cart'].forEach((v) {
@@ -80,38 +86,48 @@ class OrderHistoryDetail {
     _walletBalance = json['wallet_balance'];
     _deliveryAddress = json['delivery_address'] != null ? DeliveryAddress.fromJson(json['delivery_address']) : null;
     _paymentMethod = json['payment_method'];
+    _serviceType = json['Service_type'];
     _vat = json['VAT'];
     _netTaxable = json['Net_taxable'];
+    _totalOrderprice = json['total_orderprice'];
   }
   List<Cart>? _cart;
   num? _cartCount;
   String? _walletBalance;
   DeliveryAddress? _deliveryAddress;
   String? _paymentMethod;
+  String? _serviceType;
   String? _vat;
   String? _netTaxable;
-  OrderHistoryDetail copyWith({  List<Cart>? cart,
+  String? _totalOrderprice;
+  AddNewComplaintDetail copyWith({  List<Cart>? cart,
   num? cartCount,
   String? walletBalance,
   DeliveryAddress? deliveryAddress,
   String? paymentMethod,
+  String? serviceType,
   String? vat,
   String? netTaxable,
-}) => OrderHistoryDetail(  cart: cart ?? _cart,
+  String? totalOrderprice,
+}) => AddNewComplaintDetail(  cart: cart ?? _cart,
   cartCount: cartCount ?? _cartCount,
   walletBalance: walletBalance ?? _walletBalance,
   deliveryAddress: deliveryAddress ?? _deliveryAddress,
   paymentMethod: paymentMethod ?? _paymentMethod,
+  serviceType: serviceType ?? _serviceType,
   vat: vat ?? _vat,
   netTaxable: netTaxable ?? _netTaxable,
+  totalOrderprice: totalOrderprice ?? _totalOrderprice,
 );
   List<Cart>? get cart => _cart;
   num? get cartCount => _cartCount;
   String? get walletBalance => _walletBalance;
   DeliveryAddress? get deliveryAddress => _deliveryAddress;
   String? get paymentMethod => _paymentMethod;
+  String? get serviceType => _serviceType;
   String? get vat => _vat;
   String? get netTaxable => _netTaxable;
+  String? get totalOrderprice => _totalOrderprice;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -124,27 +140,29 @@ class OrderHistoryDetail {
       map['delivery_address'] = _deliveryAddress?.toJson();
     }
     map['payment_method'] = _paymentMethod;
+    map['Service_type'] = _serviceType;
     map['VAT'] = _vat;
     map['Net_taxable'] = _netTaxable;
+    map['total_orderprice'] = _totalOrderprice;
     return map;
   }
 
 }
 
-/// name : "Deepesh George"
-/// customer_type : "Home"
-/// building_no : "0"
-/// room_no : "0"
+/// name : null
+/// customer_type : null
+/// building_no : null
+/// room_no : null
 /// building_name : null
 /// floor_number : null
 /// flat_number : null
 
 class DeliveryAddress {
   DeliveryAddress({
-      String? name, 
-      String? customerType, 
-      String? buildingNo, 
-      String? roomNo, 
+      dynamic name, 
+      dynamic customerType, 
+      dynamic buildingNo, 
+      dynamic roomNo, 
       dynamic buildingName, 
       dynamic floorNumber, 
       dynamic flatNumber,}){
@@ -166,17 +184,17 @@ class DeliveryAddress {
     _floorNumber = json['floor_number'];
     _flatNumber = json['flat_number'];
   }
-  String? _name;
-  String? _customerType;
-  String? _buildingNo;
-  String? _roomNo;
+  dynamic _name;
+  dynamic _customerType;
+  dynamic _buildingNo;
+  dynamic _roomNo;
   dynamic _buildingName;
   dynamic _floorNumber;
   dynamic _flatNumber;
-DeliveryAddress copyWith({  String? name,
-  String? customerType,
-  String? buildingNo,
-  String? roomNo,
+DeliveryAddress copyWith({  dynamic name,
+  dynamic customerType,
+  dynamic buildingNo,
+  dynamic roomNo,
   dynamic buildingName,
   dynamic floorNumber,
   dynamic flatNumber,
@@ -188,10 +206,10 @@ DeliveryAddress copyWith({  String? name,
   floorNumber: floorNumber ?? _floorNumber,
   flatNumber: flatNumber ?? _flatNumber,
 );
-  String? get name => _name;
-  String? get customerType => _customerType;
-  String? get buildingNo => _buildingNo;
-  String? get roomNo => _roomNo;
+  dynamic get name => _name;
+  dynamic get customerType => _customerType;
+  dynamic get buildingNo => _buildingNo;
+  dynamic get roomNo => _roomNo;
   dynamic get buildingName => _buildingName;
   dynamic get floorNumber => _floorNumber;
   dynamic get flatNumber => _flatNumber;
@@ -210,8 +228,8 @@ DeliveryAddress copyWith({  String? name,
 
 }
 
-/// cart_id : "1945c2be-97c0-4288-a937-ae81570d47b5"
-/// order : {"order_id":"01d6604b-9fc7-4f46-b4e0-57174c2ead66","created_date":"2023-12-27T04:15:21.619010Z","order_number":"a3f9c1223","pickup_date":"2023-11-22","pickup_time":"10:00 AM - 11:00 AM","customer":"a59b6ef2-e15e-4175-80c3-141e8caf720c","total_amount":"0","Delivery_date":"2023-12-27","status":"Delivered","order_date":"2024-01-10","Delivery_time":"08:00 PM - 09:00 PM","order_type":"Normal","net_taxable":"0","vat":"0"}
+/// cart_id : "37bf39ee-b11e-46c7-8ab4-1b5e00259a9f"
+/// order : {"order_id":"e5acda13-1cb9-4b41-8f6b-3a6446597abd","created_date":"2024-01-12T09:25:28.603409Z","order_number":"8bdbd124","pickup_date":"2024-01-12","pickup_time":"10:00 AM - 11:00 AM","customer":"a59b6ef2-e15e-4175-80c3-141e8caf720c","total_amount":"20.00","Delivery_date":"2024-01-19","status":"Delivered","order_date":"2024-01-18","Delivery_time":"09:34","order_type":"Normal","net_taxable":"20.00","vat":"5"}
 /// quantity : "1"
 /// amount : "20"
 /// item_service : {"item_ser_id":"c837b09e-f3d1-44bf-9ad8-c39b371235ba","item":{"item_id":"a4b6880c-faa4-4dda-9e28-b3b690e8df95","item_name":"Shirts","item_image":"/media/shirts.jpeg"},"category":{"category_id":"ee6b720e-f5aa-45aa-9d7b-c55f2c37fd9b","service_master":{"category_name":"Dry Cleaning","category_image":"/media/dry.jpeg"}},"sub_category":{"sub_cat_id":"ac5cbc4f-7dbe-40cd-9e42-e7e3e0aa8955","sub_service_master":{"sub_cat_name":"Dry Cleaning","sub_cat_image":"/media/dry_5CJhkjo.jpeg"}}}
@@ -525,20 +543,20 @@ Item copyWith({  String? itemId,
 
 }
 
-/// order_id : "01d6604b-9fc7-4f46-b4e0-57174c2ead66"
-/// created_date : "2023-12-27T04:15:21.619010Z"
-/// order_number : "a3f9c1223"
-/// pickup_date : "2023-11-22"
+/// order_id : "e5acda13-1cb9-4b41-8f6b-3a6446597abd"
+/// created_date : "2024-01-12T09:25:28.603409Z"
+/// order_number : "8bdbd124"
+/// pickup_date : "2024-01-12"
 /// pickup_time : "10:00 AM - 11:00 AM"
 /// customer : "a59b6ef2-e15e-4175-80c3-141e8caf720c"
-/// total_amount : "0"
-/// Delivery_date : "2023-12-27"
+/// total_amount : "20.00"
+/// Delivery_date : "2024-01-19"
 /// status : "Delivered"
-/// order_date : "2024-01-10"
-/// Delivery_time : "08:00 PM - 09:00 PM"
+/// order_date : "2024-01-18"
+/// Delivery_time : "09:34"
 /// order_type : "Normal"
-/// net_taxable : "0"
-/// vat : "0"
+/// net_taxable : "20.00"
+/// vat : "5"
 
 class Order {
   Order({

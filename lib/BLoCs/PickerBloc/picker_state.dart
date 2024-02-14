@@ -894,6 +894,31 @@ class PckCustHistoryDetailErrorState extends PickerState {
 }
 /***********************[Get Customer History Detail List]]***********************/
 
+/***********************[Get Complaint order Detail List]***********************/
+class ComplaintOrderDetailFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ComplaintOrderDetailFetchedState extends PickerState {
+  AddNewComplaintDetail? addNewComplaintDetailList;
+
+  ComplaintOrderDetailFetchedState(this.addNewComplaintDetailList);
+
+  @override
+  List<Object?> get props => [addNewComplaintDetailList];
+}
+
+class ComplaintOrderDetailErrorState extends PickerState {
+  final String message;
+
+  ComplaintOrderDetailErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Complaint order Detail List]]***********************/
+
 /***********************[Get Order Report Detail List]***********************/
 class PckOrdReportDetailFetchingState extends PickerState {
   @override

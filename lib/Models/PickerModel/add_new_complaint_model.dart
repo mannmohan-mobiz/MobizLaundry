@@ -55,36 +55,44 @@ class AddNewComplaint {
 class DeliverdOrder {
   String orderId;
   String orderNumber;
+  String customer;
   String totalAmount;
   DateTime deliveryDate;
   String status;
   int quantity;
+  String serviceCategoryId;
 
   DeliverdOrder({
     required this.orderId,
     required this.orderNumber,
+    required this.customer,
     required this.totalAmount,
     required this.deliveryDate,
     required this.status,
     required this.quantity,
+    required this.serviceCategoryId,
   });
 
   factory DeliverdOrder.fromJson(Map<String, dynamic> json) => DeliverdOrder(
     orderId: json["order_id"],
     orderNumber: json["order_number"],
+    customer: json["customer"],
     totalAmount: json["total_amount"],
     deliveryDate: DateTime.parse(json["Delivery_date"]),
     status: json["status"],
     quantity: json["quantity"],
+    serviceCategoryId: json["service_category_id"],
   );
 
   Map<String, dynamic> toJson() => {
     "order_id": orderId,
     "order_number": orderNumber,
+    "customer": customer,
     "total_amount": totalAmount,
     "Delivery_date": "${deliveryDate.year.toString().padLeft(4, '0')}-${deliveryDate.month.toString().padLeft(2, '0')}-${deliveryDate.day.toString().padLeft(2, '0')}",
     "status": status,
     "quantity": quantity,
+    "service_category_id": serviceCategoryId,
   };
 }
 

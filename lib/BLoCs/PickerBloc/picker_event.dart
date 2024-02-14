@@ -372,6 +372,17 @@ class PckCustomerHistoryDetailFetchEvent extends PickerEvent {
   List<Object?> get props => [token, ordId];
 }
 
+// Get complaint order  detail List
+class ComplaintDetailFetchEvent extends PickerEvent {
+  final String token;
+  final String ordId;
+
+  ComplaintDetailFetchEvent(this.token, this.ordId);
+
+  @override
+  List<Object?> get props => [token, ordId];
+}
+
 // Statemnt account List
 class StatementAccountFetchEvent extends PickerEvent {
   final String token;

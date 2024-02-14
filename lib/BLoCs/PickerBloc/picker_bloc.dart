@@ -12,6 +12,7 @@ import 'package:golden_falcon/Models/PickerModel/order_details_model.dart';
 import 'package:golden_falcon/Models/PickerModel/outstanding_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_category_model.dart';
 import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart';
+import '../../Models/PickerModel/add_new_complaint_detail_model.dart';
 import '../../Models/PickerModel/add_new_complaint_model.dart';
 import '../../Models/PickerModel/add_to_wallet_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
@@ -614,6 +615,20 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PckCustHistoryDetailErrorState(e.toString()));
+      }
+    });
+    on<ComplaintDetailFetchEvent>((event, emit) async {
+      emit(ComplaintOrderDetailFetchingState());
+      try {
+        await pickerRepository.getComplaintDetailApi(token: event.token, orderid: event.ordId).then((value) {
+          if (value.status == true) {
+            emit(ComplaintOrderDetailFetchedState(value.data));
+          } else {
+            emit(ComplaintOrderDetailErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(ComplaintOrderDetailErrorState(e.toString()));
       }
     });
     on<PckThankListFetchEvent>((event, emit) async {

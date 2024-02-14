@@ -9,6 +9,8 @@ import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
+import 'add_complaint_order_detail_page.dart';
+import 'home_page_new.dart';
 
 class AddComplaintDetailPage extends StatefulWidget {
   final String? customerId;
@@ -21,6 +23,10 @@ class AddComplaintDetailPage extends StatefulWidget {
 class _AddComplaintDetailPageState extends State<AddComplaintDetailPage> {
   String? selectedValue = 'Select the type of complaint';
   String? selectedValueId = '';
+  String? selectedOrderId = '';
+  String? selectedServiceId = '';
+  TextEditingController commentController = TextEditingController();
+  final PickerRepository pickerRepository = PickerRepository();
   @override
   Widget build(BuildContext context) {
     print('CSTID##${widget.customerId}');
@@ -67,9 +73,17 @@ class _AddComplaintDetailPageState extends State<AddComplaintDetailPage> {
                 shrinkWrap: true,
                 itemCount: tData?.deliverdOrders.length,
                 physics: const BouncingScrollPhysics(),
-                itemBuilder: (itemBuilder, index) =>
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                itemBuilder: (itemBuilder, index) {
+                  selectedOrderId = tData?.deliverdOrders[index].orderId;
+                  selectedServiceId = tData?.deliverdOrders[index].serviceCategoryId;
+                  print('ordID##$selectedOrderId');
+                  print('srvID##$selectedServiceId');
+                 return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: InkWell(
+                      onTap: (){
+
+                      },
                       child: Card(
                         child: Container(
                           width: MediaQuery
@@ -90,42 +104,55 @@ class _AddComplaintDetailPageState extends State<AddComplaintDetailPage> {
                                 ListTile(
                                   leading: Image.asset(
                                       'Assets/Images/delivered.png'),
-                                  title:  Column(
+                                  title: Column(
                                     crossAxisAlignment: CrossAxisAlignment
                                         .start,
 
                                     children: [
-                                      Text('${tData?.deliverdOrders[index].status}', style: const TextStyle(
-                                          color: pickerBlackColor,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 14),),
-                                      Text('On ${DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData?.deliverdOrders[index].deliveryDate}'))}', style: const TextStyle(
-                                          color: pickerBlackColor,
-                                          fontWeight: FontWeight.w300,
-                                          fontSize: 13),),
+                                      Text(
+                                        '${tData?.deliverdOrders[index].status}',
+                                        style: const TextStyle(
+                                            color: pickerBlackColor,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14),),
+                                      Text('On ${DateFormat('yyyy-MM-dd').format(
+                                          DateTime.parse(
+                                              '${tData?.deliverdOrders[index]
+                                                  .deliveryDate}'))}',
+                                        style: const TextStyle(
+                                            color: pickerBlackColor,
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 13),),
                                     ],
                                   ),
                                   trailing: InkWell(
                                       onTap: () {
-
+                                        Navigator.push(context, MaterialPageRoute(
+                                            builder: (context) =>  ComplaintOrderDetailPage(orderId: '${tData?.deliverdOrders[index].orderId}',statusValue: '${tData?.deliverdOrders[index].status}',orderDateValue: DateFormat('yyyy-MM-dd').format(
+                                                DateTime.parse(
+                                                    '${tData?.deliverdOrders[index]
+                                                        .deliveryDate}')))));
                                       },
                                       child: Image.asset(
                                           'Assets/Images/rounded.png')),
                                 ),
-                                 RowItem(label: 'Order Number:',
-                                  value: '${tData?.deliverdOrders[index].orderNumber}',
+                                RowItem(label: 'Order Number:',
+                                  value: '${tData?.deliverdOrders[index]
+                                      .orderNumber}',
                                   fontSize: 13,
                                   fontSizeValue: 13,
                                   fontWeightValue: FontWeight.w300,
                                   fontWeight: FontWeight.w300,),
-                                 RowItem(label: 'Number of items:',
-                                  value: '${tData?.deliverdOrders[index].quantity}',
+                                RowItem(label: 'Number of items:',
+                                  value: '${tData?.deliverdOrders[index]
+                                      .quantity}',
                                   fontSize: 13,
                                   fontSizeValue: 13,
                                   fontWeightValue: FontWeight.w300,
                                   fontWeight: FontWeight.w300,),
-                                 RowItem(label: 'Amount paid:',
-                                  value: 'AED ${tData?.deliverdOrders[index].totalAmount}',
+                                RowItem(label: 'Amount paid:',
+                                  value: 'AED ${tData?.deliverdOrders[index]
+                                      .totalAmount}',
                                   fontSize: 13,
                                   fontSizeValue: 13,
                                   fontWeightValue: FontWeight.w300,
@@ -135,7 +162,9 @@ class _AddComplaintDetailPageState extends State<AddComplaintDetailPage> {
                           ),
                         ),
                       ),
-                    )
+                    ),
+                  );
+                }
             ),
             const SizedBox(height: 15,),
             InkWell(
@@ -199,7 +228,8 @@ class _AddComplaintDetailPageState extends State<AddComplaintDetailPage> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 20),
                   child: TextField(
-                    controller: TextEditingController(),
+                    controller: commentController,
+                    maxLines: 8,
                     decoration: const InputDecoration(
                       hintText: 'Note customer complaint here...',
                       border: InputBorder.none,
@@ -218,7 +248,19 @@ class _AddComplaintDetailPageState extends State<AddComplaintDetailPage> {
                   ),
                   backgroundColor: pickerGoldColor,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Map<String, dynamic> data = {
+                    "order": selectedOrderId,
+                    "complaint_type": selectedValueId,
+                    "service": selectedServiceId,
+                    "customer": widget.customerId,
+                    "remarks": commentController.text,
+                  };
+                  print('#########${(data)}');
+                  pickerRepository.complaintRegisterApi(token: authData.user_token.toString(),body: data).then((value) {
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomePageNew(),), (route) => false);
+                  });
+                },
                 child: const Center(
                   child: Text(
                     'REGISTER NOW!',
