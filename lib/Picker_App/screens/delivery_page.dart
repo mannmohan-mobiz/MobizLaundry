@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
@@ -19,7 +23,12 @@ class _DeliveryPageState extends State<DeliveryPage> {
   List<Color> colorListSub = [pickerOrangeTypeColor,pickerYellowTypeColor,pickerGreyTypeColor];
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return  BlocProvider(
+  create: (context) => PickerBloc(
+      RepositoryProvider.of<PickerRepository>(context)
+  )..add(DeliveryListFetchEvent(
+      authData.user_token.toString())),
+  child: Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -43,8 +52,17 @@ class _DeliveryPageState extends State<DeliveryPage> {
           )
         ],
       ),
-      body:   Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20.0),
+      body:   BlocBuilder<PickerBloc, PickerState>(
+      builder: (context, state) {
+    if (state is DeliveryListFetching) {
+    return const Center(
+    child: CircularProgressIndicator(
+    color: pickerGoldColor,
+    ));
+    }else if (state is DeliveryListFetched) {
+      final data = state.deliveryDataList;
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20.0),
         child: ListView(
           shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
@@ -63,12 +81,13 @@ class _DeliveryPageState extends State<DeliveryPage> {
                         Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10.0),
                               child: SizedBox(
                                 height: 40,
                                 width: 40,
                                 child: Container(
-                                  decoration:  BoxDecoration(
+                                  decoration: BoxDecoration(
                                     color: colorList[index],
                                     border: Border.all(color: pickerGoldColor),
                                     borderRadius: BorderRadius.circular(12),
@@ -76,17 +95,23 @@ class _DeliveryPageState extends State<DeliveryPage> {
                                 ),
                               ),
                             ),
-                            Text(typeList[index],style: const TextStyle(color: pickerBlackColor,fontWeight: FontWeight.bold,fontSize: 10),),
+                            Text(typeList[index], style: const TextStyle(
+                                color: pickerBlackColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10),),
                           ],
                         ),
                   ),
                 )
               ],
             ),
-            const Text('Out for Delivery(3 items)',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.bold,fontSize: 18),),
+             Text('Out for Delivery(${data.orderListCount})', style: const TextStyle(
+                color: pickerBlackColor,
+                fontWeight: FontWeight.bold,
+                fontSize: 18),),
             ListView.builder(
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: data.orderList.length,
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.vertical,
               itemBuilder: (itemBuilder, index) =>
@@ -94,49 +119,75 @@ class _DeliveryPageState extends State<DeliveryPage> {
                     margin: const EdgeInsets.symmetric(vertical: 18),
                     decoration: BoxDecoration(
                         color: pickerWhiteColor,
-                        borderRadius:  BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: pickerWhiteColor),
-                        boxShadow: const [BoxShadow(color: Colors.grey,blurRadius: 7,offset: Offset(0,4))]
+                        boxShadow: const [
+                          BoxShadow(color: Colors.grey,
+                              blurRadius: 7,
+                              offset: Offset(0, 4))
+                        ]
                     ),
-                    child:   ListView(
+                    child: ListView(
                       shrinkWrap: true,
                       physics: const BouncingScrollPhysics(),
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12,vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 8),
                           decoration:  BoxDecoration(
-                            color: colorListSub[index],
-                            borderRadius: const BorderRadius.only( topLeft: Radius.circular(12.0),
+                            color:  MaterialStateColor.resolveWith((states) {
+                              if(data.orderList[index].orderType == "Urgent"){
+                                return pickerOrangeTypeColor;
+                              } else if(data.orderList[index].orderType == "Express"){
+                                return pickerYellowTypeColor;
+                              } else if(data.orderList[index].orderType == "Normal"){
+                                return pickerGreyTypeColor;
+                              } else {
+                                return Colors.transparent;
+                              }}),
+                              borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(12.0),
                               topRight: Radius.circular(12.0),),
                           ),
-                          child: const Column(
+                          child:  Column(
                             children: [
-                              RowItem( label: 'Customer name:',value: 'Jason Roy',),
-                              RowItem(label: 'Building Name/No:',value: '',),
-                              RowItem(label: 'Floor No:',value: '',),
-                              RowItem(label: 'Room No/House No:',value: '',),
-                              RowItem(label: 'Mobile No:',value: '',),
-                              RowItem(label: 'Pickup time:',value: '7am to 9am',isShow: true,),
+                              RowItem(
+                                label: 'Customer name:', value: data.orderList[index].customerName,),
+                              RowItem(label: 'Building Name/No:', value: '${data.orderList[index].address.buildingName} / ${data.orderList[index].address.buildingNo}',),
+                              RowItem(label: 'Floor No:', value: data.orderList[index].address.floorNumber,),
+                              RowItem(label: 'Room No/House No:', value: '${data.orderList[index].address.flatNumber} / ${data.orderList[index].address.floorNumber}',),
+                               RowItem(label: 'Mobile No:', value: data.orderList[index].customerNumber,),
+                              RowItem(label: 'Delivery time:',
+                                value: data.orderList[index].deliveryTime,
+                                isShow: true,),
                             ],
                           ),
                         ),
                         SizedBox(
                           height: 50,
-                          child:Row(
+                          child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               InkWell(
-                                child: const Text( 'Deliver', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
+                                child: const Text('Deliver', style: TextStyle(
+                                    fontSize: 14,
+                                    color: pickerBlackColor,
+                                    fontWeight: FontWeight.w600)),
                                 onTap: () {
                                   open(context, const DeliverToCustomers());
                                 },
                               ),
-                              Container(width: 2, height: 20, color: pickerVerticalDividerColor),
+                              Container(width: 2,
+                                  height: 20,
+                                  color: pickerVerticalDividerColor),
                               InkWell(
-                                  child: const Text( 'Door Lock', style: TextStyle(fontSize: 14, color: pickerBlackColor,  fontWeight: FontWeight.w600)),
-                             onTap: (){
-                               showDoorLockDialog();
-                             },
+                                child: const Text('Door Lock', style: TextStyle(
+                                    fontSize: 14,
+                                    color: pickerBlackColor,
+                                    fontWeight: FontWeight.w600)),
+                                onTap: () {
+                                  showDoorLockDialog();
+                                },
                               ),
                             ],
                           ),
@@ -147,8 +198,14 @@ class _DeliveryPageState extends State<DeliveryPage> {
             ),
           ],
         ),
-      ),
-    );
+      );
+    } else {
+      return const Center(child: Text('No Data'));
+    }
+  },
+),
+    ),
+);
   }
 
   showDoorLockDialog(){

@@ -1,12 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
+import '../../BLoCs/PickerBloc/picker_bloc.dart';
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/table_row.dart';
 
 class ComplaintDetailsPage extends StatefulWidget {
-  const ComplaintDetailsPage({super.key});
+  final String? complaintId;
+  const ComplaintDetailsPage({super.key,this.complaintId});
 
   @override
   State<ComplaintDetailsPage> createState() => _ComplaintDetailsPageState();
@@ -15,7 +21,12 @@ class ComplaintDetailsPage extends StatefulWidget {
 class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    print('CmpTID##${widget.complaintId}');
+    return  BlocProvider(
+    create: (context) => PickerBloc(
+      RepositoryProvider.of<PickerRepository>(context),)..add(ComplaintDetailPckFetchEvent(
+        authData.user_token.toString(), widget.complaintId.toString())),
+    child: Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
@@ -39,8 +50,14 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25.0,vertical: 20),
+      body: BlocBuilder<PickerBloc, PickerState>(
+      builder: (context, state) {
+    if (state is ComplaintOrderDetailPckFetchingState) {
+    return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
+    } else if (state is ComplaintOrderDetailPckFetchedState) {
+      final tData = state.complaintDetails;
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20),
         child: ListView(
           shrinkWrap: true,
           children: [
@@ -49,24 +66,39 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                   color: pickerWhiteColor,
                   borderRadius: BorderRadius.circular(12)
               ),
-              child: const Padding(
-                padding:EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+              child:  Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                          children:  [
-                            Text('Complaint heading',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w400,fontSize: 15),),
-                            SizedBox(height: 5,),
-                            TableWidget(text: 'Complaint No', value: 'NXT5689715',colorValue: pickerGoldColor),
-                            TableWidget(text: 'Status', value: 'Pending',colorValue: pickerGoldColor),
-                            TableWidget(text: 'Date', value: '1.3.2023',colorValue: pickerGoldColor),
-                            TableWidget(text: 'Order Number', value: 'XHG23456',colorValue: pickerGoldColor),
-                            TableWidget(text: 'Type', value: 'Delayed Delivery',colorValue: pickerGoldColor),
-                            TableWidget(text: 'Remark', value: 'Nil',colorValue: pickerGoldColor),
-                            Divider(color: pickerDivColor,)
-                          ],
-                        ),
+                  children: [
+                    const Text('Complaint heading', style: TextStyle(
+                        color: pickerBlackColor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 15),),
+                    const SizedBox(height: 5,),
+                    TableWidget(text: 'Complaint No',
+                        value: tData.complaintNumber,
+                        colorValue: pickerGoldColor),
+                    TableWidget(text: 'Status',
+                        value: tData.status,
+                        colorValue: pickerGoldColor),
+                    TableWidget(text: 'Date',
+                        value: DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData?.createdDate}')),
+                        colorValue: pickerGoldColor),
+                    TableWidget(text: 'Order Number',
+                        value: tData.order,
+                        colorValue: pickerGoldColor),
+                    TableWidget(text: 'Type',
+                        value: tData.complaintType,
+                        colorValue: pickerGoldColor),
+                    TableWidget(text: 'Remark',
+                        value: tData.remarks,
+                        colorValue: pickerGoldColor),
+                    const Divider(color: pickerDivColor,)
+                  ],
+                ),
               ),
-              ),
+            ),
             const SizedBox(height: 20,),
             Container(
               decoration: BoxDecoration(
@@ -74,36 +106,46 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                   borderRadius: BorderRadius.circular(12)
               ),
               child: const Padding(
-                padding:EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children:  [
+                  children: [
                     Align(
-                        alignment: Alignment.center,
-                        child: Text('Reply from company',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w400,fontSize: 15),),
+                      alignment: Alignment.center,
+                      child: Text('Reply from company', style: TextStyle(
+                          color: pickerBlackColor,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 15),),
                     ),
                     SizedBox(height: 8,),
-                    Text('We apologize for the delay in your laundry supply. Unforeseen circumstances occurred. Rest assured, we\'re working diligently to resolve this promptly.',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w300,fontSize: 13),),
+                    Text(
+                      'We apologize for the delay in your laundry supply. Unforeseen circumstances occurred. Rest assured, we\'re working diligently to resolve this promptly.',
+                      style: TextStyle(color: pickerBlackColor,
+                          fontWeight: FontWeight.w300,
+                          fontSize: 13),),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 20,),
-            const Center(child: Text('My Remark',style: TextStyle(color: pickerBlackColor,fontWeight: FontWeight.w400,fontSize: 15),)),
+            const Center(child: Text('My Remark',
+              style: TextStyle(color: pickerBlackColor, fontWeight: FontWeight
+                  .w400, fontSize: 15),)),
             const SizedBox(height: 8,),
             Container(
               decoration: BoxDecoration(
                   color: pickerWhiteColor,
                   borderRadius: BorderRadius.circular(12)
               ),
-              child:  Padding(
-                padding:const EdgeInsets.symmetric(horizontal: 20.0,vertical: 20),
-                child: TextField(
-                  controller: TextEditingController(),
-                  decoration:  const InputDecoration(
-                    border: InputBorder.none,
-                  ),
-                )
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 20),
+                  child: TextField(
+                    controller: TextEditingController(),
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                    ),
+                  )
               ),
             ),
             const SizedBox(height: 20,),
@@ -113,10 +155,6 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => const AddToWalletPage()),
-                      // );
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
@@ -131,20 +169,17 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                       ),
                     ),
                     child: const Text(
-                          'Back',
-                          style: TextStyle(fontSize: 12.0, color: pickerBlackColor),
-                        ),
-                  
+                      'Back',
+                      style: TextStyle(fontSize: 12.0, color: pickerBlackColor),
+                    ),
+
                   ),
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => const AddToWalletPage()),
-                      // );
+
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
@@ -159,18 +194,24 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                       ),
                     ),
                     child: const Text(
-                          'Submit',
-                          style: TextStyle(fontSize: 12.0, color: pickerBlackColor),
-                        ),
-                  
+                      'Submit',
+                      style: TextStyle(fontSize: 12.0, color: pickerBlackColor),
+                    ),
+
                   ),
                 ),
               ],
             )
           ],
         ),
-      ),
+      );
+    } else {
+      return const Center(child: Text('No Data'));
+    }
+  },
+),
 
-    );
+    ),
+);
   }
 }

@@ -188,7 +188,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
                                   onTap: () {
                                     Navigator.push(context, MaterialPageRoute(
                                         builder: (
-                                            context) => const ComplaintDetailsPage()));
+                                            context) =>  ComplaintDetailsPage(complaintId:'${tData?.compliantlist?[index].complaintId}' )));
                                   },
                                   child: Image.asset(
                                       'Assets/Images/for_arrow.png'))

@@ -19,6 +19,7 @@ import '../../Models/PickerModel/cart_delete.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_quantity_model.dart';
 import '../../Models/PickerModel/collect_items_model.dart';
+import '../../Models/PickerModel/complaint_detail_model.dart';
 import '../../Models/PickerModel/complaint_model.dart';
 import '../../Models/PickerModel/complaint_register_model.dart';
 import '../../Models/PickerModel/confirm_order_model.dart';
@@ -29,6 +30,7 @@ import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/delivered_order_model.dart';
 import '../../Models/PickerModel/delivery_address_list.dart';
+import '../../Models/PickerModel/delivery_list_model.dart';
 import '../../Models/PickerModel/delivery_time.dart';
 import '../../Models/PickerModel/deposit_history_model.dart';
 import '../../Models/PickerModel/deposit_model.dart';
@@ -766,6 +768,35 @@ class PickerRepository {
       }
     } catch (e) {
       throw Exception(e.toString());
+    }
+  }
+
+  // Delivery  GET
+  Future<DeliveryListModel> getDeliveryListApi({required String token}) async {
+
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      print('RRRRRRR332222');
+      var response = await dio.get(
+          baseUrl+'picker/picker_ready_for_delivery_order',
+          options: options
+      );
+      print('RRRRRRR33$response');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = DeliveryListModel.fromJson(response.data);
+        print('RR@@@@$result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
     }
   }
 
@@ -1736,6 +1767,39 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = AddNewComplaintDetailModel.fromJson(response.data);
+        print('#########responsee##${result.toString()}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
+  // Complaint  detail
+  Future<ComplaintDetailModel> complaintDetailApi({required String token, required String complainId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "complaint_id":complainId
+    };
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/complaint_details_picker_api',
+          data: data,
+          options: options
+      );
+      print('###### status$response');
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = ComplaintDetailModel.fromJson(response.data);
         print('#########responsee##${result.toString()}');
         return result;
       } else {

@@ -18,6 +18,7 @@ import '../../Models/PickerModel/add_to_wallet_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart' as CartListValue;
 import '../../Models/PickerModel/collect_items_model.dart';
+import '../../Models/PickerModel/complaint_detail_model.dart';
 import '../../Models/PickerModel/complaint_model.dart';
 import '../../Models/PickerModel/customer_home_model.dart';
 import '../../Models/PickerModel/customer_home_order_history_detail_model.dart';
@@ -25,6 +26,7 @@ import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/delivered_order_model.dart';
 import '../../Models/PickerModel/delivery_address_list.dart';
+import '../../Models/PickerModel/delivery_list_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/modes.dart';
@@ -350,6 +352,25 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
       }
     });
 
+    on<DeliveryListFetchEvent>((event, emit) async {
+      debugPrint('###DDEERRsss111###');
+      emit(DeliveryListFetching());
+      debugPrint('###DDEERRsss222###');
+      try {
+        await pickerRepository.getDeliveryListApi(token: event.token,).then((value) {
+          debugPrint('33W33sss111${value.status}');
+          debugPrint('2222222${value.message}');
+          if (value.status == true && value.message == "Ready For Dispatch Orders List!") {
+            emit(DeliveryListFetched(value.data));
+          } else {
+            emit(DeliveryListError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(DeliveryListError(e.toString()));
+      }
+    });
+
     on<PickupDeliveredOrdersFetchEvent>((event, emit) async {
       debugPrint('###DDEERRsss111###');
       emit(DeliveredOrdersFetching());
@@ -629,6 +650,20 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(ComplaintOrderDetailErrorState(e.toString()));
+      }
+    });
+    on<ComplaintDetailPckFetchEvent>((event, emit) async {
+      emit(ComplaintOrderDetailPckFetchingState());
+      try {
+        await pickerRepository.complaintDetailApi(token: event.token, complainId: event.complaintId).then((value) {
+          if (value.status == true) {
+            emit(ComplaintOrderDetailPckFetchedState(value.data));
+          } else {
+            emit(ComplaintOrderDetailPckErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(ComplaintOrderDetailPckErrorState(e.toString()));
       }
     });
     on<PckThankListFetchEvent>((event, emit) async {

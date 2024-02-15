@@ -505,6 +505,34 @@ class PickupDeliveryModeError extends PickerState {
 
 /***********************[Delivery Mode List]***********************/
 
+/***********************[Delivery  List]***********************/
+
+class DeliveryListFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class DeliveryListFetched extends PickerState {
+  DeliveryList deliveryDataList;
+
+  DeliveryListFetched(this.deliveryDataList);
+
+  @override
+  List<Object?> get props => [deliveryDataList];
+}
+
+class DeliveryListError extends PickerState {
+  final String message;
+
+  DeliveryListError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+
+/***********************[Delivery Mode List]***********************/
+
 /***********************[Delivered orders List]***********************/
 
 class DeliveredOrdersFetching extends PickerState {
@@ -918,6 +946,31 @@ class ComplaintOrderDetailErrorState extends PickerState {
   List<Object?> get props => [message];
 }
 /***********************[Get Complaint order Detail List]]***********************/
+
+/***********************[Get Complaint  Detail ]***********************/
+class ComplaintOrderDetailPckFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class ComplaintOrderDetailPckFetchedState extends PickerState {
+  ComplaintDetail complaintDetails;
+
+  ComplaintOrderDetailPckFetchedState(this.complaintDetails);
+
+  @override
+  List<Object?> get props => [complaintDetails];
+}
+
+class ComplaintOrderDetailPckErrorState extends PickerState {
+  final String message;
+
+  ComplaintOrderDetailPckErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Complaint Detail ]]***********************/
 
 /***********************[Get Order Report Detail List]***********************/
 class PckOrdReportDetailFetchingState extends PickerState {

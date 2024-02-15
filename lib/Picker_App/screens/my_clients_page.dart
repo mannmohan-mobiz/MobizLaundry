@@ -141,17 +141,17 @@ class _MyClientsPageState extends State<MyClientsPage> {
 
                         ),
                          RowItem(label: 'Customer type:', value: state.customerList[index].customerType,),
-                        const RowItem(label: 'Mode of Delivery:',
-                            value: 'Urgent',
-                            color: pickerOrangeTypeColor,
-                            isShowButton: true),
-                        const RowItem(label: 'Order ID:', value: '',),
+                        // const RowItem(label: 'Mode of Delivery:',
+                        //     value: 'Urgent',
+                        //     color: pickerOrangeTypeColor,
+                        //     isShowButton: true),
+                        //const RowItem(label: 'Order ID:', value: '',),
                          RowItem(label: 'Building Name/No:', value: state.customerList[index].buildingNo,),
                          RowItem(label: 'Floor No:', value: state.customerList[index].flatNumber ?? '',),
                          RowItem(label: 'House No:', value: state.customerList[index].floorNumber ?? '',),
                          RowItem(label: 'Mobile No:', value: state.customerList[index].mobile,),
-                        const RowItem(
-                            label: 'Delivery time:', value: '7am to 9am'),
+                        // const RowItem(
+                        //     label: 'Delivery time:', value: '7am to 9am'),
                         const Divider(),
                          Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,

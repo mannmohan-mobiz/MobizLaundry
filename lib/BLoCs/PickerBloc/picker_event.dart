@@ -209,6 +209,15 @@ class PickupDeliveryModeFetchEvent extends PickerEvent {
   List<Object?> get props => [token];
 }
 
+// Pickup Delivery  List
+class DeliveryListFetchEvent extends PickerEvent {
+  final String token;
+  const DeliveryListFetchEvent(this.token);
+
+  @override
+  List<Object?> get props => [token];
+}
+
 // Delivered orders List
 class PickupDeliveredOrdersFetchEvent extends PickerEvent {
   final String token;
@@ -381,6 +390,17 @@ class ComplaintDetailFetchEvent extends PickerEvent {
 
   @override
   List<Object?> get props => [token, ordId];
+}
+
+//  complaint detail
+class ComplaintDetailPckFetchEvent extends PickerEvent {
+  final String token;
+  final String complaintId;
+
+  ComplaintDetailPckFetchEvent(this.token, this.complaintId);
+
+  @override
+  List<Object?> get props => [token, complaintId];
 }
 
 // Statemnt account List
