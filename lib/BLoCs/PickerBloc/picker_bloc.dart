@@ -24,6 +24,7 @@ import '../../Models/PickerModel/customer_home_model.dart';
 import '../../Models/PickerModel/customer_home_order_history_detail_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
+import '../../Models/PickerModel/deliver_to_customer_model.dart';
 import '../../Models/PickerModel/delivered_order_model.dart';
 import '../../Models/PickerModel/delivery_address_list.dart';
 import '../../Models/PickerModel/delivery_list_model.dart';
@@ -621,6 +622,21 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PckOrdReportDetailErrorState(e.toString()));
+      }
+    });
+
+    on<DeliverToCustomersFetchEvent>((event, emit) async {
+      emit(DeliverToCustomersFetchingState());
+      try {
+        await pickerRepository.deliverToCustomerApi(token: event.token, orderId: event.ordId).then((value) {
+          if (value.status == true) {
+            emit(DeliverToCustomersFetchedState(value.data));
+          } else {
+            emit(DeliverToCustomersErrorState(value.message.toString()));
+          }
+        });
+      } catch (e) {
+        emit(DeliverToCustomersErrorState(e.toString()));
       }
     });
 

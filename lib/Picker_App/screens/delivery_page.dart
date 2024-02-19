@@ -174,7 +174,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                                     color: pickerBlackColor,
                                     fontWeight: FontWeight.w600)),
                                 onTap: () {
-                                  open(context, const DeliverToCustomers());
+                                  open(context,  DeliverToCustomers(ordId: data.orderList[index].orderId,customerId: data.orderList[index].customer));
                                 },
                               ),
                               Container(width: 2,

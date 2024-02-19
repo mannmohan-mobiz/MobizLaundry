@@ -228,93 +228,73 @@ class _ComplaintOrderDetailPageState extends State<ComplaintOrderDetailPage> {
                                   ),
                                   InkWell(
                                     onTap: (){
-                                      // showCustomBottomSheet(
-                                      //     context,
-                                      //     title: 'Payment Information',
-                                      //     Column(
-                                      //       children: [
-                                      //         Row(
-                                      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      //           children: [
-                                      //             const Text(
-                                      //               'Net Taxable Value',
-                                      //               style: TextStyle(
-                                      //                   color: pickerBlackColor,
-                                      //                   fontWeight: FontWeight.w500,
-                                      //                   fontSize: 14),
-                                      //             ),
-                                      //             Text(
-                                      //               'AED ${data?.netTaxable ?? 0}',
-                                      //               style: const TextStyle(
-                                      //                   color: pickerBlackColor,
-                                      //                   fontWeight: FontWeight.w500,
-                                      //                   fontSize: 14),
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      //         const SizedBox(height: 20,),
-                                      //         Row(
-                                      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      //           children: [
-                                      //             const Text(
-                                      //               'Vat',
-                                      //               style: TextStyle(
-                                      //                   color: pickerBlackColor,
-                                      //                   fontWeight: FontWeight.w500,
-                                      //                   fontSize: 14),
-                                      //             ),
-                                      //             Text(
-                                      //               'AED ${data?.vat ?? 0}',
-                                      //               style: const TextStyle(
-                                      //                   color: pickerBlackColor,
-                                      //                   fontWeight: FontWeight.w500,
-                                      //                   fontSize: 14),
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      //         const SizedBox(height: 20,),
-                                      //         Row(
-                                      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      //           children: [
-                                      //             const Text(
-                                      //               'Wallet balance used',
-                                      //               style: TextStyle(
-                                      //                   color: pickerBlackColor,
-                                      //                   fontWeight: FontWeight.w500,
-                                      //                   fontSize: 14),
-                                      //             ),
-                                      //             Text(
-                                      //               'AED ${data?.walletBalance}',
-                                      //               style: const TextStyle(
-                                      //                   color: pickerBlackColor,
-                                      //                   fontWeight: FontWeight.w500,
-                                      //                   fontSize: 14),
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      //         const SizedBox(height: 20,),
-                                      //         Row(
-                                      //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      //           children: [
-                                      //             const Text(
-                                      //               'Amount payable',
-                                      //               style: TextStyle(
-                                      //                   color: pickerBlackColor,
-                                      //                   fontWeight: FontWeight.w500,
-                                      //                   fontSize: 14),
-                                      //             ),
-                                      //             Text(
-                                      //               'AED ${data?.cart?[0].order?.totalAmount}',
-                                      //               style: const TextStyle(
-                                      //                   color: pickerBlackColor,
-                                      //                   fontWeight: FontWeight.w500,
-                                      //                   fontSize: 14),
-                                      //             ),
-                                      //           ],
-                                      //         ),
-                                      //       ],
-                                      //     )
-                                      // );
+                                      showCustomBottomSheet(
+                                          context,
+                                          title: 'Payment Information',
+                                          Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  const Text(
+                                                    'Net Taxable Value',
+                                                    style: TextStyle(
+                                                        color: pickerBlackColor,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 14),
+                                                  ),
+                                                  Text(
+                                                    'AED ${data?.netTaxable ?? 0}',
+                                                    style: const TextStyle(
+                                                        color: pickerBlackColor,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 20,),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  const Text(
+                                                    'Vat',
+                                                    style: TextStyle(
+                                                        color: pickerBlackColor,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 14),
+                                                  ),
+                                                  Text(
+                                                    'AED ${data?.vat ?? 0}',
+                                                    style: const TextStyle(
+                                                        color: pickerBlackColor,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 20,),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  const Text(
+                                                    'Amount payable',
+                                                    style: TextStyle(
+                                                        color: pickerBlackColor,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 14),
+                                                  ),
+                                                  Text(
+                                                    'AED ${data?.totalOrderprice}',
+                                                    style: const TextStyle(
+                                                        color: pickerBlackColor,
+                                                        fontWeight: FontWeight.w500,
+                                                        fontSize: 14),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          )
+                                      );
                                     },
                                     child: const Text(
                                       'View breakup',

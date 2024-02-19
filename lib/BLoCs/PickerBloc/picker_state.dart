@@ -997,6 +997,31 @@ class PckOrdReportDetailErrorState extends PickerState {
 }
 /***********************[Get Order Report Detail List]]***********************/
 
+/***********************[Deliver to customer]***********************/
+class DeliverToCustomersFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class DeliverToCustomersFetchedState extends PickerState {
+  DeliveryToCustomer? deliveryToCustomer;
+
+  DeliverToCustomersFetchedState(this.deliveryToCustomer);
+
+  @override
+  List<Object?> get props => [deliveryToCustomer];
+}
+
+class DeliverToCustomersErrorState extends PickerState {
+  final String message;
+
+  DeliverToCustomersErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Deliver to customer]]***********************/
+
 /***********************[Get Thankyou List]***********************/
 class PckThankyouFetchingState extends PickerState {
   @override

@@ -28,6 +28,7 @@ import '../../Models/PickerModel/customer_home_model.dart';
 import '../../Models/PickerModel/customer_home_order_history_detail_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
 import '../../Models/PickerModel/dashboard_count_model.dart';
+import '../../Models/PickerModel/deliver_to_customer_model.dart';
 import '../../Models/PickerModel/delivered_order_model.dart';
 import '../../Models/PickerModel/delivery_address_list.dart';
 import '../../Models/PickerModel/delivery_list_model.dart';
@@ -61,6 +62,7 @@ import '../../Models/PickerModel/ready_transit_model.dart';
 import '../../Models/PickerModel/recharge_wallet_model.dart';
 import '../../Models/PickerModel/recharge_wallet_receipt_model.dart';
 import '../../Models/PickerModel/search.dart';
+import '../../Models/PickerModel/select_payment_model.dart';
 import '../../Models/PickerModel/statement_account_model.dart';
 import '../../Models/PickerModel/thankyou_model.dart';
 import '../../Models/PickerModel/undelivered_model.dart';
@@ -792,6 +794,73 @@ class PickerRepository {
         var result = DeliveryListModel.fromJson(response.data);
         print('RR@@@@$result');
         return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
+  // Deliver to customers
+  Future<DeliveryToCustomerModel> deliverToCustomerApi({required String token, required String orderId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "order_id": orderId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/deliver_to_customer_page',
+          data: data,
+          options: options
+      );
+
+      print('Deliver to customers: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = DeliveryToCustomerModel.fromJson(response.data);
+        print('Deliver to customers RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+
+  // Save New Order
+  Future<SelectPaymentModel> deliverToCustomerPaymentApi({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/select_mode_payment_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = SelectPaymentModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
       } else {
         return response.data;
       }
