@@ -31,6 +31,7 @@ import '../../Models/PickerModel/dashboard_count_model.dart';
 import '../../Models/PickerModel/deliver_to_customer_model.dart';
 import '../../Models/PickerModel/delivered_order_model.dart';
 import '../../Models/PickerModel/delivery_address_list.dart';
+import '../../Models/PickerModel/delivery_door_lock_model.dart';
 import '../../Models/PickerModel/delivery_list_model.dart';
 import '../../Models/PickerModel/delivery_time.dart';
 import '../../Models/PickerModel/deposit_history_model.dart';
@@ -48,6 +49,7 @@ import '../../Models/PickerModel/order_report_detail_model.dart';
 import '../../Models/PickerModel/order_report_model.dart';
 import '../../Models/PickerModel/outstanding_model.dart';
 import '../../Models/PickerModel/picker_category_model.dart';
+import '../../Models/PickerModel/picker_collections_model.dart';
 import '../../Models/PickerModel/picker_confirmed_list_model.dart';
 import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
@@ -794,6 +796,40 @@ class PickerRepository {
         var result = DeliveryListModel.fromJson(response.data);
         print('RR@@@@$result');
         return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
+  // Delivery door lock
+  Future<DeliveryDoorLockModel> deliveryDoorLockApi({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/door_locked_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = DeliveryDoorLockModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
       } else {
         return response.data;
       }
@@ -1972,6 +2008,42 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = OrderReportModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
+
+  // Collections
+  Future<PickerCollectionsModel> getCollectionsApi({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    debugPrint('WW11####$body####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/picker_collection_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerCollectionsModel.fromJson(response.data);
         print('RESULT####$result####');
         return result;
 

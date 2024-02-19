@@ -64,7 +64,7 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> {
                       controller: fromDateController,
                       textAlign: TextAlign.center,
                       decoration:  const InputDecoration(
-                        hintText: "01.12.2023",
+                        hintText: "",
                         border: InputBorder.none,
                       ),
                     ),
@@ -82,7 +82,7 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> {
                       if (fromDate != null) {
                         print(fromDate);
                         String formattedDate =
-                        DateFormat('dd-MM-yyyy').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                        DateFormat('yyyy-MM-dd').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
                         print(formattedDate);
                         setState(() {
                           fromDateController.text =
@@ -113,7 +113,7 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> {
                       controller: toDateController,
                       textAlign: TextAlign.center,
                       decoration:  const InputDecoration(
-                        hintText: "05.12.2023",
+                        hintText: "",
                         border: InputBorder.none,
                       ),
                     ),
@@ -131,7 +131,7 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> {
                       if (fromDate != null) {
                         print(fromDate);
                         String formattedDate =
-                        DateFormat('dd-MM-yyyy').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
+                        DateFormat('yyyy-MM-dd').format(fromDate); // format date in required form here we use yyyy-MM-dd that means time is removed
                         print(formattedDate);
                         setState(() {
                           toDateController.text =
@@ -155,7 +155,7 @@ class _MyCollectionsPageState extends State<MyCollectionsPage> {
                   ),
                 ),
                 onPressed: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const MyCollectionDetailsPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) =>  MyCollectionDetailsPage(fromDate: fromDateController.text,toDate: toDateController.text,)));
                 },
                 child: const Text('LOAD',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
             )

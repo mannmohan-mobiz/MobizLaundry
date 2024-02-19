@@ -872,6 +872,31 @@ class PckOrderReportErrorState extends PickerState {
 }
 /***********************[Get Order REport List]]***********************/
 
+/***********************[Get Collections List]***********************/
+class PckCollectionsFetchingState extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PckCollectionsFetchedState extends PickerState {
+  PickerCollections? pickerCollectionsList;
+
+  PckCollectionsFetchedState(this.pickerCollectionsList);
+
+  @override
+  List<Object?> get props => [pickerCollectionsList];
+}
+
+class PckCollectionsErrorState extends PickerState {
+  final String message;
+
+  PckCollectionsErrorState(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Get Collections List]]***********************/
+
 /***********************[Get  statement account List]***********************/
 class StatementAccountFetchingState extends PickerState {
   @override

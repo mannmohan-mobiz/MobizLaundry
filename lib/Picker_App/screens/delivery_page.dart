@@ -9,6 +9,7 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
 import 'deliver_to_customers.dart';
+import 'home_page_new.dart';
 
 class DeliveryPage extends StatefulWidget {
   const DeliveryPage({super.key});
@@ -21,6 +22,8 @@ class _DeliveryPageState extends State<DeliveryPage> {
   List<String> typeList = ['Normal','Express','Urgent'];
   List<Color> colorList = [pickerGreyTypeColor,pickerYellowTypeColor,pickerOrangeTypeColor];
   List<Color> colorListSub = [pickerOrangeTypeColor,pickerYellowTypeColor,pickerGreyTypeColor];
+  final PickerRepository pickerRepository = PickerRepository();
+
   @override
   Widget build(BuildContext context) {
     return  BlocProvider(
@@ -186,7 +189,7 @@ class _DeliveryPageState extends State<DeliveryPage> {
                                     color: pickerBlackColor,
                                     fontWeight: FontWeight.w600)),
                                 onTap: () {
-                                  showDoorLockDialog();
+                                  showDoorLockDialog(orderId: data.orderList[index].orderId);
                                 },
                               ),
                             ],
@@ -208,7 +211,8 @@ class _DeliveryPageState extends State<DeliveryPage> {
 );
   }
 
-  showDoorLockDialog(){
+  showDoorLockDialog({required String orderId}){
+    print('ORD333333###${orderId}');
     return showDialog(
         context: context,
         builder: (mContext) =>  AlertDialog(
@@ -247,7 +251,18 @@ class _DeliveryPageState extends State<DeliveryPage> {
                     Expanded(
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
-                        child: ElevatedButton(onPressed: (){},
+                        child: ElevatedButton(onPressed: (){
+                          Map<String, String> data = {
+                            "order_id": orderId,
+                          };
+                          print('#########${(data)}');
+                          pickerRepository.deliveryDoorLockApi(token: authData.user_token.toString(),body: data).then((value) {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder:
+                                    (context) =>  const HomePageNew(),
+                                ));
+                          });
+                        },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: pickerGoldColor,
                           ),

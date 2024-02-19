@@ -34,6 +34,7 @@ import '../../Models/PickerModel/modes.dart';
 import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/order_report_detail_model.dart';
 import '../../Models/PickerModel/order_report_model.dart';
+import '../../Models/PickerModel/picker_collections_model.dart';
 import '../../Models/PickerModel/picker_confirmed_list_model.dart';
 import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
@@ -588,6 +589,24 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PckOrderReportErrorState(e.toString()));
+      }
+    });
+
+    on<PckCollectionsFetchEvent>((event, emit) async {
+      emit(PckCollectionsFetchingState());
+      try {
+        await pickerRepository.getCollectionsApi(token: event.token, body: {
+          "from_date": event.fDate,
+          "to_date": event.tDate
+        }).then((value) {
+          if (value.status == true) {
+            emit(PckCollectionsFetchedState(value.data));
+          } else {
+            emit(PckCollectionsErrorState(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PckCollectionsErrorState(e.toString()));
       }
     });
 
