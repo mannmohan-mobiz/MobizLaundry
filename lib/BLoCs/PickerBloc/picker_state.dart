@@ -267,7 +267,7 @@ class PickupListFetching extends PickerState {
 }
 
 class PickupListFetched extends PickerState {
-  List<PckPickupList> fData;
+  List<PckPickupList>? fData;
 
   PickupListFetched(this.fData);
 
@@ -505,6 +505,34 @@ class PickupDeliveryModeError extends PickerState {
 
 /***********************[Delivery Mode List]***********************/
 
+/***********************[PickUp OutStanding List]***********************/
+
+class PickupOutStandingFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PickupOutStandingFetched extends PickerState {
+  PickerOutStanding pickerOutStandingList;
+
+  PickupOutStandingFetched(this.pickerOutStandingList);
+
+  @override
+  List<Object?> get props => [pickerOutStandingList];
+}
+
+class PickupOutStandingError extends PickerState {
+  final String message;
+
+  PickupOutStandingError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+
+/***********************[PickUp OutStanding List]***********************/
+
 /***********************[Delivery  List]***********************/
 
 class DeliveryListFetching extends PickerState {
@@ -559,6 +587,33 @@ class DeliveredOrdersError extends PickerState {
 }
 
 /***********************[Delivered orders List]***********************/
+
+/***********************[Top Up Request List]***********************/
+
+class TopUpRequestFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class TopUpRequestFetched extends PickerState {
+  List<TopUpRequest> topUpRequestList;
+
+  TopUpRequestFetched(this.topUpRequestList);
+
+  @override
+  List<Object?> get props => [topUpRequestList];
+}
+
+class TopUpRequestError extends PickerState {
+  final String message;
+
+  TopUpRequestError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+/***********************[Top Up Request List]***********************/
 
 
 /***********************[Delivery address List]***********************/
@@ -616,6 +671,145 @@ class PickupPaymentListError extends PickerState {
 
 
 /***********************[Delivery Mode List]***********************/
+
+/***********************[Emirates List]***********************/
+
+class EmiratesFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class EmiratesFetched extends PickerState {
+  final EmiratesData? emiratesData;
+
+  EmiratesFetched(this.emiratesData);
+
+  @override
+  List<Object?> get props => [emiratesData];
+}
+
+class EmiratesError extends PickerState {
+  final String? message;
+
+  EmiratesError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+/***********************[Emirates List]***********************/
+
+/***********************[Area List]***********************/
+
+class AreaFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class AreaFetched extends PickerState {
+  final AreaData? areaData;
+
+  AreaFetched(this.areaData);
+
+  @override
+  List<Object?> get props => [areaData];
+}
+
+class AreaError extends PickerState {
+  final String? message;
+
+  AreaError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+/***********************[Area List]***********************/
+
+/***********************[Location List]***********************/
+
+
+class LocationFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class LocationFetched extends PickerState {
+  final LocationData? locationData;
+
+  LocationFetched(this.locationData);
+
+  @override
+  List<Object?> get props => [locationData];
+}
+
+class LocationError extends PickerState {
+  final String? message;
+
+  LocationError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+/***********************[Location List]***********************/
+
+
+/***********************[Personal save]***********************/
+
+
+class PersonalSaveFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class PersonalSaveFetched extends PickerState {
+  final PersonalSaveData? personalSaveData;
+
+  PersonalSaveFetched(this.personalSaveData);
+
+  @override
+  List<Object?> get props => [personalSaveData];
+}
+
+class PersonalSaveError extends PickerState {
+  final String? message;
+
+  PersonalSaveError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+/***********************[Personal save]***********************/
+
+/***********************[Corporate save]***********************/
+
+
+class CorporateSaveFetching extends PickerState {
+  @override
+  List<Object?> get props => [];
+}
+
+class CorporateSaveFetched extends PickerState {
+  final CorporateSaveData? corporateSaveData;
+
+  CorporateSaveFetched(this.corporateSaveData);
+
+  @override
+  List<Object?> get props => [corporateSaveData];
+}
+
+class CorporateSaveError extends PickerState {
+  final String? message;
+
+  CorporateSaveError(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+
+/***********************[Corporate save]***********************/
+
 
 /***********************[Picker Punch In]***********************/
 class PickerPunchingInOutState extends PickerState {

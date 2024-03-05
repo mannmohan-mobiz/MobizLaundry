@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:golden_falcon/Loginscreen.dart';
 import 'package:golden_falcon/Utils/common.dart';
 
+import '../screens/attendance-page.dart';
+import '../screens/attendance_screen.dart';
 import '../screens/expense_page.dart';
 import '../screens/order_history_page.dart';
 import '../screens/profile_page.dart';
@@ -107,12 +109,15 @@ class SideMenuPage extends StatelessWidget {
                   onTap: () {},
                 ),
                 divider(),
-                // ListTile(
-                //   leading: Image.asset('Assets/Images/change_pass_icon1.png'), //Image.asset('assets/images/home.png'),
-                //   title: const Text('Change password'),
-                //   onTap: () {},
-                // ),
-                // divider(),
+                ListTile(
+                  leading: Image.asset('Assets/Images/change_pass_icon1.png'), //Image.asset('assets/images/home.png'),
+                  title: const Text('Attendance'),
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  const AttendancePage()));
+
+                  },
+                ),
+                divider(),
                 ListTile(
                   leading: Image.asset('Assets/Images/change_address_icon1.png'), //Image.asset('assets/images/home.png'),
                   title: const Text('Change Address'),

@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:golden_falcon/Picker_App/screens/punch_out_page.dart';
 
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 
@@ -12,6 +15,9 @@ class PunchInPage extends StatefulWidget {
 }
 
 class _PunchInPageState extends State<PunchInPage> {
+  final PickerRepository pickerRepository = PickerRepository();
+  String? attenceId;
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -38,12 +44,6 @@ class _PunchInPageState extends State<PunchInPage> {
               fontWeight: FontWeight.bold,
               fontSize: 20),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 16.0),
-            child: Image.asset('Assets/Images/notification_icon.png'),
-          )
-        ],
       ),
       body:  Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 40),
@@ -78,6 +78,14 @@ class _PunchInPageState extends State<PunchInPage> {
                   ),
                 ),
                 onPressed: (){
+                  pickerRepository.getPunchInApi(token: authData.user_token.toString(), ).then((value) {
+                    setState(() {
+                      attenceId = value.data?.attendanceId;
+                    });
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  PunchOutPage(attendanceId: attenceId)));
+                    print(attenceId);
+                  });
+
                 },
                 child: const Text('Punch In',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
             )

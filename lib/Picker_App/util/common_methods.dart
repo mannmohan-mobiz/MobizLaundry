@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../src/colors.dart';
+enum MessageType { success, error }
 
 showCustomBottomSheet(BuildContext context, Widget content,
     {Color bgColor = Colors.white, required String title}) {
@@ -52,9 +53,9 @@ open(BuildContext context, Widget target) => Navigator.push(
 
 close(BuildContext context, {dynamic result}) => Navigator.pop(context, result);
 
-void snackBar(BuildContext context, {required String message}) {
+void snackBar(BuildContext context, {required String message,var type = MessageType.error}) {
   ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(backgroundColor: pickerGoldColor, content: Text(message, textAlign: TextAlign.start, style: const TextStyle(color: Colors.white))));
+      SnackBar(backgroundColor: type == MessageType.success ? Colors.green : Colors.red, content: Text(message, textAlign: TextAlign.start, style: const TextStyle(color: Colors.white))));
 }
 
 

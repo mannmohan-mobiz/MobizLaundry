@@ -371,9 +371,9 @@ class _OrderHistoryDetailsPageState extends State<OrderHistoryDetailsPage> {
                        RowItem(label: 'Mobile No:', value: '${customerData[index].customerAddress!["person_incharge_mob"]}',),
                       const RowItem(label: 'Delivery Status:', value: '',),
                        RowItem(label: 'Pickup date/time:',
-                          value:  '${DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerData[index].pickupDate}'))}/ ${customerData[index].pickupTime}'),
+                          value:  customerData[index].pickupDate != null ? '${DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerData[index].pickupDate ?? ''}'))} / ${customerData[index].pickupTime ?? ''}' : ''),
                        RowItem(label: 'Delivery date/time:',
-                           value:  '${DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerData[index].deliveryDate}'))}/ ${customerData[index].deliveryTime}'),
+                           value:  customerData[index].deliveryDate  != null ? '${DateFormat('yyyy-MM-dd').format(DateTime.parse('${customerData[index].deliveryDate ?? ''}'))} / ${customerData[index].deliveryTime ?? ''}' : ''),
                     ],
                   ),
                 ),
@@ -381,6 +381,11 @@ class _OrderHistoryDetailsPageState extends State<OrderHistoryDetailsPage> {
         ],
       );
     } else {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if(state is PckOrderReportErrorState) {
+          snackBar(context, message: state.message);
+        }
+      });
       return const Center(child: Text('No Data'));
     }
   },

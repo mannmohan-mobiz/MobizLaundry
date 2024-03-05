@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:golden_falcon/Picker_App/util/common_methods.dart';
@@ -8,21 +10,27 @@ import 'package:golden_falcon/Models/PickerModel/punch_in_out_model.dart';
 import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
 import 'package:golden_falcon/Utils/common.dart';
 import 'package:dio/dio.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../../Models/PickerModel/add_customer_model.dart';
 import '../../Models/PickerModel/add_new_complaint_detail_model.dart';
 import '../../Models/PickerModel/add_new_complaint_model.dart';
 import '../../Models/PickerModel/add_to_cart_model.dart';
 import '../../Models/PickerModel/add_to_wallet_model.dart';
+import '../../Models/PickerModel/area_list_model.dart';
 import '../../Models/PickerModel/cart_count.dart';
 import '../../Models/PickerModel/cart_delete.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_quantity_model.dart';
 import '../../Models/PickerModel/collect_items_model.dart';
 import '../../Models/PickerModel/complaint_detail_model.dart';
+import '../../Models/PickerModel/complaint_detail_save_model.dart';
 import '../../Models/PickerModel/complaint_model.dart';
 import '../../Models/PickerModel/complaint_register_model.dart';
 import '../../Models/PickerModel/confirm_order_model.dart';
+import '../../Models/PickerModel/corporate_save_model.dart';
 import '../../Models/PickerModel/customer_home_history_model.dart';
 import '../../Models/PickerModel/customer_home_model.dart';
 import '../../Models/PickerModel/customer_home_order_history_detail_model.dart';
@@ -36,9 +44,11 @@ import '../../Models/PickerModel/delivery_list_model.dart';
 import '../../Models/PickerModel/delivery_time.dart';
 import '../../Models/PickerModel/deposit_history_model.dart';
 import '../../Models/PickerModel/deposit_model.dart';
+import '../../Models/PickerModel/emirates_list_model.dart';
 import '../../Models/PickerModel/expense_add_model.dart';
 import '../../Models/PickerModel/expense_drop_down_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
+import '../../Models/PickerModel/location_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/mark_as_picked_model.dart';
 import '../../Models/PickerModel/modes.dart';
@@ -48,25 +58,32 @@ import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/order_report_detail_model.dart';
 import '../../Models/PickerModel/order_report_model.dart';
 import '../../Models/PickerModel/outstanding_model.dart';
+import '../../Models/PickerModel/personal_save_model.dart';
 import '../../Models/PickerModel/picker_category_model.dart';
 import '../../Models/PickerModel/picker_collections_model.dart';
 import '../../Models/PickerModel/picker_confirmed_list_model.dart';
 import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
+import '../../Models/PickerModel/picker_outstanding_model.dart';
 import '../../Models/PickerModel/picker_payment_list.dart';
+import '../../Models/PickerModel/picker_pickup_list_model.dart';
 import '../../Models/PickerModel/picker_sub_category_model.dart';
 import '../../Models/PickerModel/picker_wallet_balance_model.dart';
-import '../../Models/PickerModel/pickup_list_midel.dart';
+import '../../Models/PickerModel/punch_in_model.dart';
+import '../../Models/PickerModel/punch_out_model.dart';
 import '../../Models/PickerModel/quantity_price.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/ready_transit_model.dart';
 import '../../Models/PickerModel/recharge_wallet_model.dart';
 import '../../Models/PickerModel/recharge_wallet_receipt_model.dart';
 import '../../Models/PickerModel/search.dart';
+import '../../Models/PickerModel/search_clients_model.dart';
 import '../../Models/PickerModel/select_payment_model.dart';
 import '../../Models/PickerModel/statement_account_model.dart';
 import '../../Models/PickerModel/thankyou_model.dart';
+import '../../Models/PickerModel/top_up_request_manage_model.dart';
+import '../../Models/PickerModel/top_up_request_model.dart';
 import '../../Models/PickerModel/undelivered_model.dart';
 import '../../Models/PickerModel/undelivered_status_model.dart';
 
@@ -721,6 +738,33 @@ class PickerRepository {
     }
   }
 
+
+  // Picker Outstanding
+  Future<PickerOutStandingModel> getPickerOutstandingApi({required String token}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/outstanding',
+          options: options
+      );
+      print(response);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerOutStandingModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   // Location Price Group GET
   Future<LocationPriceGroupModel> getLPGData({required String token}) async {
     Dio dio = Dio();
@@ -766,6 +810,67 @@ class PickerRepository {
       print('RRRRRRR33$response');
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = Modes.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+
+  // Punch in get
+  Future<PunchInModel> getPunchInApi({required String token}) async {
+
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      print('RRRRRRR332222');
+      var response = await dio.get(
+          baseUrl+'picker/punchin',
+          options: options
+      );
+      print('RRRRRRR33$response');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PunchInModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // Punch Out post
+  Future<PunchOutModel> getPunchOutApi({required String token, required String attendanceId}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "attendence_id": attendanceId
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/punchin',
+          data: data,
+          options: options
+      );
+
+      print('punch out: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PunchOutModel.fromJson(response.data);
+        print('Deliver to customers RST : $result');
         return result;
       } else {
         return response.data;
@@ -827,6 +932,74 @@ class PickerRepository {
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = DeliveryDoorLockModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
+  // Top up request manage
+  Future<TopUpRequestManageModel> topUpRequestManageApi({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/top_up_request_manage_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = TopUpRequestManageModel.fromJson(response.data);
+        print('RESULT####$result####');
+        return result;
+
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
+    }
+  }
+
+  // Picker complaint submit
+  Future<ComplaintDetailSaveModel> complaintDetailSaveApi({required String token, required Map<String, String> body}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    print('WW####$options####');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+        baseUrl+'picker/complaint_details_submit_picker_api',
+        data: body,
+        options: options,
+      );
+
+
+      print('RESPONSE####${response.data}####');
+
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = ComplaintDetailSaveModel.fromJson(response.data);
         print('RESULT####$result####');
         return result;
 
@@ -933,6 +1106,34 @@ class PickerRepository {
     }
   }
 
+  // Top up request
+  Future<TopUpRequestModel> getTopUpRequestApi({required String token}) async {
+
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Future.delayed(Duration(seconds: 1));
+    try {
+      print('RRRRRRR332222');
+      var response = await dio.get(
+          baseUrl+'picker/top_up_request_api',
+          options: options
+      );
+      print('RRRRRRR33$response');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = TopUpRequestModel.fromJson(response.data);
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
 
   // Delivery Address GET
   Future<DeliveryAddressList> getDeliveryAddressListData({
@@ -992,6 +1193,220 @@ class PickerRepository {
       throw Exception(e.toString());
     }
   }
+
+  // get emirates
+  Future<EmiratesListModel> getEmiratesData() async {
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await http.get(Uri.parse
+        (baseUrl+'accounts/add_personal_emirates'),
+      );
+      print(response.body);
+      if (response.statusCode == 200 ) {
+        var result = EmiratesListModel.fromJson(jsonDecode(response.body));
+        return result;
+      } else {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // get area
+  Future<AreaListModel> getAreaData({required String emirateID}) async {
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await http.post(Uri.parse
+        (baseUrl+'accounts/add_personal_area'),
+          //headers: headers,
+          body: {
+            "emirate_id": emirateID
+          }
+      );
+      print(response.body);
+      if (response.statusCode == 200 ) {
+        var result = AreaListModel.fromJson(jsonDecode(response.body));
+        return result;
+      } else {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // get location
+  Future<LocationListModel> getLocationData({required String areaID}) async {
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await http.post(Uri.parse
+        (baseUrl+'accounts/add_personal_location'),
+          //headers: headers,
+          body: {
+            "area_id": areaID
+          }
+      );
+      print(response.body);
+      if (response.statusCode == 200 ) {
+        var result = LocationListModel.fromJson(jsonDecode(response.body));
+        return result;
+      } else {
+        return jsonDecode(response.body);
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  // get personal save
+  Future<PersonalSaveModel> getPersonalData({
+    required String userName,
+    required String name,
+    required String emailID,
+    required String password,
+    required String customerType,
+    required int buildingNo,
+    required String roomNo,
+    required int mobile,
+    required int altMobile,
+    required int whatsApp,
+    required int creditLimit,
+    required int creditDays,
+    required int creditInvoices,
+    required int gpse,
+    required int gpsn,
+    required String location,
+    required String trn,
+    required String billingAddress,
+    required String designation,
+    required String buildingName,
+    required String floorNumber,
+    required String flatNumber
+  }) async {
+    Dio dio = Dio();
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var body= {
+        "username": userName,
+        "name": name,
+        "email": emailID,
+        "password": password,
+        "customer_type": customerType,
+        "building_no": buildingNo.toString(),
+        "room_no": roomNo,
+        "mobile": mobile.toString(),
+        "alt_mobile": altMobile.toString(),
+        "whats_app": whatsApp.toString(),
+        "credit_limit": creditLimit.toString(),
+        "credit_days": creditDays.toString(),
+        "credit_invoices": creditInvoices.toString(),
+        "GPSE": gpse.toString(),
+        "GPSN": gpsn.toString(),
+        "Location": location,
+        "TRN": trn,
+        "billing_addrs": billingAddress,
+        "designation": designation,
+        "building_name": buildingName,
+        "floor_number": floorNumber,
+        "flat_number": flatNumber
+      };
+      // var aa=json.encode(body);
+      // print("BBBOOODDDYYYBBBOOODDDYYY ${aa}")  ;
+      debugPrint('Personal Body $body');
+      var response =  await dio.post('${baseUrl}accounts/personal_datasave',data: body);
+      print('///////lllllll  ${response.data}');
+      print('///////lllllll  ${response.statusCode}');
+      if (response.statusCode == 200 ) {
+        var result = PersonalSaveModel.fromJson(response.data);
+        return result;
+      } else {
+        return jsonDecode(response.data);
+      }
+    } catch (e) {
+      print("EEERROORR ${e.toString()}");
+      throw Exception(e.toString());
+    }
+  }
+
+
+  //get corporate save
+  Future<CorporateSaveModel> getCorporateData({
+    required String userName,
+    required String name,
+    required String emailID,
+    required String password,
+    required String customerType,
+    required String buildingNo,
+    required String roomNo,
+    required String regEmail,
+    required int mobile,
+    required int altMobile,
+    required int whatsApp,
+    required int creditLimit,
+    required int creditDays,
+    required int creditInvoices,
+    required int gpse,
+    required int gpsn,
+    required String location,
+    required String companyName,
+    required String trn,
+    required String billingAddress,
+    required String designation,
+    required String buildingAddress,
+    required String floorNumber,
+    required String flatNumber,
+    required List<AddressList>? addressList
+  }) async {
+    Dio dio = Dio();
+    Future.delayed(Duration(seconds: 1));
+    try {
+      print('boddyyy ${addressList?.length}');
+      var body = {
+        "username": userName,
+        "name": name,
+        "email": emailID,
+        "password": password,
+        "customer_type": customerType,
+        "building_no": buildingNo,
+        "room_no": roomNo,
+        "reg_email": regEmail,
+        "mobile": mobile,
+        "alt_mobile": altMobile,
+        "whats_app": whatsApp,
+        "credit_limit": creditLimit,
+        "credit_days": creditDays,
+        "credit_invoices": creditInvoices,
+        "GPSE": gpse,
+        "GPSN": gpsn,
+        "Location": location,
+        "company_name": companyName,
+        "TRN": trn,
+        "billing_addrs": billingAddress,
+        "designation": designation,
+        "building_name": buildingAddress,
+        "floor_number": floorNumber,
+        "flat_number": flatNumber,
+        "address_list": addressList
+      };
+      print('boddyyy ${jsonEncode(body)}');
+      var response =  await dio.post('${baseUrl}accounts/corporate_datasave',data: body);
+      print('///////ccccccccc  ${response.data}');
+      print('///////cccccccccc  ${response.statusCode}');
+      if (response.statusCode == 200 ) {
+        print('vbvbvbvbvb ${response.data}');
+        var result = CorporateSaveModel.fromJson(response.data);
+        return result;
+      } else {
+        return jsonDecode(response.data);
+      }
+    } catch (e) {
+      print("EEERROORR ${e.toString()}");
+      throw Exception(e.toString());
+    }
+  }
+
+
   // Add Customer
   Future<AddCustomerModel> addNewClient({required Map<String, String> body, required String token}) async {
     Dio dio = Dio();
@@ -1386,7 +1801,7 @@ class PickerRepository {
         return response.data;
       }
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception('EEEEEE'+ e.toString());
     }
   }
 
@@ -1483,7 +1898,39 @@ class PickerRepository {
         return response.data;
       }
     } catch (e) {
-      throw Exception(e.toString());
+      throw Exception('EEEE#$e');
+    }
+  }
+
+  // Collected Items list
+  Future<DeliveryDateList> deliveryDateCollectionApi({required String token, required String orderType}) async {
+    Dio dio = Dio();
+    Map<String, String> data = {
+      "order_type": orderType
+    };
+    Future.delayed(const Duration(seconds: 1));
+    Options options = Options(
+        headers:  {
+          'Authorization' : 'Basic $token'
+        }
+    );
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/delivery_date_collection',
+          data: data,
+          options: options
+      );
+
+      print('DELIVERY DATE list: $response.data');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = DeliveryDateList.fromJson(response.data);
+        print('DELIVERY DATE LIST RST : $result');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('EEEE#$e');
     }
   }
 
@@ -1690,6 +2137,7 @@ class PickerRepository {
   //wallet recharge receipt
   Future<WalletRechargeReceiptModel> walletRechargeReceipt({required String token, required String transferId}) async {
     Dio dio = Dio();
+    debugPrint('####transferId#### $transferId');
     Map<String, String> data = {
       "transfer_id": transferId
     };
@@ -1707,7 +2155,9 @@ class PickerRepository {
       );
 
       print('RESPONSE DETAILS: $response.data');
+      debugPrint('response.statusCode ${response.statusCode}');
       if (response.statusCode == 200 || response.statusCode == 201) {
+        debugPrint('response.statusCode ${response.data}');
         var result = WalletRechargeReceiptModel.fromJson(response.data);
         print('RESPONSE DETAILS RST : $result');
         return result;
@@ -1750,7 +2200,46 @@ class PickerRepository {
     }
   }
 
-  // Cart Delete
+  //Download PDF
+  Future<void> downloadPdf({required Map<String, String> body, required String token }) async {
+    Dio dio = Dio();
+    Future.delayed(const Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl+'picker/generate_pdf',
+          data: body,   options: Options(
+          responseType: ResponseType.bytes,
+          followRedirects: false,
+          validateStatus: (status) {
+            return status! < 500;
+          }),);
+
+      if(response.statusCode == 200) {
+        var tempDir = await getTemporaryDirectory();
+        debugPrint('tempDir $tempDir');
+        final file = File('${tempDir.path}/receipt.pdf');
+        var raf = file.openSync(mode: FileMode.write);
+        // response.data is List<int> type
+        raf.writeFromSync(response.data);
+        await raf.close();
+        OpenFile.open(file.path);
+      }
+    } catch (e) {
+      throw Exception('EEE'+e.toString());
+    }
+  }
+
+  //Share PDF
+  Future<void> sharePdf() async {
+    var tempDir = await getTemporaryDirectory();
+    final result = await Share.shareXFiles([XFile('${tempDir.path}/receipt.pdf')], text: 'Receipt');
+    if (result.status == ShareResultStatus.success) {
+      debugPrint('Thank you for sharing the picture!');
+    }
+  }
+
+
+    // Cart Delete
   Future<PickerCartDeleteModel> deleteCartData({required String token, required String cartId}) async {
     Dio dio = Dio();
     Map<String, String> data = {
@@ -1798,11 +2287,7 @@ class PickerRepository {
         data: body,
         options: options,
       );
-
-
       print('RESPONSE####${response.data}####');
-
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         var result = CustomerHomeHistoryModel.fromJson(response.data);
         print('RESULT####$result####');
@@ -2118,6 +2603,39 @@ class PickerRepository {
       }
     } catch (e) {
       throw Exception('oooo' + e.toString());
+    }
+  }
+
+
+  // Search Clients
+  Future<PickerCustomerListModel> getSearchClients({required String searchMobile, required String token}) async {
+    Dio dio = Dio();
+    Options options = Options(
+        headers: {
+          'Authorization': 'Basic $token'
+        }
+    );
+    Map<String, String> data = {
+      "mobile": searchMobile
+    };
+    print('RES211#$data');
+    Future.delayed(Duration(seconds: 1));
+    try {
+      var response = await dio.post(
+          baseUrl + 'picker/customer_list_search',
+          data: data,
+          options: options
+      );
+      print('RES#${response.data}');
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        var result = PickerCustomerListModel.fromJson(response.data);
+        print('RES211#${response.data}');
+        return result;
+      } else {
+        return response.data;
+      }
+    } catch (e) {
+      throw Exception('oooo@@' + e.toString());
     }
   }
 

@@ -1,19 +1,26 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:golden_falcon/Picker_App/screens/home_page_new.dart';
 
+import '../../Repositories/AuthRepo/auth_repository.dart';
+import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 
 class PunchOutPage extends StatefulWidget {
-  const PunchOutPage({super.key});
+  final String? attendanceId;
+  const PunchOutPage({super.key,this.attendanceId});
 
   @override
   State<PunchOutPage> createState() => _PunchOutPageState();
 }
 
 class _PunchOutPageState extends State<PunchOutPage> {
+  final PickerRepository pickerRepository = PickerRepository();
+
   @override
   Widget build(BuildContext context) {
+    print('####${widget.attendanceId}');
     return  Scaffold(
       backgroundColor: pickerBackgroundColor,
       appBar: AppBar(
@@ -60,7 +67,11 @@ class _PunchOutPageState extends State<PunchOutPage> {
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),
-                onPressed: (){},
+                onPressed: (){
+                  pickerRepository.getPunchOutApi(token: authData.user_token.toString(), attendanceId: widget.attendanceId.toString()).then((value) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  const HomePageNew()));
+                  });
+                },
                 child: const Text('Punch Out',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
             )
 

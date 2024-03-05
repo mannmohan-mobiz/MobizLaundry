@@ -15,6 +15,7 @@ import '../util/row_item.dart';
 import '../util/table_row.dart';
 import 'complaint_page.dart';
 import 'customer_home_order_history.dart';
+import 'home_page_new.dart';
 
 class CustomerHomePageScreen extends StatefulWidget {
   final String? custId;
@@ -35,6 +36,7 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
   ];
   @override
   Widget build(BuildContext context) {
+
     print('CSTID###${widget.custId}');
     return BlocProvider(
     create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context)
@@ -154,54 +156,28 @@ class _CustomerHomePageScreenState extends State<CustomerHomePageScreen> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Row(
-                              children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          6), // <-- Radius
-                                    ),
-                                    backgroundColor: pickerWhiteColor,
-                                    side: const BorderSide(
-                                        color: pickerGoldColor, width: 1.0),
-                                  ),
-                                  onPressed: () {},
-                                  child: const Center(
-                                    child: Text(
-                                      'Door Lock',
-                                      style: TextStyle(
-                                          color: pickerGoldColor, fontSize: 13),
-                                    ),
-                                  ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(
+                                      6), // <-- Radius
                                 ),
-                                const SizedBox(
-                                  width: 12,
+                                backgroundColor: pickerWhiteColor,
+                                side: const BorderSide(
+                                    color: pickerGoldColor, width: 1.0),
+                              ),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                    builder: (
+                                        context) =>  StatementOfAccountPage(cstId: widget.custId)));
+                              },
+                              child: const Center(
+                                child: Text(
+                                  'Statement of account',
+                                  style: TextStyle(
+                                      color: pickerGoldColor, fontSize: 13),
                                 ),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          6), // <-- Radius
-                                    ),
-                                    backgroundColor: pickerWhiteColor,
-                                    side: const BorderSide(
-                                        color: pickerGoldColor, width: 1.0),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.push(context, MaterialPageRoute(
-                                        builder: (
-                                            context) =>  StatementOfAccountPage(cstId: widget.custId)));
-                                  },
-                                  child: const Center(
-                                    child: Text(
-                                      'Statement of account',
-                                      style: TextStyle(
-                                          color: pickerGoldColor, fontSize: 13),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                             const SizedBox(
                               height: 10,

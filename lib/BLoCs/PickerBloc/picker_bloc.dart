@@ -15,11 +15,13 @@ import 'package:golden_falcon/Models/PickerModel/picker_sub_category_model.dart'
 import '../../Models/PickerModel/add_new_complaint_detail_model.dart';
 import '../../Models/PickerModel/add_new_complaint_model.dart';
 import '../../Models/PickerModel/add_to_wallet_model.dart';
+import '../../Models/PickerModel/area_list_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_model.dart' as CartListValue;
 import '../../Models/PickerModel/collect_items_model.dart';
 import '../../Models/PickerModel/complaint_detail_model.dart';
 import '../../Models/PickerModel/complaint_model.dart';
+import '../../Models/PickerModel/corporate_save_model.dart';
 import '../../Models/PickerModel/customer_home_model.dart';
 import '../../Models/PickerModel/customer_home_order_history_detail_model.dart';
 import '../../Models/PickerModel/customer_list_model.dart';
@@ -28,24 +30,29 @@ import '../../Models/PickerModel/deliver_to_customer_model.dart';
 import '../../Models/PickerModel/delivered_order_model.dart';
 import '../../Models/PickerModel/delivery_address_list.dart';
 import '../../Models/PickerModel/delivery_list_model.dart';
+import '../../Models/PickerModel/emirates_list_model.dart';
 import '../../Models/PickerModel/expense_list_model.dart';
+import '../../Models/PickerModel/location_list_model.dart';
 import '../../Models/PickerModel/location_price_model.dart';
 import '../../Models/PickerModel/modes.dart';
 import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/order_report_detail_model.dart';
 import '../../Models/PickerModel/order_report_model.dart';
+import '../../Models/PickerModel/personal_save_model.dart';
 import '../../Models/PickerModel/picker_collections_model.dart';
 import '../../Models/PickerModel/picker_confirmed_list_model.dart';
 import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Models/PickerModel/picker_item_price_model.dart';
 import '../../Models/PickerModel/picker_order_confirm.dart';
+import '../../Models/PickerModel/picker_outstanding_model.dart';
 import '../../Models/PickerModel/picker_payment_list.dart';
-import '../../Models/PickerModel/pickup_list_midel.dart';
+import '../../Models/PickerModel/picker_pickup_list_model.dart';
 import '../../Models/PickerModel/ready_for_despatch.dart';
 import '../../Models/PickerModel/recharge_wallet_receipt_model.dart';
 import '../../Models/PickerModel/search.dart';
 import '../../Models/PickerModel/statement_account_model.dart';
 import '../../Models/PickerModel/thankyou_model.dart';
+import '../../Models/PickerModel/top_up_request_model.dart';
 import '../../Models/PickerModel/undelivered_model.dart';
 import '../../Models/PickerModel/undelivered_status_model.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
@@ -55,6 +62,7 @@ part 'picker_state.dart';
 
 class PickerBloc extends Bloc<PickerEvent, PickerState> {
   final PickerRepository pickerRepository;
+  var emirateResponse;
   PickerBloc(this.pickerRepository) : super(PickerInitial()) {
     on<GetDashboardCountEvent>((event, emit) async {
       emit(DashboardCountGettingState());
@@ -210,7 +218,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
           if (value.status == true && value.message == "Pickup List!") {
             emit(PickupListFetched(value.data));
           } else {
-            emit(PickupListError(value.message));
+            emit(PickupListError(value.message.toString()));
           }
         });
       } catch (e) {
@@ -354,6 +362,25 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
       }
     });
 
+    on<PickupOutStandingFetchEvent>((event, emit) async {
+      debugPrint('###DDEERRsss111###');
+      emit(PickupOutStandingFetching());
+      debugPrint('###DDEERRsss222###');
+      try {
+        await pickerRepository.getPickerOutstandingApi(token: event.token,).then((value) {
+          debugPrint('33W33sss111${value.status}');
+          debugPrint('2222222${value.message}');
+          if (value.status == true && value.message == "Outstanding Dues List!") {
+            emit(PickupOutStandingFetched(value.data));
+          } else {
+            emit(PickupOutStandingError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PickupOutStandingError(e.toString()));
+      }
+    });
+
     on<DeliveryListFetchEvent>((event, emit) async {
       debugPrint('###DDEERRsss111###');
       emit(DeliveryListFetching());
@@ -391,25 +418,25 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         emit(DeliveredOrdersError(e.toString()));
       }
     });
-    // on<PickupDeliveryAddressFetchEvent>((event, emit) async {
-    //   debugPrint('###DDEERRsss111###');
-    //   emit(PickupDeliveryAddressFetching());
-    //   debugPrint('###DDEERRsss222###');
-    //   try {
-    //     await pickerRepository.getDeliveryAddressListData(token: event.token, customerId: event.custId,).then((value) {
-    //       debugPrint('33W33sss111${value.status}');
-    //       debugPrint('2222222${value.message}');
-    //       if (value.status == true && value.message == "Data passed successfully!") {
-    //         emit(PickupDeliveryAddressFetched(value.data));
-    //       } else {
-    //         emit(PickupDeliveryAddressError(value.message.toString()));
-    //       }
-    //     });
-    //   } catch (e) {
-    //     emit(PickupDeliveryAddressError(e.toString()));
-    //   }
-    // });
 
+    on<TopUpRequestFetchEvent>((event, emit) async {
+      debugPrint('###DDEERRsss111###');
+      emit(TopUpRequestFetching());
+      debugPrint('###DDEERRsss222###');
+      try {
+        await pickerRepository.getTopUpRequestApi(token: event.token,).then((value) {
+          debugPrint('33W33sss111${value.status}');
+          debugPrint('2222222${value.message}');
+          if (value.status == true && value.message == "data passed successfully") {
+            emit(TopUpRequestFetched(value.data));
+          } else {
+            emit(TopUpRequestError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(TopUpRequestError(e.toString()));
+      }
+    });
     on<PickupDeliveryAddressFetchEvent>((event, emit) async {
       print('checkkkkk');
       CartListValue.Customer customerData = CartListValue.Customer(
@@ -439,6 +466,140 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
         });
       } catch (e) {
         emit(PickupPaymentListError(e.toString()));
+      }
+    });
+
+    on<GetEmiratesEvent>((event, emit) async {
+      emit(EmiratesFetching());
+      try {
+        await pickerRepository.getEmiratesData().then((value) {
+          //print("Emirates $value");
+          if (value.status == true &&
+              value.message == "Successfully Passed Data!") {
+            emirateResponse = value.data;
+            emit(EmiratesFetched(value.data));
+          } else {
+            emit(EmiratesError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(EmiratesError(e.toString()));
+      }
+    });
+
+    on<GetAreaEvent>((event, emit) async {
+      //emit(AreaFetching());
+      try {
+        await pickerRepository.getAreaData(emirateID: event.emirateID).then((
+            value) {
+          //print("Area $value");
+          if (value.status == true &&
+              value.message == "Successfully Passed Data!") {
+            emit(AreaFetched(value.data));
+          } else {
+            emit(AreaError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(AreaError(e.toString()));
+      }
+    });
+
+    on<GetLocationEvent>((event, emit) async {
+      // emit(LocationFetching());
+      try {
+        await pickerRepository.getLocationData(areaID: event.areaID).then((
+            value) {
+          //print("Location $value");
+          if (value.status == true &&
+              value.message == "Successfully Passed Data!") {
+            emit(LocationFetched(value.data));
+          } else {
+            emit(LocationError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(LocationError(e.toString()));
+      }
+    });
+
+    on<GetPersonalSaveEvent>((event, emit) async {
+      //emit(PersonalSaveFetching());
+      try {
+        await pickerRepository.getPersonalData(
+            userName: event.userName,
+            name: event.name,
+            emailID: event.emailID,
+            password: event.password,
+            customerType: event.customerType,
+            buildingNo: event.buildingNo,
+            roomNo: event.roomNo,
+            mobile: event.mobile,
+            altMobile: event.altMobile,
+            whatsApp: event.whatsApp,
+            creditLimit: event.creditLimit,
+            creditDays: event.creditDays,
+            creditInvoices: event.creditInvoices,
+            gpse: event.gpse,
+            gpsn: event.gpsn,
+            location: event.location,
+            trn: event.trn,
+            billingAddress: event.billingAddress,
+            designation: event.designation,
+            buildingName: event.buildingName,
+            floorNumber: event.floorNumber,
+            flatNumber: event.flatNumber).then((value) {
+          print("Personal $value");
+          if (value.status == true &&
+              value.message == "New Customer Added Successfully!") {
+            emit(PersonalSaveFetched(value.data));
+          } else {
+            emit(PersonalSaveError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(PersonalSaveError(e.toString()));
+      }
+    });
+
+    on<GetCorporateSaveEvent>((event, emit) async {
+      try {
+        await pickerRepository.getCorporateData(
+            userName: event.userName,
+            name: event.name,
+            emailID: event.emailID,
+            password: event.password,
+            customerType: event.customerType,
+            buildingNo: event.buildingNo,
+            roomNo: event.roomNo,
+            regEmail: event.regEmail,
+            mobile: event.mobile,
+            altMobile: event.altMobile,
+            whatsApp: event.whatsApp,
+            creditLimit: event.creditLimit,
+            creditDays: event.creditDays,
+            creditInvoices: event.creditInvoices,
+            gpse: event.gpse,
+            gpsn: event.gpsn,
+            location: event.location,
+            companyName: event.companyName,
+            trn: event.trn,
+            billingAddress: event.billingAddress,
+            designation: event.designation,
+            buildingAddress: event.buildingAddress,
+            floorNumber: event.floorNumber,
+            flatNumber: event.flatNumber,
+            addressList: event.addressList).then((value) {
+          print("Corporate $value");
+          if (value.status == true &&
+              value.message == "New Customer Added Successfully!") {
+            emit(CorporateSaveFetched(value.data));
+          } else {
+            emit(CorporateSaveError(value.message));
+          }
+        });
+      } catch (e) {
+        emit(CorporateSaveError(e.toString()));
       }
     });
 
@@ -618,7 +779,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
           "from_date": event.fromDate,
           "to_date": event.toDate
         }).then((value) {
-          if (value.status == true) {
+          if (value.status == true && value.data.isNotEmpty) {
             emit(StatementAccountFetchedState(value.data));
           } else {
             emit(StatementAccountErrorState(value.message.toString()));
@@ -777,7 +938,9 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
     on<WalletRechargeReceiptFetchEvent>((event, emit) async {
       emit(WalletRechargeReceiptFetchingState());
       try {
+        debugPrint('testttttttt');
         await pickerRepository.walletRechargeReceipt(token: event.token, transferId: event.transfId,).then((value) {
+          debugPrint('value.status :: ${value.status}');
           if (value.status == true) {
             emit(WalletRechargeReceiptFetchedState(value.data));
           } else {

@@ -9,7 +9,6 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
 import 'home_page_new.dart';
-import '../../Models/PickerModel/pickup_list_midel.dart';
 
 
 class PickingConfirmationPage extends StatefulWidget {
@@ -129,7 +128,7 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                    print( 'SS$tData.length');
                     return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: tData.length,
+                      itemCount: tData?.length,
                       physics: const BouncingScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       itemBuilder: (itemBuilder, index) {
@@ -154,15 +153,15 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                   horizontal: 12, vertical: 8),
                               decoration:  BoxDecoration(
                                 color: MaterialStateColor.resolveWith((states) {
-                                  if (state.fData[index].orderType == OrderType.URGENT) {
+                                  if (state.fData?[index].orderType == "Urgent") {
                                     print(5555);
                                     return pickerOrangeTypeColor;
                                   } else
-                                  if (state.fData[index].orderType == OrderType.EXPRESS) {
+                                  if (state.fData?[index].orderType == "Express") {
                                     print(6666);
                                     return pickerYellowTypeColor;
                                   } else
-                                  if (state.fData[index].orderType == OrderType.NORMAL) {
+                                  if (state.fData?[index].orderType == "Normal") {
                                     print(7777);
                                     return pickerGreyTypeColor;
                                   } else {
@@ -191,35 +190,35 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                 children: [
                                   RowItem(
                                     label: 'Customer name:',
-                                    value: '${tData[index].customer?.name.name}',
+                                    value: '${tData?[index].customer?.name}',
                                   ),
                                   RowItem(
                                     label: 'Order No:',
-                                    value: tData[index].orderNumber,
+                                    value: '${tData?[index].orderNumber}',
                                   ),
                                   RowItem(
                                     label: 'Building Name/No:',
-                                    value: '${tData[index].customer?.buildingNo}',
+                                    value: '${tData?[index].customer?.buildingNo}',
                                   ),
                                   RowItem(
                                     label: 'Floor No:',
-                                    value: '${tData[index].customer?.roomNo}',
+                                    value: '${tData?[index].customer?.roomNo}',
                                   ),
                                   RowItem(
                                     label: 'Room No/House No:',
-                                    value: '${tData[index].customer?.roomNo}',
+                                    value: '${tData?[index].customer?.roomNo}',
                                   ),
                                   RowItem(
                                     label: 'Mobile No:',
-                                    value: '${tData[index].customer?.mobile}',
+                                    value: '${tData?[index].customer?.mobile}',
                                   ),
                                   RowItem(
                                     label: 'Pickup Date:',
-                                    value: DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData[index].pickupDate}')).toString(),
+                                    value: DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData?[index].pickupDate}')).toString(),
                                   ),
                                   RowItem(
                                     label: 'Pickup time:',
-                                    value: tData[index].pickupTime,
+                                    value: '${tData?[index].pickupTime}',
                                     isShow: true,
                                   ),
                                 ],
@@ -285,9 +284,9 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                                             onPressed: () {
                                                               Map<String, String> body = {
                                                                 "id":authData.user_id.toString(),
-                                                                "order_id":tData[index].orderId,
-                                                                "pickup_date":DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData[index].pickupDate}')).toString(),
-                                                                "pickup_time":tData[index].pickupTime
+                                                                "order_id":'${tData?[index].orderId}',
+                                                                "pickup_date":DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData?[index].pickupDate}')).toString(),
+                                                                "pickup_time":'${tData?[index].pickupTime}'
                                                               };
                                                               print('###Body Response$body');
                                                               BlocProvider.of<PickerBloc>(context).add(PickerConfirmOrderEvent(body, authData.user_token.toString()));
@@ -321,7 +320,7 @@ class _PickingConfirmationPageState extends State<PickingConfirmationPage> {
                                   InkWell(
                                     onTap: (){
                                       //openDialer('987654321');
-                                      openDialer(tData[index].customer?.mobile);
+                                      openDialer(tData?[index].customer?.mobile);
                                     } ,
                                     child: const Text('Call',
                                         style: TextStyle(

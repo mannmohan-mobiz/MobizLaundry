@@ -53,9 +53,9 @@ class CustomerListData {
   dynamic trn;
   dynamic billingAddrs;
   dynamic designation;
-  dynamic buildingName;
-  dynamic floorNumber;
-  dynamic flatNumber;
+  String? buildingName;
+  String? floorNumber;
+  String? flatNumber;
   dynamic altEmail;
   dynamic companyName;
   String staff;

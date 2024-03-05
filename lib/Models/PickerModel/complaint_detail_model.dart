@@ -39,9 +39,11 @@ class ComplaintDetail {
   String service;
   String order;
   String remarks;
+  dynamic remarkFromPicker;
   String status;
   dynamic replyFromCom;
   String complaintNumber;
+  bool pickerStatus;
 
   ComplaintDetail({
     required this.complaintId,
@@ -50,9 +52,11 @@ class ComplaintDetail {
     required this.service,
     required this.order,
     required this.remarks,
+    required this.remarkFromPicker,
     required this.status,
     required this.replyFromCom,
     required this.complaintNumber,
+    required this.pickerStatus,
   });
 
   factory ComplaintDetail.fromJson(Map<String, dynamic> json) => ComplaintDetail(
@@ -62,9 +66,11 @@ class ComplaintDetail {
     service: json["service"],
     order: json["order"],
     remarks: json["remarks"],
+    remarkFromPicker: json["remark_from_picker"],
     status: json["status"],
     replyFromCom: json["reply_from_com"],
     complaintNumber: json["complaint_number"],
+    pickerStatus: json["picker_status"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -74,8 +80,10 @@ class ComplaintDetail {
     "service": service,
     "order": order,
     "remarks": remarks,
+    "remark_from_picker": remarkFromPicker,
     "status": status,
     "reply_from_com": replyFromCom,
     "complaint_number": complaintNumber,
+    "picker_status": pickerStatus,
   };
 }

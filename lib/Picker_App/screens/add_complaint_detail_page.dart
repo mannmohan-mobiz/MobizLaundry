@@ -74,15 +74,19 @@ class _AddComplaintDetailPageState extends State<AddComplaintDetailPage> {
                 itemCount: tData?.deliverdOrders.length,
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (itemBuilder, index) {
-                  selectedOrderId = tData?.deliverdOrders[index].orderId;
-                  selectedServiceId = tData?.deliverdOrders[index].serviceCategoryId;
-                  print('ordID##$selectedOrderId');
-                  print('srvID##$selectedServiceId');
+                  // selectedOrderId = tData?.deliverdOrders[index].orderId;
+                  // selectedServiceId = tData?.deliverdOrders[index].serviceCategoryId;
+                  // print('ordID##$selectedOrderId');
+                  // print('srvID##$selectedServiceId');
                  return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
                     child: InkWell(
                       onTap: (){
-
+                        Navigator.push(context, MaterialPageRoute(
+                            builder: (context) =>  ComplaintOrderDetailPage(orderId: '${tData?.deliverdOrders[index].orderId}',statusValue: '${tData?.deliverdOrders[index].status}',orderDateValue: DateFormat('yyyy-MM-dd').format(
+                                DateTime.parse(
+                                    '${tData?.deliverdOrders[index]
+                                        .deliveryDate}')))));
                       },
                       child: Card(
                         child: Container(
@@ -127,14 +131,21 @@ class _AddComplaintDetailPageState extends State<AddComplaintDetailPage> {
                                   ),
                                   trailing: InkWell(
                                       onTap: () {
-                                        Navigator.push(context, MaterialPageRoute(
-                                            builder: (context) =>  ComplaintOrderDetailPage(orderId: '${tData?.deliverdOrders[index].orderId}',statusValue: '${tData?.deliverdOrders[index].status}',orderDateValue: DateFormat('yyyy-MM-dd').format(
-                                                DateTime.parse(
-                                                    '${tData?.deliverdOrders[index]
-                                                        .deliveryDate}')))));
+                                        // Navigator.push(context, MaterialPageRoute(
+                                        //     builder: (context) =>  ComplaintOrderDetailPage(orderId: '${tData?.deliverdOrders[index].orderId}',statusValue: '${tData?.deliverdOrders[index].status}',orderDateValue: DateFormat('yyyy-MM-dd').format(
+                                        //         DateTime.parse(
+                                        //             '${tData?.deliverdOrders[index]
+                                        //                 .deliveryDate}')))));
+                                        setState(() {
+                                          selectedOrderId = tData?.deliverdOrders[index].orderId;
+                                          selectedServiceId = tData?.deliverdOrders[index].serviceCategoryId;
+                                        });
+                                        debugPrint('##ordID##$selectedOrderId');
+                                        debugPrint('##srvID##$selectedServiceId');
                                       },
-                                      child: Image.asset(
-                                          'Assets/Images/rounded.png')),
+                                      child: Image.asset(tData?.deliverdOrders[index].orderId == selectedOrderId ?
+                                          'Assets/Images/filled.png' : 'Assets/Images/rounded.png')
+                                  ),
                                 ),
                                 RowItem(label: 'Order Number:',
                                   value: '${tData?.deliverdOrders[index]
@@ -249,17 +260,26 @@ class _AddComplaintDetailPageState extends State<AddComplaintDetailPage> {
                   backgroundColor: pickerGoldColor,
                 ),
                 onPressed: () {
-                  Map<String, dynamic> data = {
-                    "order": selectedOrderId,
-                    "complaint_type": selectedValueId,
-                    "service": selectedServiceId,
-                    "customer": widget.customerId,
-                    "remarks": commentController.text,
-                  };
-                  print('#########${(data)}');
-                  pickerRepository.complaintRegisterApi(token: authData.user_token.toString(),body: data).then((value) {
-                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => const HomePageNew(),), (route) => false);
-                  });
+                  if((selectedOrderId ?? '').isEmpty){
+                    snackBar(context, message: 'Please choose Order');
+                  } else {
+                    Map<String, dynamic> data = {
+                      "order": selectedOrderId,
+                      "complaint_type": selectedValueId,
+                      "service": selectedServiceId,
+                      "customer": widget.customerId,
+                      "remarks": commentController.text,
+                    };
+                    print('#########${(data)}');
+                    pickerRepository.complaintRegisterApi(
+                        token: authData.user_token.toString(), body: data)
+                        .then((value) {
+                      Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const HomePageNew(),), (
+                          route) => false);
+                    });
+                  }
                 },
                 child: const Center(
                   child: Text(

@@ -9,6 +9,7 @@ import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/table_row.dart';
+import 'home_page_new.dart';
 
 class ComplaintDetailsPage extends StatefulWidget {
   final String? complaintId;
@@ -19,6 +20,9 @@ class ComplaintDetailsPage extends StatefulWidget {
 }
 
 class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
+  final PickerRepository pickerRepository = PickerRepository();
+  TextEditingController commentController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     print('CmpTID##${widget.complaintId}');
@@ -56,6 +60,7 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
     return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
     } else if (state is ComplaintOrderDetailPckFetchedState) {
       final tData = state.complaintDetails;
+      commentController.text = tData.pickerStatus ? tData.remarkFromPicker : '';
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20),
         child: ListView(
@@ -141,7 +146,7 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                   padding: const EdgeInsets.symmetric(
                       horizontal: 20.0, vertical: 20),
                   child: TextField(
-                    controller: TextEditingController(),
+                    controller: commentController,
                     decoration: const InputDecoration(
                       border: InputBorder.none,
                     ),
@@ -155,6 +160,7 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
+                      close(context);
                     },
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
@@ -176,28 +182,41 @@ class _ComplaintDetailsPageState extends State<ComplaintDetailsPage> {
                   ),
                 ),
                 const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-
-                    },
-                    style: ElevatedButton.styleFrom(
-                      elevation: 0,
-                      backgroundColor: Colors.white,
-                      surfaceTintColor: Colors.white,
-                      side: const BorderSide(
-                        width: 1.6,
-                        color: pickerGoldColor,
+                Visibility(
+                  visible: tData.pickerStatus == false,
+                  child: Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Map<String, String> data = {
+                          "complaint_id": tData.complaintId,
+                          "remark_from_picker": commentController.text,
+                        };
+                        print('#########${(data)}');
+                        pickerRepository.complaintDetailSaveApi(token: authData.user_token.toString(),body: data).then((value) {
+                          Navigator.push(context,
+                              MaterialPageRoute(builder:
+                                  (context) =>  const HomePageNew(),
+                              ));
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        elevation: 0,
+                        backgroundColor: Colors.white,
+                        surfaceTintColor: Colors.white,
+                        side: const BorderSide(
+                          width: 1.6,
+                          color: pickerGoldColor,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
                       ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
+                      child: const Text(
+                        'Submit',
+                        style: TextStyle(fontSize: 12.0, color: pickerBlackColor),
                       ),
-                    ),
-                    child: const Text(
-                      'Submit',
-                      style: TextStyle(fontSize: 12.0, color: pickerBlackColor),
-                    ),
 
+                    ),
                   ),
                 ),
               ],

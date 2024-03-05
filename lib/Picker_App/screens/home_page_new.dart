@@ -16,6 +16,7 @@ import '../util/common_methods.dart';
 import '../util/drawer.dart';
 import '../util/drawer.dart';
 import '../util/side_bar_page.dart';
+import 'choose_account_type_screen.dart';
 import 'confirmed_orders_page.dart';
 import 'create_client_page.dart';
 import 'delivered_screen.dart';
@@ -35,6 +36,7 @@ class HomePageNew extends StatefulWidget {
 
 class _HomePageNewState extends State<HomePageNew> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final PickerRepository pickerRepository = PickerRepository();
 
   @override
   Widget build(BuildContext context) {
@@ -300,7 +302,7 @@ class _HomePageNewState extends State<HomePageNew> {
         open(context, const MyCollectionsPage());
         break;
       case 3:
-        open(context, const CreateClientPage());
+        open(context, const ChooseAccountType());
         break;
       case 4:
         open(context, const MyClientsPage());

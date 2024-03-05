@@ -209,6 +209,15 @@ class PickupDeliveryModeFetchEvent extends PickerEvent {
   List<Object?> get props => [token];
 }
 
+// Pickup Outstanding List
+class PickupOutStandingFetchEvent extends PickerEvent {
+  final String token;
+  const PickupOutStandingFetchEvent(this.token);
+
+  @override
+  List<Object?> get props => [token];
+}
+
 // Pickup Delivery  List
 class DeliveryListFetchEvent extends PickerEvent {
   final String token;
@@ -227,6 +236,14 @@ class PickupDeliveredOrdersFetchEvent extends PickerEvent {
   List<Object?> get props => [token];
 }
 
+// Top Up request List
+class TopUpRequestFetchEvent extends PickerEvent {
+  final String token;
+  const TopUpRequestFetchEvent(this.token);
+
+  @override
+  List<Object?> get props => [token];
+}
 
 // Pickup Delivery address List
 class PickupDeliveryAddressFetchEvent extends PickerEvent {
@@ -245,6 +262,156 @@ class PickupPaymentListFetchEvent extends PickerEvent {
 
   @override
   List<Object?> get props => [token];
+}
+
+// Emirates List
+class GetEmiratesEvent extends PickerEvent {
+  const GetEmiratesEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+// Area List
+class GetAreaEvent extends PickerEvent {
+  final String emirateID;
+
+  GetAreaEvent(this.emirateID);
+
+  @override
+  List<Object?> get props => [emirateID];
+}
+
+
+// Location List
+class GetLocationEvent extends PickerEvent {
+  final String areaID;
+
+  GetLocationEvent(this.areaID);
+
+  @override
+  List<Object?> get props => [areaID];
+}
+
+// Personal save
+class GetPersonalSaveEvent extends PickerEvent {
+  final String userName;
+  final String name;
+  final String emailID;
+  final String password;
+  final String customerType;
+  final int buildingNo;
+  final String roomNo;
+  final int mobile;
+  final int altMobile;
+  final int whatsApp;
+  final int creditLimit;
+  final int creditDays;
+  final int creditInvoices;
+  final int gpse;
+  final int gpsn;
+  final String location;
+  final String trn;
+  final String billingAddress;
+  final String designation;
+  final String buildingName;
+  final String floorNumber;
+  final String flatNumber;
+
+  GetPersonalSaveEvent(
+      this.userName,
+      this.name,
+      this.emailID,
+      this.password,
+      this.customerType,
+      this.buildingNo,
+      this.roomNo,
+      this.mobile,
+      this.altMobile,
+      this.whatsApp,
+      this.creditLimit,
+      this.creditDays,
+      this.creditInvoices,
+      this.gpse,
+      this.gpsn,
+      this.location,
+      this.trn,
+      this.billingAddress,
+      this.designation,
+      this.buildingName,
+      this.floorNumber,
+      this.flatNumber,
+      );
+
+  @override
+  List<Object?> get props => [userName, name, emailID, password, customerType,
+    buildingNo, roomNo, mobile, altMobile, whatsApp, creditLimit, creditDays,
+    creditInvoices, gpse, gpsn, location, trn, billingAddress, designation,
+    buildingName, floorNumber, flatNumber];
+}
+
+// Corporate save
+
+class GetCorporateSaveEvent extends PickerEvent {
+  final String userName;
+  final String name;
+  final String emailID;
+  final String password;
+  final String customerType;
+  final String buildingNo;
+  final String roomNo;
+  final String regEmail;
+  final int mobile;
+  final int altMobile;
+  final int whatsApp;
+  final int creditLimit;
+  final int creditDays;
+  final int creditInvoices;
+  final int gpse;
+  final int gpsn;
+  final String location;
+  final String companyName;
+  final String trn;
+  final String billingAddress;
+  final String designation;
+  final String buildingAddress;
+  final String floorNumber;
+  final String flatNumber;
+  final List<AddressList>? addressList;
+
+  GetCorporateSaveEvent(
+      this.userName,
+      this.name,
+      this.emailID,
+      this.password,
+      this.customerType,
+      this.buildingNo,
+      this.roomNo,
+      this.regEmail,
+      this.mobile,
+      this.altMobile,
+      this.whatsApp,
+      this.creditLimit,
+      this.creditDays,
+      this.creditInvoices,
+      this.gpse,
+      this.gpsn,
+      this.location,
+      this.companyName,
+      this.trn,
+      this.billingAddress,
+      this.designation,
+      this.buildingAddress,
+      this.floorNumber,
+      this.flatNumber,
+      this.addressList
+      );
+
+  @override
+  List<Object?> get props => [userName, name, emailID, password, customerType,
+    buildingNo, roomNo, mobile, altMobile, whatsApp, creditLimit, creditDays,
+    creditInvoices, gpse, gpsn, location, trn, billingAddress, designation,
+    buildingAddress, floorNumber, flatNumber, addressList];
 }
 
 // Punch In

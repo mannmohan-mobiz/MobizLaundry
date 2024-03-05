@@ -141,14 +141,14 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                                   label: Center(child: Text("Action", textAlign: TextAlign.center,))),
                             ],
                             rows: List<DataRow>.generate(
-                              state.fData.length,
+                              (state.fData?.length)!,
                                   (index) {
-                                final tData = state.fData[index];
+                                final tData = state.fData?[index];
                                 return DataRow(
                                     color: MaterialStateColor.resolveWith((states) {
-                                      if (state.fData[index].orderType == "Urgent")  {
+                                      if (state.fData?[index].orderType == "Urgent")  {
                                         return Colors.deepOrange;//make tha magic!
-                                      } else if (state.fData[index].orderType == "Express") {
+                                      } else if (state.fData?[index].orderType == "Express") {
                                         return Colors.amber;
                                       } else {
                                         return Colors.transparent;
@@ -156,12 +156,12 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                                     }),
                                     cells: [
                                       DataCell(Center(child: Text((index+1).toString()))),
-                                      DataCell(Center(child: Text('${tData.orderNumber}'))),
-                                      DataCell(Center(child: Text("${tData.customer?.name}"))),
-                                      DataCell(Center(child: Text('${tData.customer?.whatsApp}'))),
-                                      DataCell(Center(child: Text('${tData.customer?.location}'))),
-                                      DataCell(Center(child: Text('${tData.customer?.buildingNo}'))),
-                                      DataCell(Center(child: Text('${tData.pickupTime}'))),
+                                      DataCell(Center(child: Text('${tData?.orderNumber}'))),
+                                      DataCell(Center(child: Text("${tData?.customer?.name}"))),
+                                      DataCell(Center(child: Text('${tData?.customer?.whatsApp}'))),
+                                      DataCell(Center(child: Text('${tData?.customer?.location}'))),
+                                      DataCell(Center(child: Text('${tData?.customer?.buildingNo}'))),
+                                      DataCell(Center(child: Text('${tData?.pickupTime}'))),
                                       DataCell(Center(child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
                                             backgroundColor: pickerPrimaryColor,
@@ -172,9 +172,9 @@ class MyOrderScreenState extends State<MyOrderScreen> {
                                         onPressed: (){
                                           Map<String, String> body = {
                                             "id":authData.user_id.toString(),
-                                            "order_id":'${tData.orderId}',
-                                            "pickup_date":DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData.pickupDate}')).toString(),
-                                            "pickup_time":'${tData.pickupTime}'
+                                            "order_id":'${tData?.orderId}',
+                                            "pickup_date":DateFormat('yyyy-MM-dd').format(DateTime.parse('${tData?.pickupDate}')).toString(),
+                                            "pickup_time":'${tData?.pickupTime}'
                                           };
                                           BlocProvider.of<PickerBloc>(context).add(PickerConfirmOrderEvent(body, authData.user_token.toString()));
                                           Future.delayed(

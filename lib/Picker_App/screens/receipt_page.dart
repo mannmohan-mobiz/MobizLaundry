@@ -19,6 +19,8 @@ class ReceiptRechargePage extends StatefulWidget {
 }
 
 class _ReceiptRechargePageState extends State<ReceiptRechargePage> {
+  final PickerRepository pickerRepository = PickerRepository();
+
   @override
   Widget build(BuildContext context) {
     print('222###${widget.transId}');
@@ -60,11 +62,13 @@ class _ReceiptRechargePageState extends State<ReceiptRechargePage> {
        body: BlocBuilder<PickerBloc, PickerState>(
       builder: (context, state) {
     if (state is WalletRechargeReceiptFetchingState) {
+      debugPrint(state.toString());
     return const Center(
     child: CircularProgressIndicator(
     color: pickerGoldColor,
     ));
     } else if(state is WalletRechargeReceiptFetchedState) {
+      debugPrint(state.toString());
       final data = state.walletRechargeReceiptData;
       return Padding(
         padding: const EdgeInsets.only(
@@ -107,8 +111,8 @@ class _ReceiptRechargePageState extends State<ReceiptRechargePage> {
                           children: [
                             RowItem(label: 'Reference Number ',
                               value: '${data?.referenceNumber}',),
-                            RowItem(label: 'Payment date',
-                              value: DateFormat('dd-MM-yyyy').format(DateTime.parse('${data?.paymentDate}')),),
+                            // RowItem(label: 'Payment date',
+                            //   value: DateFormat('dd-MM-yyyy').format(DateTime.parse('${data?.paymentDate}')),),
                             RowItem(label: 'Payment method ', value: '${data?.modeOfPayment}',),
                             RowItem(
                               label: 'Recharged for ', value: '${data?.rechargedFor}',),
@@ -126,7 +130,18 @@ class _ReceiptRechargePageState extends State<ReceiptRechargePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    Map<String, String> dataList = {
+                      "recharged_for": "${data?.rechargedFor}",
+                      "recharged_by": "${data?.rechargedBy}",
+                      "payment_time": "2024-02-01 03:52:03",
+                      "amount": "${data?.amount}",
+                      "mode_of_payment": "${data?.modeOfPayment}",
+                      "reference_number": "${data?.referenceNumber}"
+                    };
+                    debugPrint('#########${(dataList)}');
+                    await pickerRepository.downloadPdf(token: authData.user_token.toString(), body: dataList);
+                  },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     backgroundColor: Colors.white,
@@ -152,7 +167,9 @@ class _ReceiptRechargePageState extends State<ReceiptRechargePage> {
                 ),
                 const SizedBox(width: 10),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    await pickerRepository.sharePdf();
+                  },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
                     backgroundColor: Colors.white,

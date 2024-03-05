@@ -6,7 +6,8 @@ class CreateClientTextFormField extends StatelessWidget {
   final TextEditingController getController;
   final String labelText;
   final Widget? suffixIcon;
-  const CreateClientTextFormField({super.key,required this.getController,this.suffixIcon, required this.labelText});
+  final bool obscureText;
+  const CreateClientTextFormField({super.key,required this.getController,this.suffixIcon, required this.labelText,  this.obscureText = false});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +15,7 @@ class CreateClientTextFormField extends StatelessWidget {
       height: 52,
       child: TextFormField(
         controller: getController,
+        obscureText: obscureText,
         decoration: InputDecoration(
           filled: true,
           fillColor: Colors.white,

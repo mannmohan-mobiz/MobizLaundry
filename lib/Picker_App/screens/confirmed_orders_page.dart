@@ -12,6 +12,7 @@ import '../src/colors.dart';
 import '../util/common_methods.dart';
 import '../util/row_item.dart';
 import 'collect_items_page.dart';
+import 'home_page_new.dart';
 
 class ConfirmedOrdersPage extends StatefulWidget {
   const ConfirmedOrdersPage({super.key});
@@ -27,6 +28,8 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
     pickerYellowTypeColor,
     pickerOrangeTypeColor
   ];
+  final PickerRepository pickerRepository = PickerRepository();
+
 
   @override
   Widget build(BuildContext context) {
@@ -249,7 +252,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                                               color: pickerBlackColor,
                                               fontWeight: FontWeight.w600)),
                                       onTap: () {
-                                        showDoorLockDialog();
+                                        showDoorLockDialog(ordId:'${tData?[index].orderId}');
                                       },
                                     ),
                                   ],
@@ -296,7 +299,7 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
     );
   }
 
-  showDoorLockDialog() {
+  showDoorLockDialog({required String ordId}) {
     return showDialog(
         context: context,
         builder: (mContext) => AlertDialog(
@@ -341,7 +344,17 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Map<String, String> data = {
+                                  "order_id": ordId,
+                                };
+                                pickerRepository.deliveryDoorLockApi(token: authData.user_token.toString(),body: data).then((value) {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder:
+                                          (context) =>  const HomePageNew(),
+                                      ));
+                                });
+                              },
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: pickerGoldColor,
                               ),
@@ -410,8 +423,8 @@ class _ConfirmedOrdersPageState extends State<ConfirmedOrdersPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: ElevatedButton(
                               onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                                 CollectItemsPage(orderId: "ff75a9ff2c84438db292ccede6e829df",customerId:custId))),
-                            // CollectItemsPage(orderId: orderIdd,customerId:custId))),
+                              // CollectItemsPage(orderId: "ff75a9ff2c84438db292ccede6e829df",customerId:custId))),
+                            CollectItemsPage(orderId: orderIdd,customerId:custId))),
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: pickerGoldColor,
                               ),

@@ -190,8 +190,8 @@ class _CustomerHomeOrderDetailPageState extends State<CustomerHomeOrderDetailPag
                 ),
               ),
                ContainerWidgets(title: 'Delivery Time',
-                  textTime: '${data?.cart?[0].order?.deliveryTime}',
-                  textDate: '${data?.cart?[0].order?.deliveryDate}'),
+                  textTime: '${data?.deliveryTime}',
+                  textDate: '${data?.deliveryDate}'),
               const Text(
                 'Delivery address',
                 style: TextStyle(
@@ -222,7 +222,7 @@ class _CustomerHomeOrderDetailPageState extends State<CustomerHomeOrderDetailPag
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text(
-                        'AED ${data?.cart?[0].order?.totalAmount}',
+                        'AED ${data?.totalAmount}',
                         style: const TextStyle(
                             color: pickerBlackColor,
                             fontWeight: FontWeight.w500,
@@ -306,7 +306,7 @@ class _CustomerHomeOrderDetailPageState extends State<CustomerHomeOrderDetailPag
                                           fontSize: 14),
                                     ),
                                     Text(
-                                      'AED ${data?.cart?[0].order?.totalAmount}',
+                                      'AED ${data?.totalAmount}',
                                       style: const TextStyle(
                                           color: pickerBlackColor,
                                           fontWeight: FontWeight.w500,
@@ -363,7 +363,7 @@ class _CustomerHomeOrderDetailPageState extends State<CustomerHomeOrderDetailPag
                         fontSize: 14),
                   ),
                   Text(
-                    '${data?.cart?[0].order?.orderType}',
+                    '${data?.orderType}',
                     style: const TextStyle(
                         color: pickerBlackColor,
                         fontWeight: FontWeight.w500,

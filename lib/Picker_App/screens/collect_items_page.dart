@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
 import '../../Models/PickerModel/collect_items_model.dart';
+import '../../Models/PickerModel/picker_delivery_date.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../../Utils/common.dart';
@@ -34,22 +35,25 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
   String selectedOption = '';
   var selectedWalletBalance;
   bool isFromCollectItems = true;
+  List<Date> deliveryTimes = [];
+  String? selectedDeliveryTime;
+  DateTime? selectedDeliveryDate;
 
   void decrementQuantity(int index) {
     setState(() {
-      int currentQuantity = int.parse(data!.cart[index].quantity.toString());
+      int currentQuantity = int.parse(data!.cart![index].quantity.toString());
       if ( currentQuantity > 1) {
         currentQuantity--;
-        data!.cart[index].quantity = currentQuantity.toString();
+        data!.cart![index].quantity = currentQuantity.toString();
       }
     });
   }
 
   void incrementQuantity(int index, ) {
     setState(() {
-      int currentQuantity = int.parse(data!.cart[index].quantity.toString());
+      int currentQuantity = int.parse(data!.cart![index].quantity.toString());
       currentQuantity++;
-      data!.cart[index].quantity = currentQuantity.toString();
+      data!.cart![index].quantity = currentQuantity.toString();
     });
   }
   @override
@@ -106,9 +110,45 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
           child: ListView(
             shrinkWrap: true,
             children: [
-               ContainerWidgets(title: 'Delivery Time',
-                  textTime: '${state.collectItemsData?.cart![0].order.deliveryTime}',
-                  textDate:  DateFormat('yyyy-MM-dd').format(DateTime.parse('${state.collectItemsData?.cart![0].order.deliveryDate}')),),
+               InkWell(
+                 onTap: () async {
+                   debugPrint('helooooo');
+                   await pickerRepository.deliveryDateCollectionApi(token: authData.user_token.toString(), orderType: (state.collectItemsData?.orderType) ?? 'Normal').then((value) {
+                     debugPrint('###hbbjbjb### ${value.data}');
+                     setState(() {
+                       deliveryTimes = value.data;
+                     });
+                   });
+
+                   showCustomBottomSheet(
+                       context,
+                       title: 'Select',
+                       ListView.separated(
+                           shrinkWrap: true,
+                           physics: const BouncingScrollPhysics(),
+                           separatorBuilder: (context1, index) => const Divider(color: Colors.transparent),
+                           itemCount: deliveryTimes.length,
+                           itemBuilder: (context2, index) => InkWell(
+                             onTap: () {
+                               setState(() {
+                                 selectedDeliveryTime = deliveryTimes[index].day;
+                                 selectedDeliveryDate = deliveryTimes[index].date;
+                               });
+                               close(context);
+                             },
+                             child: Text(
+                           '${DateFormat('yyyy-MM-dd').format(deliveryTimes[index].date)}',
+                                 textAlign: TextAlign.center,
+                                 style: TextStyle(fontSize: 14.0, color: pickerBlackColor,
+                                     fontWeight: FontWeight.w600)),
+                           )
+                       )
+                   );
+                 },
+                 child: ContainerWidgets(title: 'Delivery Time',
+                    textTime: selectedDeliveryTime != null ? '$selectedDeliveryTime' : '${state.collectItemsData?.deliveryTime}',
+                    textDate: selectedDeliveryDate != null ? DateFormat('yyyy-MM-dd').format(DateTime.parse('$selectedDeliveryDate')) : state.collectItemsData?.deliverydate != null ? DateFormat('yyyy-MM-dd').format(DateTime.parse('${state.collectItemsData?.deliverydate}')) : ''),
+               ),
                 const RowValue(label: 'Payment Method',),
               BlocProvider(
                 create: (context) => PickerBloc(RepositoryProvider.of<PickerRepository>(context))
@@ -204,20 +244,20 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                 ),
               ),
                RowValue(
-                label: 'Order Type', labelValue: '${state.collectItemsData?.cart![0].order.orderType}',),
-               RowValue(
-                  label: 'Service Type', labelValue: '${state.collectItemsData?.cart![0].itemService.category
-                  .serviceMaster.categoryName}''/''${state.collectItemsData?.cart![0]
-                  .itemService.subCategory.subServiceMaster.subCatName}'),
+                label: 'Order Type', labelValue: '${state.collectItemsData?.orderType}',),
+              state.collectItemsData?.cart?.isEmpty == true ? const SizedBox() : RowValue(
+                  label: 'Service Type', labelValue: '${state.collectItemsData?.cart![0].itemService?.category
+                  ?.serviceMaster?.categoryName}''/''${state.collectItemsData?.cart![0]
+                  .itemService?.subCategory?.subServiceMaster?.subCatName}'),
               const Text('Items to be picked',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400,)),
-              ListView.builder(
+              state.collectItemsData?.cart?.isEmpty == true ?  const Center(child: Text('No Items')) :  ListView.builder(
                 physics: const ScrollPhysics(),
                 shrinkWrap: true,
-                itemCount: state.collectItemsData?.cart.length,
+                itemCount: state.collectItemsData?.cart?.length,
                 itemBuilder: (BuildContext context, int index) {
-                  priceValueData.add(state.collectItemsData!.cart[index]
-                      .amount);
+                  priceValueData.add('${state.collectItemsData!.cart?[index]
+                      .amount}');
                   return Card(
                     elevation: 10,
                     child: Container(
@@ -245,8 +285,8 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                                     ),
                                     child: Image.network(
                                       '$baseUrl${state.collectItemsData
-                                          ?.cart[index].itemService
-                                          .item.itemImage}',
+                                          ?.cart?[index].itemService
+                                          ?.item?.itemImage}',
                                       fit: BoxFit.fill,
                                     )),
                                 const SizedBox(width: 20),
@@ -256,9 +296,9 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                                     CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        '${state.collectItemsData?.cart[index]
-                                            .itemService.item
-                                            .itemName}',
+                                        '${state.collectItemsData?.cart?[index]
+                                            .itemService?.item
+                                            ?.itemName}',
                                         style: const TextStyle(
                                           fontSize: 13,
                                           fontWeight: FontWeight.w500,
@@ -287,16 +327,16 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                                                         .toString(),
                                                     "order_id": widget.orderId,
                                                     "cart_id": '${data
-                                                        ?.cart[index].cartId}',
+                                                        ?.cart?[index].cartId}',
                                                     "price_list_id": '${data
-                                                        ?.cart[index]
+                                                        ?.cart?[index]
                                                         .priceList}',
                                                     "item_ser_id": '${data
-                                                        ?.cart[index]
+                                                        ?.cart?[index]
                                                         .itemService
-                                                        .itemSerId}',
+                                                        ?.itemSerId}',
                                                     "quantity": '${data
-                                                        ?.cart[index]
+                                                        ?.cart?[index]
                                                         .quantity}',
                                                   };
                                                   print(
@@ -322,7 +362,7 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                                                     .symmetric(
                                                     horizontal: 4.0),
                                                 child: Text(
-                                                  '${data?.cart[index]
+                                                  '${data?.cart?[index]
                                                       .quantity}',
                                                   style: const TextStyle(
                                                     fontSize: 13,
@@ -340,16 +380,16 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                                                         .toString(),
                                                     "order_id": widget.orderId,
                                                     "cart_id": '${data
-                                                        ?.cart[index].cartId}',
+                                                        ?.cart?[index].cartId}',
                                                     "price_list_id": '${data
-                                                        ?.cart[index]
+                                                        ?.cart?[index]
                                                         .priceList}',
                                                     "item_ser_id": '${data
-                                                        ?.cart[index]
+                                                        ?.cart?[index]
                                                         .itemService
-                                                        .itemSerId}',
+                                                        ?.itemSerId}',
                                                     "quantity": '${data
-                                                        ?.cart[index].quantity}'
+                                                        ?.cart?[index].quantity}'
                                                   };
                                                   print(
                                                       '#########${(dataList)}');
@@ -388,7 +428,7 @@ class _CollectItemsPageState extends State<CollectItemsPage> {
                                           ),
                                           Text(
                                             priceValueData[index] != null ? 'AED ${priceValueData[index]}' :
-                                            'AED ${state.collectItemsData?.cart[index].amount}',
+                                            'AED ${state.collectItemsData?.cart?[index].amount}',
                                             style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.w600,

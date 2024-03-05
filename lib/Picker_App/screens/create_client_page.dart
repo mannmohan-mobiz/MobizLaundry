@@ -28,6 +28,7 @@ class _CreateClientPageState extends State<CreateClientPage> {
   TextEditingController credLmtController = TextEditingController();
   TextEditingController credDaysController = TextEditingController();
   TextEditingController credInvController = TextEditingController();
+  bool isVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -67,14 +68,16 @@ class _CreateClientPageState extends State<CreateClientPage> {
         child: ListView(
           shrinkWrap: true,
           children: [
+            const Text(
+              'Customer details',
+              style: TextStyle(
+                  color: pickerBlackColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15),
+            ),
             CreateClientTextFormField(
                 getController:nameController,
                labelText: 'Name',
-            ),
-            const SizedBox(height: 16,),
-            CreateClientTextFormField(
-              getController:userNameController,
-              labelText: 'Username',
             ),
             const SizedBox(height: 16,),
             CreateClientTextFormField(
@@ -83,18 +86,13 @@ class _CreateClientPageState extends State<CreateClientPage> {
             ),
             const SizedBox(height: 16,),
             CreateClientTextFormField(
-              getController:passwordController,
-              labelText: 'Password',
-            ),
-            const SizedBox(height: 16,),
-            CreateClientTextFormField(
               getController:buildController,
-              labelText: 'Building.No',
+              labelText: 'Building name/Building number',
             ),
             const SizedBox(height: 16,),
             CreateClientTextFormField(
               getController:roomController,
-              labelText: 'Room No',
+              labelText: 'House number/Room number',
             ),
             const SizedBox(height: 16,),
             CreateClientTextFormField(
@@ -104,12 +102,38 @@ class _CreateClientPageState extends State<CreateClientPage> {
             const SizedBox(height: 16,),
             CreateClientTextFormField(
               getController:altController,
-              labelText: 'Alt.Mobile',
+              labelText: 'Alternate Mobile',
             ),
             const SizedBox(height: 16,),
             CreateClientTextFormField(
               getController:whatsappController,
-              labelText: 'WhatsApp',
+              labelText: 'WhatsApp number',
+            ),
+            const SizedBox(height: 16,),
+            CreateClientTextFormField(
+              getController:userNameController,
+              labelText: 'Username',
+            ),
+            const SizedBox(height: 16,),
+            CreateClientTextFormField(
+              getController:passwordController,
+              labelText: 'Password',
+              obscureText: isVisible ? false : true,
+              suffixIcon:  IconButton(onPressed: (){
+                if (isVisible) {
+                  setState(() {
+                    isVisible = false;
+                  });
+                } else {
+                  setState(() {
+                    isVisible = true;
+                  });
+                }
+              }, icon: Icon(
+                isVisible ? Icons.visibility_off : Icons.visibility,
+                color: pickerGoldColor,
+              ),
+              ),
             ),
             const SizedBox(height: 16,),
             SizedBox(
@@ -123,7 +147,7 @@ class _CreateClientPageState extends State<CreateClientPage> {
                 ),
                 onPressed: (){
                 },
-                child: const Text('Activate GPS',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
+                child: const Text('Fetch GPS',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
             ),
             const SizedBox(height: 16,),
             const Text(
@@ -151,17 +175,6 @@ class _CreateClientPageState extends State<CreateClientPage> {
                         activeColor: pickerGoldColor,
                         groupValue: 1,
                       ),
-                    //   leading: Radio<CustomerType>(
-                    //       value: CustomerType.Home,
-                    //     groupValue: _animal,
-                    // onChanged: (CustomerType? value) {
-                    //       setState(() {
-                    //         _animal = value;
-                    //         custmType = "Home";
-                    //       });
-                    //       debugPrint(_animal!.name);
-                    //     },
-                    //   ),
                     )),
                 Expanded(
                   child: ListTile(
@@ -179,18 +192,53 @@ class _CreateClientPageState extends State<CreateClientPage> {
                       activeColor: pickerGoldColor,
                       groupValue: 1,
                     ),
-
-                    // leading: Radio<CustomerType>(
-                    //   value: CustomerType.Corporate,
-                    //   groupValue: _animal,
-                    //   onChanged: (CustomerType? value) {
-                    //     setState(() {
-                    //       _animal = value;
-                    //       custmType = "Corporate";
-                    //     });
-                    //     debugPrint(_animal!.name);
-                    //   },
-                    // ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16,),
+            const Text(
+              'Invoice type',
+              style: TextStyle(
+                  color: pickerBlackColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 17),
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(0),
+                      title: const Text('Cash'),
+                      leading:    Radio(
+                        onChanged: (int? value) {
+                          debugPrint('### value --- $value');
+                          setState(() {
+                          });
+                        },
+                        value: 1,
+                        visualDensity: const VisualDensity(
+                            horizontal: -4, vertical: 0),
+                        activeColor: pickerGoldColor,
+                        groupValue: 1,
+                      ),
+                    )),
+                Expanded(
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.all(0),
+                    title: const Text('Credit'),
+                    leading:    Radio(
+                      onChanged: (int? value) {
+                        debugPrint('### value --- $value');
+                        setState(() {
+                        });
+                      },
+                      value: 1,
+                      visualDensity: const VisualDensity(
+                          horizontal: -4, vertical: 0),
+                      activeColor: pickerGoldColor,
+                      groupValue: 1,
+                    ),
                   ),
                 ),
               ],
@@ -211,10 +259,18 @@ class _CreateClientPageState extends State<CreateClientPage> {
               labelText: 'Credit Invoice',
             ),
             const SizedBox(height: 16,),
-            CreateClientTextFormField(
-              getController:credLmtController,
-              labelText: 'Select Group',
-              suffixIcon: const Icon(Icons.arrow_drop_down,color: pickerGoldColor,),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: pickerGoldColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                onPressed: (){
+                },
+                child: const Text('Add more address',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
             ),
             const SizedBox(height: 16,),
             SizedBox(

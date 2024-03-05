@@ -55,6 +55,7 @@ class _StatementOfAccountDetailPageState extends State<StatementOfAccountDetailP
     if (state is StatementAccountFetchingState) {
     return const Center(child: CircularProgressIndicator(color: pickerGoldColor,));
     } else if (state is StatementAccountFetchedState) {
+      // snackBar(context, message: 'ssss');
       final tData = state.statementAccountList;
       return Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
@@ -103,6 +104,7 @@ class _StatementOfAccountDetailPageState extends State<StatementOfAccountDetailP
               ],
             ),
             const SizedBox(height: 15,),
+        tData.isEmpty ? const Center(child: Text('No Data')) :
             ListView.builder(
               shrinkWrap: true,
               itemCount: tData.length,
@@ -153,6 +155,11 @@ class _StatementOfAccountDetailPageState extends State<StatementOfAccountDetailP
         ),
       );
     } else {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+        if(state is StatementAccountErrorState) {
+          snackBar(context, message: state.message);
+        }
+      });
       return const Center(child: Text('No Data'));
     }
   },
