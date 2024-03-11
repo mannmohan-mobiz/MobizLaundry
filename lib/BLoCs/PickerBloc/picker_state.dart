@@ -1424,7 +1424,7 @@ class PckAddingtoCartState extends PickerState {
 }
 
 class PckAddedtoCartState extends PickerState {
-  List<AddCartList> adCrtList = [];
+  List<AddCartList>? adCrtList = [];
 
   PckAddedtoCartState(this.adCrtList);
 

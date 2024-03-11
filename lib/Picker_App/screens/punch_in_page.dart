@@ -2,10 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:golden_falcon/Picker_App/screens/punch_out_page.dart';
 
+import '../../Repositories/AttendanceRepo/attendance_repository.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
 import '../util/common_methods.dart';
+import 'home_page_new.dart';
 
 class PunchInPage extends StatefulWidget {
   const PunchInPage({super.key});
@@ -82,7 +84,9 @@ class _PunchInPageState extends State<PunchInPage> {
                     setState(() {
                       attenceId = value.data?.attendanceId;
                     });
-                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  PunchOutPage(attendanceId: attenceId)));
+                    setPunchData(attenceId);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) =>  const HomePageNew()));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) =>  PunchOutPage(attendanceId: attenceId)));
                     print(attenceId);
                   });
 

@@ -34,7 +34,7 @@ class _ItemsListPageState extends State<ItemsListPage> {
   final PickerRepository pickerRepository = PickerRepository();
   List<String> priceValues = [];
   List<int> counters = [];
-  int count = 0;
+  int? count = 0;
   bool isFromCollectItems = false;
 
 
@@ -381,13 +381,13 @@ class _ItemsListPageState extends State<ItemsListPage> {
                                                             };
                                                             print('PRICELISTID#${state.pckItemList[index].priceListId}');
                                                             print('ITEMSERID#${state.pckItemList[index].itemServices.itemSerId}');
-                                                            print('COUNT#${counters[index]}');
+                                                            print('QUANTITY#${counters[index]}');
                                                             print('AMOUNT#${priceValues[index]}');
                                                             print('ORDERID#${widget.ordIdd}');
                                                             pickerRepository.addToCart(token: authData.user_token.toString(), body: data).then((value) {
                                                               pickerRepository.addToCartCount(token: authData.user_token.toString(),orderId: widget.ordIdd).then((value) {
                                                                 setState(() {
-                                                                  count = value.data.cartCount;
+                                                                  count = value.data?.cartCount;
                                                                 });
                                                               });
                                                               // if (value.status == true) {

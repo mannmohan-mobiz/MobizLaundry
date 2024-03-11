@@ -41,6 +41,9 @@ dependencies:
   flutter_map: ^5.0.0
   url_launcher: ^6.2.1
   share_plus: 7.2.1
+  firebase_core: ^2.26.0
+  firebase_messaging: ^14.7.18
+  flutter_local_notifications: ^16.3.3
   shimmer:
   http:
   flutter_bloc:

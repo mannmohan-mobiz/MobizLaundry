@@ -88,180 +88,187 @@ class _HomePageNewState extends State<HomePageNew> {
         ],
       ),
       bottomNavigationBar: const BottomNavigation(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16),
-        child: ListView(
-          children: [
-            const Center(
-              child: Text(
-                'Picker Dashboard',
+      body: RefreshIndicator(
+        onRefresh: () async {
+          debugPrint('refreshed');
+          PickerBloc(pickerRepository).add(GetDashboardCountEvent(
+              authData.user_token.toString(), authData.user_id.toString()));
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 16),
+          child: ListView(
+            children: [
+              const Center(
+                child: Text(
+                  'Picker Dashboard',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: pickerGoldColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              const Text(
+                'Hai User!',
                 style: TextStyle(
-                  fontSize: 20,
-                  color: pickerGoldColor,
+                  fontSize: 15,
+                  color: pickerBlackColor,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            const Text(
-              'Hai User!',
-              style: TextStyle(
-                fontSize: 15,
-                color: pickerBlackColor,
-                fontWeight: FontWeight.bold,
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            BlocProvider(
-              create: (context) => PickerBloc(
-                RepositoryProvider.of<PickerRepository>(context),
-              )..add(GetDashboardCountEvent(
-                  authData.user_token.toString(), authData.user_id.toString())),
-              child: BlocBuilder<PickerBloc, PickerState>(
-                builder: (context, state) {
-                  if (state is DashboardCountGettingState) {
-                    print(state.toString());
-                    return const Column(
-                      children: [
-                        ShimmerRow(),
-                        ShimmerRow(),
-                        ShimmerRow(),
-                      ],
-                    );
-                  } else if (state is DashboardCountGotState) {
-                    List<Map<String, dynamic>> labelText = [
-                      {
-                        'label': 'Picking\nConfirmation',
-                        'value': state.dashData.pickupPendingCount
-                      },
-                      {
-                        'label': 'Confirmed',
-                        'value': state.dashData.confirmedCount
-                      },
-                      {
-                        'label': 'Ready for\nDispatch',
-                        'value': state.dashData.readyForDispatchCount
-                      },
-                      {
-                        'label': 'Outstanding',
-                        'value': state.dashData.outstandingAmount
-                      },
-                      {
-                        'label': 'Delivered',
-                        'value': state.dashData.deliveredCount
-                      },
-                      {
-                        'label': 'Deposit',
-                        'value': state.dashData.depositAmount
-                      },
-                      {
-                        'label': 'Pending for\nprocess',
-                        'value': state.dashData.notProcessedCount
-                      },
-                      {
-                        'label': 'Top Up\nRequest',
-                        'value': state.dashData.topUpRequestCount
-                      },
-                    ];
-                    return GridView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 4,
-                              childAspectRatio: 1 / 1.35,
-                              mainAxisSpacing: 50,
-                              crossAxisSpacing: 30),
-                      itemCount: labelText.length,
-                      itemBuilder: (context, index) => InkWell(
-                        onTap: () => onMenuClicked(index, context),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: pickerWhiteColor,
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: pickerGoldColor)),
-                          child: Column(
-                            children: [
-                              Text(
-                                '${labelText[index]['value']}',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  color: pickerGoldColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const Divider(
-                                thickness: 2,
-                                color: pickerGoldColor,
-                              ),
-                              Flexible(
-                                child: Text(
-                                  '${labelText[index]['label']}',
+              BlocProvider(
+                create: (context) => PickerBloc(
+                  RepositoryProvider.of<PickerRepository>(context),
+                )..add(GetDashboardCountEvent(
+                    authData.user_token.toString(), authData.user_id.toString())),
+                child: BlocBuilder<PickerBloc, PickerState>(
+                  builder: (context, state) {
+                    if (state is DashboardCountGettingState) {
+                      print(state.toString());
+                      return const Column(
+                        children: [
+                          ShimmerRow(),
+                          ShimmerRow(),
+                          ShimmerRow(),
+                        ],
+                      );
+                    } else if (state is DashboardCountGotState) {
+                      List<Map<String, dynamic>> labelText = [
+                        {
+                          'label': 'Picking\nConfirmation',
+                          'value': state.dashData.pickupPendingCount
+                        },
+                        {
+                          'label': 'Confirmed',
+                          'value': state.dashData.confirmedCount
+                        },
+                        {
+                          'label': 'Ready for\nDispatch',
+                          'value': state.dashData.readyForDispatchCount
+                        },
+                        {
+                          'label': 'Outstanding',
+                          'value': state.dashData.outstandingAmount
+                        },
+                        {
+                          'label': 'Delivered',
+                          'value': state.dashData.deliveredCount
+                        },
+                        {
+                          'label': 'Deposit',
+                          'value': state.dashData.depositAmount
+                        },
+                        {
+                          'label': 'Pending for\nprocess',
+                          'value': state.dashData.notProcessedCount
+                        },
+                        {
+                          'label': 'Top Up\nRequest',
+                          'value': state.dashData.topUpRequestCount
+                        },
+                      ];
+                      return GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4,
+                                childAspectRatio: 1 / 1.35,
+                                mainAxisSpacing: 50,
+                                crossAxisSpacing: 30),
+                        itemCount: labelText.length,
+                        itemBuilder: (context, index) => InkWell(
+                          onTap: () => onMenuClicked(index, context),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: pickerWhiteColor,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(color: pickerGoldColor)),
+                            child: Column(
+                              children: [
+                                Text(
+                                  '${labelText[index]['value']}',
                                   style: const TextStyle(
-                                    fontSize: 10,
-                                    color: pickerBlackColor,
+                                    fontSize: 20,
+                                    color: pickerGoldColor,
+                                    fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                              ),
-                            ],
+                                const Divider(
+                                  thickness: 2,
+                                  color: pickerGoldColor,
+                                ),
+                                Flexible(
+                                  child: Text(
+                                    '${labelText[index]['label']}',
+                                    style: const TextStyle(
+                                      fontSize: 10,
+                                      color: pickerBlackColor,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  } else {
-                    print(state.toString());
-                    return const Column(
-                      children: [
-                        ShimmerRow(),
-                        ShimmerRow(),
-                        ShimmerRow(),
-                      ],
-                    );
-                  }
+                      );
+                    } else {
+                      print(state.toString());
+                      return const Column(
+                        children: [
+                          ShimmerRow(),
+                          ShimmerRow(),
+                          ShimmerRow(),
+                        ],
+                      );
+                    }
 
-                  // else {
-                  //   return const Text('Unexpected state encountered');
-                  // }
-                },
+                    // else {
+                    //   return const Text('Unexpected state encountered');
+                    // }
+                  },
+                ),
               ),
-            ),
-            const SizedBox(
-              height: 25,
-            ),
-            GridView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 3 / 2,
-                  mainAxisSpacing: 20,
-                  crossAxisSpacing: 20),
-              itemCount: labelButtonText1.length,
-              itemBuilder: (context, index) => Center(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: pickerGoldColor,
-                    fixedSize: const Size(150, 50),
-                    side: const BorderSide(color: pickerWhiteColor, width: 2.0),
-                  ),
-                  onPressed: () => onButtonClicked(index, context),
-                  child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 2.0, bottom: 2, right: 0),
-                    child: Text(
-                      labelButtonText1[index],
-                      style: const TextStyle(
-                          color: pickerWhiteColor, fontSize: 11),
+              const SizedBox(
+                height: 25,
+              ),
+              GridView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    childAspectRatio: 3 / 2,
+                    mainAxisSpacing: 20,
+                    crossAxisSpacing: 20),
+                itemCount: labelButtonText1.length,
+                itemBuilder: (context, index) => Center(
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: pickerGoldColor,
+                      fixedSize: const Size(150, 50),
+                      side: const BorderSide(color: pickerWhiteColor, width: 2.0),
+                    ),
+                    onPressed: () => onButtonClicked(index, context),
+                    child: Padding(
+                      padding:
+                          const EdgeInsets.only(top: 2.0, bottom: 2, right: 0),
+                      child: Text(
+                        labelButtonText1[index],
+                        style: const TextStyle(
+                            color: pickerWhiteColor, fontSize: 11),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

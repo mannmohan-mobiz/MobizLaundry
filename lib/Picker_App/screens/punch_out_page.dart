@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:golden_falcon/Picker_App/screens/home_page_new.dart';
 
+import '../../Repositories/AttendanceRepo/attendance_repository.dart';
 import '../../Repositories/AuthRepo/auth_repository.dart';
 import '../../Repositories/PickerRepo/picker_repo.dart';
 import '../src/colors.dart';
@@ -20,6 +21,9 @@ class _PunchOutPageState extends State<PunchOutPage> {
 
   @override
   Widget build(BuildContext context) {
+    getPunchData().then((value) => {
+      debugPrint('getPunchData $value')
+    });
     print('####${widget.attendanceId}');
     return  Scaffold(
       backgroundColor: pickerBackgroundColor,
@@ -71,6 +75,7 @@ class _PunchOutPageState extends State<PunchOutPage> {
                   pickerRepository.getPunchOutApi(token: authData.user_token.toString(), attendanceId: widget.attendanceId.toString()).then((value) {
                     Navigator.push(context, MaterialPageRoute(builder: (context) =>  const HomePageNew()));
                   });
+                  removePunchData();
                 },
                 child: const Text('Punch Out',style: TextStyle(color: pickerWhiteColor,fontWeight: FontWeight.w500,fontSize: 15),),),
             )

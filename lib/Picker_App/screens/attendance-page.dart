@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:golden_falcon/Picker_App/screens/punch_in_page.dart';
+import 'package:golden_falcon/Picker_App/screens/punch_out_page.dart';
+import 'package:golden_falcon/Repositories/AttendanceRepo/attendance_repository.dart';
 import 'package:intl/intl.dart';
 
 import '../src/colors.dart';
@@ -15,11 +17,18 @@ class AttendancePage extends StatefulWidget {
 
 class _AttendancePageState extends State<AttendancePage> {
   late DateTime currentDate;
+  bool isPunched =  false;
 
   @override
   void initState() {
     super.initState();
     currentDate = DateTime.now();
+    () async {
+      String? value = await getPunchData();
+      setState(() {
+        isPunched = (value != null);
+      });
+    } ();
   }
 
   @override
@@ -58,7 +67,13 @@ class _AttendancePageState extends State<AttendancePage> {
           children: [
       InkWell(
         onTap: (){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const PunchInPage()));
+          getPunchData().then((value) {
+            if(isPunched) {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => PunchOutPage(attendanceId: value)));
+            } else {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => const PunchInPage()));
+            }
+          });
         },
         child: Card(
           child: Container(
@@ -115,9 +130,9 @@ class _AttendancePageState extends State<AttendancePage> {
                                 color: pickerGoldColor,
                                 fontSize: 15),
                           ),
-                          const Text(
-                            'Punch In',
-                            style: TextStyle(
+                          Text(
+                            isPunched ? 'Punch Out' : 'Punch In',
+                            style: const TextStyle(
                                 color: pickerGoldColor,
                                 fontSize: 20),
                           ),

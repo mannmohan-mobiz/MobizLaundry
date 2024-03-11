@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:golden_falcon/Models/PickerModel/add_to_cart_model.dart';
 // import 'package:golden_falcon/Models/PickerModel/cart_list_model.dart';
 // import 'package:golden_falcon/Models/PickerModel/cart_list_model.dart' as CartList;
 import 'package:golden_falcon/Models/PickerModel/deposit_history_model.dart';
@@ -39,6 +38,7 @@ import '../../Models/PickerModel/order_history_model.dart';
 import '../../Models/PickerModel/order_report_detail_model.dart';
 import '../../Models/PickerModel/order_report_model.dart';
 import '../../Models/PickerModel/personal_save_model.dart';
+import '../../Models/PickerModel/picker_add_to_cart_model.dart';
 import '../../Models/PickerModel/picker_collections_model.dart';
 import '../../Models/PickerModel/picker_confirmed_list_model.dart';
 import '../../Models/PickerModel/picker_delivery_date.dart';
@@ -980,7 +980,7 @@ class PickerBloc extends Bloc<PickerEvent, PickerState> {
           if (value.status == true) {
             emit(PckAddedtoCartState(value.data));
           } else {
-            emit(PckAddtoCartError(value.message));
+            emit(PckAddtoCartError(value.message.toString()));
           }
         });
       } catch (e) {

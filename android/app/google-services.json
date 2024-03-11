@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "346950695303",
+    "project_id": "golden-falcon-laundry-office",
+    "storage_bucket": "golden-falcon-laundry-office.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:346950695303:android:99d6148d1f39d227803b22",
+        "android_client_info": {
+          "package_name": "com.golden.falcon.office"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDV0NM2_2XcauoTIH5-3bfJ2VzK1QQVYRw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,7 +7,7 @@ import 'package:golden_falcon/Repositories/AuthRepo/auth_repository.dart';
 import 'package:golden_falcon/Repositories/PickerRepo/picker_repo.dart';
 
 import '../../BLoCs/PickerBloc/picker_bloc.dart';
-import '../../Models/PickerModel/add_to_cart_model.dart';
+import '../../Models/PickerModel/picker_add_to_cart_model.dart';
 import '../util/appBar.dart';
 import '../util/bottom_navigation_bar.dart';
 import '../util/drawer.dart';
@@ -133,7 +133,7 @@ class _AddToCartScreenState extends State<AddToCartScreen> {
                         return DataRow(
                           cells: [
                             DataCell(Center(child: Text('${index + 1}'))),
-                            DataCell(Center(child: Text('${cartData[index].itemService.item.itemName}'))),
+                            DataCell(Center(child: Text('${cartData[index].itemService?.item?.itemName}'))),
                             DataCell(Center(child: Text('${cartData[index].quantity}'))),
                             DataCell(Center(child: Text('${cartData[index].amount}'))),
                             DataCell(Center(child: ElevatedButton(onPressed: (){}, child: Text("data")))),

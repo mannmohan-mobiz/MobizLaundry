@@ -1,4 +1,4 @@
-package com.example.golden_falcon
+package com.golden.falcon.office
 
 import io.flutter.embedding.android.FlutterActivity
 

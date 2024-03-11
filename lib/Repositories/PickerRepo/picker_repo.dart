@@ -17,10 +17,8 @@ import 'package:share_plus/share_plus.dart';
 import '../../Models/PickerModel/add_customer_model.dart';
 import '../../Models/PickerModel/add_new_complaint_detail_model.dart';
 import '../../Models/PickerModel/add_new_complaint_model.dart';
-import '../../Models/PickerModel/add_to_cart_model.dart';
 import '../../Models/PickerModel/add_to_wallet_model.dart';
 import '../../Models/PickerModel/area_list_model.dart';
-import '../../Models/PickerModel/cart_count.dart';
 import '../../Models/PickerModel/cart_delete.dart';
 import '../../Models/PickerModel/cart_list_model.dart';
 import '../../Models/PickerModel/cart_list_quantity_model.dart';
@@ -59,6 +57,8 @@ import '../../Models/PickerModel/order_report_detail_model.dart';
 import '../../Models/PickerModel/order_report_model.dart';
 import '../../Models/PickerModel/outstanding_model.dart';
 import '../../Models/PickerModel/personal_save_model.dart';
+import '../../Models/PickerModel/picker_add_to_cart_model.dart';
+import '../../Models/PickerModel/picker_cart_count_model.dart';
 import '../../Models/PickerModel/picker_category_model.dart';
 import '../../Models/PickerModel/picker_collections_model.dart';
 import '../../Models/PickerModel/picker_confirmed_list_model.dart';
@@ -1777,7 +1777,7 @@ class PickerRepository {
   }
 
   // Add to Cart
-  Future<PickerAddtoCartModel> addToCart({required String token, required Map<String, String> body}) async {
+  Future<PickerAddToCartModel> addToCart({required String token, required Map<String, String> body}) async {
     Dio dio = Dio();
     Future.delayed(const Duration(seconds: 1));
     Options options = Options(
@@ -1794,7 +1794,7 @@ class PickerRepository {
 
       print('ADD to CRT : $response.data');
       if (response.statusCode == 200 || response.statusCode == 201) {
-        var result = PickerAddtoCartModel.fromJson(response.data);
+        var result = PickerAddToCartModel.fromJson(response.data);
         print('ADD to CRT RST : $result');
         return result;
       } else {
